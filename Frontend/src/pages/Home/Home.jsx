@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch("http://localhost:5000/data/products");
+      const res = await fetch("");
       const data = await res.json();
       setProducts(data);
       setFiltered(data);
