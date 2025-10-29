@@ -1,9 +1,9 @@
 import "./App.scss";
-import Headers from "./components/Header/Header.jsx";
-import  Home  from "./pages/Home/Home.jsx";
+import Headers from "./components/Header/Header";
+import  Home  from "./pages/Home/Home";
 import { Routes, Route } from 'react-router-dom';
-import Register from './pages/Register/Register.jsx';
-import Login from './pages/Login/Login.jsx';
+import Register from './pages/Register/Register';
+import Login from './pages/Login/Login';
 
 function App() {
 

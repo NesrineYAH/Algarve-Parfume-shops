@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -18,7 +17,7 @@ const normalizePort = (val) => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || "5000");
+const port = normalizePort(process.env.PORT || "5001");
 app.set("port", port);
 
 const errorHandler = (error) => {
@@ -52,3 +51,4 @@ server.on("listening", () => {
 });
 
 server.listen(port);
+console.log("Listening on port 5001");

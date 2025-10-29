@@ -1,33 +1,52 @@
-// src/pages/Login.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { loginUser } from "../../Services/auth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const [form, setForm] = useState({ email: '', mot_de_passe: '' });
-  const [message, setMessage] = useState('');
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await loginUser(form);
-    if (response.token) {
-      setMessage('Connexion réussie');
-      // rediriger vers /dashboard par exemple
-    } else {
-      setMessage(response.message);
+
+    try {
+      const response = await loginUser(form);
+
+      if (response.token) {
+        setMessage("Connexion réussie !");
+        // Redirige vers le dashboard ou la page d'accueil
+        navigate("/dashboard");
+      } else {
+        setMessage(response.message || "Identifiants invalides");
+      }
+    } catch (err) {
+      setMessage("Erreur serveur, veuillez réessayer.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" placeholder="Email"
-        value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })} />
-      <input type="password" placeholder="Mot de passe"
-        value={form.mot_de_passe}
-        onChange={(e) => setForm({ ...form, mot_de_passe: e.target.value })} />
-      <button type="submit">Se connecter</button>
-      <p>{message}</p>
-    </form>
+    <div className="login-container">
+      <h2>Connexion</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          required
+        />
+        <button type="submit">Se connecter</button>
+      </form>
+      {message && <p className="message">{message}</p>}
+    </div>
   );
 }
 
