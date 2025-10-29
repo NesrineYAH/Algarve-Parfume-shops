@@ -1,5 +1,6 @@
 import "./App.scss";
 import Headers from "./components/Header/Header";
+// import Produits  from "./components/Produits/Produits";
 import  Home  from "./pages/Home/Home";
 import { Routes, Route } from 'react-router-dom';
 import Register from './pages/Register/Register';
@@ -13,7 +14,8 @@ function App() {
              <Headers />
         <h1>Parfume-Algarve-shop</h1>
         <h2>Welcome to Parfume Algarve shop</h2>
-<Home />
+       <Home />
+
     {/* <Caroussel /> */}
     
  

@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
   try {
     const hash = await bcrypt.hash(req.body.password, 10);
     const user = new User({
-        nom: req.body.nom,
+      name: req.body.name,
       email: req.body.email,
       password: hash,
     });
@@ -49,7 +49,7 @@ exports.validate = (method) => {
     case "register":
       return [
         body("email", "Email invalide").isEmail(),
-        body("password", "Mot de passe invalide (min 6 caractères)").isLength({
+        body("password", "passeword invalide (min 6 caractères)").isLength({
           min: 6,
         }),
       ];
