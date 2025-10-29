@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
 const { body, validationResult } = require("express-validator");
 
-exports.signup = (req, res, next) => {
+exports.register = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({ errors: errors.array() });
@@ -53,7 +53,7 @@ exports.login = (req, res, next) => {
 
 exports.validate = (method) => {
   switch (method) {
-    case "signup": {
+    case "register": {
       return [
         body("email", "Email invalide").isEmail(),
         body("password", "Mot de passe invalide").isLength({ min: 6 }),

@@ -1,18 +1,10 @@
 import React from "react";
 import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
 import { User, ShoppingCart, Heart, Home, Bell } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "./Header.scss";
 
-
 const Header = () => {
-    const navigate = useNavigate();
-
-    const handleClick = () => {
-    navigate("/Auth");
-  };
-
   return (
     <header className="flex items-center justify-between p-4 bg-white shadow-md">
       {/* Logo */}
@@ -26,12 +18,10 @@ const Header = () => {
 
       {/* Menu Navigation */}
       <ul className="flex gap-6 font-medium text-gray-700">
+        <li className="cursor-pointer hover:text-pink-500">CALENDRIERS DE L&apos;AVENT</li>
         <li className="cursor-pointer hover:text-pink-500">
-          CALENDRIERS DE L&apos;AVENT
+          <Link to="/Home">Accueil</Link>
         </li>
-          <a href="/Home"><li className="cursor-pointer hover:text-pink-500">Acceuil
-       </li>
-          </a>
         <li className="cursor-pointer hover:text-pink-500">Parfum</li>
         <li className="cursor-pointer hover:text-pink-500">Maquillage</li>
         <li className="cursor-pointer hover:text-pink-500">Soin visage</li>
@@ -45,9 +35,13 @@ const Header = () => {
         <Home className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
         <Heart className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
         <ShoppingCart className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
-        <Link to="Auth" >
-        <User  onClick={handleClick}  className="icone" />
+        
+        {/* Lien vers Auth */}
+        <Link to="register">
+          <User className="icone" />
         </Link>
+         <Link to="/login">Connexion</Link>
+      <Link to="/register">Inscription</Link>
         
         <Bell className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
       </div>
