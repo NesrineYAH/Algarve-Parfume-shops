@@ -14,7 +14,6 @@ function App() {
              <Headers />
         <h1>Parfume-Algarve-shop</h1>
         <h2>Welcome to Parfume Algarve shop</h2>
-       <Home />
 
     {/* <Caroussel /> */}
     

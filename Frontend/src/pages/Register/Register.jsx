@@ -3,7 +3,7 @@ import { registerUser } from "../../Services/auth";
 
 
 function Register() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ name:"", email: "", password: "" });
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
@@ -14,6 +14,13 @@ function Register() {
 
   return (
     <form onSubmit={handleSubmit}>
+          <input
+        type="name"
+        placeholder="name"
+        value={form.name}
+        onChange={(e) => setForm({ ...form, name: e.target.value })}
+        required
+      />
       <input
         type="email"
         placeholder="Email"

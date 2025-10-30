@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const userRoutes = require("./routes/user");
+const userRoutes = require("./routes/users");
 const ProductRoutes = require("./routes/product");
 
 require("./mongoDB/DB"); // Connexion MongoDB
