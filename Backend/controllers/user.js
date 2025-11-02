@@ -2,27 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
 const { body, validationResult } = require("express-validator");
-/*
-exports.register = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
 
-  try {
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: hash,
-    });
-    await user.save();
-    res.status(201).json({ message: "Utilisateur créé !" });
-  } catch (error) {
-    res.status(500).json({ message: "Erreur serveur", error });
-  }
-};
-*/
 
 exports.register = async (req, res) => {
   try {
