@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 const multer = require("../middleware/multer-config");
 const Product = require("../Model/product");
-const upload = require("../middleware/multer-config");
+const Categorie = require("../Model/Categorie");
+const uploads = require("../middleware/multer-config");
 
 // GET /api/produits - récupérer tous les produits
 router.get("/", async (req, res) => {
@@ -25,7 +26,7 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
+/*
 router.post("/", async (req, res) => {
   const { nom, description, prix, imageUrl } = req.body;
   const produit = new Product({ nom, description, prix, image });
@@ -34,6 +35,27 @@ router.post("/", async (req, res) => {
     res.status(201).json(nouveauProduit);
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+});
+*/
+// Route pour ajouter un produit
+router.post("/add", async (req, res) => {
+  try {
+    const newProduct = new Product({
+      nom: req.body.nom,
+      prix: req.body.prix,
+      description: req.body.description,
+      imageUrl: req.body.imageUrl,
+      stock: req.body.stock,
+      categorie_id: req.body.categorie_id,
+    });
+
+    await newProduct.save();
+    res
+      .status(201)
+      .json({ message: "Produit ajouté avec succès", product: newProduct });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de l'ajout du produit" });
   }
 });
 
@@ -81,7 +103,8 @@ const createProduit = async (req, res) => {
   }
 };
 
-//router.post("/", upload.single("imageUrl"), createProduit);
+//router.post("/", uploads("image"), createProduit);
 
+router.post("/", uploads, createProduit); // ✅ pas de ("image") ici
 
 module.exports = router;

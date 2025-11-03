@@ -33,7 +33,6 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         width: 450px;
         cursor: pointer;
-        opacity: 1; // inutile, valeur par défaut
 
         &:hover {
             transform: translateY(-15px);
@@ -43,7 +42,6 @@
         .card_img {
             height: 180px;
             border-radius: 8px;
-            opacity: 1;
         }
 
         h2 {

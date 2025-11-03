@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.scss";
+import product from "../Product/Product.jsx";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -52,14 +53,19 @@ const Home = () => {
             onClick={() => handleClickProduct(product._id)}
           >
              <img
-        src={product.image_url || "https://www.pexels.com/fr-fr/chercher/parfum/"} // utilise image_url
-        alt={product.nom}
+        src={`http://localhost:5001${product.imageUrl}`} 
+        alt={product.image}
         className="card_img"
       />
-            <h3>{product.name}</h3>
+            <h3>{product.nom}</h3>
             <p>{product.description}</p>
-            <p>{product.price} €</p>
-            <button className="btn">Ajouter au panier</button>
+            <p>{product.prix} €</p>
+             <p>{product.stock} En Stock / Expédition Immédiate</p>
+
+            
+<Link to={`/product/${product._id}`}>
+  <button className="btn">Ajouter au panier</button>
+</Link>
           </div>
         ))}
       </div>
