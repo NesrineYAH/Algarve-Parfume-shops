@@ -46,7 +46,9 @@ const Home = () => {
       <SearchBar onSearch={handleSearch} className="searchBar" />
 
       <div className="grid">
+
         {filtered.map((product) => (
+                  <Link to={`/product/${product._id}`}>
           <div
             key={product._id}
             className="card"
@@ -63,13 +65,15 @@ const Home = () => {
              <p>{product.stock} En Stock / Expédition Immédiate</p>
 
             
-<Link to={`/product/${product._id}`}>
+
   <button className="btn">Ajouter au panier</button>
-</Link>
           </div>
+                  </Link>
         ))}
       </div>
+      
     </div>
+    
   );
 };
 

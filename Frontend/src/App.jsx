@@ -1,6 +1,5 @@
 import "./App.scss";
 import Headers from "./components/Header/Header";
-// import Produits  from "./components/Produits/Produits";
 import  Home  from "./pages/Home/Home";
 import { Routes, Route } from 'react-router-dom';
 import Register from './pages/Register/Register';
@@ -16,16 +15,16 @@ function App() {
              <Headers />
         <h1>Parfume-Algarve-shop</h1>
         <h2>Welcome to Parfume Algarve shop</h2>
-
-    {/* <Caroussel /> */}
-    
- 
       <Routes>
              <Route path="/" element={<Home />} />
          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-                 <Route path="/product" element={<Product />} />
+                 <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
       </Routes>
+    {/* <Caroussel /> */}
+    
+ 
+    
 
       </div>
     </>

@@ -21,7 +21,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/users", userRoutes);
 // app.use("/api/produits", ProductRoutes);
 app.use("/api/Products", ProductRoutes); // <-- ici tu définis le chemin
-
+app.use("/api/Products/:id", ProductRoutes); // <-- ici tu définis le chemin
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
