@@ -10,8 +10,6 @@
      padding: 50px;
 
      &__text-copyright {
-
-
          display: block;
          overflow: hidden;
          margin-bottom: 8px;
@@ -36,6 +34,17 @@
          li {
              background-color: transparent;
          }
+     }
+
+     &__ul {
+         display: flex;
+         flex-direction: column;
+         font-size: 13px;
+         color: #fff;
+         font-weight: 900;
+         text-decoration: underline;
+         line-height: 165%;
+         text-align: start;
      }
 
      .TitreH3 {
