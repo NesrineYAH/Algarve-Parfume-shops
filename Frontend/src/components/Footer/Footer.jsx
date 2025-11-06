@@ -47,7 +47,7 @@ export default function Footer() {
             <li>RSGP</li>
           </ul>
                <ul className='footer__ul'>Suivez-nous Aide
-        <ul>
+
 					<li>
 									<a href="https://www.instagram.com/" title="instagram" target="_blank" rel="noreferrer noopener" class="">
 						<i class="icon-instagram"></i>
@@ -58,8 +58,23 @@ export default function Footer() {
 						<i class="icon-facebook"></i>
 					</a>
 							</li>
-			</ul>
+
           </ul>
+
+          <ul className='footer__ul'> Aide
+                    <li>
+                    <a href="" class="">Tel : 04 92 52 86 18</a>
+                   </li>
+                    <li>
+                    <a href="/contactez-nous" class="">Envoyez-nous un message</a>
+                     </li>
+                    <li>
+                    <a href="/historique-commandes" class="">Suivre ma commande</a>
+                     </li>
+                    <li>
+                     <a href="/pages/3-aide-en-ligne-faq/" class="">FAQ</a>
+                     </li>
+            </ul>
       <a className="fa" title="Go to top" href="/home">
       <FaChevronUp id="toTop "/>
       </a>
