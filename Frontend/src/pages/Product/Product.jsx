@@ -27,15 +27,20 @@ const Product = () => {
 
 
 return (
-    <div style={{ maxWidth: "600px", margin: "auto" }}>
-      <h2>{product.nom}</h2>
+    <section id="page">
       <img src={`http://localhost:5001${product.imageUrl}`} alt={product.nom} style={{ width: "100%", maxHeight: "300px", objectFit: "cover" }} />
-      <p><strong>Description :</strong> {product.description}</p>
+<div className="product-container">
+      <h2>{product.nom}</h2>
+      
+
       <p><strong>Prix :</strong> {product.prix} €</p>
       <p><strong>Stock :</strong> {product.stock} en stock</p>
       <button>Ajouter au panier</button>
       <p>Une eau de toilette unique et originale inspirée par l'atmosphère particulière de la région de l'Algarve, tout au sud du Portugal. Un parfum envoutant à base de d'essence de fleurs d'oranger et d'orange.</p>
+    
+          <p><strong>Description :</strong> {product.description}</p>
     </div>
+    </section>
   );
 };
 
