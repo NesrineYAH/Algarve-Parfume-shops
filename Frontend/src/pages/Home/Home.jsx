@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.scss";
-import product from "../Product/Product.jsx";
+import Product from "../Product/Product.jsx";
+import Blog from "../../components/Blog/Blog.jsx";
+
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -71,7 +73,8 @@ const Home = () => {
                   </Link>
         ))}
       </div>
-      
+      <Product />
+      <Blog />
     </div>
     
   );
