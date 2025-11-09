@@ -3,6 +3,7 @@ import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
 import { User, ShoppingCart, Heart, Home, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Header.scss";
+import Favorites from "../../pages/Favorites/Favorites";
 
 const Header = () => {
   return (
@@ -33,7 +34,9 @@ const Header = () => {
       {/* Icônes */}
       <div className="flex items-center gap-4 icons">
         <Home className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
-        <Heart className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
+        <Link to="Favorites">
+        <Heart className="icone" />
+        </Link>
         <ShoppingCart className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
         
         {/* Lien vers Auth */}

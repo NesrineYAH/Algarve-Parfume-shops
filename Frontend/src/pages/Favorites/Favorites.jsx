@@ -4,8 +4,8 @@ import "./Favorites.scss";
 
 // Exemple de produits (dans la vraie app, tu récupéreras depuis l'API)
 const initialProducts = [
-  { id: 1, name: "Parfum Rose", price: 45, image: "https://via.placeholder.com/150" },
-  { id: 2, name: "Parfum Jasmin", price: 50, image: "https://via.placeholder.com/150" },
+  { id: 1, name: "Parfum Rose", price: 45, image: "../../assets/logo/imageWh.jpg" },
+  { id: 2, name: "Parfum Jasmin", price: 50, image: "" },
  
 ];
 
