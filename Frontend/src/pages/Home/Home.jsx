@@ -3,7 +3,7 @@ import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.scss";
 import Product from "../Product/Product.jsx";
-import Blog from "../../components/Blog/Blog.jsx";
+
 
 
 const Home = () => {
@@ -74,7 +74,7 @@ const Home = () => {
         ))}
       </div>
       <Product />
-      <Blog />
+
     </div>
     
   );

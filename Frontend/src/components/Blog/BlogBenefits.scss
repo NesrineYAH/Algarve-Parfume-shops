@@ -1,0 +1,62 @@
+.blog-benefits {
+    padding: 50px 20px;
+    background-color: #f8f8f8;
+
+    .benefits-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+
+        @media (min-width: 600px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (min-width: 900px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .benefit-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        align-items: start;
+        gap: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+
+        &:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .icon {
+            color: #f00bd1; // couleur orange
+            width: 36px;
+            height: 36px;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .text {
+            h3 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin: 0;
+                color: #333;
+            }
+
+            p {
+                margin: 5px 0 0;
+                color: #666;
+                font-size: 0.9rem;
+            }
+        }
+    }
+}

@@ -6,7 +6,9 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Product from './pages/Product/Product';
 import Footer from "./components/Footer/Footer";
-// import Blog from './components/Blog/Blog';
+ import BlogBenefits from './components/Blog/BlogBenefits';
+import  Newsletter from './components/Newsletter/Newsletter';
+
 
 function App() {
 
@@ -23,7 +25,8 @@ function App() {
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
       </Routes>
      
-
+      <BlogBenefits />
+         <Newsletter />
       </div>
            <Footer />
     </>
