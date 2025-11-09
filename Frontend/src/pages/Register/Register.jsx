@@ -1,5 +1,6 @@
 import react , { useState } from "react";
 import { registerUser } from "../../Services/auth";
+import './Register.scss';
 
 
 function Register() {
@@ -13,6 +14,7 @@ function Register() {
   };
 
   return (
+     <div className="Register-container">
     <form onSubmit={handleSubmit}>
           <input
         type="name"
@@ -38,6 +40,7 @@ function Register() {
       <button type="submit">S'inscrire</button>
       <p>{message}</p>
     </form>
+    </div>
   );
 }
 

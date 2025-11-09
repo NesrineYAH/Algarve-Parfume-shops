@@ -62,7 +62,6 @@ const Home = () => {
         className="card_img"
       />
             <h3>{product.nom}</h3>
-            <p>{product.description}</p>
             <p>{product.prix} €</p>
              <p>{product.stock} En Stock / Expédition Immédiate</p>
 

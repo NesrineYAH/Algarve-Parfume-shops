@@ -35,7 +35,7 @@ return (
 
       <p><strong>Prix :</strong> {product.prix} €</p>
       <p><strong>Stock :</strong> {product.stock} en stock</p>    
-      <p><strong>Description :</strong> {product.description}</p>
+      <p> {product.description}</p>
       <br />
            <button>Ajouter au panier</button>
     </div>
