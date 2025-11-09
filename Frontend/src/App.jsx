@@ -8,6 +8,7 @@ import Product from './pages/Product/Product';
 import Footer from "./components/Footer/Footer";
  import BlogBenefits from './components/Blog/BlogBenefits';
 import  Newsletter from './components/Newsletter/Newsletter';
+import Favorites from "./pages/Favorites/Favorites";
 
 
 function App() {
@@ -23,10 +24,12 @@ function App() {
          <Route path="/register" element={<Register />} />
          <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
+         <Route path="/Favorites" element={<Favorites />} />
       </Routes>
      
       <BlogBenefits />
          <Newsletter />
+         <Favorites />
       </div>
            <Footer />
     </>
