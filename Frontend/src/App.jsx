@@ -10,7 +10,7 @@ import Footer from "./components/Footer/Footer";
 import  Newsletter from './components/Newsletter/Newsletter';
 import  CookieModel from './components/CookieModel/CookieModel';
 import Favorites from "./pages/Favorites/Favorites";
-
+import politiqueCookies from  "./pages/AutherPages/PolitiqueCookies";
 
 function App() {
 
@@ -26,6 +26,7 @@ function App() {
          <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
          <Route path="/Favorites" element={<Favorites />} />
+         <Route path="./politiqueCookies" element={<politiqueCookies />} />
       </Routes>
      
       <BlogBenefits />

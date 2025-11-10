@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './pages.scss';
+import './PolitiqueCookies.scss';
 
 export default function PolitiqueCookies() {
+  
   return (
     <div className="cookie-page">
       <h1>Politique de cookies</h1>
