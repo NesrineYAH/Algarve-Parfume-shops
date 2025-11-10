@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Cookies from "js-cookies";
 import './CookieModel.scss';
 import politiqueCookies from "../../pages/AutherPages/PolitiqueCookies"
+import { Link } from 'react-router-dom';
 
 const CookieModel = ({ onAccept, onReject }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -32,16 +33,17 @@ const CookieModel = ({ onAccept, onReject }) => {
       </p>
       <p>Données de géolocalisation précises et identification par analyse de l’appareil, Mesure d'audience, Publicités et contenu personnalisés, mesure de performance des publicités et du contenu, études d’audience et développement de services, Stocker et/ou accéder à des informations sur un appareil</p>
 
-       <a href="/PolitiqueCookies" className="underline">Politique de cookies</a> |
 
+       <Link to="PolitiqueCookies" rel="noopener noreferrer">Politique de Cookies</Link>
+          <button className="cookieBlock__button"  onClick={() => window.openCookiePreferences()} >
+    Gérer mes cookies
+  </button>
 
      </div>
       <div className="cookieBlock__Bouttons">
         <button className="cookieBlock__button" onClick={handleAccept}>Accepter</button>
         <button className="cookieBlock__button" onClick={handleReject}>Refuser</button>
-          <button className="cookieBlock__button"  onClick={() => window.openCookiePreferences()} >
-    Gérer mes cookies
-  </button>
+
  
       </div>
     </div>

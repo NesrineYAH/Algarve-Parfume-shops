@@ -33,6 +33,7 @@ function App() {
          <Newsletter />
          <CookieModel />
   
+  
       </div>
            <Footer />
     </>
