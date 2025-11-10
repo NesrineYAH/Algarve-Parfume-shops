@@ -8,6 +8,7 @@ import Product from './pages/Product/Product';
 import Footer from "./components/Footer/Footer";
  import BlogBenefits from './components/Blog/BlogBenefits';
 import  Newsletter from './components/Newsletter/Newsletter';
+import  CookieModel from './components/CookieModel/CookieModel';
 import Favorites from "./pages/Favorites/Favorites";
 
 
@@ -29,6 +30,7 @@ function App() {
      
       <BlogBenefits />
          <Newsletter />
+         <CookieModel />
   
       </div>
            <Footer />

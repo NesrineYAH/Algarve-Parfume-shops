@@ -1,0 +1,165 @@
+.cookieBlock {
+
+    width: 100%;
+    background-color: #6f5ac3;
+    color: #fff;
+    padding: 20px;
+    gap: 20px;
+    align-items: center;
+    opacity: 1;
+    animation-name: collapsecookies 0.5s ease-in-out;
+    -webkit-animation: collapsecookies 0.5s ease-in-out;
+    z-index: 1;
+
+    p {
+        background-color: transparent;
+        font-size: 14px;
+        color: #ffff;
+        text-align: start;
+    }
+
+    &__div {
+        background-color: transparent;
+        width: 90%;
+        text-align: start;
+        line-height: 140%;
+        margin-bottom: 20px;
+
+        p {
+            background-color: transparent;
+            font-size: 14px;
+            color: #ffff;
+        }
+
+        a {
+            background-color: transparent;
+            text-align: start;
+            color: #ffff;
+            font-size: 14px;
+
+        }
+    }
+
+    &__Bouttons {
+        background-color: #6f5ac3;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-left: 20px;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    &__button {
+        width: 100px;
+        height: 45px;
+        background-color: #9356DC;
+        border: 1px solid #9356DC;
+        border-radius: 8px;
+        color: #fff;
+        font-weight: 600;
+
+        &:hover {
+            background-color: #7a2a9c;
+        }
+    }
+
+    @media screen and (min-width: 768px) and (max-width:1600px) {
+
+        width: 60%;
+        background-color: #6f5ac3;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        flex-wrap: wrap;
+        gap: 40px;
+        display: flex;
+        flex-direction: row;
+        min-height: 370px;
+        position: absolute;
+        top: 10%;
+        left: 25%;
+        background-position: 50% 50%;
+        overflow: hidden;
+        max-width: 850px;
+        padding: 40px 40px !important;
+
+        &__div {
+            background-color: transparent;
+            width: 60%;
+            text-align: start;
+            line-height: 140%;
+
+
+            p {
+                background-color: transparent;
+                font-size: 14px;
+                color: #ffff;
+                text-align: start;
+            }
+
+            a {
+                background-color: transparent;
+                text-align: start;
+                color: #ffff;
+                font-size: 14px;
+
+            }
+        }
+
+        &__Bouttons {
+
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-left: 20px;
+            font-size: 14px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+        }
+
+        &__button {
+            width: 100px;
+            height: 45px;
+            background-color: #9356DC;
+            border: 1px solid #9356DC;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+
+            &:hover {
+                background-color: #7a2a9c;
+            }
+        }
+    }
+
+}
+
+@keyframes collapsecookies {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(150px);
+    }
+}
+
+@keyframes modalopen {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(150px);
+    }
+}
