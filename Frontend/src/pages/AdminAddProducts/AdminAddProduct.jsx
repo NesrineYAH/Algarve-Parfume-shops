@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { addProduct } from  "../../Services/productService";
+import './AdminAddProduct.scss';
 
 
 const AdminAddProduct = () => {
@@ -37,7 +38,7 @@ const AdminAddProduct = () => {
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "auto" }}>
+    <div className="admin-add-product ">
       <h2>Ajouter un nouveau produit</h2>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder="Nom" value={nom} onChange={(e) => setNom(e.target.value)} required />
