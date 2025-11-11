@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { addProduct } from  "../../Services/productService"
+import { addProduct } from  "../../Services/productService";
+
 
 const AdminAddProduct = () => {
   const [nom, setNom] = useState("");

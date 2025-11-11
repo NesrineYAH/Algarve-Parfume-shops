@@ -4,7 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/users");
 const ProductRoutes = require("./routes/product");
-require("./mongoDB/DB"); // Connexion MongoDB
+require("./mongoDB/DB");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // pour form-data classique
+app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 

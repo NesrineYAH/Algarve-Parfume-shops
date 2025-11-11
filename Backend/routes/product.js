@@ -1,7 +1,6 @@
 // routes/product.js
 const express = require("express");
 const router = express.Router();
-const multer = require("../middleware/multer-config");
 const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
 

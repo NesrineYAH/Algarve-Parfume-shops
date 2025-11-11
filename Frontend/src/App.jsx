@@ -11,6 +11,7 @@ import  Newsletter from './components/Newsletter/Newsletter';
 import  CookieModel from './components/CookieModel/CookieModel';
 import Favorites from "./pages/Favorites/Favorites";
 import politiqueCookies from  "./pages/AutherPages/PolitiqueCookies";
+import AdminAddProduct from "./pages/AdminAddProducts/AdminAddProduct";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
          <Route path="/register" element={<Register />} />
          <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
+                <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
          <Route path="/Favorites" element={<Favorites />} />
          <Route path="./politiqueCookies" element={<politiqueCookies />} />
       </Routes>
@@ -32,8 +34,11 @@ function App() {
       <BlogBenefits />
          <Newsletter />
          <CookieModel />
-  
-  
+   
+
+
+
+
       </div>
            <Footer />
     </>

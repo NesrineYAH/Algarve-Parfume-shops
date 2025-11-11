@@ -3,6 +3,7 @@ import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.scss";
 import Product from "../Product/Product.jsx";
+import AdminAddProduct from "../AdminAddProducts/AdminAddProduct.jsx";
 
 
 
@@ -73,7 +74,9 @@ const Home = () => {
         ))}
       </div>
       <Product />
-
+  <Link to="AdminAddProduct" className="btn btn-primary">
+ <button>Ajouter un produit</button>
+</Link>
     </div>
     
   );

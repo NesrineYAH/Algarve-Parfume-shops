@@ -1,7 +1,7 @@
 // src/services/productService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5001/api/Products";
+const API_URL = "http://localhost:5001/api/products";
 
 // 🔹 Ajouter un produit
 export const addProduct = async (productData) => {

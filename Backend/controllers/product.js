@@ -1,7 +1,8 @@
+/*
 require("dotenv").config();
 const Product = require("../Model/product");
 
-// 📦 Contrôleur : Récupérer tous les produits
+
 const getAllProduits = async (req, res) => {
   try {
     const produits = await Product.find();
@@ -12,14 +13,13 @@ const getAllProduits = async (req, res) => {
   }
 };
 
-// ➕ Créer un produit (avec image)
+
 const createProduit = async (req, res) => {
   try {
-    // Si tu utilises multer pour l’upload, req.file contiendra l’image
+    
     const imageUrl = req.file
-      ? `/uploads/${req.file.filename}` // multer te donne le nom du fichier
-      : req.body.imageUrl; // ou bien tu l’envoies directement dans le body JSON
-
+      ? `/uploads/${req.file.filename}` 
+      : req.body.imageUrl; 
     const produit = await Product.create({
       nom: req.body.nom,
       prix: req.body.prix,
@@ -34,3 +34,4 @@ const createProduit = async (req, res) => {
 };
 
 module.exports = { getAllProduits, createProduit };
+*/
