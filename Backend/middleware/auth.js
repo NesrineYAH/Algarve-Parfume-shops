@@ -1,44 +1,31 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-module.exports = (req, res, next) => {
+function authMiddleware(req, res, next) {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
-    const userId = decodedToken.userId;
-    req.auth = {
-      userId: userId,
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: "Token manquant" });
+
+    const token = authHeader.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "Token mal formaté" });
+
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = {
+      userId: decodedToken.userId,
+      role: decodedToken.role,
     };
     next();
   } catch (error) {
-    res.status(401).json({ error });
+    res.status(401).json({ error: "Token invalide" });
   }
-};
+}
 
 function isAdmin(req, res, next) {
-  if ((req.user && req.user.role === "admin") || req.user.role === "vendeur") {
+  if (req.user && (req.user.role === "admin" || req.user.role === "vendeur")) {
     next();
   } else {
     res.status(403).json({ error: "Accès interdit" });
   }
 }
 
-router.post("/add", isAuthorized, async (req, res) => {
-  try {
-    const newProduct = new Product({
-      nom: req.body.nom,
-      prix: req.body.prix,
-      description: req.body.description,
-      imageUrl: req.body.imageUrl,
-      stock: req.body.stock,
-      categorie_id: req.body.categorie_id,
-    });
-
-    await newProduct.save();
-    res
-      .status(201)
-      .json({ message: "Produit ajouté avec succès", product: newProduct });
-  } catch (error) {
-    res.status(500).json({ error: "Erreur lors de l'ajout du produit" });
-  }
-});
+module.exports = { authMiddleware, isAdmin };

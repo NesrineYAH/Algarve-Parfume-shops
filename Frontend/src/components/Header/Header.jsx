@@ -26,9 +26,8 @@ const Header = () => {
         <li className="cursor-pointer hover:text-pink-500">Parfum</li>
         <li className="cursor-pointer hover:text-pink-500">Maquillage</li>
         <li className="cursor-pointer hover:text-pink-500">Soin visage</li>
-        <li className="cursor-pointer hover:text-pink-500">Soin corps</li>
         <li className="cursor-pointer hover:text-pink-500">Cheveux</li>
-        <li className="cursor-pointer hover:text-pink-500">COLLECTION Noël</li>
+
       </ul>
 
       {/* Icônes */}

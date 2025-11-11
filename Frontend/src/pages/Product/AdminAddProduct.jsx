@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { addProduct } from  "../../Services/productService"
 
 const AdminAddProduct = () => {
   const [nom, setNom] = useState("");
@@ -12,28 +12,18 @@ const AdminAddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const token = localStorage.getItem("token"); // Assure-toi que le token est bien stocké
-
-      const response = await axios.post(
-        "http://localhost:3000/api/products/add",
-        {
-          nom,
-          prix,
-          description,
-          imageUrl,
-          stock,
-          categorie_id: categorieId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setMessage("Produit ajouté avec succès !");
+      const productData = {
+        nom,
+        prix,
+        description,
+        imageUrl,
+        stock,
+        categorie_id: categorieId,
+      };
+      const data = await addProduct(productData);
+      setMessage(data.message);
+      // Réinitialiser les champs
       setNom("");
       setPrix("");
       setDescription("");
@@ -42,7 +32,6 @@ const AdminAddProduct = () => {
       setCategorieId("");
     } catch (error) {
       setMessage("Erreur lors de l'ajout du produit.");
-      console.error(error);
     }
   };
 
@@ -50,44 +39,12 @@ const AdminAddProduct = () => {
     <div style={{ maxWidth: "500px", margin: "auto" }}>
       <h2>Ajouter un nouveau produit</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nom du produit"
-          value={nom}
-          onChange={(e) => setNom(e.target.value)}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Prix"
-          value={prix}
-          onChange={(e) => setPrix(e.target.value)}
-          required
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-
-        <input
-          type="text"
-          placeholder="URL de l'image"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="ID de la catégorie"
-          value={categorieId}
-          onChange={(e) => setCategorieId(e.target.value)}
-        />
+        <input type="text" placeholder="Nom" value={nom} onChange={(e) => setNom(e.target.value)} required />
+        <input type="number" placeholder="Prix" value={prix} onChange={(e) => setPrix(e.target.value)} required />
+        <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input type="text" placeholder="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+        <input type="number" placeholder="Stock" value={stock} onChange={(e) => setStock(e.target.value)} />
+        <input type="text" placeholder="Catégorie ID" value={categorieId} onChange={(e) => setCategorieId(e.target.value)} />
         <button type="submit">Ajouter le produit</button>
       </form>
       {message && <p>{message}</p>}

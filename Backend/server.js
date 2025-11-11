@@ -6,6 +6,8 @@ require("./mongoDB/DB");
 const http = require("http");
 const app = require("./app");
 
+app.use(express.json());
+
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
 
