@@ -11,7 +11,11 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const navigate = useNavigate();
-
+   const [loading, setLoading] = useState(true); //12/11
+     const [error, setError] = useState(""); //12/11
+  
+  
+   const role = localStorage.getItem("role");
   // Récupération des produits depuis l'API
  useEffect(() => {
   const fetchProducts = async () => {
@@ -24,11 +28,15 @@ const Home = () => {
       setFiltered(data.products || data);
     } catch (err) {
       console.error("Erreur lors du fetch des produits:", err);
-    }
+    } finally {
+        setLoading(false);
+      }
   };
   fetchProducts();
 }, []);
 
+  if (loading) return <p>Chargement des produits...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   // Fonction de recherche
   const handleSearch = (query) => {
@@ -46,7 +54,22 @@ const Home = () => {
 
   return (
     <div className="home">
+      <h2>Nos Produits</h2>
+{/* Bouton réservé aux admin/vendeur */}
+      {(role === "admin" || role === "vendeur") && (
+        <div className="admin-action">
+          <Link to="/admin/add-product" className="btn-add">
+            ➕ Ajouter un produit
+          </Link>
+        </div>
+      )}
+
+
+
       <SearchBar onSearch={handleSearch} className="searchBar" />
+
+
+
 
       <div className="grid">
 
@@ -73,13 +96,13 @@ const Home = () => {
                   </Link>
         ))}
       </div>
-      <Product />
-  <Link to="AdminAddProduct" className="btn btn-primary">
- <button>Ajouter un produit</button>
-</Link>
+  
+
     </div>
     
+    
   );
+  
 };
 
 export default Home;

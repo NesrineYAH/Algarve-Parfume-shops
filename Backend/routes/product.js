@@ -3,8 +3,9 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
+const { authMiddleware, isAdmin } = require("../middleware/auth");
 
-router.post("/add", uploads.single("image"), async (req, res) => {
+router.post("/add",authMiddleware ,isAdmin, uploads.single("image"), async (req, res) => {
   try {
     const imageUrl = req.file
       ? `/uploads/${req.file.filename}`

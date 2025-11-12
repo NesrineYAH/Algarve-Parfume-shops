@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import "./CookieModel.scss";
+import PolitiqueCookies from "../../pages/AutherPages/PolitiqueCookies"
 
 const CookieModel = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -51,7 +52,7 @@ const CookieModel = () => {
           développement de services.
         </p>
 
-        <Link to="/politique-cookies" rel="noopener noreferrer">
+        <Link to="/PolitiqueCookies" rel="noopener noreferrer">
           Politique de Cookies
         </Link>
       </div>

@@ -4,6 +4,7 @@ import { User, ShoppingCart, Heart, Home, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Header.scss";
 import Favorites from "../../pages/Favorites/Favorites";
+import Product from "../../pages/Product/Product"
 
 const Header = () => {
   return (
@@ -23,7 +24,10 @@ const Header = () => {
         <li className="cursor-pointer hover:text-pink-500">
           <Link to="/Home">Accueil</Link>
         </li>
-        <li className="cursor-pointer hover:text-pink-500">Parfum</li>
+        <li className="cursor-pointer hover:text-pink-500">
+                <Link to="/Product"></Link>
+          Parfum</li>
+            
         <li className="cursor-pointer hover:text-pink-500">Maquillage</li>
         <li className="cursor-pointer hover:text-pink-500">Soin visage</li>
         <li className="cursor-pointer hover:text-pink-500">Cheveux</li>
