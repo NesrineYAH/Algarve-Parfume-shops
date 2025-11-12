@@ -26,7 +26,7 @@ function App() {
          <Route path="/register" element={<Register />} />
          <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
-                <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
+      <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
          <Route path="/Favorites" element={<Favorites />} />
          <Route path="./politiqueCookies" element={<politiqueCookies />} />
       </Routes>

@@ -6,34 +6,28 @@
         margin-bottom: 25px;
     }
 
-    .admin-action {
-        margin-bottom: 20px;
 
-        .btn-add {
-            display: inline-block;
-        width: 100%;
-        padding: 1.2rem 0.6rem;
-        margin-top: 1rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        background-color: #8a2be2;
+
+    .btn-Add,
+    .admin-action {
+        background: #8a2be2;
+
+        color: white;
         border: none;
+        padding: 0.6rem 1rem;
         border-radius: 8px;
         cursor: pointer;
-        text-align: center;
-        transition: background-color 0.2s;
-
+        transition: background 0.2s ease;
 
         &:hover {
-            background-color: #6a1cb2;
+            background: #6a1cb2;
         }
 
         &:active {
             transform: scale(1.15);
         }
-        }
     }
+
 
     .product-list {
         display: grid;
@@ -78,6 +72,8 @@
             .star {
                 font-size: 1.2rem;
                 color: #ccc;
+                background: #8a2be2;
+
 
                 &.filled {
                     color: #f8d210;

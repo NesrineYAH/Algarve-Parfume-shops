@@ -3,7 +3,7 @@ import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { useNavigate, Link } from "react-router-dom";
 import "./Home.scss";
 import Product from "../Product/Product.jsx";
-import AdminAddProduct from "../AdminAddProducts/AdminAddProduct.jsx";
+
 
 
 
@@ -55,7 +55,7 @@ const Home = () => {
   return (
     <div className="home">
       <h2>Nos Produits</h2>
-{/* Bouton réservé aux admin/vendeur */}
+{/* Bouton réservé aux admin/vendeur 
       {(role === "admin" || role === "vendeur") && (
         <div className="admin-action">
           <Link to="/admin/add-product" className="btn-add">
@@ -63,16 +63,11 @@ const Home = () => {
           </Link>
         </div>
       )}
-
+*/}
 
 
       <SearchBar onSearch={handleSearch} className="searchBar" />
-
-
-
-
       <div className="grid">
-
         {filtered.map((product) => (
                   <Link to={`/product/${product._id}`}>
           <div
@@ -97,9 +92,9 @@ const Home = () => {
         ))}
       </div>
   
-
+    <Product />
     </div>
-    
+
     
   );
   
