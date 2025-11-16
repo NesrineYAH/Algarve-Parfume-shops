@@ -2,9 +2,9 @@
 $primary: #0058a3;
 $text: #1b1b1b;
 $muted: #6b7280;
-$bg: #ffffff;
-$card: #f8fafc;
-$border: #e5e7eb;
+$bg: #e6dbf9;
+$card: #afceed;
+$border: #d7dfef;
 
 // RESET SIMPLE
 * {
@@ -94,13 +94,56 @@ body {
         gap: 1rem;
 
         .option {
-            display: flex;
-            justify-content: space-between;
+            display: block;
             align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
             background: #fff;
+            height: auto;
             border-radius: 10px;
-            padding: 0.8rem 1rem;
-            border: 1px solid $border;
+            padding: 1rem 1rem;
+            width: 100%;
+
+            &__div {
+                width: 95%;
+                background: #fff;
+                border-radius: 10px;
+                padding: 0.8rem 1rem;
+                border: 1px solid $border;
+                opacity: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1),
+                    opacity 0.4s cubic-bezier(0.25, 0.8, 0.5, 1);
+
+                line-height: 1.2em !important;
+                padding-left: 12px;
+                cursor: pointer;
+            }
+
+
+            &__contenu {
+                display: none;
+                width: 95.7%;
+                height: auto;
+                padding: 20px;
+                opacity: 1;
+                font-size: 13px;
+                transition: display 0.3s ease-in-out;
+                position: relative;
+                z-index: -1;
+                margin-top: -0rem;
+                margin-bottom: 0rem;
+
+                background-color: rgb(227, 242, 253);
+                color: #2a384f;
+                background-color: #d0d7e2;
+                animation: collapseDrop 1s ease-in-out;
+                -webkit-animation: collapseDrop 1s ease-in-out;
+            }
 
             label {
                 font-weight: 500;

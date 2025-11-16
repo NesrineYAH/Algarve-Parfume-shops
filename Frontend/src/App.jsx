@@ -10,8 +10,9 @@ import Footer from "./components/Footer/Footer";
 import  Newsletter from './components/Newsletter/Newsletter';
 import  CookieModel from './components/CookieModel/CookieModel';
 import Favorites from "./pages/Favorites/Favorites";
-import politiqueCookies from  "./pages/AutherPages/PolitiqueCookies";
+import PolitiqueCookies from  "./pages/PolitiqueCookies/PolitiqueCookies";
 import AdminAddProduct from "./pages/AdminAddProducts/AdminAddProduct";
+import Confientilaite from "./pages/CONFI/Confidentialite";
 
 function App() {
 
@@ -28,7 +29,8 @@ function App() {
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
       <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
          <Route path="/Favorites" element={<Favorites />} />
-         <Route path="./politiqueCookies" element={<politiqueCookies />} />
+         <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
+                  <Route path="/Confientilaite" element={<Confientilaite />} />
       </Routes>
      
       <BlogBenefits />
