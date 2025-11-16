@@ -32,14 +32,15 @@ const Product = () => {
 
 return (
     <section id="page">
-      <img src={`http://localhost:5001${product.imageUrl}`} alt={product.nom}  className="product-image" />
     <div className="product-container">
+      <div className="pr">
+            <img src={`http://localhost:5001${product.imageUrl}`} alt={product.nom}  className="product-image" />
       <h2>{product.nom}</h2>
       <p><strong>Prix :</strong> {product.prix} €</p>
       <p><strong>Stock :</strong> {product.stock} en stock</p>    
       <p> {product.description}</p>
        <br />
-  
+  </div>
   {/* ⭐ Notation du produit  12/11*/}
         <div className="rating">
               {Array.from({ length: 5 }).map((_, i) => (
