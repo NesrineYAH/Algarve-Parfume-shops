@@ -13,6 +13,7 @@ import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from  "./pages/PolitiqueCookies/PolitiqueCookies";
 import AdminAddProduct from "./pages/AdminAddProducts/AdminAddProduct";
 import Confientilaite from "./pages/CONFI/Confidentialite";
+import "./App.scss";
 
 function App() {
 
