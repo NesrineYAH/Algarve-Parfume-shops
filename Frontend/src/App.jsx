@@ -20,17 +20,17 @@ function App() {
     <>
       <div className="App">
              <Headers />
-        <h1>Parfume-Algarve-shop</h1>
-        <h2>Welcome to Parfume Algarve shop</h2>
-      <Routes>
+        <h1 id="title">Parfume-Algarve-shop</h1>
+     
+        <Routes>
          <Route path="/" element={<Home />} />
          <Route path="/register" element={<Register />} />
          <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
-      <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
+        <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
          <Route path="/Favorites" element={<Favorites />} />
          <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
-                  <Route path="/Confientilaite" element={<Confientilaite />} />
+       <Route path="/Confientilaite" element={<Confientilaite />} />
       </Routes>
      
       <BlogBenefits />

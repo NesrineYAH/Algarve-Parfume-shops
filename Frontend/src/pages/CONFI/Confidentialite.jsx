@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '';
+import './Confidentialite.scss';
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function Confientilaite() {
@@ -7,7 +7,7 @@ export default function Confientilaite() {
   // État des préférences
   const [preferences, setPreferences] = useState({
     pref: false,
-    necessary: false,
+      Nessary: false,
     analytics: false,
     marketing: false,
     audience: false,
@@ -39,7 +39,7 @@ export default function Confientilaite() {
   const handleRejectAll = () => {
     const reset = {
       pref: false,
-      necessary: false,
+     Nessary: false,
       analytics: false,
       marketing: false,
       audience: false,
@@ -54,7 +54,6 @@ export default function Confientilaite() {
   return (
     <div className="cookie-page">
       <h1>Politique de cookies</h1>
-
       <p>
         Cette page explique comment notre site utilise les cookies pour améliorer votre expérience
         et assurer le bon fonctionnement du service.
@@ -68,33 +67,20 @@ export default function Confientilaite() {
 
       <div className="consent-section">
 
-        {/* Cookies nécessaires */}
-        <div className="option">
-          <label><strong>Cookies nécessaires : assurent le fonctionnement du site.</strong></label>
-          <input
-            type="checkbox"
-            name="necessary"
-            checked={preferences.necessary}
-            onChange={handleChange}
-          />
-        </div>
 
         {/* COOKIES DE PRÉFÉRENCES AVEC CHEVRON */}
         <article className="option">
           <div className="option__div" onClick={togglePref}>
-            {/* Chevron selon l’état */}
             {openPref ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
 
             <h3>Cookies de préférences : mémorisent vos choix.</h3>
-          </div>
-
-          {/* Checkbox */}
-          <input
+     <input
             type="checkbox"
             name="pref"
             checked={preferences.pref}
             onChange={handleChange}
           />
+          </div>
 
           {/* Contenu ouvert/fermé */}
           {openPref && (
@@ -108,15 +94,102 @@ export default function Confientilaite() {
         </article>
 
         {/* Cookies analytics */}
-        <div className="option">
-          <label><strong>Cookies analytics : comprendre l'utilisation du site.</strong></label>
-          <input
+
+          <article className="option">
+          <div className="option__div" onClick={togglePref}>
+            {openPref ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+            <h3>Cookies analytics : comprendre l'utilisation du site.</h3>
+     <input
             type="checkbox"
-            name="analytics"
+              name="analytics"
             checked={preferences.analytics}
             onChange={handleChange}
           />
-        </div>
+          </div>
+
+          {/* Contenu ouvert/fermé */}
+          {openPref && (
+            <div className="option__contenu contenu">
+              <p>
+                Ces cookies permettent de sauvegarder vos choix (langue, thème, préférences de navigation).
+                Ils améliorent votre expérience utilisateur.
+              </p>
+            </div>
+          )}
+        </article>
+
+            <article className="option">
+          <div className="option__div" onClick={togglePref}>
+            {openPref ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+            <h3>Cookies analytics : comprendre l'utilisation du site.</h3>
+     <input
+            type="checkbox"
+             name="Nessary"
+              checked={preferences.Nessary}
+            onChange={handleChange}
+          />
+          </div>
+
+          {/* Contenu ouvert/fermé */}
+          {openPref && (
+            <div className="option__contenu contenu">
+              <p>
+                Ces cookies permettent de sauvegarder vos choix (langue, thème, préférences de navigation).
+                Ils améliorent votre expérience utilisateur.
+              </p>
+            </div>
+          )}
+        </article>  
+        
+       <article className="option">
+          <div className="option__div" onClick={togglePref}>
+            {openPref ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+            <h3>Cookies Mesure d'audience.</h3>
+     <input
+            type="checkbox"
+              name="audience"
+              checked={preferences.audience}
+            onChange={handleChange}
+          />
+          </div>
+
+          {/* Contenu ouvert/fermé */}
+          {openPref && (
+            <div className="option__contenu contenu">
+              <p>
+                Ces cookies permettent de sauvegarder vos choix (langue, thème, préférences de navigation).
+                Ils améliorent votre expérience utilisateur.
+              </p>
+            </div>
+          )}
+        </article>
+
+            <article className="option">
+          <div className="option__div" onClick={togglePref}>
+            {openPref ? <ChevronUp size={22} /> : <ChevronDown size={22} />}
+            <h3>Cookies Mesure d'audience.</h3>
+     <input
+            type="checkbox"
+               name="develop"
+              checked={preferences.develop}
+            onChange={handleChange}
+          />
+          </div>
+
+          {/* Contenu ouvert/fermé */}
+          {openPref && (
+            <div className="option__contenu contenu">
+              <p>
+                Ces cookies permettent de sauvegarder vos choix (langue, thème, préférences de navigation).
+                Ils améliorent votre expérience utilisateur.
+              </p>
+            </div>
+          )}
+        </article>
+
+
+
+
 
         {/* BOUTONS */}
         <div className="actions">

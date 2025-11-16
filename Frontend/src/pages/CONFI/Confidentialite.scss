@@ -40,7 +40,8 @@
 
   .option {
     padding: 15px 10px;
-    border-bottom: 1px solid #e3e3e3;
+    margin: 0.25rem;
+    border: 1px solid #e9cefc;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -65,11 +66,14 @@
     /* Chevron + titre cliquable */
     .option__div {
       display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
       gap: 10px;
       cursor: pointer;
       padding: 5px 0;
       transition: 0.2s ease;
+
 
       &:hover {
         opacity: 0.75;
@@ -78,6 +82,8 @@
       h3 {
         font-size: 1.1rem;
         margin: 0;
+        position: absolute;
+        left: 20%;
       }
 
       svg {
@@ -91,7 +97,7 @@
       padding-left: 5px;
       font-size: 0.95rem;
       color: #555;
-
+      background-color: #e1e5fb;
       animation: fadeIn 0.35s ease forwards;
 
       p {
@@ -107,6 +113,7 @@
       opacity: 0;
       transform: translateY(-5px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);

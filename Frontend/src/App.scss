@@ -12,6 +12,16 @@
     min-height: 100vh;
     margin: 0 auto;
     overflow-x: hidden;
+    max-width: 1600px;
+    width: 100%;
+
+}
+
+
+#title {
+    position: absolute;
+    left: 0%;
+    top: 0%;
 }
 
 .logo {
