@@ -11,7 +11,7 @@ import  Newsletter from './components/Newsletter/Newsletter';
 import  CookieModel from './components/CookieModel/CookieModel';
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from  "./pages/PolitiqueCookies/PolitiqueCookies";
-import AdminAddProduct from "./pages/AdminAddProducts/AdminAddProduct";
+import AdminAddProduct from "./pages/admin/add-product";
 import Confientilaite from "./pages/CONFI/Confidentialite";
 import "./App.scss";
 
@@ -28,7 +28,7 @@ function App() {
          <Route path="/register" element={<Register />} />
          <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
-        <Route path="/AdminAddProduct" element={<AdminAddProduct />} />
+        <Route path="/admin/add-product" element={<AdminAddProduct />} />
          <Route path="/Favorites" element={<Favorites />} />
          <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
        <Route path="/Confientilaite" element={<Confientilaite />} />

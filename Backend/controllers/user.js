@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
 const { body, validationResult } = require("express-validator");
 
-
 exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -56,6 +55,7 @@ exports.login = async (req, res) => {
         role: user.role,
       },
     });
+    console.log("ROLE UTILISATEUR :", user.role);
   } catch (err) {
     console.error("Erreur lors du login :", err);
     res.status(500).json({ message: "Erreur serveur" });
