@@ -34,16 +34,20 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Email et mot de passe requis" });
     }
 
-    // Recherche de l'utilisateur
     const user = await User.findOne({ email });
-    if (!user) {
+    if (!user)
+  {
       return res.status(401).json({ message: "Utilisateur non trouvé" });
     }
 
-    // Vérifie le mot de passe (en clair)
     if (user.password !== password) {
       return res.status(401).json({ message: "Mot de passe incorrect" });
     }
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET || "secretkey",
+      { expiresIn: "1h" }
+    );
 
     // Si tout est bon :
     res.status(200).json({

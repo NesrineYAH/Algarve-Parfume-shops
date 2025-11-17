@@ -13,14 +13,7 @@ const AdminAddProduct = () => {
   const [stock, setStock] = useState("");
   const [categorieId, setCategorieId] = useState("");
   const [message, setMessage] = useState("");
-  // const [categories, setCategories] = useState([]);
-  const [categories, setCategories] = useState([
-  { _id: "epice", nom: "Épicé" },
-  { _id: "floral", nom: "Floral" },
-  { _id: "fruite", nom: "Fruité" },
-  { _id: "boise", nom: "Boisé" },
-]);
-
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -99,7 +92,6 @@ const AdminAddProduct = () => {
   ))}
 </select>
 
-
         <button type="submit">Ajouter le produit</button>
       </form>
 
@@ -107,17 +99,6 @@ const AdminAddProduct = () => {
     </div>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
 
 export default AdminAddProduct;
 

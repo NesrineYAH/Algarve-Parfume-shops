@@ -15,7 +15,10 @@ function Login() {
       const response = await loginUser(form);
 
       if (response.token) {
-        setMessage("Connexion réussie !");
+        setMessage("Connexion réussie !"); 
+        
+        localStorage.setItem("token", data.token);
+         localStorage.setItem("role", data.user.role);
         // Redirige vers le dashboard ou la page d'accueil
         navigate("/dashboard");
       } else {

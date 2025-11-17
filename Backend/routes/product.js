@@ -5,30 +5,41 @@ const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 
-router.post("/add",authMiddleware ,isAdmin, uploads.single("image"), async (req, res) => {
-  try {
-    const imageUrl = req.file
-      ? `/uploads/${req.file.filename}`
-      : req.body.imageUrl;
+router.post(
+  "/add",
+  authMiddleware,
+  isAdmin,
+  uploads.single("image"),
+  async (req, res) => {
+    try {
+      const imageUrl = req.file
+        ? `/uploads/${req.file.filename}`
+        : req.body.imageUrl;
 
-    const newProduct = new Product({
-      nom: req.body.nom,
-      prix: req.body.prix,
-      description: req.body.description,
-      imageUrl,
-      stock: req.body.stock,
-      categorie_id: req.body.categorie_id,
-    });
+      const newProduct = new Product({
+        nom: req.body.nom,
+        prix: req.body.prix,
+        description: req.body.description,
+        imageUrl,
+        stock: req.body.stock,
+        categorie_id: req.body.categorie_id,
+      });
 
-    await newProduct.save();
-    res
-      .status(201)
-      .json({ message: "Produit ajouté avec succès", product: newProduct });
-  } catch (error) {
-    console.error("Erreur lors de l'ajout du produit :", error);
-    res.status(500).json({ message: "Erreur serveur" });
+      if (!req.body.nom || !req.body.prix || !req.body.categorie_id) {
+        return res
+          .status(400)
+          .json({ message: "Nom, prix et catégorie requis" });
+      }
+      await newProduct.save();
+      res
+        .status(201)
+        .json({ message: "Produit ajouté avec succès", product: newProduct });
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du produit :", error);
+      res.status(500).json({ message: "Erreur serveur" });
+    }
   }
-});
+);
 
 // ✅ Récupérer tous les produits
 router.get("/", async (req, res) => {
@@ -53,7 +64,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // ✅ Supprimer un produit
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     const produit = await Product.findByIdAndDelete(req.params.id);
     if (!produit)
@@ -65,7 +76,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 // ✅ Modifier un produit
-router.put("/:id", async (req, res) => {
+router.put("/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     const produit = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
