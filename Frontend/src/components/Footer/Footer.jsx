@@ -12,6 +12,24 @@ export default function Footer() {
   return (
     <footer className="footer">
 
+      <ul className='footer__ul'>À propos de nous
+        <li>
+            <a href={`../AboutUs/#aboutus`} target="_blank" rel="noopener noreferrer" className='TitreH3'>Notre histoire</a>
+        </li>
+        <li>
+            <a href={`../AboutUs/#aboutus`} target="_blank" rel="noopener noreferrer" className='TitreH3'>Carrières</a>
+        </li>
+        <li>
+            <a href={`../AboutUs/#aboutus`} target="_blank" rel="noopener noreferrer" className='TitreH3'>Presse</a>
+        </li>
+        <li>
+            <a href={`../AboutUs/#aboutus`} target="_blank" rel="noopener noreferrer" className='TitreH3'>Responsabilité sociale</a>
+        </li>
+         <li>
+            <a href={`../AboutUs/#aboutus`} target="_blank" rel="noopener noreferrer" className='TitreH3'>Blog</a>
+        </li>
+        </ul>
+
            <ul className='footer__ul'>Informations
       <li>
    <a href={`../../SiteMap/#sitemap`} target="_blank" rel="noopener noreferrer" className='TitreH3'>Plan de site</a>
@@ -44,20 +62,19 @@ export default function Footer() {
             <li>RSGP</li>
           </ul>
 
-           <ul className='footer__ul'>Suivez-nous Aide
-					<li>
-						<a href="https://www.instagram.com/" title="instagram" target="_blank" rel="noreferrer noopener" class="">
-						<i class="icon-instagram"></i>
+           <ul className='footer__ul'> Aide
+					<li>FAQ
+						<a href="" target="_blank" rel="noreferrer noopener" class="">
 					</a>
 					</li>
-					<li>
-				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
-					<i class="icon-facebook"></i>
+					<li>Qui somme nous
+				 <a href="" title="facebook" target="_blank" rel="noreferrer noopener" class="">
+	
 					</a>
 					</li>
           </ul>
 
-           <ul className='footer__ul'>Aide
+           <ul className='footer__ul'>Suivez-nous
 					<li>Tel : 075844851252
            <a href="" class="">
 						<i class="icon-instagram"></i>
@@ -70,6 +87,16 @@ export default function Footer() {
 					</a>
 					</li>
           	<li>Instagrame
+				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
+					<i class="icon-Instagrame"></i>
+					</a>
+					</li>
+             	<li>LinkedIn
+				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
+					<i class="icon-Instagrame"></i>
+					</a>
+					</li>
+             	<li>TikTok
 				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
 					<i class="icon-Instagrame"></i>
 					</a>
