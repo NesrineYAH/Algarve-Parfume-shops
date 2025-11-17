@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/users");
 const ProductRoutes = require("./routes/product");
+const categorieRoutes = require("./routes/categories");
 require("./mongoDB/DB");
 
 const app = express();
@@ -21,6 +22,8 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
 app.use("/api/products/:id", ProductRoutes);
+
+app.use("/api/categories", categorieRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");

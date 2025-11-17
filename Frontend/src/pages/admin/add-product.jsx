@@ -13,7 +13,13 @@ const AdminAddProduct = () => {
   const [stock, setStock] = useState("");
   const [categorieId, setCategorieId] = useState("");
   const [message, setMessage] = useState("");
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([
+  { _id: "epice", nom: "Épicé" },
+  { _id: "floral", nom: "Floral" },
+  { _id: "fruite", nom: "Fruité" },
+  { _id: "boise", nom: "Boisé" },
+]);
 
   const navigate = useNavigate();
 
