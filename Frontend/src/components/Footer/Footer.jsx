@@ -62,7 +62,7 @@ export default function Footer() {
             <li>RSGP</li>
           </ul>
 
-           <ul className='footer__ul'> Aide
+           <ul className='footer__ul'>Besoin d'Aide
 					<li>FAQ
 						<a href="" target="_blank" rel="noreferrer noopener" class="">
 					</a>

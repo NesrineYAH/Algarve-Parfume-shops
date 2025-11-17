@@ -25,7 +25,7 @@ const Header = () => {
           <Link to="/Home">Accueil</Link>
         </li>
         <li className="cursor-pointer hover:text-pink-500">
-                <Link to="/product"></Link>
+                <Link to="/Product"></Link>
           Parfum</li>
             
         <li className="cursor-pointer hover:text-pink-500">Maquillage</li>
