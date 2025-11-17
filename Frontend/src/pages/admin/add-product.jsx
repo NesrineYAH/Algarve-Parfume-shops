@@ -89,12 +89,16 @@ const AdminAddProduct = () => {
         />
 
         {/* Liste déroulante catégorie */}
-        <select value={categorieId} onChange={(e) => setCategorieId(e.target.value)} required>
-          <option value="">-- Choisir une catégorie --</option>
-          {categories.map((categorie) => (
-            <option key={categorie._id} value={categorie._id}>{categorie.nom}</option>
-          ))}
-        </select>
+  <select value={categorieId} onChange={(e) => setCategorieId(e.target.value)} required>
+  <option value="">-- Choisir une catégorie --</option>
+
+  {categories.map((categorie) => (
+    <option key={categorie._id} value={categorie._id}>
+      {categorie.nom}
+    </option>
+  ))}
+</select>
+
 
         <button type="submit">Ajouter le produit</button>
       </form>
@@ -103,6 +107,17 @@ const AdminAddProduct = () => {
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
 
 export default AdminAddProduct;
 
