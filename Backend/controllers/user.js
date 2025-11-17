@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
 const { body, validationResult } = require("express-validator");
+require("dotenv").config();
+
 /*
 exports.register = async (req, res) => {
   try {
@@ -108,8 +110,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Vérifie si les deux champs sont présents
     if (!email || !password) {
       return res.status(400).json({ message: "Email et mot de passe requis" });
     }
@@ -118,22 +118,22 @@ exports.login = async (req, res) => {
     if (!user)
       return res.status(401).json({ message: "Utilisateur non trouvé" });
 
-    // Vérifie le mot de passe avec bcrypt
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(401).json({ message: "Mot de passe incorrect" });
 
-    // Génération du token JWT
+    // Génération correcte du token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET || "secretkey",
       { expiresIn: "1h" }
     );
 
-    // RENVOYER LE TOKEN AU FRONTEND
+    console.log("Token généré :", token);
+
     res.status(200).json({
       message: "Connexion réussie",
-      token, // <-- token envoyé ici
+      token,
       user: {
         id: user._id,
         name: user.name,

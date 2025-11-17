@@ -56,4 +56,3 @@ export async function registerUser(credentials) {
     return { message: "Erreur serveur" };
   }
 }
-
