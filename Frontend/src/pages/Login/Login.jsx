@@ -16,13 +16,17 @@ function Login() {
 
       if (response.token) {
         setMessage("Connexion réussie !"); 
-        
         localStorage.setItem("token", response.token);
-         localStorage.setItem("role", response.user.role);
+    //     localStorage.setItem("role", response.user.role); 18//11
+
+      if (response.user && response.user.role) {
+        localStorage.setItem("role", response.user.role);
+      }
         
         navigate("/dashboard");
 
       } else {
+         console.error("Erreur attrapée :", err);
         setMessage(response.message || "Identifiants invalides");
       }
     } catch (err) {
