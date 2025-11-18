@@ -118,10 +118,13 @@ exports.login = async (req, res) => {
     if (!user)
       return res.status(401).json({ message: "Utilisateur non trouvé" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(401).json({ message: "Mot de passe incorrect" });
+    if (user.password !== password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch)
+        return res.status(401).json({ message: "Mot de passe incorrect" });
+    }
 
+    // if (user.password !== password) return res.status(401).json({ message: "Mot de passe incorrect" });
     // Génération correcte du token
     const token = jwt.sign(
       { userId: user._id, role: user.role },

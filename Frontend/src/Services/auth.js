@@ -23,7 +23,8 @@ export async function loginUser(credentials) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
     });
-
+    console.log(credentials);
+    
     const text = await res.text();
     const data = JSON.parse(text);
 
