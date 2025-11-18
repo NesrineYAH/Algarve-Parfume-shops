@@ -1,16 +1,21 @@
 import react , { useState } from "react";
 import { registerUser } from "../../Services/auth";
 import './Register.scss';
+import { useNavigate } from "react-router-dom";
+
 
 
 function Register() {
   const [form, setForm] = useState({ name:"", email: "", password: "" });
   const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await registerUser(form);
     setMessage(response.message);
+
+     navigate("/dashboard");
   };
 
   return (
