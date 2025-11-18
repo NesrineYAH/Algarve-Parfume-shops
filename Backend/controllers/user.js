@@ -14,33 +14,33 @@ exports.register = async (req, res) => {
     const { name, email, password } = req.body;
 
     // Validation email & password
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email))
       return res.status(400).json({ message: "Email invalide" });
-    }
-    if (!passwordRegex.test(password)) {
+    if (!passwordRegex.test(password))
       return res.status(400).json({
         message:
-          "Mot de passe invalide (8-32 caractères, au moins 1 majuscule, 1 chiffre et 1 caractère spécial !@#$%^&*)",
+          "Mot de passe invalide (8-32 caractères, 1 majuscule, 1 chiffre, 1 spécial !@#$%^&*)",
       });
-    }
 
     // Vérifie si l'utilisateur existe déjà
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    if (existingUser)
       return res.status(400).json({ message: "Cet email est déjà utilisé." });
-    }
 
     // Hachage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Création de l'utilisateur
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
+    const user = new User({ name, email, password: hashedPassword });
     await user.save();
+
+    // ⚡ Envoi du mail de bienvenue
+    await sendEmail({
+      to: email,
+      subject: "Bienvenue sur notre plateforme !",
+      text: `Bonjour ${name}, merci de vous être inscrit sur notre plateforme !`,
+      html: `<p>Bonjour <b>${name}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`,
+    });
 
     res.status(201).json({ message: "Utilisateur créé avec succès", user });
   } catch (error) {
