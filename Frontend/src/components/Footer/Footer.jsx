@@ -64,11 +64,11 @@ export default function Footer() {
 
            <ul className='footer__ul'>Besoin d'Aide
 					<li>FAQ
-						<a href="" target="_blank" rel="noreferrer noopener" class="">
+						<a href="" target="_blank" rel="noreferrer noopener" >
 					</a>
 					</li>
 					<li>Qui somme nous
-				 <a href="" title="facebook" target="_blank" rel="noreferrer noopener" class="">
+				 <a href="" title="facebook" target="_blank" rel="noreferrer noopener" >
 	
 					</a>
 					</li>
@@ -76,29 +76,23 @@ export default function Footer() {
 
            <ul className='footer__ul'>Suivez-nous
 					<li>Tel : 075844851252
-           <a href="" class="">
-						<i class="icon-instagram"></i>
-					</a>
+           <a href=""></a>
 					</li>
 
 					<li>Facebook 
-				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
-					<i class="icon-facebook"></i>
+				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener">
 					</a>
 					</li>
           	<li>Instagrame
-				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
-					<i class="icon-Instagrame"></i>
+				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" >
 					</a>
 					</li>
              	<li>LinkedIn
-				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
-					<i class="icon-Instagrame"></i>
+				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" >
 					</a>
 					</li>
              	<li>TikTok
-				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener" class="">
-					<i class="icon-Instagrame"></i>
+				 <a href="https://www.facebook.com/" title="facebook" target="_blank" rel="noreferrer noopener">
 					</a>
 					</li>
           </ul>

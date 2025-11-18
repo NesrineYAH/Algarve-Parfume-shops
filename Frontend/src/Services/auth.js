@@ -24,7 +24,7 @@ export async function loginUser(credentials) {
       body: JSON.stringify(credentials),
     });
     console.log(credentials);
-    
+
     const text = await res.text();
     const data = JSON.parse(text);
 
@@ -38,7 +38,7 @@ export async function loginUser(credentials) {
 
     return data;
   } catch (err) {
-    return { message: "Erreur serveur" };
+    return { message: "Erreur serveur !!" };
   }
 }
 

@@ -17,10 +17,11 @@ function Login() {
       if (response.token) {
         setMessage("Connexion réussie !"); 
         
-        localStorage.setItem("token", data.token);
-         localStorage.setItem("role", data.user.role);
-        // Redirige vers le dashboard ou la page d'accueil
+        localStorage.setItem("token", response.token);
+         localStorage.setItem("role", response.user.role);
+        
         navigate("/dashboard");
+
       } else {
         setMessage(response.message || "Identifiants invalides");
       }

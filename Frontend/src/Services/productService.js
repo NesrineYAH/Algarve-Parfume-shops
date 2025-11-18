@@ -10,7 +10,7 @@ export const addProduct = async (productData) => {
     const response = await axios.post(`${API_URL}/add`, productData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        // "Content-Type": "application/json",        // Supprimer "Content-Type" ici
+        "Content-Type": "application/json", // Supprimer "Content-Type" ici
       },
     });
     return response.data;

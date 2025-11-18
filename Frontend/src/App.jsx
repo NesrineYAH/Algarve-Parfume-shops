@@ -37,10 +37,7 @@ function App() {
       <BlogBenefits />
          <Newsletter />
          <CookieModel />
-   
-
-
-
+  
 
       </div>
            <Footer />
@@ -49,7 +46,3 @@ function App() {
 }
 
 export default App;
- /*
- <Route path="/register" element={<Register />} />
-<Route path="/login" element={<Login />} />
-        */ 
