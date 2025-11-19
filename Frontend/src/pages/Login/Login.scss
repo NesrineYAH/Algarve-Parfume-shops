@@ -17,45 +17,59 @@
     form {
         display: flex;
         flex-direction: column;
-        gap: 15px;
 
         input {
-            padding: 12px 15px;
-            font-size: 1rem;
+            padding: 10px 12px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            outline: none;
-            transition: all 0.3s;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 100%;
+        }
 
-            &:focus {
-                border-color: #f59e0b; // couleur accentuée au focus
-                box-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+        .password-wrapper {
+            position: relative;
+
+            input {
+                padding-right: 40px; // espace pour l'œil
+            }
+
+            .toggle-password {
+                padding: 10px 12px;
+                position: absolute;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+                user-select: none;
             }
         }
 
         button {
-            padding: 12px 15px;
-            font-size: 1rem;
-            background-color: #f59e0b;
-            color: #fff;
-            font-weight: 600;
+            padding: 10px;
+            background: #007bff;
+            color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: all 0.3s;
+            font-size: 16px;
 
             &:hover {
-                background-color: #d97706;
+                background: #0056b3;
             }
         }
-    }
 
-    .message {
-        margin-top: 15px;
-        font-size: 0.9rem;
-        color: red;
+        p {
+            margin-top: 10px;
+            color: red;
+            font-size: 14px;
+        }
     }
 }
+
+
+
 
 // Responsive
 @media (max-width: 480px) {

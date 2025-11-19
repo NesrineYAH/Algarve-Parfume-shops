@@ -6,6 +6,7 @@ import './Login.scss';
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👈 état pour l'œil
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -37,7 +38,8 @@ function Login() {
   return (
     <div className="login-container">
       <h2>Connexion</h2>
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+     
         <input
           type="email"
           placeholder="Email"
@@ -45,14 +47,31 @@ function Login() {
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           required
         />
-        <input
+    {/* <input
           type="password"
           placeholder="Mot de passe"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
           required
-        />
-        <button type="submit">Se connecter</button>
+        /> */}
+        <div className="password-wrapper">
+          <input
+            type={showPassword ? "text" : "password"} // 👈 bascule le type
+            placeholder="Mot de passe"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
+          <span 
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+              {showPassword ? "👁‍🗨" : "👀"}
+          </span>
+        </div>
+
+        <button type="submit">S'inscrire</button>
+        <p>{message}</p>
       </form>
       {message && <p className="message">{message}</p>}
     </div>
