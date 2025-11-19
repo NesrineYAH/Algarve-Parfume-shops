@@ -1,58 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
-import { User, ShoppingCart, Heart, Home, Bell } from "lucide-react";
-import { Link } from "react-router-dom";
+import { User, ShoppingCart, Heart, Home, Bell, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.scss";
-import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-
-  function UserIcon() {
-    
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
- 
-
-}
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/auth");
+  };
 
   return (
-    <header>
+    <header className="header">
       {/* Logo */}
       <div className="logo-container">
-        <img
-          src={Logo}
-          className="logo"
-          alt="Logo Parfume Algarve"
-        />
+        <img src={Logo} className="logo" alt="Logo Parfume Algarve" />
       </div>
 
-      <ul >
-        <li >CALENDRIERS DE L&apos;AVENT</li>
-        <li >
+      {/* Menu */}
+      <ul className="menu">
+        <li>CALENDRIERS DE L&apos;AVENT</li>
+        <li>
           <Link to="/Home">Accueil</Link>
         </li>
-        <Link to="/Product">
-        <li >Parfum</li></Link>
-            
-        
-        <li className="">Soin visage</li>
-        <li className="">Cheveux</li>
-
+        <li>
+          <Link to="/Product">Parfum</Link>
+        </li>
+        <li>Soin visage</li>
+        <li>Cheveux</li>
       </ul>
 
-      {/* Icônes */}
+      {/* Icons */}
       <div className="icons">
         <Home className="icone" />
-        <Link to="Favorites">
-        <Heart className="icone" />
+        <Link to="/Favorites">
+          <Heart className="icone" />
         </Link>
         <ShoppingCart className="icone" />
-        
-        <Link to="./Authentification/Authentification.jsx">
-          <User className="icone" onClick={() => navigate(token ? "/profil" : "/auth")} />
-        </Link>
         <Bell className="icone" />
+
+        {/* User Icon with dropdown */}
+        {token ? (
+          <div
+            className="user-dropdown"
+            onMouseEnter={() => setDropdownVisible(true)}
+            onMouseLeave={() => setDropdownVisible(false)}
+          >
+            <User className="icone" style={{ cursor: "pointer" }} />
+
+            {dropdownVisible && (
+              <div className="dropdown-menu">
+                <Link to="/profil">Personal Information</Link>
+                <Link to="/orders">User's Orders</Link>
+                <Link to="/history">Purchase History</Link>
+                <button onClick={handleLogout}>
+                  <LogOut size={16} /> Logout
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <User
+            className="icone"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/Authentification")}
+          />
+        )}
       </div>
     </header>
   );
