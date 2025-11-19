@@ -55,7 +55,7 @@ const Header = () => {
 
             {dropdownVisible && (
               <div className="dropdown-menu">
-                <Link to="/profil">Personal Information</Link>
+                <Link to="/Profil">Personal Information</Link>
                 <Link to="/orders">User's Orders</Link>
                 <Link to="/history">Purchase History</Link>
                 <button onClick={handleLogout}>

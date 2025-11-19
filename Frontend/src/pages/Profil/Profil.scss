@@ -1,0 +1,41 @@
+.profil-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .user-info {
+        p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+    }
+
+    .profil-actions {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        button {
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+
+            &:hover {
+                background: #0056b3;
+            }
+        }
+    }
+}
