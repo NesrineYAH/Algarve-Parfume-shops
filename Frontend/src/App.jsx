@@ -14,6 +14,7 @@ import PolitiqueCookies from  "./pages/PolitiqueCookies/PolitiqueCookies";
 import AdminAddProduct from "./pages/admin/add-product";
 import Confientilaite from "./pages/CONFI/Confidentialite";
 import "./App.scss";
+import Authentification from "./pages/Authentification/Authentification";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
          <Route path="/Favorites" element={<Favorites />} />
          <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
        <Route path="/Confientilaite" element={<Confientilaite />} />
+       <Route path="/Authentification" element={<Authentification />} />
       </Routes>
      
       <BlogBenefits />

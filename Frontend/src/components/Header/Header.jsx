@@ -3,14 +3,23 @@ import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
 import { User, ShoppingCart, Heart, Home, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Header.scss";
-import Favorites from "../../pages/Favorites/Favorites";
-import Product from "../../pages/Product/Product"
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+
+  function UserIcon() {
+    
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+ 
+
+}
+
   return (
-    <header className="flex items-center justify-between p-4 bg-white shadow-md">
+    <header>
       {/* Logo */}
-      <div className="flex items-center gap-4">
+      <div className="logo-container">
         <img
           src={Logo}
           className="logo"
@@ -18,38 +27,32 @@ const Header = () => {
         />
       </div>
 
-      {/* Menu Navigation */}
-      <ul className="flex gap-6 font-medium text-gray-700">
-        <li className="cursor-pointer hover:text-pink-500">CALENDRIERS DE L&apos;AVENT</li>
-        <li className="cursor-pointer hover:text-pink-500">
+      <ul >
+        <li >CALENDRIERS DE L&apos;AVENT</li>
+        <li >
           <Link to="/Home">Accueil</Link>
         </li>
-        <li className="cursor-pointer hover:text-pink-500">
-                <Link to="/Product"></Link>
-          Parfum</li>
+        <Link to="/Product">
+        <li >Parfum</li></Link>
             
-        <li className="cursor-pointer hover:text-pink-500">Maquillage</li>
-        <li className="cursor-pointer hover:text-pink-500">Soin visage</li>
-        <li className="cursor-pointer hover:text-pink-500">Cheveux</li>
+        
+        <li className="">Soin visage</li>
+        <li className="">Cheveux</li>
 
       </ul>
 
       {/* Icônes */}
-      <div className="flex items-center gap-4 icons">
-        <Home className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
+      <div className="icons">
+        <Home className="icone" />
         <Link to="Favorites">
         <Heart className="icone" />
         </Link>
-        <ShoppingCart className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
+        <ShoppingCart className="icone" />
         
-        {/* Lien vers Auth */}
-        <Link to="register">
-          <User className="icone" />
+        <Link to="./Authentification/Authentification.jsx">
+          <User className="icone" onClick={() => navigate(token ? "/profil" : "/auth")} />
         </Link>
-         <Link to="/login">Connexion</Link>
-      <Link to="/register">Inscription</Link>
-        
-        <Bell className="w-6 h-6 cursor-pointer hover:text-pink-500 icone" />
+        <Bell className="icone" />
       </div>
     </header>
   );
