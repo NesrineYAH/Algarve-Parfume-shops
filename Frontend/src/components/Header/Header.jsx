@@ -12,7 +12,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    navigate("/auth");
+    navigate("/Authentification");
   };
 
   return (
@@ -51,7 +51,7 @@ const Header = () => {
             onMouseEnter={() => setDropdownVisible(true)}
             onMouseLeave={() => setDropdownVisible(false)}
           >
-            <User className="icone" style={{ cursor: "pointer" }} />
+            <User className="icone"   onClick={() => setDropdownVisible(!dropdownVisible)} />
 
             {dropdownVisible && (
               <div className="dropdown-menu">

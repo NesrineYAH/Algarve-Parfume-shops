@@ -10,7 +10,7 @@ export default function Profil() {
     // Check if user is logged in
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/auth");
+      navigate("/Authentification");
       return;
     }
 
@@ -28,7 +28,7 @@ export default function Profil() {
     localStorage.removeItem("role");
     localStorage.removeItem("name");
     localStorage.removeItem("email");
-    navigate("/auth");
+    navigate("/Authentification");
   };
 
   if (!user) return null;

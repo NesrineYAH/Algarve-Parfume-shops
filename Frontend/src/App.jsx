@@ -25,15 +25,13 @@ function App() {
      
         <Routes>
          <Route path="/" element={<Home />} />
-         <Route path="/register" element={<Register />} />
-         <Route path="/login" element={<Login />} />
          <Route path="/product/:id" element={<Product />} /> {/* Remarque : :id */}
-        <Route path="/admin/add-product" element={<AdminAddProduct />} />
+         <Route path="/admin/add-product" element={<AdminAddProduct />} />
          <Route path="/Favorites" element={<Favorites />} />
          <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
-       <Route path="/Confientilaite" element={<Confientilaite />} />
-       <Route path="/Authentification" element={<Authentification />} />
-       <Route path="/Profil" element={<Profil />} />
+         <Route path="/Confientilaite" element={<Confientilaite />} />
+         <Route path="/Authentification" element={<Authentification />} />
+         <Route path="/Profil" element={<Profil />} />
 
       </Routes>
      
