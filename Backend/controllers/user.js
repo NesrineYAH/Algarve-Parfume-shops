@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
 const { body } = require("express-validator");
 require("dotenv").config();
+const sendEmail = require("../utils/mailer"); //const { sendEmail } = require("../utils/mailer");  → ça correspond à module.exports = sendEmail.
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
@@ -37,7 +38,7 @@ exports.register = async (req, res) => {
     // ⚡ Envoi du mail de bienvenue
     await sendEmail({
       to: email,
-      subject: "Bienvenue sur notre plateforme !",
+      subject: "Bienvenue sur notre plateforme  Algarve Parfume !",
       text: `Bonjour ${name}, merci de vous être inscrit sur notre plateforme !`,
       html: `<p>Bonjour <b>${name}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`,
     });

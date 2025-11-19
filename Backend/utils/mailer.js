@@ -1,18 +1,16 @@
-const nodemailer = require("nodemailer"); 
+const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-// Création du transporteur SMTP
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST, // ex: smtp.tonhebergeur.com
-  port: process.env.SMTP_PORT, // 587 ou 465
-  secure: false, // true si port 465
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER, // contact@nesrinebekkar.com
-    pass: process.env.EMAIL_PASS, // mot de passe de ta boîte mail
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-// Fonction pour envoyer un mail
 const sendEmail = async ({ to, subject, text, html }) => {
   try {
     const info = await transporter.sendMail({
