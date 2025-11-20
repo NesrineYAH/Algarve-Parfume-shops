@@ -1,9 +1,6 @@
 const Cart = require("../models/Cart");
 
-/* ========================================================
-   🟢 CREATE — Ajouter un produit au panier
-   Route : POST /api/cart/add
-======================================================== */
+/* Create: Route : POST /api/cart/add */
 exports.addToCart = async (req, res) => {
   try {
     const userId = req.user.id; // On récupère l’ID via JWT middleware
@@ -41,10 +38,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-/* ========================================================
-   🔵 READ — Récupérer le panier
-   Route : GET /api/cart/
-======================================================== */
+/* Read: Route : GET /api/cart */
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -62,10 +56,7 @@ exports.getCart = async (req, res) => {
   }
 };
 
-/* ========================================================
-   🟡 UPDATE — Modifier quantité
-   Route : PUT /api/cart/update
-======================================================== */
+/* Update: Route : PUT /api/cart/update*/
 exports.updateQuantity = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -98,10 +89,7 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
-/* ========================================================
-   🔴 DELETE — Supprimer un produit du panier
-   Route : DELETE /api/cart/remove/:productId
-======================================================== */
+/* Delete: Route : DELETE /api/cart/remove/:productId*/
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -122,10 +110,7 @@ exports.removeItem = async (req, res) => {
   }
 };
 
-/* ========================================================
-   🔴 DELETE — Vider tout le panier
-   Route : DELETE /api/cart/clear
-======================================================== */
+/*Route : DELETE /api/cart/clear*/
 exports.clearCart = async (req, res) => {
   try {
     const userId = req.user.id;
