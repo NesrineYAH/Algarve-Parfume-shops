@@ -48,12 +48,11 @@ export default function Cart() {
         <div className="cart-items">
           {cart.map((item) => (
             <div className="cart-item" key={item.id}>
-              <img src={item.image} alt={item.name} />
+              <img src={item.image} alt={item.nom} />
 
               <div className="item-details">
-                <h3>{item.name}</h3>
-                <p>{item.price.toFixed(2)} €</p>
-
+                <h3>{item.nom}</h3>
+                <p>{item.prix.toFixed(2)} €</p>
                 <div className="quantity-control">
                   <button onClick={() => decreaseQuantity(item.id)}>-</button>
                   <span>{item.quantity}</span>

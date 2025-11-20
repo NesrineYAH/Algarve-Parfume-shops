@@ -66,7 +66,7 @@ const Home = () => {
           >
             <img
               src={`http://localhost:5001${product.imageUrl}`}
-              alt={product.nom}
+              alt={product.img}
               className="card_img"
             />
 
