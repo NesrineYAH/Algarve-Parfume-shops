@@ -25,6 +25,22 @@ const Product = () => {
   if (error) return <p>{error}</p>;
   if (!product) return <p>Chargement du produit...</p>;
 
+  //20/11
+  const addToCart = (product) => {
+  const cart = JSON.parse(localStorage.getItem("Cart")) || [];
+
+  const existing = cart.find((item) => item.id === product.id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
+
   return (
     <section id="page">
       <div className="product-container">
@@ -71,7 +87,9 @@ const Product = () => {
           )}
         </div>
 
-        <button className="btn-Add">Ajouter au panier</button>
+        <button className="btn-Add" onClick={() => addToCart(product)}>
+  Ajouter au panier
+</button>
       </div>
 
       {/* Bouton Admin / Vendeur */}

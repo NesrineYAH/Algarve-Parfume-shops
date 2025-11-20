@@ -14,6 +14,7 @@ import Confientilaite from "./pages/CONFI/Confidentialite";
 import "./App.scss";
 import Authentification from "./pages/Authentification/Authentification";
 import Profil from "./pages/Profil/Profil";
+import Cart from "./pages/Cart/Cart";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
          <Route path="/Confientilaite" element={<Confientilaite />} />
          <Route path="/Authentification" element={<Authentification />} />
          <Route path="/Profil" element={<Profil />} />
+         <Route path="/Cart" element={<Cart />} />
 
       </Routes>
      

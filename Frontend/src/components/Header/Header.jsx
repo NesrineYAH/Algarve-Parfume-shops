@@ -37,11 +37,16 @@ const Header = () => {
 
       {/* Icons */}
       <div className="icons">
+        <Link to="/Home">
         <Home className="icone" />
+        </Link>
         <Link to="/Favorites">
           <Heart className="icone" />
         </Link>
-        <ShoppingCart className="icone" />
+        <Link to="/Cart">
+            <ShoppingCart className="icone" />
+        </Link>
+    
         <Bell className="icone" />
 
         {/* User Icon with dropdown */}
