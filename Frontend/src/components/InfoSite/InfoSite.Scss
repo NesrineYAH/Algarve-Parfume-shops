@@ -1,45 +1,27 @@
-.info-site-container {
+.infoSite {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
     justify-content: space-between;
     padding: 2rem;
     background-color: #f9f9f9;
-}
 
-.info-section {
-    flex: 1 1 300px;
-}
 
-.delivery-icons {
-    display: flex;
-    align-items: center;
-}
+    &__section {
+        flex: 1 1 300px;
+    }
 
-.payment-icons img,
-.delivery-icons img,
-.app-links img,
-.social-icons img {
-    width: 40px;
-    margin: 0.5rem;
-}
+    &__icons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        align-items: center;
 
-payment-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    align-items: center;
-}
+        img {
+            width: 40px;
+            margin: 0.5rem;
+        }
+    }
 
-.payment-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80px;
-}
 
-.payment-icon img {
-    width: 40px;
-    height: auto;
-    margin-bottom: 0.5rem;
 }
