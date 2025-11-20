@@ -36,7 +36,7 @@ export default function Cart() {
     updateCart(updated);
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cart.reduce((sum, item) => sum + item.prix * item.quantity, 0);
 
   return (
     <div className="cart-container">
@@ -76,3 +76,7 @@ export default function Cart() {
     </div>
   );
 }
+
+  /**
+   toFixed(2)}
+   */ 
