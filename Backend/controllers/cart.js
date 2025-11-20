@@ -1,4 +1,4 @@
-const Cart = require("../models/Cart");
+const Cart = require("../model/Cart");
 
 /* Create: Route : POST /api/cart/add */
 exports.addToCart = async (req, res) => {
