@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import "./CookieModel.scss";
-import PolitiqueCookies from "../../pages/PolitiqueCookies/PolitiqueCookies"
-import Confientilaite from "../../pages/CONFI/Confidentialite";
+import PolitiqueCookies from "../../pages/PolitiqueCookies/PolitiqueCookies";
+import Confientilaite from "../../pages/CONFI/FAQ";
 
 const CookieModel = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -58,22 +58,15 @@ const CookieModel = () => {
         </Link>
         <br />
         <Link to="/Confientilaite" rel="noopener noreferrer">
-           Coofidntialités
+          Coofidntialités
         </Link>
-        
       </div>
 
       <div className="cookieBlock__Bouttons">
-        <button
-          className="cookieBlock__button accept"
-          onClick={handleAccept}
-        >
+        <button className="cookieBlock__button accept" onClick={handleAccept}>
           Accepter
         </button>
-        <button
-          className="cookieBlock__button reject"
-          onClick={handleReject}
-        >
+        <button className="cookieBlock__button reject" onClick={handleReject}>
           Refuser
         </button>
       </div>
