@@ -15,24 +15,24 @@ export default function Cart() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const increaseQuantity = (id) => {
+  const increaseQuantity = (_id) => {
     const updated = cart.map((item) =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      item._id === _id ? { ...item, quantity: item.quantity + 1 } : item
     );
     updateCart(updated);
   };
 
-  const decreaseQuantity = (id) => {
+  const decreaseQuantity = (_id) => {
     const updated = cart.map((item) =>
-      item.id === id && item.quantity > 1
+      item._id === _id && item.quantity > 1
         ? { ...item, quantity: item.quantity - 1 }
         : item
     );
     updateCart(updated);
   };
 
-  const removeItem = (id) => {
-    const updated = cart.filter((item) => item.id !== id);
+  const removeItem = (_id) => {
+    const updated = cart.filter((item) => item._id !== _id);
     updateCart(updated);
   };
 
@@ -47,22 +47,27 @@ export default function Cart() {
       ) : (
         <div className="cart-items">
           {cart.map((item) => (
-            <div className="cart-item" key={item.id}>
-              <img src={item.image} alt={item.nom} />
+            <div className="cart-item" key={item._id}>
+              <img
+                src={`http://localhost:5001${item.imageUrl}`}
+                alt={item.nom}
+                className="cart-item__img"
+              />
 
               <div className="item-details">
                 <h3>{item.nom}</h3>
                 <p>{item.prix.toFixed(2)} €</p>
+
                 <div className="quantity-control">
-                  <button onClick={() => decreaseQuantity(item.id)}>-</button>
+                  <button onClick={() => decreaseQuantity(item._id)}>-</button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => increaseQuantity(item.id)}>+</button>
+                  <button onClick={() => increaseQuantity(item._id)}>+</button>
                 </div>
               </div>
 
               <Trash2
                 className="delete-icon"
-                onClick={() => removeItem(item.id)}
+                onClick={() => removeItem(item._id)}
               />
             </div>
           ))}
@@ -76,7 +81,3 @@ export default function Cart() {
     </div>
   );
 }
-
-  /**
-   toFixed(2)}
-   */ 

@@ -25,11 +25,11 @@
             justify-content: space-between;
             background: #fff;
             border: 1px solid #ddd;
-            padding: 15px;
+            padding: 25px;
             border-radius: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 
-            img {
+            &__img {
                 width: 90px;
                 height: 90px;
                 object-fit: cover;
