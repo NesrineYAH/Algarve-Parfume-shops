@@ -11,6 +11,7 @@ export const addProduct = async (productData) => {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json", // Supprimer "Content-Type" ici
+
       },
     });
     return response.data;

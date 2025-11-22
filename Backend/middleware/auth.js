@@ -9,7 +9,7 @@ function authMiddleware(req, res, next) {
     const token = authHeader.split(" ")[1];
     if (!token) return res.status(401).json({ error: "Token mal formaté" });
 
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       userId: decodedToken.userId,
       role: decodedToken.role,

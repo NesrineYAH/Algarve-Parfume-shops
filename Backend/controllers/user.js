@@ -77,11 +77,16 @@ exports.login = async (req, res) => {
 
     console.log("Token généré :", token);
     console.log("ROLE UTILISATEUR :", user.role);
+    console.log("ROLE UTILISATEUR :", user.name);
 
     res.status(200).json({
-      userId: user._id,
-      role: user.role,
       token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role, // 👈 IMPORTANT !
+      },
     });
   } catch (error) {
     console.error("Erreur dans login :", error);

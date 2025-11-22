@@ -5,40 +5,38 @@ const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 
-router.post(
-  "/add",
-  authMiddleware,
-  isAdmin,
-  uploads.single("image"),
-  async (req, res) => {
-    try {
-      const imageUrl = req.file
-        ? `/uploads/${req.file.filename}`
-        : req.body.imageUrl;
+router.post("/add", authMiddleware, isAdmin, uploads.single("image"), async (req, res) => {
+  try {
+    const imageUrl = req.file
+      ? `/uploads/${req.file.filename}`
+      : req.body.imageUrl;
 
-      const newProduct = new Product({
-        nom: req.body.nom,
-        prix: req.body.prix,
-        description: req.body.description,
-        imageUrl,
-        stock: req.body.stock,
-        categorie_id: req.body.categorie_id,
-      });
+    const newProduct = new Product({
+      nom: req.body.nom,
+      prix: req.body.prix,
+      description: req.body.description,
+      stock: req.body.stock,
+      imageUrl,  // 👈 ENREGISTRÉ DANS MONGODB !
+      categorie_id: req.body.categorie_id,
+    });
+    console.log("req.file:", req.file);
+    console.log("req.body:", req.body);
+    res.send("test");
 
-      if (!req.body.nom || !req.body.prix || !req.body.categorie_id) {
-        return res
-          .status(400)
-          .json({ message: "Nom, prix et catégorie requis" });
-      }
-      await newProduct.save();
-      res
-        .status(201)
-        .json({ message: "Produit ajouté avec succès", product: newProduct });
-    } catch (error) {
-      console.error("Erreur lors de l'ajout du produit :", error);
-      res.status(500).json({ message: "Erreur serveur" });
+    if (!req.body.nom || !req.body.prix || !req.body.categorie_id) {
+      return res
+        .status(400)
+        .json({ message: "Nom, prix et catégorie requis" });
     }
+    await newProduct.save();
+    res
+      .status(201)
+      .json({ message: "Produit ajouté avec succès", product: newProduct });
+  } catch (error) {
+    console.error("Erreur lors de l'ajout du produit :", error);
+    res.status(500).json({ message: "Erreur serveur" });
   }
+}
 );
 
 // ✅ Récupérer tous les produits
@@ -94,4 +92,6 @@ module.exports = router;
 /*
 Ici je destructure req.body avec une valeur par défaut {} pour éviter undefined.
 Le fallback imageBody || "" garantit que imageUrl n’est jamais undefined.
+//22/11/2025
+req.file est undefined. Cela veut dire que Multer ne reçoit pas le fichier. On va diagnostiquer étape par étape.
 */
