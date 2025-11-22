@@ -11,7 +11,7 @@ import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 import AdminAddProduct from "./pages/admin/add-product";
-import FAQ from "./pages/CONFI/FAQ";
+import FAQ from "./pages/FAQ/FAQ";
 import "./App.scss";
 import Authentification from "./pages/Authentification/Authentification";
 import Profil from "./pages/Profil/Profil";
@@ -27,7 +27,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<Product />} />{" "}
-          {/* Remarque : :id */}
           <Route path="/admin/add-product" element={<AdminAddProduct />} />
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
