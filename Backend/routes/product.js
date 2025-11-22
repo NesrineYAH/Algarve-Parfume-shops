@@ -6,6 +6,8 @@ const uploads = require("../middleware/multer-config");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 
 router.post("/add", authMiddleware, isAdmin, uploads.single("image"), async (req, res) => {
+  console.log("req.file:", req.file); // DEBUG
+  console.log("req.body:", req.body); // DEBUG
   try {
     const imageUrl = req.file
       ? `/uploads/${req.file.filename}`
@@ -19,9 +21,7 @@ router.post("/add", authMiddleware, isAdmin, uploads.single("image"), async (req
       imageUrl,  // 👈 ENREGISTRÉ DANS MONGODB !
       categorie_id: req.body.categorie_id,
     });
-    console.log("req.file:", req.file);
-    console.log("req.body:", req.body);
-    res.send("test");
+
 
     if (!req.body.nom || !req.body.prix || !req.body.categorie_id) {
       return res

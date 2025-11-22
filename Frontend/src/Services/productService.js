@@ -10,7 +10,6 @@ export const addProduct = async (productData) => {
     const response = await axios.post(`${API_URL}/add`, productData, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // Supprimer "Content-Type" ici
 
       },
     });
@@ -35,3 +34,7 @@ export const deleteProduct = async (id) => {
   });
   return response.data;
 };
+
+/*
+le FormData avec Content-Type: "application/json", ce qui empêche Multer de recevoir le fichier.
+*/

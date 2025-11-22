@@ -1,0 +1,229 @@
+/* AdminAddProduct.scss */
+
+.admin-add-product,
+.edit-product {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: #333;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 45px;
+
+    input,
+    textarea {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+
+      &:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+
+      &:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  p {
+    margin-top: 15px;
+    text-align: center;
+    color: #28a745;
+    font-weight: 500;
+
+    &.error {
+      color: #dc3545;
+    }
+  }
+}
+
+/* AdminProductManagement */
+.admin-product-management {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+
+  p {
+    color: green;
+    margin-bottom: 1rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+
+    thead {
+      background-color: #007bff;
+      color: #fff;
+      text-align: left;
+
+      th {
+        padding: 12px 15px;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #eee;
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+
+        td {
+          padding: 10px 15px;
+          vertical-align: middle;
+
+          img {
+            max-width: 50px;
+            border-radius: 4px;
+          }
+
+          button {
+            margin-right: 0.5rem;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+
+            &:first-of-type {
+              background-color: #ffc107;
+              color: #fff;
+
+              &:hover {
+                background-color: #e0a800;
+              }
+            }
+
+            &:last-of-type {
+              background-color: #dc3545;
+              color: #fff;
+
+              &:hover {
+                background-color: #c82333;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/* EditProduct 
+.edit-product {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fdfdfd;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+
+
+  h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input,
+    textarea,
+    select {
+      margin-bottom: 1rem;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+
+      &:focus {
+        border-color: #007bff;
+      }
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    img.preview {
+      max-width: 150px;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+  }
+
+  p.message {
+    margin-top: 1rem;
+    color: green;
+    text-align: center;
+  }
+}*/

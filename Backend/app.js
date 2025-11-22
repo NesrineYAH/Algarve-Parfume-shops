@@ -6,7 +6,6 @@ const userRoutes = require("./routes/users");
 const ProductRoutes = require("./routes/product");
 const categorieRoutes = require("./routes/categories");
 const cartRoutes = require("./routes/cart");
-
 require("./mongoDB/DB");
 
 const app = express();
@@ -19,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
+
 
 // Routes
 app.use("/api/users", userRoutes);

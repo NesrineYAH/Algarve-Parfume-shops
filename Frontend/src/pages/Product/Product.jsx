@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";  // ⬅️ IMPORTANT !
+import { useParams, Link } from "react-router-dom"; // ⬅️ IMPORTANT !
 import axios from "axios";
 import "./Product.scss";
 
@@ -12,7 +12,9 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/products/${id}`);
+        const response = await axios.get(
+          `http://localhost:5001/api/products/${id}`
+        );
         setProduct(response.data);
       } catch (err) {
         setError("Produit introuvable ou erreur serveur.");
@@ -27,24 +29,22 @@ const Product = () => {
 
   //20/11
   const addToCart = (product) => {
-  const cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    const cart = JSON.parse(localStorage.getItem("Cart")) || [];
 
-  const existing = cart.find((item) => item.id === product.id);
+    const existing = cart.find((item) => item.id === product.id);
 
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({ ...product, quantity: 1 });
-  }
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
-};
-
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
 
   return (
     <section id="page">
       <div className="product-container">
-
         <div className="pr">
           <img
             src={`http://localhost:5001${product.imageUrl}`}
@@ -52,15 +52,22 @@ const Product = () => {
             className="product-image"
           />
           <h2>{product.nom}</h2>
-          <p><strong>Prix :</strong> {product.prix} €</p>
-          <p><strong>Stock :</strong> {product.stock} en stock</p>
+          <p>
+            <strong>Prix :</strong> {product.prix} €
+          </p>
+          <p>
+            <strong>Stock :</strong> {product.stock} en stock
+          </p>
           <p>{product.description}</p>
         </div>
 
         {/* ⭐ Notation */}
         <div className="rating">
           {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className={i < product.rating ? "star filled" : "star"}>
+            <span
+              key={i}
+              className={i < product.rating ? "star filled" : "star"}
+            >
               ★
             </span>
           ))}
@@ -88,15 +95,21 @@ const Product = () => {
         </div>
 
         <button className="btn-Add" onClick={() => addToCart(product)}>
-  Ajouter au panier
-</button>
+          Ajouter au panier
+        </button>
       </div>
 
       {/* Bouton Admin / Vendeur */}
       {(role === "admin" || role === "vendeur") && (
         <div className="admin-action">
-  <Link to="/admin/add-product" className="btn-Add">
+          <Link to="/admin/add-product" className="btn-Add">
             ➕ Ajouter un produit
+          </Link>
+          <Link to="/admin/EditProduct" className="btn-Add">
+            ➕ modifier un produit
+          </Link>
+          <Link to="/admin/AdminProductManagement" className="btn-Add">
+            ➕ supprimer un produit
           </Link>
         </div>
       )}

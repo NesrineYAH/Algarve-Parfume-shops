@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { addProduct } from "../../Services/productService";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // si tu utilises axios
-import "./add-product.scss";
+import "./admin.scss";
 
 const AdminAddProduct = () => {
   const [nom, setNom] = useState("");
@@ -47,12 +47,11 @@ const AdminAddProduct = () => {
       formData.append("stock", stock);
       formData.append("image", imageFile); // IMPORTANT
       formData.append("categorie_id", categorieId);
-
+      /*
       if (imageFile) {
         formData.append("image", imageFile); // clé attendue côté backend
       }
-      
-
+*/
       const data = await addProduct(formData); // assure-toi que addProduct supporte FormData
       setMessage(data.message);
 
