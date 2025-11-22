@@ -27,10 +27,13 @@ function App() {
         <h1 id="title">Parfume-Algarve-shop</h1>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/Home" element={<Home />} />
           <Route path="/product/:id" element={<Product />} />{" "}
           <Route path="/admin/add-product" element={<AdminAddProduct />} />
-          <Route path="/admin/AdminProductManagement" element={<AdminProductManagement />}/>{" "}
+          <Route
+            path="/admin/AdminProductManagement"
+            element={<AdminProductManagement />}
+          />{" "}
           <Route path="/admin/EditProduct" element={<EditProduct />} />
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />

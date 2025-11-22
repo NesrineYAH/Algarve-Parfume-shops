@@ -12,7 +12,11 @@ const EditProduct = () => {
   useEffect(() => {
     axios
       .get(`http://localhost:5001/api/products/${id}`)
-      .then((res) => setProduct(res.data))
+      .then((res) => {
+        console.log("Produit récupéré :", res.data);
+        // si backend renvoie { product: {...} }
+        setProduct(res.data.product || res.data);
+      })
       .catch((err) => console.error(err));
   }, [id]);
 
@@ -38,6 +42,7 @@ const EditProduct = () => {
 
   return (
     <div className="edit-product">
+      <h2>Modifier un produit</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -45,12 +50,14 @@ const EditProduct = () => {
           value={product.nom || ""}
           onChange={(e) => setProduct({ ...product, nom: e.target.value })}
         />
+
         <input
           type="number"
           placeholder="Prix"
           value={product.prix || ""}
           onChange={(e) => setProduct({ ...product, prix: e.target.value })}
         />
+
         <textarea
           placeholder="Description"
           value={product.description || ""}
@@ -58,13 +65,30 @@ const EditProduct = () => {
             setProduct({ ...product, description: e.target.value })
           }
         />
+
         <input
           type="number"
           placeholder="Stock"
           value={product.stock || ""}
           onChange={(e) => setProduct({ ...product, stock: e.target.value })}
         />
+
+        {/* <-- Affiche l’image actuelle du produit */}
+        {product.imageUrl && (
+          <img
+            src={`http://localhost:5001${product.imageUrl}`}
+            alt={product.nom}
+            className="preview"
+            style={{
+              maxWidth: "150px",
+              marginBottom: "10px",
+              borderRadius: "4px",
+            }}
+          />
+        )}
+
         <input type="file" onChange={(e) => setImageFile(e.target.files[0])} />
+
         <button type="submit">Modifier</button>
       </form>
     </div>
@@ -72,3 +96,12 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
+
+/*
+Cette ligne res.data.product || res.data fonctionne dans les deux cas : que le backend renvoie { product: {...} } ou directement le produit.
+Ton formulaire est vide parce que product dans le state ne contient pas les données du backend.
+
+Corrige le setProduct dans le useEffect selon la structure exacte de la réponse.
+
+Les inputs vont alors se remplir automatiquement avec les valeurs existantes.
+*/

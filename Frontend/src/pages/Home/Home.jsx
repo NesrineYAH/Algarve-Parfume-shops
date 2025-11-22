@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from "../../components/searchBar/searchBar.jsx";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Home.scss";
 
 const Home = () => {
@@ -9,18 +9,14 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
-  const role = localStorage.getItem("role");
-
-  // Récupération des produits depuis l'API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await fetch("http://localhost:5001/api/products");
         const data = await res.json();
+        console.log("Data API:", data);
 
-        const prod = data.products || data;
-
+        const prod = Array.isArray(data) ? data : data.products;
         setProducts(prod);
         setFiltered(prod);
       } catch (err) {
@@ -34,27 +30,21 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  if (loading) return <p>Chargement des produits...</p>;
-  if (error) return <p className="error">{error}</p>;
-
-  // Fonction de recherche
   const handleSearch = (query) => {
-    if (!query.trim()) {
-      setFiltered(products);
-      return;
-    }
+    if (!query.trim()) return setFiltered(products);
 
     const results = products.filter((p) =>
       (p.nom || "").toLowerCase().includes(query.toLowerCase())
     );
-
     setFiltered(results);
   };
+
+  if (loading) return <p>Chargement des produits...</p>;
+  if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="home">
       <h2>Nos Produits</h2>
-
       <SearchBar onSearch={handleSearch} className="searchBar" />
 
       <div className="grid">
@@ -64,16 +54,16 @@ const Home = () => {
             key={product._id}
             className="card"
           >
-            <img
-              src={`http://localhost:5001${product.imageUrl}`}
-              alt={product.img}
-              className="card_img"
-            />
-
+            {product.imageUrl && (
+              <img
+                src={`http://localhost:5001${product.imageUrl}`}
+                alt={product.nom}
+                className="card_img"
+              />
+            )}
             <h3>{product.nom}</h3>
             <p>{product.prix} €</p>
             <p>{product.stock} en stock</p>
-
             <button className="btn">Ajouter au panier</button>
           </Link>
         ))}

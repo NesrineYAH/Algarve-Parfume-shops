@@ -73,7 +73,7 @@ router.delete("/:id", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 
-// ✅ Modifier un produit
+/* ✅ Modifier un produit
 router.put("/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     const produit = await Product.findByIdAndUpdate(req.params.id, req.body, {
@@ -86,6 +86,32 @@ router.put("/:id", authMiddleware, isAdmin, async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+*/
+router.put("/:id", authMiddleware, isAdmin, uploads.single("image"), async (req, res) => {
+  try {
+    const { nom, prix, description, stock, categorie_id } = req.body;
+
+    const updatedData = { nom, prix, description, stock, categorie_id };
+
+    if (req.file) {
+      updatedData.imageUrl = `/uploads/${req.file.filename}`;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+    if (!updatedProduct) return res.status(404).json({ message: "Produit introuvable" });
+
+    res.json({ message: "Produit modifié avec succès", product: updatedProduct });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+
+
+
+
+
 
 module.exports = router;
 
