@@ -18,11 +18,12 @@ export default function Authentification() {
         const response = await loginUser(form);
         if (response.token) {
           localStorage.setItem("token", response.token);
-          if (response.user && response.user.role) {
-            localStorage.setItem("role", response.user.role);
-          }
+          localStorage.setItem("nom", response.user.nom);
+          localStorage.setItem("prenom", response.user.prenom);
+          localStorage.setItem("email", response.user.email);
+          localStorage.setItem("role", response.user.role);
           setMessage("Connexion réussie !");
-          navigate("/profil");
+          navigate("/MonCompte");
         } else {
           setMessage(response.message || "Identifiants invalides");
         }
@@ -34,7 +35,7 @@ export default function Authentification() {
         // Si backend renvoie token, tu peux stocker ici aussi
         if (response.token) {
           localStorage.setItem("token", response.token);
-          navigate("/profil");
+          navigate("/MonCompte");
         } else {
           navigate("/login"); // redirige vers login après inscription
         }

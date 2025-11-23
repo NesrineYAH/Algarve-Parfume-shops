@@ -65,7 +65,7 @@ const Header = () => {
             {name ? `Bonjour ${name}` : "Mon compte"}
             {dropdownVisible && (
               <div className="dropdown-menu">
-                <Link to="/Profil">Personal Information</Link>
+                {/* <Link to="/Profil">Personal Information</Link> */}
                 <Link to="/orders">User's Orders</Link>
                 <Link to="/history">Purchase History</Link>
                 <button onClick={handleLogout}>

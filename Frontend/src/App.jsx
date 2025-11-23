@@ -16,7 +16,7 @@ import EditProduct from "./pages/admin/EditProduct";
 import FAQ from "./pages/FAQ/FAQ";
 import "./App.scss";
 import Authentification from "./pages/Authentification/Authentification";
-import Profil from "./pages/Profil/Profil";
+import MonCompte from "./pages/MonCompte/MonCompte";
 import Cart from "./pages/Cart/Cart";
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/Authentification" element={<Authentification />} />
-          <Route path="/Profil" element={<Profil />} />
+          <Route path="/MonCompte" element={<MonCompte />} />
           <Route path="/Cart" element={<Cart />} />
         </Routes>
 
