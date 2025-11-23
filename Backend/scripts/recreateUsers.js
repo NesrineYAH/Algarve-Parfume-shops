@@ -13,14 +13,14 @@ async function recreateUsers() {
   const users = [
     {
       name: "Nesrine yahoum",
-      email: "nesrineyahoum@gmail.com",
-      password: "Nes05101987*", // mot de passe fort
+      email: "process.env.EMAIL_ADMIN",
+      password: "process.env.EMAIL_PasswordADMIN", // mot de passe fort
       role: "admin",
     },
     {
       name: "BEKKAR ABED",
-      email: "parfume.algrave@gmail.com",
-      password: "Abed03021991*",
+      email: "process.env.EMAIL_VENDEUR",
+      password: "process.env.EMAIL_PasswordVendeur",
       role: "vendeur",
     },
   ];
