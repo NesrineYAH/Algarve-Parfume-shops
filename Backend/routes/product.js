@@ -4,7 +4,48 @@ const router = express.Router();
 const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
+const { product } = require("../controllers/product");
 
+
+const {
+  addProduct,
+  getProducts,
+  getProductById,
+  deleteProduct,
+  updateProduct
+} = require("../controllers/product");
+
+// ➤ Ajouter un produit
+router.post(
+  "/add",
+  authMiddleware,
+  isAdmin,
+  uploads.single("image"),
+  addProduct
+);
+
+// ➤ Récupérer tous les produits
+router.get("/", getProducts);
+
+// ➤ Récupérer un produit par ID
+router.get("/:id", getProductById);
+
+// ➤ Supprimer un produit
+router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
+
+// ➤ Modifier un produit
+router.put(
+  "/:id",
+  authMiddleware,
+  isAdmin,
+  uploads.single("image"),
+  updateProduct
+);
+
+module.exports = router;
+
+
+/*
 router.post("/add", authMiddleware, isAdmin, uploads.single("image"), async (req, res) => {
   console.log("req.file:", req.file); // DEBUG
   console.log("req.body:", req.body); // DEBUG
@@ -39,7 +80,7 @@ router.post("/add", authMiddleware, isAdmin, uploads.single("image"), async (req
 }
 );
 
-// ✅ Récupérer tous les produits
+
 router.get("/", async (req, res) => {
   try {
     const produits = await Product.find();
@@ -49,7 +90,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ✅ Récupérer un produit par ID
+
 router.get("/:id", async (req, res) => {
   try {
     const produit = await Product.findById(req.params.id);
@@ -61,7 +102,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// ✅ Supprimer un produit
+
 router.delete("/:id", authMiddleware, isAdmin, async (req, res) => {
   try {
     const produit = await Product.findByIdAndDelete(req.params.id);
@@ -87,6 +128,7 @@ router.put("/:id", authMiddleware, isAdmin, async (req, res) => {
   }
 });
 */
+/*
 router.put("/:id", authMiddleware, isAdmin, uploads.single("image"), async (req, res) => {
   try {
     const { nom, prix, description, stock, categorie_id } = req.body;
@@ -106,14 +148,8 @@ router.put("/:id", authMiddleware, isAdmin, uploads.single("image"), async (req,
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
+*/
 
-
-
-
-
-
-
-module.exports = router;
 
 /*
 Ici je destructure req.body avec une valeur par défaut {} pour éviter undefined.

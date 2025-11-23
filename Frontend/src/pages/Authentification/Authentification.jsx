@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { registerUser, loginUser } from "../../Services/auth";
 import { useNavigate } from "react-router-dom";
-import './Authentification.scss';
+import "./Authentification.scss";
 
 export default function Authentification() {
   const [activeTab, setActiveTab] = useState("login");
@@ -63,13 +63,22 @@ export default function Authentification() {
 
       <form onSubmit={handleSubmit}>
         {activeTab === "register" && (
-          <input
-            type="text"
-            placeholder="Nom"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-          />
+          <>
+            <input
+              type="text"
+              placeholder="Nom"
+              value={form.nom}
+              onChange={(e) => setForm({ ...form, nom: e.target.value })}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Prénom"
+              value={form.prenom}
+              onChange={(e) => setForm({ ...form, prenom: e.target.value })}
+              required
+            />
+          </>
         )}
 
         <input

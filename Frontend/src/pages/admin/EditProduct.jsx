@@ -14,8 +14,8 @@ const EditProduct = () => {
       .get(`http://localhost:5001/api/products/${id}`)
       .then((res) => {
         console.log("Produit récupéré :", res.data);
-        // si backend renvoie { product: {...} }
-        setProduct(res.data.product || res.data);
+        //   setProduct(res.data.product || res.data);
+        setProduct(res.data);
       })
       .catch((err) => console.error(err));
   }, [id]);

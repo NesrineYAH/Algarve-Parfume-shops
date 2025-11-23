@@ -8,6 +8,8 @@ const Header = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const name = localStorage.getItem("name");
+  // const prenom = localStorage.getItem("prenom");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -38,15 +40,15 @@ const Header = () => {
       {/* Icons */}
       <div className="icons">
         <Link to="/Home">
-        <Home className="icone" />
+          <Home className="icone" />
         </Link>
         <Link to="/Favorites">
           <Heart className="icone" />
         </Link>
         <Link to="/Cart">
-            <ShoppingCart className="icone" />
+          <ShoppingCart className="icone" />
         </Link>
-    
+
         <Bell className="icone" />
 
         {/* User Icon with dropdown */}
@@ -56,8 +58,11 @@ const Header = () => {
             onMouseEnter={() => setDropdownVisible(true)}
             onMouseLeave={() => setDropdownVisible(false)}
           >
-            <User className="icone"   onClick={() => setDropdownVisible(!dropdownVisible)} />
-
+            <User
+              className="icone"
+              onClick={() => setDropdownVisible(!dropdownVisible)}
+            />
+            {name ? `Bonjour ${name}` : "Mon compte"}
             {dropdownVisible && (
               <div className="dropdown-menu">
                 <Link to="/Profil">Personal Information</Link>

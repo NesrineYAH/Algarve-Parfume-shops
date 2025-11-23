@@ -105,9 +105,11 @@ const Product = () => {
           <Link to="/admin/add-product" className="btn-Add">
             ➕ Ajouter un produit
           </Link>
-          <Link to="/admin/EditProduct" className="btn-Add">
-            ➕ modifier un produit
-          </Link>
+
+          {/* <Link to="/admin/EditProduct" className="btn-Add">   </Link> */}
+
+          <Link to={`/admin/EditProduct/${product._id}`}>Modifier</Link>
+
           <Link to="/admin/AdminProductManagement" className="btn-Add">
             ➕ supprimer un produit
           </Link>

@@ -22,7 +22,16 @@ export const getAllProducts = async () => {
   const response = await axios.get(`${API_URL}`);
   return response.data;
 };
-
+// 🔹 Récupérer un produit par ID
+export const getProductById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération du produit :", error);
+    throw error;
+  }
+};
 // 🔹 (Optionnel) Supprimer un produit
 export const deleteProduct = async (id) => {
   const token = localStorage.getItem("token");

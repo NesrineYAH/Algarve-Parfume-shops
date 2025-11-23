@@ -34,7 +34,8 @@ function App() {
             path="/admin/AdminProductManagement"
             element={<AdminProductManagement />}
           />{" "}
-          <Route path="/admin/EditProduct" element={<EditProduct />} />
+          {/* <Route path="/admin/EditProduct" element={<EditProduct />} /> */}
+          <Route path="/admin/EditProduct/:id" element={<EditProduct />} />
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />

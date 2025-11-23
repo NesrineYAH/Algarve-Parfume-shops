@@ -12,7 +12,7 @@ const signatureToken = process.env.JWT_SECRET;
 // ✅ REGISTER
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { nom, prenom, email, password } = req.body;
 
     // Validation email & password
     if (!emailRegex.test(email))
@@ -32,15 +32,15 @@ exports.register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Création de l'utilisateur
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ nom, prenom, email, password: hashedPassword });
     await user.save();
 
     // ⚡ Envoi du mail de bienvenue
     await sendEmail({
       to: email,
       subject: "Bienvenue sur notre plateforme  Algarve Parfume !",
-      text: `Bonjour ${name}, merci de vous être inscrit sur notre plateforme !`,
-      html: `<p>Bonjour <b>${name}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`,
+      text: `Bonjour ${prenom}, merci de vous être inscrit sur notre plateforme !`,
+      html: `<p>Bonjour <b>${prenom}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`,
     });
 
     res.status(201).json({ message: "Utilisateur créé avec succès", user });
@@ -77,13 +77,14 @@ exports.login = async (req, res) => {
 
     console.log("Token généré :", token);
     console.log("ROLE UTILISATEUR :", user.role);
-    console.log("ROLE UTILISATEUR :", user.name);
+    console.log("ROLE UTILISATEUR :", user.nom);
 
     res.status(200).json({
       token,
       user: {
         _id: user._id,
-        name: user.name,
+        nom: user.nom,
+        prenom: user.prenom,
         email: user.email,
         role: user.role, // 👈 IMPORTANT !
       },
