@@ -26,7 +26,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
 app.use("/api/categories", categorieRoutes);
 app.use("api/cart", cartRoutes);
-
 app.use("/api/addresses", addressRoutes);
 
 app.get("/", (req, res) => {

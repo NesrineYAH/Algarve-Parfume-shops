@@ -13,13 +13,23 @@ exports.addAddress = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error: error.message });
     }
+
+
 };
+
+
+
+
+
+
+
+
 
 // Récupérer toutes les adresses d'un utilisateur
 exports.getAddresses = async (req, res) => {
     try {
         const userId = req.user.id;
-        const addresses = await Address.find({ userId });
+        const addresses = await Address.find({ user: userId });
         res.json(addresses);
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error: error.message });
@@ -36,3 +46,5 @@ exports.deleteAddress = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur", error: error.message });
     }
 };
+
+

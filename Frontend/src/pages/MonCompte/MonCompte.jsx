@@ -46,29 +46,40 @@ export default function MonCompte() {
   // Ajouter une nouvelle adresse
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem("token");
-    const response = await fetch("/api/addresses", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(form),
-    });
-    const data = await response.json();
-    alert(data.message);
+    try {
+      const response = await fetch("/api/addresses", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
 
-    // Mettre à jour la liste des adresses
-    if (data.address) setAddresses([...addresses, data.address]);
+      if (!response.ok) {
+        const text = await response.text(); // récupère le texte brut pour debug
+        alert(`Erreur ${response.status}: ${text}`);
+        return;
+      }
 
-    // Réinitialiser le formulaire
-    setForm({
-      street: "",
-      city: "",
-      postalCode: "",
-      country: "",
-      type: "shipping",
-    });
+      const data = await response.json();
+      alert(data.message);
+
+      if (data.address) setAddresses([...addresses, data.address]);
+
+      setForm({
+        street: "",
+        city: "",
+        postalCode: "",
+        country: "",
+        type: "shipping",
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Une erreur est survenue lors de l'ajout de l'adresse.");
+    }
   };
 
   const handleLogout = () => {
