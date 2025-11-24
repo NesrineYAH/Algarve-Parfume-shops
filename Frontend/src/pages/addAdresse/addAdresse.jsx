@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../admin/admin.scss';
 
 export default function AddAdresse() {
   const navigate = useNavigate();

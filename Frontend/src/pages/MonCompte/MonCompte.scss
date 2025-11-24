@@ -1,8 +1,8 @@
 .moncompte {
     display: Block;
     width: 100%;
-    padding: 150px;
-    background-color: #f8f3f6;
+    padding: 50px;
+
 
     /*
     .moncompteContainerI {
@@ -158,12 +158,13 @@
         display: flex;
         flex-direction: column;
         gap: .2rem;
-        background-color: #f4d5ea;
+        // background-color: #f4d5ea;
         padding: 1rem;
         border-radius: 8px;
 
         button {
-            background-color: #cdb3cd;
+            background-color: #890963;
+            color: #fff;
             border: none;
             padding: 15px 15px;
             border-radius: 6px;
@@ -181,6 +182,6 @@
 .moncompte__content {
     flex: 1;
     padding: 1rem;
-    background-color: #fff;
+    background-color: #edbfe1;
     border-radius: 8px;
 }
