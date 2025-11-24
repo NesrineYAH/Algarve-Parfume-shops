@@ -8,7 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const name = localStorage.getItem("name");
+  const prenom = localStorage.getItem("prenom");
   // const prenom = localStorage.getItem("prenom");
 
   const handleLogout = () => {
@@ -62,10 +62,10 @@ const Header = () => {
               className="icone"
               onClick={() => setDropdownVisible(!dropdownVisible)}
             />
-            {name ? `Bonjour ${name}` : "Mon compte"}
+            {prenom ? `Bonjour ${prenom}` : "Mon compte"}
             {dropdownVisible && (
               <div className="dropdown-menu">
-                {/* <Link to="/Profil">Personal Information</Link> */}
+                <Link to="/MonCompte">Mon Compte</Link>
                 <Link to="/orders">User's Orders</Link>
                 <Link to="/history">Purchase History</Link>
                 <button onClick={handleLogout}>

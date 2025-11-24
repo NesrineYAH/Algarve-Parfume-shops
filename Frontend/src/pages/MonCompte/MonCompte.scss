@@ -185,3 +185,15 @@
     background-color: #edbfe1;
     border-radius: 8px;
 }
+
+.icone {
+    cursor: pointer;
+    color: grey;
+    transition: color 0.3s;
+}
+
+.icone.active {
+    color: red;
+
+ 
+}

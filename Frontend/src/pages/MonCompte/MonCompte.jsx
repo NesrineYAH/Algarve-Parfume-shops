@@ -1,12 +1,16 @@
+// MonCompte.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 
 export default function MonCompte() {
   const navigate = useNavigate();
+
+  // Tous les useState en haut
   const [user, setUser] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState("infos");
+  const [favorites, setFavorites] = useState([]);
 
   // Charger l'utilisateur + ses adresses
   useEffect(() => {
@@ -38,21 +42,33 @@ export default function MonCompte() {
       .catch((err) => console.error("Erreur chargement adresses :", err));
   }, [navigate]);
 
-  if (!user) return null;
+  // Charger favoris
+  useEffect(() => {
+    const saved = localStorage.getItem("favorites");
+    if (saved) setFavorites(JSON.parse(saved));
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/Authentification");
   };
-  //24/11
+
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
   };
 
+  // ⚠️ Ici on ne fait plus de return avant les hooks
+  if (!user) {
+    return (
+      <section className="moncompte">
+        <h2>Chargement du compte...</h2>
+      </section>
+    );
+  }
+
   return (
     <section className="moncompte">
       <div>
-        {" "}
         <h1>Mon Compte</h1>
         <h2>
           Bienvenue, {user.prenom} {user.nom} !
@@ -128,70 +144,26 @@ export default function MonCompte() {
             </div>
           )}
 
-          {activeTab === "favorites" && <h2>Mes Favoris</h2>}
+          {activeTab === "favorites" && (
+            <div>
+              <h2>Mes Favoris</h2>
+              {favorites.length === 0 ? (
+                <p>Aucun produit favori.</p>
+              ) : (
+                <ul>
+                  {favorites.map((prod) => (
+                    <li key={prod._id}>
+                      {prod.nom} - {prod.prix} €
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
           {activeTab === "payments" && <h2>Mes Moyens de Paiement</h2>}
         </main>
       </div>
     </section>
   );
 }
-
-/*
- {/*}
-      <div className="moncompteContainerI">
-       
-
-        <div className="moncompteContainerI__info">
-          <p>
-            <strong>Nom :</strong> {user.nom}
-          </p>
-          <p>
-            <strong>Prénom :</strong> {user.prenom}
-          </p>
-          <p>
-            <strong>Email :</strong> {user.email}
-          </p>
-          <p>
-            <strong>Rôle :</strong> {user.role}
-          </p>
-        </div>
-      </div>
-
-      <div className="moncompteContainerII">
-  
-        <div className="moncompteContainerII__addresses">
-          <button>Mes Addresses</button>
-
-          {addresses.length === 0 ? (
-            <p>Aucune adresse enregistrée.</p>
-          ) : (
-            <ul>
-              {addresses.map((addr) => (
-                <li key={addr._id}>
-                  {addr.street}, {addr.city}, {addr.postalCode}, {addr.country}{" "}
-                  ({addr.type})
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-     
-        <div className="moncompteContainerII__profil">
-          <button>Mes Commandes</button>
-          <button onClick={() => navigate("/history")}>
-            Historique d'Achats
-          </button>
-          <button onClick={() => navigate("/history")}>Mes Inofrmations</button>
-
-  
-          <button onClick={() => navigate("/add-adresse")}>
-            ➕ Ajouter une nouvelle adresse
-          </button>
-
-          <button>Mes favoris</button>
-          <button>Mes moyens de paiement</button>
-
-          <button onClick={handleLogout}>Déconnexion</button>
-        </div>
-      </div>*/
