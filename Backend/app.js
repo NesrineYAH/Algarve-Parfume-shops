@@ -7,7 +7,8 @@ const ProductRoutes = require("./routes/product");
 const categorieRoutes = require("./routes/categories");
 const cartRoutes = require("./routes/cart");
 const addressRoutes = require("./routes/addresses");
-//const orderRoutes = require("./routes/orders");
+// const orderRoutes = require("./routes/orders");
+
 require("./mongoDB/DB");
 
 const app = express();
