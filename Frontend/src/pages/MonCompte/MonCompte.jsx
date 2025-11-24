@@ -6,31 +6,28 @@ export default function MonCompte() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [addresses, setAddresses] = useState([]);
-  const [form, setForm] = useState({
-    street: "",
-    city: "",
-    postalCode: "",
-    country: "",
-    type: "shipping",
-  });
+  const [activeTab, setActiveTab] = useState("infos");
 
-  // Vérifier si l'utilisateur est connecté et récupérer ses infos
+  // Charger l'utilisateur + ses adresses
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
       navigate("/Authentification");
       return;
     }
 
+    // Charger infos utilisateur
     const storedUser = {
-      nom: localStorage.getItem("nom") || "John",
-      prenom: localStorage.getItem("prenom") || "Doe",
-      email: localStorage.getItem("email") || "johndoe@example.com",
-      role: localStorage.getItem("role") || "client",
+      nom: localStorage.getItem("nom"),
+      prenom: localStorage.getItem("prenom"),
+      email: localStorage.getItem("email"),
+      role: localStorage.getItem("role"),
     };
+
     setUser(storedUser);
 
-    // Charger les adresses existantes
+    // Charger adresses
     fetch("/api/addresses", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,140 +35,163 @@ export default function MonCompte() {
     })
       .then((res) => res.json())
       .then((data) => setAddresses(data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Erreur chargement adresses :", err));
   }, [navigate]);
 
   if (!user) return null;
 
-  // Ajouter une nouvelle adresse
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const token = localStorage.getItem("token");
-    try {
-      const response = await fetch("/api/addresses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(form),
-      });
-
-      if (!response.ok) {
-        const text = await response.text(); // récupère le texte brut pour debug
-        alert(`Erreur ${response.status}: ${text}`);
-        return;
-      }
-
-      const data = await response.json();
-      alert(data.message);
-
-      if (data.address) setAddresses([...addresses, data.address]);
-
-      setForm({
-        street: "",
-        city: "",
-        postalCode: "",
-        country: "",
-        type: "shipping",
-      });
-    } catch (err) {
-      console.error(err);
-      alert("Une erreur est survenue lors de l'ajout de l'adresse.");
-    }
-  };
-
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("nom");
-    localStorage.removeItem("prenom");
-    localStorage.removeItem("email");
+    localStorage.clear();
     navigate("/Authentification");
+  };
+  //24/11
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
   };
 
   return (
-    <div className="moncompte-container">
-      <h1>
-        Bienvenue, {user.prenom} {user.nom} !
-      </h1>
-
-      <div className="user-info">
-        <p>
-          <strong>Nom :</strong> {user.nom}
-        </p>
-        <p>
-          <strong>Prénom :</strong> {user.prenom}
-        </p>
-        <p>
-          <strong>Email :</strong> {user.email}
-        </p>
-        <p>
-          <strong>Rôle :</strong> {user.role}
-        </p>
+    <section className="moncompte">
+      <div>
+        {" "}
+        <h1>Mon Compte</h1>
+        <h2>
+          Bienvenue, {user.prenom} {user.nom} !
+        </h2>
       </div>
 
-      <div className="profil-actions">
-        <button onClick={() => navigate("/orders")}>Mes Commandes</button>
-        <button onClick={() => navigate("/history")}>
-          Historique d'Achats
-        </button>
-        <button onClick={handleLogout}>Déconnexion</button>
+      <div className="moncompte__layout">
+        <aside className="moncompte__sidebar">
+          <button onClick={() => handleTabClick("infos")}>
+            Mes Informations
+          </button>
+          <button onClick={() => handleTabClick("addresses")}>
+            Mes Adresses
+          </button>
+          <button onClick={() => handleTabClick("orders")}>
+            Mes Commandes
+          </button>
+          <button onClick={() => handleTabClick("favorites")}>
+            Mes Favoris
+          </button>
+          <button onClick={() => handleTabClick("payments")}>
+            Mes Moyens de Paiement
+          </button>
+          <button onClick={handleLogout}>Déconnexion</button>
+        </aside>
+
+        <main className="moncompte__content">
+          {activeTab === "infos" && (
+            <div>
+              <h2>Mes Informations</h2>
+              <p>
+                <strong>Nom :</strong> {user.nom}
+              </p>
+              <p>
+                <strong>Prénom :</strong> {user.prenom}
+              </p>
+              <p>
+                <strong>Email :</strong> {user.email}
+              </p>
+              <p>
+                <strong>Rôle :</strong> {user.role}
+              </p>
+            </div>
+          )}
+
+          {activeTab === "addresses" && (
+            <div>
+              <h2>Mes Adresses</h2>
+              {addresses.length === 0 ? (
+                <p>Aucune adresse enregistrée.</p>
+              ) : (
+                <ul>
+                  {addresses.map((addr) => (
+                    <li key={addr._id}>
+                      {addr.street}, {addr.city}, {addr.postalCode},{" "}
+                      {addr.country} ({addr.type})
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <button onClick={() => navigate("/add-adresse")}>
+                ➕ Ajouter une adresse
+              </button>
+            </div>
+          )}
+
+          {activeTab === "orders" && (
+            <div>
+              <h2>Mes Commandes</h2>
+              <button onClick={() => navigate("/history")}>
+                Voir l'historique
+              </button>
+            </div>
+          )}
+
+          {activeTab === "favorites" && <h2>Mes Favoris</h2>}
+          {activeTab === "payments" && <h2>Mes Moyens de Paiement</h2>}
+        </main>
       </div>
-
-      <div className="addresses-section">
-        <h2>Mes Adresses</h2>
-
-        <ul>
-          {addresses.map((addr) => (
-            <li key={addr._id}>
-              {addr.street}, {addr.city}, {addr.postalCode}, {addr.country} (
-              {addr.type})
-            </li>
-          ))}
-        </ul>
-
-        <h3>Ajouter une nouvelle adresse</h3>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Rue"
-            value={form.street}
-            onChange={(e) => setForm({ ...form, street: e.target.value })}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Ville"
-            value={form.city}
-            onChange={(e) => setForm({ ...form, city: e.target.value })}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Code postal"
-            value={form.postalCode}
-            onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Pays"
-            value={form.country}
-            onChange={(e) => setForm({ ...form, country: e.target.value })}
-            required
-          />
-          <select
-            value={form.type}
-            onChange={(e) => setForm({ ...form, type: e.target.value })}
-          >
-            <option value="shipping">Livraison</option>
-            <option value="billing">Facturation</option>
-          </select>
-          <button type="submit">Ajouter l'adresse</button>
-        </form>
-      </div>
-    </div>
+    </section>
   );
 }
+
+/*
+ {/*}
+      <div className="moncompteContainerI">
+       
+
+        <div className="moncompteContainerI__info">
+          <p>
+            <strong>Nom :</strong> {user.nom}
+          </p>
+          <p>
+            <strong>Prénom :</strong> {user.prenom}
+          </p>
+          <p>
+            <strong>Email :</strong> {user.email}
+          </p>
+          <p>
+            <strong>Rôle :</strong> {user.role}
+          </p>
+        </div>
+      </div>
+
+      <div className="moncompteContainerII">
+  
+        <div className="moncompteContainerII__addresses">
+          <button>Mes Addresses</button>
+
+          {addresses.length === 0 ? (
+            <p>Aucune adresse enregistrée.</p>
+          ) : (
+            <ul>
+              {addresses.map((addr) => (
+                <li key={addr._id}>
+                  {addr.street}, {addr.city}, {addr.postalCode}, {addr.country}{" "}
+                  ({addr.type})
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+     
+        <div className="moncompteContainerII__profil">
+          <button>Mes Commandes</button>
+          <button onClick={() => navigate("/history")}>
+            Historique d'Achats
+          </button>
+          <button onClick={() => navigate("/history")}>Mes Inofrmations</button>
+
+  
+          <button onClick={() => navigate("/add-adresse")}>
+            ➕ Ajouter une nouvelle adresse
+          </button>
+
+          <button>Mes favoris</button>
+          <button>Mes moyens de paiement</button>
+
+          <button onClick={handleLogout}>Déconnexion</button>
+        </div>
+      </div>*/

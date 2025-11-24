@@ -18,6 +18,7 @@ import "./App.scss";
 import Authentification from "./pages/Authentification/Authentification";
 import MonCompte from "./pages/MonCompte/MonCompte";
 import Cart from "./pages/Cart/Cart";
+import AddAdresse from "./pages/addAdresse/addAdresse";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/Authentification" element={<Authentification />} />
           <Route path="/MonCompte" element={<MonCompte />} />
           <Route path="/Cart" element={<Cart />} />
+          <Route path="/add-adresse" element={<AddAdresse />} />
         </Routes>
 
         <BlogBenefits />

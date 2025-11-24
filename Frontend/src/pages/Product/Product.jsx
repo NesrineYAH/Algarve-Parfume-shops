@@ -111,7 +111,7 @@ const Product = () => {
           <Link to={`/admin/EditProduct/${product._id}`}>Modifier</Link>
 
           <Link to="/admin/AdminProductManagement" className="btn-Add">
-            ➕ supprimer un produit
+            supprimer un produit
           </Link>
         </div>
       )}
