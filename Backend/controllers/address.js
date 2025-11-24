@@ -4,7 +4,7 @@ const Address = require("../Model/Address");
 exports.addAddress = async (req, res) => {
     try {
         const { street, city, postalCode, country, type } = req.body;
-        const userId = req.user.id; // Assure-toi que l'utilisateur est authentifié
+        const userId = req.user.userId;  // Assure-toi que l'utilisateur est authentifié c'est fautconst userId = req.user.id; // ❌ FAUX
 
         const newAddress = new Address({ userId, street, city, postalCode, country, type });
         await newAddress.save();

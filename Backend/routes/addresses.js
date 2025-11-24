@@ -6,13 +6,11 @@ const { authMiddleware, isAdmin } = require("../middleware/auth"); // vérifie q
 router.post("/", authMiddleware, addAddress);      // ajouter adresse
 router.get("/", authMiddleware, getAddresses);     // récupérer adresses
 router.delete("/:id", authMiddleware, deleteAddress); // supprimer adresse
-// GET pour récupérer les adresses
 router.get("/", authMiddleware, (req, res) => {
     const userAddresses = []; // Ex : À remplacer par DB
     res.json(userAddresses);
 });
 
-// POST pour ajouter une adresse
 router.post("/", authMiddleware, (req, res) => {
     const { street, city, postalCode, country, type } = req.body;
 
