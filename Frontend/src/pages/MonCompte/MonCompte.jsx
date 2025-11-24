@@ -50,6 +50,9 @@ export default function MonCompte() {
 
   const handleLogout = () => {
     localStorage.clear();
+    localStorage.removeItem("cart");
+    localStorage.removeItem("favorites");
+    localStorage.removeItem("token");
     navigate("/Authentification");
   };
 

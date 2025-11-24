@@ -12,8 +12,10 @@ const Header = () => {
   // const prenom = localStorage.getItem("prenom");
 
   const handleLogout = () => {
+    localStorage.clear();
+    localStorage.removeItem("cart");
+    localStorage.removeItem("favorites");
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
     navigate("/Authentification");
   };
 

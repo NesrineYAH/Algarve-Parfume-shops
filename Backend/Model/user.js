@@ -13,6 +13,13 @@ const userSchema = new mongoose.Schema({
   date_creation: { type: Date, default: Date.now },
   confirmationCode: { type: String, unique: true },
   status: { type: String, enum: ["Pending", "Active"], default: "Pending" },
+  cart: [
+    {
+      productId: String,
+      quantity: Number
+    }
+  ],
+  favorites: [String]
 });
 module.exports = mongoose.model("User", userSchema);
 
