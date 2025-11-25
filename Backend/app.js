@@ -7,7 +7,7 @@ const ProductRoutes = require("./routes/product");
 const categorieRoutes = require("./routes/categories");
 const cartRoutes = require("./routes/cart");
 const addressRoutes = require("./routes/addresses");
-// const orderRoutes = require("./routes/orders");
+const orderRoutes = require("./routes/orders");
 
 require("./mongoDB/DB");
 
@@ -29,7 +29,7 @@ app.use("/api/products", ProductRoutes);
 app.use("/api/categories", categorieRoutes);
 app.use("api/cart", cartRoutes);
 app.use("/api/addresses", addressRoutes);
-// app.use("/api/orders", orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");

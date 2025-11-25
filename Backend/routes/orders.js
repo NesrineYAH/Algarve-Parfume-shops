@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Order = require("../Model/Order");
-const authMiddleware = require("../middleware/auth");
+const { authMiddleware } = require("../middleware/auth");
 
 // Créer une nouvelle commande
 router.post("/create", authMiddleware, async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { addAddress, getAddresses, deleteAddress } = require("../controllers/address");
-const { authMiddleware, isAdmin } = require("../middleware/auth"); // vérifie que l'utilisateur est connecté
+const { authMiddleware } = require("../middleware/auth"); // vérifie que l'utilisateur est connecté
 
 router.post("/", authMiddleware, addAddress);      // ajouter adresse
 router.get("/", authMiddleware, getAddresses);     // récupérer adresses

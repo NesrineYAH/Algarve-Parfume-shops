@@ -1,11 +1,45 @@
-// src/services/orderService.js
-export async function getOrders() {
+import axios from "axios";
+
+// 🔥 Instance Axios personnalisée
+const api = axios.create({
+  baseURL: "http://localhost:5001/api", // ← ton backend
+});
+
+// 🔐 Ajout automatique du token JWT
+api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  const res = await fetch("http://localhost:5000/api/orders", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await res.json();
-  return data;
-}
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+// 🟦 OrderService
+const OrderService = {
+
+  // ➤ Créer une commande
+  createOrder: async (orderData) => {
+    try {
+      const response = await api.post("/orders/create", orderData);
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de la création de la commande :", error);
+      throw error;
+    }
+  },
+
+  // ➤ Récupérer toutes les commandes
+  getAllOrders: async () => {
+    try {
+      const response = await api.get("/orders/all");
+      return response.data;
+    } catch (error) {
+      console.error("Erreur lors de la récupération des commandes :", error);
+      throw error;
+    }
+  },
+};
+
+export default OrderService;

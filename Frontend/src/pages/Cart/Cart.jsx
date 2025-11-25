@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Cart.scss";
 import { Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
@@ -74,7 +75,9 @@ export default function Cart() {
 
           <div className="cart-summary">
             <h2>Total: {total.toFixed(2)} €</h2>
-            <button className="checkout-btn">Passer la commande</button>
+            <Link to="/Orders">
+              <button className="checkout-btn">Passer la commande</button>
+            </Link>
           </div>
         </div>
       )}
