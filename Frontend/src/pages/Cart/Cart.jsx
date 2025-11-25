@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./Cart.scss";
 import { Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
+  const currentStep = 1; // par exemple, on est à l'étape 1 : Panier
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -41,6 +43,9 @@ export default function Cart() {
 
   return (
     <div className="cart-container">
+      {/* Affiche le composant avec l'étape active */}
+      <CheckoutSteps step={currentStep} />
+
       <h1>🛒 Votre Panier</h1>
 
       {cart.length === 0 ? (

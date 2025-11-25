@@ -1,3 +1,4 @@
+import React from "react";
 import "./CheckoutSteps.scss";
 
 function CheckoutSteps({ step }) {

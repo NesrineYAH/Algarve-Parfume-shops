@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import OrderService from "../../Services/orderService";
+import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import "./Orders.scss";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const currentStep = 2; // par exemple, on est à l'étape 2 : Livraison
 
   useEffect(() => {
     async function fetchOrders() {
@@ -26,6 +28,9 @@ function Orders() {
 
   return (
     <div className="orders-container">
+      {/* Affiche le composant avec l'étape active */}
+      <CheckoutSteps step={currentStep} />
+
       <h1 className="orders-title">Mes Commandes</h1>
 
       {orders.length === 0 ? (
