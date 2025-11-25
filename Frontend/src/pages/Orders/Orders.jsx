@@ -47,8 +47,12 @@ function Orders() {
               {order.items.map((item, idx) => (
                 <div className="order-item" key={idx}>
                   <img
-                    src={item.image || "/placeholder.png"}
-                    alt={item.name}
+                    src={
+                      item.image
+                        ? `http://localhost:5001${item.imageUrl}`
+                        : "/placeholder.png"
+                    }
+                    alt={item.nom}
                     className="item-image"
                   />
                   <div>
