@@ -45,7 +45,6 @@ export default function Cart() {
     <div className="cart-container">
       {/* Affiche le composant avec l'étape active */}
       <CheckoutSteps step={currentStep} />
-
       <h1>🛒 Votre Panier</h1>
 
       {cart.length === 0 ? (
