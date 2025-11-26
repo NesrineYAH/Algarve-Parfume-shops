@@ -20,6 +20,7 @@ import MonCompte from "./pages/MonCompte/MonCompte";
 import Cart from "./pages/Cart/Cart";
 import AddAdresse from "./pages/addAdresse/addAdresse";
 import Orders from "./pages/Orders/Orders";
+import Delivery from "./pages/Delivery/Delivery";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
+          <Route path="/Delivery" element={<Delivery />} />
         </Routes>
 
         <BlogBenefits />

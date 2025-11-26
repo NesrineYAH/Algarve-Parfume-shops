@@ -127,7 +127,7 @@ export default function Orders() {
           <div className="order-card" key={order._id}>
             <h2>Commande n°{order._id}</h2>
             <p>
-              Client : {order.userId?.name || "Inconnu"} -{" "}
+              Client : {order.userId?.nom || "Inconnu"} -{" "}
               {order.userId?.email || "Inconnu"}
             </p>
             <p>Adresse : {order.address}</p>
