@@ -96,6 +96,26 @@ export default function Orders() {
     }
   };
 
+  // ➤ Modifier une commande (exemple : changer le statut)
+  const handleUpdate = async (orderId, newStatus) => {
+    try {
+      const updated = await OrderService.updateOrder(orderId, {
+        status: newStatus,
+      });
+      setOrders((prev) =>
+        prev.map((order) =>
+          order._id === orderId
+            ? { ...order, status: updated.order.status }
+            : order
+        )
+      );
+      alert("✅ Commande mise à jour !");
+    } catch (err) {
+      console.error("Erreur lors de la modification :", err);
+      alert("❌ Impossible de modifier la commande");
+    }
+  };
+
   return (
     <div className="orders-container">
       <CheckoutSteps step={2} />
@@ -140,6 +160,14 @@ export default function Orders() {
               onClick={() => handleDelete(order._id)}
             >
               Supprimer la commande
+            </button>
+
+            {/* ➤ Bouton modifier (exemple : confirmer la commande) */}
+            <button
+              className="update-order-btn"
+              onClick={() => handleUpdate(order._id, "confirmed")}
+            >
+              Confirmer la commande
             </button>
           </div>
         ))
