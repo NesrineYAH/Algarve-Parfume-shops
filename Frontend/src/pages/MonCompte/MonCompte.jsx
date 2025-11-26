@@ -141,7 +141,7 @@ export default function MonCompte() {
           {activeTab === "orders" && (
             <div>
               <h2>Mes Commandes</h2>
-              <button onClick={() => navigate("/history")}>
+              <button onClick={() => navigate("/Orders")}>
                 Voir l'historique
               </button>
             </div>

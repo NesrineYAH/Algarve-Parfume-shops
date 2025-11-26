@@ -157,7 +157,7 @@ export default function Orders() {
 
             {/* ➤ Bouton supprimer */}
             <button
-              className="delete-order-btn"
+              className="delete-order-btn Button"
               onClick={() => handleDelete(order._id)}
             >
               Supprimer la commande
@@ -165,14 +165,14 @@ export default function Orders() {
 
             {/* ➤ Bouton modifier (exemple : confirmer la commande) */}
             <button
-              className="update-order-btn"
+              className="update-order-btn Button"
               onClick={() => handleUpdate(order._id, "confirmed")}
             >
               Confirmer la commande
             </button>
             {/* ➤ Bouton vers la page Delivery */}
             <Link to="/delivery">
-              <button className="delivery-btn">
+              <button className="delivery-btn Button">
                 Choisir un mode de livraison
               </button>
             </Link>

@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema({
     ],
     totalPrice: Number,
     address: String,
-    status: { type: String, default: "pending" }, // pending, confirmed, shipped, delivered
+    status: { type: String, default: "pending, confirmed, shipped, delivered" }, // pending, confirmed, shipped, delivered
     createdAt: { type: Date, default: Date.now },
 });
 
