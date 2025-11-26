@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import OrderService from "../../Services/orderService";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import "./Orders.scss";
+import { Link } from "react-router-dom";
 /*
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -169,6 +170,12 @@ export default function Orders() {
             >
               Confirmer la commande
             </button>
+            {/* ➤ Bouton vers la page Delivery */}
+            <Link to="/delivery">
+              <button className="delivery-btn">
+                Choisir un mode de livraison
+              </button>
+            </Link>
           </div>
         ))
       )}

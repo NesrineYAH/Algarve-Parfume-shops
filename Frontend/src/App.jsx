@@ -47,7 +47,7 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
-          <Route path="/Delivery" element={<Delivery />} />
+          <Route path="/delivery" element={<Delivery />} />
         </Routes>
 
         <BlogBenefits />
