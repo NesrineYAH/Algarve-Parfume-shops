@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// 🔥 Instance Axios personnalisée
 const api = axios.create({
-  baseURL: "http://localhost:5001/api", // ← ton backend
+  baseURL: "http://localhost:5001/api", 
 });
 
 // 🔐 Ajout automatique du token JWT
@@ -16,7 +15,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// 🟦 OrderService
 const OrderService = {
 
   // ➤ Créer une commande

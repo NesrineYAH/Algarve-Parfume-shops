@@ -2,69 +2,60 @@ import React, { useEffect, useState } from "react";
 import OrderService from "../../Services/orderService";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import "./Orders.scss";
-
-function Orders() {
+/*
+export default function Orders() {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const currentStep = 2; // par exemple, on est à l'étape 2 : Livraison
 
   useEffect(() => {
-    async function fetchOrders() {
+    const fetchOrders = async () => {
       try {
         const data = await OrderService.getAllOrders();
         setOrders(data);
-      } catch {
-        setError("Impossible de récupérer les commandes.");
-      } finally {
-        setLoading(false);
+      } catch (err) {
+        console.error("Erreur lors de la récupération des commandes :", err);
       }
-    }
+    };
+
     fetchOrders();
   }, []);
 
-  if (loading) return <p className="loading">Chargement...</p>;
-  if (error) return <p className="error">{error}</p>;
+  const getImageUrl = (imageUrl) =>
+    imageUrl
+      ? `http://localhost:5001${imageUrl}`
+      : `http://localhost:5001/uploads/`;
 
   return (
     <div className="orders-container">
-      {/* Affiche le composant avec l'étape active */}
-      <CheckoutSteps step={currentStep} />
-
-      <h1 className="orders-title">Mes Commandes</h1>
-
+      <h1>Mes Commandes</h1>
       {orders.length === 0 ? (
-        <p className="no-orders">Aucune commande trouvée.</p>
+        <p>Aucune commande pour le moment.</p>
       ) : (
         orders.map((order) => (
           <div className="order-card" key={order._id}>
-            <div className="order-header">
-              <span>Commande n° {order._id}</span>
-              <span className={`status ${order.status}`}>{order.status}</span>
-            </div>
+            <h2>Commande n°{order._id}</h2>
+            <p>
+              Client : {order.userId?.name || "Inconnu"} -{" "}
+              {order.userId?.email || "Inconnu"}
+            </p>
+            <p>Adresse : {order.address}</p>
+            <p>Total : {(order.totalPrice ?? 0).toFixed(2)} €</p>
+            <p>Status : {order.status}</p>
 
             <div className="order-items">
-              {order.items.map((item, idx) => (
-                <div className="order-item" key={idx}>
+              {order.items.map((item) => (
+                <div className="order-item" key={item.productId}>
                   <img
-                    src={`http://localhost:5001/${item.imageUrl}`}
-                    alt={item.nom || item.name}
                     className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.name}
                   />
-
-                  <div>
-                    <p className="item-name">{item.name}</p>
-                    <p className="item-qty">Quantité : {item.quantity}</p>
+                  <div className="item-details">
+                    <h3>{item.name}</h3>
+                    <p>Prix : {(item.prix ?? 0).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantity}</p>
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="order-footer">
-              <p>
-                Total : <strong>{order.totalPrice} €</strong>
-              </p>
-              <p>Adresse : {order.addresses}</p>
             </div>
           </div>
         ))
@@ -72,5 +63,87 @@ function Orders() {
     </div>
   );
 }
+*/
 
-export default Orders;
+export default function Orders() {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await OrderService.getAllOrders();
+        setOrders(data);
+      } catch (err) {
+        console.error("Erreur lors de la récupération des commandes :", err);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const getImageUrl = (imageUrl) =>
+    imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";
+
+  // ➤ Supprimer une commande
+  const handleDelete = async (orderId) => {
+    try {
+      await OrderService.deleteOrder(orderId);
+      setOrders((prev) => prev.filter((order) => order._id !== orderId));
+      alert("✅ Commande supprimée avec succès !");
+    } catch (err) {
+      console.error("Erreur lors de la suppression :", err);
+      alert("❌ Impossible de supprimer la commande");
+    }
+  };
+
+  return (
+    <div className="orders-container">
+      <CheckoutSteps step={2} />
+      <h1>Mes Commandes</h1>
+      {orders.length === 0 ? (
+        <p>Aucune commande pour le moment.</p>
+      ) : (
+        orders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <h2>Commande n°{order._id}</h2>
+            <p>
+              Client : {order.userId?.name || "Inconnu"} -{" "}
+              {order.userId?.email || "Inconnu"}
+            </p>
+            <p>Adresse : {order.address}</p>
+            <p>Total : {Number(order.totalPrice ?? 0).toFixed(2)} €</p>
+            <p>Status : {order.status}</p>
+
+            <div className="order-items">
+              {order.items.map((item) => (
+                <div
+                  className="order-item"
+                  key={`${order._id}-${item.productId}`}
+                >
+                  <img
+                    className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.name}
+                  />
+                  <div className="item-details">
+                    <h3>{item.name}</h3>
+                    <p>Prix : {Number(item.prix ?? 0).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantity}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* ➤ Bouton supprimer */}
+            <button
+              className="delete-order-btn"
+              onClick={() => handleDelete(order._id)}
+            >
+              Supprimer la commande
+            </button>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
