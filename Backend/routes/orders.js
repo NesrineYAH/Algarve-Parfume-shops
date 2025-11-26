@@ -52,6 +52,43 @@ router.get("/all", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
+// ➤ Modifier une commande (ex: adresse ou statut)
+router.put("/:id", authMiddleware, async (req, res) => {
+    try {
+        const { address, status } = req.body;
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id,
+            { address, status },
+            { new: true } // retourne la commande mise à jour
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        res.status(200).json({ message: "Commande mise à jour", order: updatedOrder });
+    } catch (error) {
+        console.error("Erreur mise à jour commande :", error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+// ➤ Supprimer une commande
+router.delete("/:id", authMiddleware, async (req, res) => {
+    try {
+        const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+
+        if (!deletedOrder) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        res.status(200).json({ message: "Commande supprimée avec succès" });
+    } catch (error) {
+        console.error("Erreur suppression commande :", error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+
 
 module.exports = router;
 
