@@ -70,48 +70,49 @@ exports.validate = (method) => {
       ];
   }
 };
-///18*11/2025
+///27/11/2025
 
 /*
-exports.login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email et mot de passe requis" });
+router.get("/relays", async (req, res) => {
+    const { lat, lng } = req.query;
+
+    if (!lat || !lng) {
+        return res.status(400).json({ error: "Latitude et longitude requises" });
     }
 
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      return res.status(401).json({ message: "Utilisateur non trouvé" });
+    try {
+        const body = {
+            Enseigne: process.env.MR_ENS,        // Ex: 'BDTEST13'
+            Pays: "FR",
+            Ville: "",
+            CP: "",
+            Latitude: lat,
+            Longitude: lng,
+            Taille: "M",
+            Poids: 1000,
+            Action: "REL", // Points relais
+        };
+
+
+
+        const response = await axios.post(
+            "https://api.mondialrelay.com/Web_Services.asmx/WSI3_PointRelais_Recherche",
+            body,
+            { headers: { "Content-Type": "application/json" } }
+        );
+
+        const relays = response.data?.RecherchePointRelaisResult?.PointsRelais?.PointRelais_Details || [];
+
+        res.json({ relays });
+
+    } catch (err) {
+        console.error("Erreur API Mondial Relay :", err.message);
+        res.status(500).json({ error: "Impossible d’obtenir les points relais" });
     }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Mot de passe incorrect !!" });
-    }
+});
 
-    // Génération du token
-    const token = jwt.sign(
-      { userId: user._id, role: user.role },
-      process.env.JWT_SECRET || "secretkey",
-      { expiresIn: "1h" }
-    );
-
-    console.log("Token généré :", token);
-    console.log("ROLE UTILISATEUR :", user.role);
-
-    res.status(200).json({
-      message: "Connexion réussie",
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
-  } catch (err) {
-    console.error("Erreur lors du login :", err);
-    res.status(500).json({ message: "Erreur serveur" });
-  }
-};
+module.exports = router;
 */
+
+//            "https://api.mondialrelay.com/Web_Services/WSI4_PointRelais.asmx/RecherchePointRelais",
+//            "https://api.mondialrelay.com/Web_Services.asmx/WSI3_PointRelais_Recherche"
