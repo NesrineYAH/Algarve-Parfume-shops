@@ -5,8 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Link } from "react-router-dom";
-// import { useContext } from "react";
-// import { CartContext } from "../../context/CartContext";
+
+import { CartContext } from "../../context/CartContext";
 
 // Fix icône Leaflet par défaut
 delete L.Icon.Default.prototype._getIconUrl;

@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import "./Payment.scss";
 import { useLocation, useNavigate } from "react-router-dom";
-//import { CartContext } from "../../context/CartContext";
 
 export default function Payment() {
   const location = useLocation();
