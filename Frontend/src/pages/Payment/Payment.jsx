@@ -43,6 +43,10 @@ export default function Payment() {
 
   // Calcul total
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (sum, item) => sum + item.option.price * item.quantity,
+    0
+  );
 
   return (
     <div className="payment-container">

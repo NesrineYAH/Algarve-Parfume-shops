@@ -8,8 +8,11 @@ const Product = require("../Model/product"); // Assure-toi que ce modèle existe
 // Créer une nouvelle commande
 router.post("/create", authMiddleware, async (req, res) => {
     try {
-        const { items, totalPrice, address } = req.body;
+        const { userId, items, totalPrice, delivery } = req.body;
+    //  const { userId, items, total, delivery } = req.body;
 
+ if (!items || items.length === 0) return res.status(400).json({ message: "Panier vide" });
+    
         // Enrichir chaque item avec les infos du produit
         const enrichedItems = await Promise.all(
             items.map(async (item) => {
@@ -30,7 +33,8 @@ router.post("/create", authMiddleware, async (req, res) => {
             userId: req.user.userId,
             items: enrichedItems,
             totalPrice,
-            address,
+            delivery,
+            paymentStatus: "pending"
         });
 
         await order.save();

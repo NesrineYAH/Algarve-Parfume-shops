@@ -5,15 +5,17 @@ const orderSchema = new mongoose.Schema({
     items: [
         {
             productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
-            name: String,          // nom du produit
-            prix: Number,          // prix du produit
-            imageUrl: String,      // chemin de l'image (ex: "uploads/products/dior.jpg")
-            quantity: Number,      // quantité commandée
+            nom: { type: String, required: true },          // nom du produit
+            quantity: { type: Number, required: true },     // nombre d’articles commandés
+            option: {                                       // l’option choisie (quantité / prix)
+                quantity: { type: String, required: true },  // ex: "10ml", "30ml"
+                prix: { type: Number, required: true },      // prix correspondant à cette option
+            },
         },
     ],
-    totalPrice: Number,
-    address: String,
-    status: { type: String, default: "pending, confirmed, shipped, delivered" }, // pending, confirmed, shipped, delivered
+    totalPrice: { type: Number, required: true },       // total de la commande
+    address: { type: String },                          // adresse de livraison
+    status: { type: String, default: "pending" },      // pending, confirmed, shipped, delivered
     createdAt: { type: Date, default: Date.now },
 });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom"; // ⬅️ IMPORTANT !
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import "./Product.scss";
 
@@ -7,6 +7,7 @@ const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null); // option choisie
   const role = localStorage.getItem("role");
 
   useEffect(() => {
@@ -16,6 +17,9 @@ const Product = () => {
           `http://localhost:5001/api/products/${id}`
         );
         setProduct(response.data);
+        if (response.data.options && response.data.options.length > 0) {
+          setSelectedOption(response.data.options[0]); // sélectionne la première option par défaut
+        }
       } catch (err) {
         setError("Produit introuvable ou erreur serveur.");
       }
@@ -27,19 +31,30 @@ const Product = () => {
   if (error) return <p>{error}</p>;
   if (!product) return <p>Chargement du produit...</p>;
 
-  //20/11
-  const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("Cart")) || [];
+  // Ajouter au panier
+  const addToCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const existing = cart.find((item) => item.id === product.id);
+    // Vérifie si le produit avec la même option est déjà dans le panier
+    const existing = cart.find(
+      (item) =>
+        item.id === product._id &&
+        item.option.quantity === selectedOption.quantity
+    );
 
     if (existing) {
       existing.quantity += 1;
     } else {
-      cart.push({ ...product, quantity: 1 });
+      cart.push({
+        id: product._id,
+        nom: product.nom,
+        option: selectedOption,
+        quantity: 1,
+      });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Produit ajouté au panier !");
   };
 
   return (
@@ -53,12 +68,31 @@ const Product = () => {
           />
           <h2>{product.nom}</h2>
           <p>
-            <strong>Prix :</strong> {product.prix} €
-          </p>
-          <p>
             <strong>Stock :</strong> {product.stock} en stock
           </p>
           <p>{product.description}</p>
+
+          {product.options && product.options.length > 0 && (
+            <div className="product-options">
+              <label>Choisir la quantité :</label>
+              <select
+                value={product.options.indexOf(selectedOption)}
+                onChange={(e) =>
+                  setSelectedOption(product.options[e.target.value])
+                }
+              >
+                {product.options.map((opt, index) => (
+                  <option key={index} value={index}>
+                    {opt.quantity} - {opt.prix} €
+                  </option>
+                ))}
+              </select>
+              <p>
+                <strong>Prix sélectionné :</strong>{" "}
+                {selectedOption ? selectedOption.prix : 0} €
+              </p>
+            </div>
+          )}
         </div>
 
         {/* ⭐ Notation */}
@@ -66,7 +100,7 @@ const Product = () => {
           {Array.from({ length: 5 }).map((_, i) => (
             <span
               key={i}
-              className={i < product.rating ? "star filled" : "star"}
+              className={i < (product.rating || 0) ? "star filled" : "star"}
             >
               ★
             </span>
@@ -94,7 +128,7 @@ const Product = () => {
           )}
         </div>
 
-        <button className="btn-Add" onClick={() => addToCart(product)}>
+        <button className="btn-Add" onClick={addToCart}>
           Ajouter au panier
         </button>
       </div>
@@ -106,12 +140,10 @@ const Product = () => {
             ➕ Ajouter un produit
           </Link>
 
-          {/* <Link to="/admin/EditProduct" className="btn-Add">   </Link> */}
-
           <Link to={`/admin/EditProduct/${product._id}`}>Modifier</Link>
 
           <Link to="/admin/AdminProductManagement" className="btn-Add">
-            ➕ supprimer un produit
+            ➕ Supprimer un produit
           </Link>
         </div>
       )}
