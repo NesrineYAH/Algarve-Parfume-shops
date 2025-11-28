@@ -132,6 +132,10 @@ export default function Cart() {
           <div className="cart-summary">
             <h2>Total: {total.toFixed(2)} €</h2>
 
+            <Link to="/Checkout">
+              <button className="checkout-btn">Passer la commande</button>
+            </Link>
+
             <Link to="/Orders">
               <button className="checkout-btn">Passer la commande</button>
             </Link>

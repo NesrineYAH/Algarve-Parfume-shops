@@ -5,8 +5,6 @@ const { authMiddleware } = require("../middleware/auth");
 const Product = require("../Model/product"); // Assure-toi que ce modèle existe et est bien importé
 
 
-
-
 // ➤ CRÉATION D’UNE COMMANDE
 router.post("/create", authMiddleware, async (req, res) => {
     try {
@@ -125,30 +123,6 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*
