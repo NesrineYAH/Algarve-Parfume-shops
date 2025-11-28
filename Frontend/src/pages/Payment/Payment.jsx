@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import "./Payment.scss";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
 
 export default function Payment() {
   const location = useLocation();
@@ -8,6 +9,7 @@ export default function Payment() {
 
   // Récupérer le panier depuis la navigation, sinon fallback vide
   const cart = location.state?.cart || [];
+  //const cart = cartItems; // remplace ton cart actuel
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);

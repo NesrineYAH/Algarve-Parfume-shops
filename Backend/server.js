@@ -53,4 +53,3 @@ server.on("listening", () => {
 });
 
 server.listen(port);
-console.log("Listening on port 5001");

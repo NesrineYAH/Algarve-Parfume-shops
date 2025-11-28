@@ -27,7 +27,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
 app.use("/api/categories", categorieRoutes);
-app.use("api/cart", cartRoutes);
+app.use("/api/cart", cartRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
@@ -37,7 +37,8 @@ app.get("/", (req, res) => {
 });
 
 // 🔹 Lancement du serveur
-app.listen(PORT, () => console.log("Serveur API sur http://localhost:5001"));
+//app.listen(PORT, () => console.log("Serveur API sur http://localhost:5001"));
+app.listen(PORT, () => console.log(`Serveur API sur http://localhost:${PORT}`));
 
 module.exports = app;
 

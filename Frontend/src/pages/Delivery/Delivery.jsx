@@ -217,6 +217,11 @@ export default function Delivery({ onDeliveryChange }) {
                 >
                   <button className="Button">Passer au paiement</button>
                 </Link>
+                {/*
+                <button onClick={() => navigate("/payment", { state: { cart: cartItems } })}> 
+  Payer
+</button>
+*/}
               </div>
             ))}
           </div>
