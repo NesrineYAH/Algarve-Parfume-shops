@@ -1,7 +1,7 @@
 // src/services/cart.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5001/api/cart";
+const API_URL = "http://localhost:5001/api/carts";
 
 export const addToCart = async (productId) => {
   return axios.post(

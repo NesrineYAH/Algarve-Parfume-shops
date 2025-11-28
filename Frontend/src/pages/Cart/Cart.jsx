@@ -55,7 +55,7 @@ export default function Cart() {
     try {
       const items = cart.map((item) => ({
         productId: item._id,
-        name: item.nom,
+        nom: item.nom,
         prix: Number(item.option?.prix || 0),
         quantity: item.quantity,
         optionQuantity: item.option?.quantity || "N/A",
@@ -76,6 +76,7 @@ export default function Cart() {
       alert("❌ Impossible de créer la commande");
     }
   };
+  console.log("CART ITEMS = ", cart);
 
   return (
     <div className="cart-container">
@@ -130,9 +131,10 @@ export default function Cart() {
 
           <div className="cart-summary">
             <h2>Total: {total.toFixed(2)} €</h2>
-            <button className="checkout-btn" onClick={handleCheckout}>
-              Passer la commande
-            </button>
+
+            <Link to="/Orders">
+              <button className="checkout-btn">Passer la commande</button>
+            </Link>
           </div>
         </div>
       )}

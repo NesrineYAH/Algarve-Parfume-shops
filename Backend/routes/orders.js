@@ -5,26 +5,37 @@ const { authMiddleware } = require("../middleware/auth");
 const Product = require("../Model/product"); // Assure-toi que ce modèle existe et est bien importé
 
 
-// Créer une nouvelle commande
+
+
+// ➤ CRÉATION D’UNE COMMANDE
 router.post("/create", authMiddleware, async (req, res) => {
     try {
-        const { userId, items, totalPrice, delivery } = req.body;
-    //  const { userId, items, total, delivery } = req.body;
+        const { items, totalPrice, delivery } = req.body;
 
- if (!items || items.length === 0) return res.status(400).json({ message: "Panier vide" });
-    
-        // Enrichir chaque item avec les infos du produit
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: "Aucun article dans la commande" });
+        }
+
+        // Construire correctement les items avec nom + option
         const enrichedItems = await Promise.all(
             items.map(async (item) => {
                 const product = await Product.findById(item.productId);
                 if (!product) throw new Error(`Produit introuvable : ${item.productId}`);
 
+                // trouver l'option dans le produit
+                const option = product.options.find(opt => opt.quantity === item.option.quantity);
+                if (!option) throw new Error(`Option introuvable pour le produit : ${product.nom}`);
+
                 return {
-                    productId: item.productId,
-                    name: product.nom,
-                    prix: product.prix,
-                    imageUrl: product.imageUrl,
+                    productId: product._id,
+                    nom: product.nom,
                     quantity: item.quantity,
+                    imageUrl: product.imageUrl,
+                    option: {
+                        quantity: option.quantity,
+                        prix: option.prix,
+                        stock: option.stock
+                    }
                 };
             })
         );
@@ -34,19 +45,22 @@ router.post("/create", authMiddleware, async (req, res) => {
             items: enrichedItems,
             totalPrice,
             delivery,
-            paymentStatus: "pending"
+            paymentStatus: "pending",
         });
 
         await order.save();
 
-        res.status(201).json({ message: "Commande créée", order });
+        res.status(201).json({ message: "Commande créée avec succès", order });
+
     } catch (error) {
         console.error("Erreur création commande :", error);
-        res.status(500).json({ error: "Erreur serveur" });
+        res.status(500).json({ error: "Erreur serveur", detail: error.message });
     }
 });
 
-// Récupérer toutes les commandes
+
+
+// ➤ RÉCUPÉRER TOUTES LES COMMANDES DE TOUS LES UTILISATEURS (ADMIN)
 router.get("/all", authMiddleware, async (req, res) => {
     try {
         const orders = await Order.find().populate("userId", "name email");
@@ -56,37 +70,53 @@ router.get("/all", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
-// ➤ Modifier une commande (ex: adresse ou statut)
+
+
+// ➤ RÉCUPÉRER LES COMMANDES D’UN UTILISATEUR
+router.get("/my-orders", authMiddleware, async (req, res) => {
+    try {
+        const orders = await Order.find({ userId: req.user.userId });
+        res.status(200).json(orders);
+    } catch (error) {
+        console.error("Erreur récupération commandes utilisateur :", error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+
+
+// ➤ METTRE À JOUR UNE COMMANDE (statut, livraison…)
 router.put("/:id", authMiddleware, async (req, res) => {
     try {
-        const { address, status } = req.body;
+        const { status, delivery, paymentStatus } = req.body;
 
-        const updatedOrder = await Order.findByIdAndUpdate(
+        const updated = await Order.findByIdAndUpdate(
             req.params.id,
-            { address, status },
-            { new: true } // retourne la commande mise à jour
+            { status, delivery, paymentStatus },
+            { new: true }
         );
 
-        if (!updatedOrder) {
+        if (!updated) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
 
-        res.status(200).json({ message: "Commande mise à jour", order: updatedOrder });
+        res.status(200).json({ message: "Commande mise à jour", order: updated });
     } catch (error) {
         console.error("Erreur mise à jour commande :", error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
-// ➤ Supprimer une commande
+
+
+// ➤ SUPPRESSION D’UNE COMMANDE
 router.delete("/:id", authMiddleware, async (req, res) => {
     try {
-        const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+        const deleted = await Order.findByIdAndDelete(req.params.id);
 
-        if (!deletedOrder) {
+        if (!deleted) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
 
-        res.status(200).json({ message: "Commande supprimée avec succès" });
+        res.status(200).json({ message: "Commande supprimée" });
     } catch (error) {
         console.error("Erreur suppression commande :", error);
         res.status(500).json({ message: "Erreur serveur" });
@@ -95,6 +125,31 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 const express = require("express");

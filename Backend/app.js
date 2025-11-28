@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/users");
 const ProductRoutes = require("./routes/product");
 const categorieRoutes = require("./routes/categories");
-const cartRoutes = require("./routes/cart");
+const cartRoutes = require("./routes/carts");
 const addressRoutes = require("./routes/addresses");
 const orderRoutes = require("./routes/orders");
 const deliveryRoutes = require("./routes/delivery");
@@ -22,12 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
 app.use("/api/categories", categorieRoutes);
-app.use("/api/cart", cartRoutes);
+app.use("/api/carts", cartRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
@@ -36,9 +35,8 @@ app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
 
-// 🔹 Lancement du serveur
 //app.listen(PORT, () => console.log("Serveur API sur http://localhost:5001"));
-app.listen(PORT, () => console.log(`Serveur API sur http://localhost:${PORT}`));
+//app.listen(PORT, () => console.log(`Serveur API sur http://localhost:${PORT}`));
 
 module.exports = app;
 

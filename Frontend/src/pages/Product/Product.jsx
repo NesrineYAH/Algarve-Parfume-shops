@@ -46,10 +46,14 @@ const Product = () => {
       existing.quantity += 1;
     } else {
       cart.push({
-        id: product._id,
+        _id: product._id,
         nom: product.nom,
-        option: selectedOption,
+        imageUrl: product.imageUrl, // 🔥 OBLIGATOIRE
         quantity: 1,
+        option: {
+          quantity: selectedOption.quantity,
+          prix: selectedOption.prix,
+        },
       });
     }
 
@@ -152,3 +156,27 @@ const Product = () => {
 };
 
 export default Product;
+
+/*
+ const addToCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    
+
+    // Vérifie si le produit avec la même option est déjà dans le panier
+    const existing = cart.find(
+      (item) =>
+        item.id === product._id &&
+        item.option.quantity === selectedOption.quantity
+    );
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({
+        id: product._id,
+        nom: product.nom,
+        option: selectedOption,
+        quantity: 1,
+      });
+    }
+      */
