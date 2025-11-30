@@ -1,6 +1,6 @@
+// Model Product Schéma des produits
 const mongoose = require("mongoose");
 
-// Schéma des produits
 const productSchema = new mongoose.Schema({
   nom: { type: String, required: true },
   description: { type: String },
@@ -12,16 +12,17 @@ const productSchema = new mongoose.Schema({
   },
   options: [
     {
-      quantity: { type: String, required: true }, // ex: "10ml", "30ml"
-      prix: { type: Number, required: true },   // ex: 5, 10
-      stock: { type: Number, default: 0 }        // stock spécifique à cette option
+      size: { type: Number, required: true },
+      unit: { type: String, default: "ml" },
+      prix: { type: Number, required: true },
+      stock: { type: Number, default: 0 }
     }
   ],
 });
 
 module.exports = mongoose.model("Product", productSchema);
 
-
+//Quantite: { type: Number, required: true },       // 👈 nombre d’articles 
 
 
 

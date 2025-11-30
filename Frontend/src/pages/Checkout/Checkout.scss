@@ -1,92 +1,152 @@
 .checkout-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    font-family: "Arial", sans-serif;
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 
     h1 {
-        text-align: center;
-        margin-bottom: 1.5rem;
-        font-size: 2rem;
-        color: #333;
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: 600;
     }
 
-    .checkout-content {
-        margin-bottom: 2rem;
+    h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+        font-weight: 500;
+    }
 
-        h2 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: #555;
+    h3 {
+        font-size: 18px;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+
+    .resume-panier {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e6e6e6;
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .panier-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #ececec;
+
+            p {
+                margin: 0;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
         }
 
-        select,
-        input[type="text"] {
-            width: 100%;
-            padding: 0.6rem 1rem;
-            margin-bottom: 1rem;
+        a button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #585858;
+            color: white;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+
+            &:hover {
+                background: #000;
+            }
+        }
+    }
+
+    .infos-client {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e6e6e6;
+
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        input {
+            padding: 12px 15px;
+            border-radius: 6px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.2s ease;
+            font-size: 15px;
 
             &:focus {
-                border-color: #007bff;
+                border-color: #111;
                 outline: none;
             }
         }
+    }
 
-        input[type="text"] {
-            &::placeholder {
-                color: #aaa;
+    .mode-livraison {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e6e6e6;
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+
+            input {
+                transform: scale(1.2);
             }
         }
     }
 
-    .checkout-summary {
-        border-top: 1px solid #eee;
-        padding-top: 1.5rem;
+    .Button {
+        background: #111;
+        color: #fff;
+        padding: 14px 20px;
+        font-size: 17px;
+        border-radius: 8px;
+        border: none;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
 
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #333;
+        &:hover {
+            background: #333;
         }
 
-        .validate-order-btn {
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 15px;
+
+        .resume-panier,
+        .infos-client,
+        .mode-livraison {
+            padding: 15px;
+        }
+
+        .Button {
             width: 100%;
-            padding: 0.8rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-
-            &:hover {
-                background-color: #0056b3;
-            }
-        }
-    }
-
-    @media (max-width: 600px) {
-        padding: 1rem;
-
-        h1 {
-            font-size: 1.5rem;
-        }
-
-        .checkout-summary h2 {
-            font-size: 1.3rem;
-        }
-
-        .validate-order-btn {
-            font-size: 1rem;
         }
     }
 }

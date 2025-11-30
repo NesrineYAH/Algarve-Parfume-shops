@@ -18,7 +18,7 @@ const Product = () => {
         );
         setProduct(response.data);
         if (response.data.options && response.data.options.length > 0) {
-          setSelectedOption(response.data.options[0]); // sélectionne la première option par défaut
+          setSelectedOption(response.data.options[0]); // première option par défaut
         }
       } catch (err) {
         setError("Produit introuvable ou erreur serveur.");
@@ -35,24 +35,28 @@ const Product = () => {
   const addToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Vérifie si le produit avec la même option est déjà dans le panier
+    // Taille choisie (ex: 10, 30, 50)
+    const selectedSize = selectedOption.size;
+
+    // Vérifie si le produit avec la même option (size) est déjà dans le panier
     const existing = cart.find(
-      (item) =>
-        item.id === product._id &&
-        item.option.quantity === selectedOption.quantity
+      (item) => item._id === product._id && item.option.size === selectedSize
     );
 
     if (existing) {
-      existing.quantity += 1;
+      // Incrémente le nombre d’unités (Quantite)
+      existing.quantite += 1;
     } else {
       cart.push({
         _id: product._id,
         nom: product.nom,
-        imageUrl: product.imageUrl, // 🔥 OBLIGATOIRE
-        quantity: 1,
+        imageUrl: product.imageUrl,
+        quantite: 1, // 👈 toujours 1 unité au départ
         option: {
-          quantity: selectedOption.quantity,
-          prix: selectedOption.prix,
+          size: selectedOption.size, // ex: 10
+          unit: selectedOption.unit, // ex: "ml"
+          prix: selectedOption.prix, // prix pour cette option
+          stock: selectedOption.stock, // stock disponible pour cette option
         },
       });
     }
@@ -78,7 +82,7 @@ const Product = () => {
 
           {product.options && product.options.length > 0 && (
             <div className="product-options">
-              <label>Choisir la quantité :</label>
+              <label>Choisir une option :</label>
               <select
                 value={product.options.indexOf(selectedOption)}
                 onChange={(e) =>
@@ -87,7 +91,7 @@ const Product = () => {
               >
                 {product.options.map((opt, index) => (
                   <option key={index} value={index}>
-                    {opt.quantity} - {opt.prix} €
+                    {opt.size} {opt.unit} - {opt.prix} €
                   </option>
                 ))}
               </select>
@@ -156,6 +160,41 @@ const Product = () => {
 };
 
 export default Product;
+
+//30/11 function addToCart
+/*
+const addToCart = () => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const selectedSize = selectedOption.size;
+
+
+  const existing = cart.find(
+    (item) => item._id === product._id && item.option.size === selectedSize
+  );
+
+  if (existing) {
+
+    existing.Quantite += 1;
+  } else {
+    cart.push({
+      _id: product._id,
+      nom: product.nom,
+      imageUrl: product.imageUrl,
+      Quantite: 1, épart
+      option: {
+        size: selectedSize, 
+        unit: selectedOption.unit, 
+        prix: selectedOption.prix, on
+      },
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("Produit ajouté au panier !");
+};
+*/
+//30/11 function addToCart
 
 /*
  const addToCart = () => {

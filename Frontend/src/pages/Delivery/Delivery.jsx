@@ -211,6 +211,10 @@ export default function Delivery({ onDeliveryChange }) {
                 <button onClick={() => selectRelay(relay)}>
                   Choisir ce relais
                 </button>
+                <Link to="/Checkout">
+                  <button className="checkout-btn">Passer la commande</button>
+                </Link>
+
                 <Link
                   to="/payment"
                   state={{ cart: cartItems }} // ou ce que tu as dans le panier

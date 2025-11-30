@@ -103,10 +103,14 @@ const Home = () => {
               <p>{product.stock} en stock</p>
             </Link>
 
-            {/* Bouton panier */}
+            {/* Bouton panier 
             <button className="btn-Add" onClick={() => addToCart(product)}>
               Ajouter au panier
             </button>
+*/}
+            <Link to={`/product/${product._id}`}>
+              <button>Ajouter au panier</button>
+            </Link>
           </div>
         ))}
       </div>

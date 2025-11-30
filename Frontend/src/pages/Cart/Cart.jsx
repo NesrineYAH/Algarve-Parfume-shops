@@ -7,6 +7,8 @@ import OrderService from "../../Services/orderService";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
+  const [deliveryMode, setDeliveryMode] = useState("domicile");
+  const [address, setAddress] = useState("");
   const currentStep = 1;
 
   useEffect(() => {
@@ -19,53 +21,62 @@ export default function Cart() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const increaseQuantity = (_id, optionQuantity) => {
+  const increaseQuantity = (_id, optionSize) => {
     const updated = cart.map((item) =>
-      item._id === _id && item.option?.quantity === optionQuantity
-        ? { ...item, quantity: item.quantity + 1 }
+      item._id === _id && item.option?.size === optionSize
+        ? { ...item, quantite: item.quantite + 1 }
         : item
     );
     updateCart(updated);
   };
 
-  const decreaseQuantity = (_id, optionQuantity) => {
+  const decreaseQuantity = (_id, optionSize) => {
     const updated = cart.map((item) =>
-      item._id === _id &&
-      item.option?.quantity === optionQuantity &&
-      item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
+      item._id === _id && item.option?.size === optionSize && item.quantite > 1
+        ? { ...item, quantite: item.quantite - 1 }
         : item
     );
     updateCart(updated);
   };
 
-  const removeItem = (_id, optionQuantity) => {
+  const removeItem = (_id, optionSize) => {
     const updated = cart.filter(
-      (item) => !(item._id === _id && item.option?.quantity === optionQuantity)
+      (item) => !(item._id === _id && item.option?.size === optionSize)
     );
     updateCart(updated);
   };
 
   const total = cart.reduce(
-    (sum, item) => sum + (item.option?.prix || 0) * item.quantity,
+    (sum, item) =>
+      sum + Number(item.option?.prix || 0) * Number(item.quantite || 0),
     0
   );
 
   const handleCheckout = async () => {
+    if (cart.length === 0) {
+      alert("Votre panier est vide");
+      return;
+    }
     try {
       const items = cart.map((item) => ({
         productId: item._id,
         nom: item.nom,
-        prix: Number(item.option?.prix || 0),
-        quantity: item.quantity,
-        optionQuantity: item.option?.quantity || "N/A",
+        quantite: item.quantite,
         imageUrl: item.imageUrl,
+        options: {
+          size: item.options?.size,
+          unit: item.options?.unit,
+          prix: Number(item.option?.prix || 0),
+        },
       }));
 
       const orderData = {
         items,
-        totalPrice: items.reduce((sum, it) => sum + it.prix * it.quantity, 0),
-        address: "Adresse de livraison à définir",
+        totalPrice: total,
+        delivery: {
+          type: deliveryMode,
+          address: deliveryMode === "domicile" ? address : "",
+        },
       };
 
       await OrderService.createOrder(orderData);
@@ -76,7 +87,6 @@ export default function Cart() {
       alert("❌ Impossible de créer la commande");
     }
   };
-  console.log("CART ITEMS = ", cart);
 
   return (
     <div className="cart-container">
@@ -90,7 +100,7 @@ export default function Cart() {
           {cart.map((item) => (
             <div
               className="cart-item"
-              key={item._id + "-" + (item.option?.quantity || "")}
+              key={item._id + "-" + (item.option?.size || "")}
             >
               <img
                 src={`http://localhost:5001${item.imageUrl}`}
@@ -101,20 +111,22 @@ export default function Cart() {
               <div className="item-details">
                 <h3>{item.nom}</h3>
                 <p>{(item.option?.prix || 0).toFixed(2)} €</p>
-                <p>Quantité choisie : {item.option?.quantity || "N/A"}</p>
+                <p>
+                  Option choisie : {item.option?.size} {item.option?.unit}
+                </p>
 
                 <div className="quantity-control">
                   <button
                     onClick={() =>
-                      decreaseQuantity(item._id, item.option?.quantity)
+                      decreaseQuantity(item._id, item.option?.size)
                     }
                   >
                     -
                   </button>
-                  <span>{item.quantity}</span>
+                  <span>{item.quantite}</span>
                   <button
                     onClick={() =>
-                      increaseQuantity(item._id, item.option?.quantity)
+                      increaseQuantity(item._id, item.option?.size)
                     }
                   >
                     +
@@ -124,7 +136,7 @@ export default function Cart() {
 
               <Trash2
                 className="delete-icon"
-                onClick={() => removeItem(item._id, item.option?.quantity)}
+                onClick={() => removeItem(item._id, item.option?.size)}
               />
             </div>
           ))}
@@ -133,11 +145,9 @@ export default function Cart() {
             <h2>Total: {total.toFixed(2)} €</h2>
 
             <Link to="/Checkout">
-              <button className="checkout-btn">Passer la commande</button>
-            </Link>
-
-            <Link to="/Orders">
-              <button className="checkout-btn">Passer la commande</button>
+              <button className="checkout-btn" onClick={handleCheckout}>
+                étape suivante
+              </button>
             </Link>
           </div>
         </div>

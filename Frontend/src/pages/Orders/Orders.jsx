@@ -1,16 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import OrderService from "../../Services/orderService";
-import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
+// import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import "./Orders.scss";
 import { Link } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const { cartItems } = useContext(CartContext);
+
+  const user = JSON.parse(localStorage.getItem("user")); // récup user connecté
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const data = await OrderService.getAllOrders();
+        if (!user) {
+          console.warn("Aucun utilisateur connecté.");
+          setOrders([]);
+          return;
+        }
+        // 👉 si tu veux TOUTES les commandes, remets getAllOrders()
+        const data = await OrderService.getUserOrders(user._id);
         setOrders(data);
       } catch (err) {
         console.error("Erreur lors de la récupération des commandes :", err);
@@ -39,6 +49,7 @@ export default function Orders() {
       const updated = await OrderService.updateOrder(orderId, {
         status: newStatus,
       });
+
       setOrders((prev) =>
         prev.map((order) =>
           order._id === orderId
@@ -46,6 +57,7 @@ export default function Orders() {
             : order
         )
       );
+
       alert("Commande mise à jour !");
     } catch (err) {
       alert("Erreur modification commande");
@@ -55,7 +67,6 @@ export default function Orders() {
 
   return (
     <div className="orders-container">
-      <CheckoutSteps step={2} />
       <h1>Mes Commandes</h1>
 
       {orders.length === 0 ? (
@@ -82,30 +93,41 @@ export default function Orders() {
                   <img
                     className="item-image"
                     src={getImageUrl(item.imageUrl)}
-                    alt={item.nom}
+                    alt={item.nom || item.name}
                   />
 
                   <div className="item-details">
-                    <h3>{item.nom}</h3>
+                    <h3>{item.nom || item.name}</h3>
 
-                    <p>Option : {item.option.quantity}</p>
-                    <p>Prix : {Number(item.option.prix).toFixed(2)} €</p>
-                    <p>Quantité : {item.quantity}</p>
+                    <p>Option : {item.options?.size || "—"}</p>
+
+                    <p>
+                      Prix :{" "}
+                      {Number(item.options?.prix ?? item.prix ?? 0).toFixed(2)}{" "}
+                      €
+                    </p>
+
+                    <p>Quantité : {item.options?.unit ?? item.quantity ?? 1}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <button onClick={() => handleDelete(order._id)}>
+            <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer la commande
             </button>
 
-            <button onClick={() => handleUpdate(order._id, "confirmed")}>
+            <button
+              onClick={() => handleUpdate(order._id, "confirmed")}
+              className="Button"
+            >
               Confirmer la commande
             </button>
 
-            <Link to="/delivery">
-              <button>Choisir un mode de livraison</button>
+            <button className="Button">Modifier la commande</button>
+
+            <Link to="/payment" state={{ cart: cartItems }}>
+              <button className="Button">Passer au paiement</button>
             </Link>
           </div>
         ))

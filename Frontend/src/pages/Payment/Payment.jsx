@@ -2,14 +2,15 @@ import React, { useState, useContext } from "react";
 import "./Payment.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
+import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 
 export default function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Récupérer le panier depuis la navigation, sinon fallback vide
-  const cart = location.state?.cart || [];
-  //const cart = cartItems; // remplace ton cart actuel
+  // Récupérer le panier depuis le contexte
+  const { cartItems } = useContext(CartContext);
+  const cart = cartItems || [];
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
@@ -41,15 +42,16 @@ export default function Payment() {
     }
   };
 
-  // Calcul total
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const totalPrice = cart.reduce(
-    (sum, item) => sum + item.option.price * item.quantity,
+  // ✅ Calcul total avec quantite
+  const total = cart.reduce(
+    (sum, item) =>
+      sum + Number(item.option?.prix || 0) * Number(item.quantite || 0),
     0
   );
 
   return (
     <div className="payment-container">
+      <CheckoutSteps step={4} />
       <h2>💳 Choisissez votre mode de paiement</h2>
 
       <div className="payment-options">
@@ -73,7 +75,27 @@ export default function Payment() {
           PayPal
         </label>
       </div>
-
+      {/*}
+      <div className="order-summary">
+        <h3>Récapitulatif de votre commande</h3>
+        {cart.length === 0 ? (
+          <p>Votre panier est vide.</p>
+        ) : (
+          <ul>
+            {cart.map((item, index) => (
+              <li key={index}>
+                {item.nom} – {item.option.size} {item.option.unit} ×{" "}
+                {item.quantite} :{(item.option.prix * item.quantite).toFixed(2)}{" "}
+                €
+              </li>
+            ))}
+          </ul>
+        )}
+        <p>
+          <strong>Total : {total.toFixed(2)} €</strong>
+        </p>
+      </div>
+*/}
       <div className="order-summary">
         <h3>Récapitulatif de votre commande</h3>
         {cart.length === 0 ? (
@@ -81,14 +103,16 @@ export default function Payment() {
         ) : (
           <ul>
             {cart.map((item) => (
-              <li key={item.id}>
-                {item.name} x {item.quantity} : {item.price * item.quantity} €
+              <li key={`${item._id}-${item.option.size}-${item.option.unit}`}>
+                {item.nom} – {item.option.size} {item.option.unit} ×{" "}
+                {item.quantite} :{(item.option.prix * item.quantite).toFixed(2)}{" "}
+                €
               </li>
             ))}
           </ul>
         )}
         <p>
-          <strong>Total : {total} €</strong>
+          <strong>Total : {total.toFixed(2)} €</strong>
         </p>
       </div>
 
