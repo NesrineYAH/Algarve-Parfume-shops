@@ -31,32 +31,84 @@ const Product = () => {
   if (error) return <p>{error}</p>;
   if (!product) return <p>Chargement du produit...</p>;
 
-  // Ajouter au panier
+  /*
   const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Taille choisie (ex: 10, 30, 50)
+    if (!selectedOption) {
+      alert("Veuillez sélectionner une option.");
+      return;
+    }
+    // 01/12 Nettoyage automatique du panier pour éviter les undefined
+
+    // 🔥 Supprimer les items invalides : évite productId undefined
+    cart = cart.filter(
+      (item) =>
+        item &&
+        item.productId && // productId obligatoire
+        item.options && // options obligatoire
+        item.options.size // size obligatoire
+    );
+
     const selectedSize = selectedOption.size;
 
-    // Vérifie si le produit avec la même option (size) est déjà dans le panier
+    // Vérifie si ce produit avec cette option existe déjà
     const existing = cart.find(
-      (item) => item._id === product._id && item.option.size === selectedSize
+      (item) =>
+        item.productId === product._id &&
+        item.options &&
+        item.options.size === selectedSize
     );
 
     if (existing) {
-      // Incrémente le nombre d’unités (Quantite)
       existing.quantite += 1;
     } else {
       cart.push({
-        _id: product._id,
+        productId: product._id,
         nom: product.nom,
         imageUrl: product.imageUrl,
-        quantite: 1, // 👈 toujours 1 unité au départ
-        option: {
-          size: selectedOption.size, // ex: 10
-          unit: selectedOption.unit, // ex: "ml"
-          prix: selectedOption.prix, // prix pour cette option
-          stock: selectedOption.stock, // stock disponible pour cette option
+        quantite: 1, // unité de parfum
+        options: {
+          size: selectedOption.size,
+          unit: selectedOption.unit,
+          prix: selectedOption.prix,
+          stock: selectedOption.stock,
+        },
+      });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Produit ajouté au panier !");
+  };
+  */
+  const addToCart = () => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    if (!selectedOption) {
+      alert("Veuillez sélectionner une option.");
+      return;
+    }
+
+    const selectedSize = selectedOption.size;
+
+    // 🔥 Identifiant UNIQUE pour chaque taille du même produit
+    const variantId = `${product._id}-${selectedSize}`;
+
+    // Vérifie si la variante existe déjà dans le panier
+    const existing = cart.find((item) => item.variantId === variantId);
+
+    if (existing) {
+      existing.quantite += 1;
+    } else {
+      cart.push({
+        productId: product._id,
+        variantId: variantId, // clé unique 🔥
+        nom: product.nom,
+        imageUrl: product.imageUrl,
+        quantite: 1,
+        options: {
+          size: selectedOption.size,
+          unit: selectedOption.unit,
+          prix: selectedOption.prix,
         },
       });
     }

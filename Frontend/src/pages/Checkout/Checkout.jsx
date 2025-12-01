@@ -15,14 +15,17 @@ export default function Checkout() {
   // Charger le panier : priorité au context, sinon fallback localStorage
   useEffect(() => {
     const storedCart =
-      cartItems && cartItems.length ? cartItems : JSON.parse(localStorage.getItem("cart")) || [];
+      cartItems && cartItems.length
+        ? cartItems
+        : JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);
   }, [cartItems]);
 
   // Fonction pour récupérer une option valide pour chaque produit
   const getSelectedOption = (item) => {
     if (!item.options) return { size: 0, unit: "ml", prix: 0 }; // fallback
-    if (Array.isArray(item.options) && item.options.length > 0) return item.options[0]; // tableau
+    if (Array.isArray(item.options) && item.options.length > 0)
+      return item.options[0]; // tableau
     if (typeof item.options === "object") return item.options; // objet déjà
     return { size: 0, unit: "ml", prix: 0 }; // fallback sûr
   };
@@ -47,14 +50,14 @@ export default function Checkout() {
       const opt = getSelectedOption(item);
       return {
         productId: item._id || item.productId,
-        nom: item.nom || item.name || "Produit",
-        quantite: Number(item.quantite || item.quantity || 1),
-        imageUrl: item.imageUrl || item.image || "",
+        nom: item.nom || "Produit",
+        quantite: Number(item.quantite || 1),
+        imageUrl: item.imageUrl || "",
         options: {
           size: Number(opt.size || 0),
           unit: opt.unit || "ml",
-          prix: Number(opt.prix || 0)
-        }
+          prix: Number(opt.prix || 0),
+        },
       };
     });
 
@@ -63,15 +66,15 @@ export default function Checkout() {
       totalPrice: Number(total.toFixed(2)),
       delivery: {
         type: deliveryMode,
-        address: deliveryMode === "domicile" ? address : ""
-      }
+        address: deliveryMode === "domicile" ? address : "",
+      },
     };
 
     try {
       await OrderService.createOrder(orderData);
       localStorage.removeItem("cart");
       alert("Commande créée avec succès !");
-      navigate("/Orders");
+      navigate("/Delivery");
     } catch (error) {
       console.error("Erreur création commande :", error);
       alert("Impossible de créer la commande : " + error.message);
@@ -92,7 +95,11 @@ export default function Checkout() {
           cart.map((item, idx) => {
             const opt = getSelectedOption(item);
             return (
-              <div key={item._id || item.productId || idx} className="panier-item">
+              <div
+                key={item._id || item.productId || idx}
+                className="panier-item"
+              >
+                <img src={item.imageUrl} alt={item.image} className="itemImg" />
                 <div>
                   <strong>{item.nom || item.name}</strong>
                   <div>
@@ -112,9 +119,11 @@ export default function Checkout() {
         <h3>Total : {total.toFixed(2)} €</h3>
 
         <div style={{ marginTop: 12 }}>
-          <button className="Button" onClick={handleOrder}>
-            Confirmer la commande
-          </button>
+          <Link to="/delivery">
+            <button className="Button" onClick={handleOrder}>
+              Confirmer la commande
+            </button>
+          </Link>
         </div>
 
         <Link to="/cart">

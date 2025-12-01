@@ -21,34 +21,57 @@ export default function Cart() {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const increaseQuantity = (_id, optionSize) => {
+  // const increaseQuantity = (_id, optionSize) => {
+  //   const updated = cart.map((item) =>
+  //     item._id === _id && item.options?.size === optionSize
+  //       ? { ...item, quantite: item.quantite + 1 }
+  //       : item
+  //   );
+  //   updateCart(updated);
+  // };
+
+  const increaseQuantity = (variantId) => {
     const updated = cart.map((item) =>
-      item._id === _id && item.option?.size === optionSize
+      item.variantId === variantId
         ? { ...item, quantite: item.quantite + 1 }
         : item
     );
     updateCart(updated);
   };
 
-  const decreaseQuantity = (_id, optionSize) => {
+  // const decreaseQuantity = (_id, optionSize) => {
+  //   const updated = cart.map((item) =>
+  //     item._id === _id && item.options?.size === optionSize && item.quantite > 1
+  //       ? { ...item, quantite: item.quantite - 1 }
+  //       : item
+  //   );
+  //   updateCart(updated);
+  // };
+
+  const decreaseQuantity = (variantId) => {
     const updated = cart.map((item) =>
-      item._id === _id && item.option?.size === optionSize && item.quantite > 1
+      item.variantId === variantId && item.quantite > 1
         ? { ...item, quantite: item.quantite - 1 }
         : item
     );
     updateCart(updated);
   };
 
-  const removeItem = (_id, optionSize) => {
-    const updated = cart.filter(
-      (item) => !(item._id === _id && item.option?.size === optionSize)
-    );
+  // const removeItem = (_id, optionSize) => {
+  //   const updated = cart.filter(
+  //     (item) => !(item._id === _id && item.options?.size === optionSize)
+  //   );
+  //   updateCart(updated);
+  // };
+
+  const removeItem = (variantId) => {
+    const updated = cart.filter((item) => item.variantId !== variantId);
     updateCart(updated);
   };
 
   const total = cart.reduce(
     (sum, item) =>
-      sum + Number(item.option?.prix || 0) * Number(item.quantite || 0),
+      sum + Number(item.options?.prix || 0) * Number(item.quantite || 0),
     0
   );
 
@@ -57,22 +80,23 @@ export default function Cart() {
       alert("Votre panier est vide");
       return;
     }
+
     try {
-      const items = cart.map((item) => ({
-        productId: item._id,
+      const itemsForOrder = cart.map((item) => ({
+        productId: item.productId, // ObjectId du produit
         nom: item.nom,
-        quantite: item.quantite,
+        quantite: Number(item.quantite),
         imageUrl: item.imageUrl,
         options: {
-          size: item.options?.size,
-          unit: item.options?.unit,
-          prix: Number(item.option?.prix || 0),
+          size: Number(item.options?.size),
+          unit: item.options?.unit || "ml",
+          prix: Number(item.options?.prix || 0),
         },
       }));
 
       const orderData = {
-        items,
-        totalPrice: total,
+        items: itemsForOrder,
+        totalPrice: Number(total),
         delivery: {
           type: deliveryMode,
           address: deliveryMode === "domicile" ? address : "",
@@ -80,8 +104,10 @@ export default function Cart() {
       };
 
       await OrderService.createOrder(orderData);
+
+      // Vider le panier
       updateCart([]);
-      alert("✅ Commande créée avec succès !");
+      alert("✅ Article bien vérifiée !");
     } catch (error) {
       console.error("Erreur lors de la commande :", error);
       alert("❌ Impossible de créer la commande");
@@ -98,10 +124,10 @@ export default function Cart() {
       ) : (
         <div className="cart-items">
           {cart.map((item) => (
-            <div
-              className="cart-item"
-              key={item._id + "-" + (item.option?.size || "")}
-            >
+            // <div
+            //   className="cart-item"
+            //   key={item._id + "-" + (item.options?.size || "")}>
+            <div className="cart-item" key={item.variantId}>
               <img
                 src={`http://localhost:5001${item.imageUrl}`}
                 alt={item.nom}
@@ -110,24 +136,25 @@ export default function Cart() {
 
               <div className="item-details">
                 <h3>{item.nom}</h3>
-                <p>{(item.option?.prix || 0).toFixed(2)} €</p>
+                <p>{(item.options?.prix || 0).toFixed(2)} €</p>
                 <p>
-                  Option choisie : {item.option?.size} {item.option?.unit}
+                  Option choisie : {item.options?.size} {item.options?.unit}
                 </p>
 
                 <div className="quantity-control">
                   <button
-                    onClick={() =>
-                      decreaseQuantity(item._id, item.option?.size)
-                    }
+                    // onClick={() =>
+                    //   decreaseQuantity(item._id, item.options?.size)
+                    // }
+                    onClick={() => decreaseQuantity(item.variantId)}
                   >
                     -
                   </button>
+
                   <span>{item.quantite}</span>
                   <button
-                    onClick={() =>
-                      increaseQuantity(item._id, item.option?.size)
-                    }
+                    onClick={() => increaseQuantity(item.variantId)}
+                    // onClick={() =>increaseQuantity(item._id, item.options?.size)}
                   >
                     +
                   </button>
@@ -136,7 +163,8 @@ export default function Cart() {
 
               <Trash2
                 className="delete-icon"
-                onClick={() => removeItem(item._id, item.option?.size)}
+                //   onClick={() => removeItem(item._id, item.options?.size)}
+                onClick={() => removeItem(item.variantId)}
               />
             </div>
           ))}
@@ -144,7 +172,9 @@ export default function Cart() {
           <div className="cart-summary">
             <h2>Total: {total.toFixed(2)} €</h2>
 
-            <Link to="/Checkout">
+            <button>PASSER à La prochaine étape </button>
+
+            <Link to="/checkout">
               <button className="checkout-btn" onClick={handleCheckout}>
                 étape suivante
               </button>
@@ -155,204 +185,3 @@ export default function Cart() {
     </div>
   );
 }
-
-/*
-export default function Cart() {
-  const [cart, setCart] = useState([]);
-  const currentStep = 1;
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCart(storedCart);
-  }, []);
-
-  const updateCart = (updatedCart) => {
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
-
-  const increaseQuantity = (_id) => {
-    const updated = cart.map((item) =>
-      item._id === _id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    updateCart(updated);
-  };
-
-  const decreaseQuantity = (_id) => {
-    const updated = cart.map((item) =>
-      item._id === _id && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
-    updateCart(updated);
-  };
-
-  const removeItem = (_id) => {
-    const updated = cart.filter((item) => item._id !== _id);
-    updateCart(updated);
-  };
-
-  const total = cart.reduce((sum, item) => sum + item.prix * item.quantity, 0);
-
-  return (
-    <div className="cart-container">
-      <CheckoutSteps step={currentStep} />
-      <h1>🛒 Votre Panier</h1>
-
-      {cart.length === 0 ? (
-        <p className="empty-message">Votre panier est vide.</p>
-      ) : (
-        <div className="cart-items">
-          {cart.map((item) => (
-            <div className="cart-item" key={item._id}>
-              <img
-                src={`http://localhost:5001${item.imageUrl}`}
-                alt={item.nom}
-                className="cart-item__img"
-              />
-
-              <div className="item-details">
-                <h3>{item.nom}</h3>
-                <p>{item.prix.toFixed(2)} €</p>
-
-                <div className="quantity-control">
-                  <button onClick={() => decreaseQuantity(item._id)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => increaseQuantity(item._id)}>+</button>
-                </div>
-              </div>
-
-              <Trash2
-                className="delete-icon"
-                onClick={() => removeItem(item._id)}
-              />
-            </div>
-          ))}
-
-          <div className="cart-summary">
-            <h2>Total: {total.toFixed(2)} €</h2>
-            <Link to="/Orders">
-              <button className="checkout-btn">Passer la commande</button>
-            </Link>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-*/
-/*
-// Version 2
-export default function Cart() {
-  const [cart, setCart] = useState([]);
-  const currentStep = 1;
-
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCart(storedCart);
-  }, []);
-
-  const updateCart = (updatedCart) => {
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
-
-  const increaseQuantity = (_id) => {
-    const updated = cart.map((item) =>
-      item._id === _id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    updateCart(updated);
-  };
-
-  const decreaseQuantity = (_id) => {
-    const updated = cart.map((item) =>
-      item._id === _id && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
-    updateCart(updated);
-  };
-
-  const removeItem = (_id) => {
-    const updated = cart.filter((item) => item._id !== _id);
-    updateCart(updated);
-  };
-
-  //const total = cart.reduce((sum, item) => sum + item.prix * item.quantity, 0);
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.prix * item.quantity,
-    0
-  );
-
-  // ➤ Fonction pour envoyer la commande
-  const handleCheckout = async () => {
-    try {
-      const items = cart.map((item) => ({
-        productId: item._id, // id du produit
-        name: item.nom, // nom du produit
-        prix: Number(item.prix), // s'assurer que c'est un Number
-        imageUrl: item.imageUrl, // ← inclure l'image
-        quantity: item.quantity,
-      }));
-
-      const orderData = {
-        items,
-        totalPrice: items.reduce((sum, it) => sum + it.prix * it.quantity, 0),
-        address: "Adresse de livraison à définir", // remplace par un champ saisi
-      };
-
-      await OrderService.createOrder(orderData);
-      updateCart([]);
-      alert("✅ Commande créée avec succès !");
-    } catch (error) {
-      console.error("Erreur lors de la commande :", error);
-      alert("❌ Impossible de créer la commande");
-    }
-  };
-
-  return (
-    <div className="cart-container">
-      <CheckoutSteps step={currentStep} />
-      <h1>🛒 Votre Panier</h1>
-
-      {cart.length === 0 ? (
-        <p className="empty-message">Votre panier est vide.</p>
-      ) : (
-        <div className="cart-items">
-          {cart.map((item) => (
-            <div className="cart-item" key={item._id}>
-              <img
-                src={`http://localhost:5001${item.imageUrl}`}
-                alt={item.nom}
-                className="cart-item__img"
-              />
-
-              <div className="item-details">
-                <h3>{item.nom}</h3>
-                <p>{item.prix.toFixed(2)} €</p>
-
-                <div className="quantity-control">
-                  <button onClick={() => decreaseQuantity(item._id)}>-</button>
-                  <span>{item.quantity}</span>
-                  <button onClick={() => increaseQuantity(item._id)}>+</button>
-                </div>
-              </div>
-
-              <Trash2
-                className="delete-icon"
-                onClick={() => removeItem(item._id)}
-              />
-            </div>
-          ))}
-
-          <div className="cart-summary">
-            <h2>Total: {total.toFixed(2)} €</h2>
-            <button className="checkout-btn" onClick={handleCheckout}>
-              Passer la commande
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-*/

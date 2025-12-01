@@ -48,8 +48,8 @@ router.post("/create", authMiddleware, async (req, res) => {
                 return {
                     productId: product._id,
                     nom: product.nom,
-                    quantite: Number(item.quantite || 1),
                     imageUrl: product.imageUrl,
+                    quantite: Number(item.quantite || 1),
                     options: {
                         size: selectedOption.size,
                         unit: selectedOption.unit,
@@ -63,6 +63,7 @@ router.post("/create", authMiddleware, async (req, res) => {
             userId: req.user.userId,
             items: enrichedItems,
             totalPrice: Number(totalPrice || 0),
+            status: "pending",
             delivery,
             paymentStatus: "pending"
         });
