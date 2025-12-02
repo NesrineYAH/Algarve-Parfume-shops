@@ -38,18 +38,17 @@ export default function Checkout() {
     return sum + price * qty;
   }, 0);
 
-  // Handler pour créer la commande
+  /*
   const handleOrder = async () => {
     if (!cart || cart.length === 0) {
       alert("Votre panier est vide");
       return;
     }
 
-    // Mapping sécurisé des items
-    const items = cart.map((item) => {
+    const itemsForOrder = cart.map((item) => {
       const opt = getSelectedOption(item);
       return {
-        productId: item._id || item.productId,
+        productId: item.productId || item._id,
         nom: item.nom || "Produit",
         quantite: Number(item.quantite || 1),
         imageUrl: item.imageUrl || "",
@@ -61,8 +60,62 @@ export default function Checkout() {
       };
     });
 
-    const orderData = {
-      items,
+    const updatedOrderData = {
+      items: itemsForOrder,
+      totalPrice: Number(total.toFixed(2)),
+      delivery: {
+        type: deliveryMode,
+        address: deliveryMode === "domicile" ? address : "",
+      },
+      // status reste "pending" jusqu'au paiement
+    };
+
+    try {
+      const preOrderId = localStorage.getItem("preOrderId");
+      console.log("Pré-commande ID:", preOrderId); //02/12
+
+      if (preOrderId) {
+        await OrderService.updatePreOrder(updatedOrderData);
+        console.log("Pré-commande mise à jour :", preOrderId);
+      } else {
+        const newPreOrder = await OrderService.createPreOrder(updatedOrderData);
+        console.log("Nouvelle pré-commande créée :", newPreOrder._id);
+      }
+
+      alert("✅ Pré-commande enregistrée avec succès !");
+      navigate("/delivery"); // étape suivante
+    } catch (error) {
+      console.error("Erreur lors de la pré-commande :", error);
+      alert("❌ Impossible d’enregistrer la pré-commande");
+    }
+  };
+*/
+  // Pré-commande
+
+  const handleOrder = async () => {
+    if (!cart || cart.length === 0) {
+      alert("Votre panier est vide");
+      return;
+    }
+
+    const itemsForOrder = cart.map((item) => {
+      const opt = getSelectedOption(item);
+      return {
+        productId: item.productId || item._id,
+        variantId: item.variantId,
+        nom: item.nom || "Produit",
+        quantite: Number(item.quantite || 1),
+        imageUrl: item.imageUrl || "",
+        options: {
+          size: Number(opt.size || 0),
+          unit: opt.unit || "ml",
+          prix: Number(opt.prix || 0),
+        },
+      };
+    });
+
+    const updatedOrderData = {
+      items: itemsForOrder,
       totalPrice: Number(total.toFixed(2)),
       delivery: {
         type: deliveryMode,
@@ -71,13 +124,19 @@ export default function Checkout() {
     };
 
     try {
-      await OrderService.createOrder(orderData);
-      localStorage.removeItem("cart");
-      alert("Commande créée avec succès !");
-      navigate("/Delivery");
+      const preOrderId = localStorage.getItem("preOrderId");
+      console.log("Pré-commande ID:", preOrderId);
+
+      if (!preOrderId) throw new Error("Aucune pré-commande trouvée !");
+
+      await OrderService.updatePreOrder(preOrderId, updatedOrderData);
+      console.log("Pré-commande mise à jour :", preOrderId);
+
+      alert("✅ Pré-commande enregistrée avec succès !");
+      navigate("/delivery");
     } catch (error) {
-      console.error("Erreur création commande :", error);
-      alert("Impossible de créer la commande : " + error.message);
+      console.error("Erreur lors de la pré-commande :", error);
+      alert("❌ Impossible d’enregistrer la pré-commande");
     }
   };
 
@@ -92,14 +151,19 @@ export default function Checkout() {
         {cart.length === 0 ? (
           <p>Votre panier est vide.</p>
         ) : (
-          cart.map((item, idx) => {
+          cart.map((item, index) => {
             const opt = getSelectedOption(item);
             return (
-              <div
-                key={item._id || item.productId || idx}
-                className="panier-item"
-              >
-                <img src={item.imageUrl} alt={item.image} className="itemImg" />
+              <div key={`${item.variantId}-${index}`} className="panier-item">
+                <img
+                  src={
+                    item.imageUrl
+                      ? `http://localhost:5001${item.imageUrl}`
+                      : "/placeholder.png"
+                  }
+                  alt={item.nom}
+                  className="itemImg"
+                />
                 <div>
                   <strong>{item.nom || item.name}</strong>
                   <div>
@@ -119,11 +183,9 @@ export default function Checkout() {
         <h3>Total : {total.toFixed(2)} €</h3>
 
         <div style={{ marginTop: 12 }}>
-          <Link to="/delivery">
-            <button className="Button" onClick={handleOrder}>
-              Confirmer la commande
-            </button>
-          </Link>
+          <button className="Button" onClick={handleOrder}>
+            Confirmer la commande
+          </button>
         </div>
 
         <Link to="/cart">

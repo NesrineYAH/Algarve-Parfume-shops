@@ -4,7 +4,7 @@ const Order = require("../Model/Order");
 const Product = require("../Model/product");
 const { authMiddleware } = require("../middleware/auth");
 
-// ➤ CRÉATION D’UNE COMMANDE
+// ➤ CRÉER UNE PRÉ-COMMANDE OU COMMANDE
 router.post("/create", authMiddleware, async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -22,7 +22,6 @@ router.post("/create", authMiddleware, async (req, res) => {
                 const product = await Product.findById(item.productId);
                 if (!product) throw new Error(`Produit introuvable : ${item.productId}`);
 
-                // Assurer que options existe
                 const optSize = item.options?.size;
                 const optUnit = item.options?.unit || "ml";
 
@@ -30,7 +29,6 @@ router.post("/create", authMiddleware, async (req, res) => {
                     throw new Error(`Options manquantes ou invalides pour le produit : ${product.nom}`);
                 }
 
-                // Recherche de l'option dans le produit
                 const selectedOption = product.options.find(
                     (opt) =>
                         Number(opt.size) === Number(optSize) &&
@@ -53,37 +51,70 @@ router.post("/create", authMiddleware, async (req, res) => {
                     options: {
                         size: selectedOption.size,
                         unit: selectedOption.unit,
-                        prix: selectedOption.prix
-                    }
+                        prix: selectedOption.prix,
+                    },
                 };
             })
         );
 
-        const order = new Order({
+        const preOrder = new Order({
             userId: req.user.userId,
             items: enrichedItems,
             totalPrice: Number(totalPrice || 0),
-            status: "pending",
+            status: "pending", // pré-commande ou commande en attente
+            paymentStatus: "pending",
             delivery,
-            paymentStatus: "pending"
         });
 
-        await order.save();
+        await preOrder.save();
 
-        res.status(201).json({ message: "Commande créée avec succès", order });
+        res.status(201).json({ message: "Commande créée avec succès", preOrder });
     } catch (error) {
-        console.error("Erreur création commande :", error.message);
+        console.error("Erreur création de pre-ommande :", error.message);
         res.status(500).json({ error: error.message });
     }
 });
 
-// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
-router.get("/all", authMiddleware, async (req, res) => {
+// ➤ METTRE À JOUR UNE PRÉ-COMMANDE OU COMMANDE
+router.put("/:id", authMiddleware, async (req, res) => {
     try {
-        const orders = await Order.find().populate("userId", "name email");
-        res.status(200).json(orders);
+        const { status, delivery, paymentStatus, items, totalPrice } = req.body;
+
+        const updateData = {};
+        if (status) updateData.status = status;
+        if (delivery) updateData.delivery = delivery;
+        if (paymentStatus) updateData.paymentStatus = paymentStatus;
+        if (items) updateData.items = items;
+        if (totalPrice) updateData.totalPrice = totalPrice;
+
+        const updatedOrder = await Order.findByIdAndUpdate(req.params.id, updateData, {
+            new: true,
+        });
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        res.status(200).json({ message: "Commande mise à jour", order: updatedOrder });
     } catch (error) {
-        console.error("Erreur récupération commandes :", error.message);
+        console.error("Erreur mise à jour commande :", error.message);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+
+// ➤ FINALISER UNE PRÉ-COMMANDE (passer status à "confirmed")
+router.post("/finalize/:id", authMiddleware, async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
+        order.status = "confirmed";
+        order.paymentStatus = "paid"; // ou selon ton flux de paiement
+        await order.save();
+
+        res.status(200).json({ message: "Pré-commande finalisée", order });
+    } catch (error) {
+        console.error("Erreur finalisation commande :", error.message);
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
@@ -103,24 +134,13 @@ router.get("/my-orders", authMiddleware, async (req, res) => {
     }
 });
 
-// ➤ METTRE À JOUR UNE COMMANDE
-router.put("/:id", authMiddleware, async (req, res) => {
+// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
+router.get("/all", authMiddleware, async (req, res) => {
     try {
-        const { status, delivery, paymentStatus } = req.body;
-
-        const updatedOrder = await Order.findByIdAndUpdate(
-            req.params.id,
-            { status, delivery, paymentStatus },
-            { new: true }
-        );
-
-        if (!updatedOrder) {
-            return res.status(404).json({ message: "Commande introuvable" });
-        }
-
-        res.status(200).json({ message: "Commande mise à jour", order: updatedOrder });
+        const orders = await Order.find().populate("userId", "name email");
+        res.status(200).json(orders);
     } catch (error) {
-        console.error("Erreur mise à jour commande :", error.message);
+        console.error("Erreur récupération commandes :", error.message);
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
