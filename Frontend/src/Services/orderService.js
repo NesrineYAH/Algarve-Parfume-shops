@@ -92,6 +92,11 @@ const OrderService = {
       throw error;
     }
   },
+  async getUserOrders(userId) {
+    const res = await axios.get(`http://localhost:5001/api/orders/user/${userId}`);
+    return res.data;  // { orders, preOrders }
+  }
+
 };
 
 export default OrderService;

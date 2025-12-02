@@ -134,17 +134,6 @@ router.get("/my-orders", authMiddleware, async (req, res) => {
     }
 });
 
-// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
-router.get("/all", authMiddleware, async (req, res) => {
-    try {
-        const orders = await Order.find().populate("userId", "name email");
-        res.status(200).json(orders);
-    } catch (error) {
-        console.error("Erreur récupération commandes :", error.message);
-        res.status(500).json({ message: "Erreur serveur" });
-    }
-});
-
 // ➤ SUPPRIMER UNE COMMANDE
 router.delete("/:id", authMiddleware, async (req, res) => {
     try {
@@ -160,5 +149,40 @@ router.delete("/:id", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
+
+module.exports = router;
+
+// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
+router.get("/all", authMiddleware, async (req, res) => {
+    try {
+        const orders = await Order.find().populate("userId", "email nom prenom");
+        res.status(200).json(orders);
+    } catch (error) {
+        console.error("Erreur récupération commandes :", error.message);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+// RÉCUPÉRER TOUTES LES COMMANDES de chaque utlisateur 
+
+router.get("/user/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Récupérer toutes les commandes
+        const allOrders = await Order.find({ userId });
+
+        // Trier en deux groupes
+        const preOrders = allOrders.filter(o => o.status === "pending");
+        const orders = allOrders.filter(o => o.status === "paid");
+
+        // res.json({preOrders, orders});
+        res.json(allOrders); // <- attention à ce que tu renvoies !
+
+    } catch (error) {
+        console.error("Erreur récupération commandes :", error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+
 
 module.exports = router;
