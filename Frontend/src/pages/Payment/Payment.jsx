@@ -45,7 +45,7 @@ export default function Payment() {
   // ✅ Calcul total avec quantite
   const total = cart.reduce(
     (sum, item) =>
-      sum + Number(item.option?.prix || 0) * Number(item.quantite || 0),
+      sum + Number(item.options?.prix || 0) * Number(item.quantite || 0),
     0
   );
 
@@ -103,10 +103,10 @@ export default function Payment() {
         ) : (
           <ul>
             {cart.map((item) => (
-              <li key={`${item._id}-${item.option.size}-${item.option.unit}`}>
-                {item.nom} – {item.option.size} {item.option.unit} ×{" "}
-                {item.quantite} :{(item.option.prix * item.quantite).toFixed(2)}{" "}
-                €
+              <li key={`${item._id}-${item.options.size}-${item.options.unit}`}>
+                {item.nom} – {item.options.size} {item.options.unit} ×{" "}
+                {item.quantite} :
+                {(item.options.prix * item.quantite).toFixed(2)} €
               </li>
             ))}
           </ul>
