@@ -1,14 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./Payment.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function Payment() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // Récupérer le panier depuis le contexte
   const { cartItems } = useContext(CartContext);
   const cart = cartItems || [];
 
@@ -16,38 +15,107 @@ export default function Payment() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handlePayment = async () => {
-    if (cart.length === 0) {
-      setError("Le panier est vide, impossible de payer.");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Simulation d'appel backend pour paiement
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Paiement réussi
-      alert(`Paiement effectué avec succès via ${paymentMethod}!`);
-
-      // Redirection vers confirmation ou page d'accueil
-      navigate("/"); // ou "/confirmation"
-    } catch (err) {
-      console.error("Erreur paiement :", err);
-      setError("Le paiement a échoué. Veuillez réessayer.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ✅ Calcul total avec quantite
+  // Calcul total
   const total = cart.reduce(
     (sum, item) =>
       sum + Number(item.options?.prix || 0) * Number(item.quantite || 0),
     0
   );
+
+  // Stripe : load stripe object
+  const stripePromise = loadStripe("VOTRE_PUBLISHABLE_KEY_STRIPE"); // <-- à remplacer
+
+  // PayPal : charger le script
+  useEffect(() => {
+    if (paymentMethod !== "paypal") return;
+
+    const script = document.createElement("script");
+    script.src =
+      "https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID_SANDBOX&currency=EUR"; // <-- à remplacer
+    script.async = true;
+    script.onload = () => {
+      if (window.paypal) {
+        window.paypal
+          .Buttons({
+            createOrder: (data, actions) => {
+              return actions.order.create({
+                purchase_units: [{ amount: { value: total.toFixed(2) } }],
+              });
+            },
+            onApprove: (data, actions) => {
+              return actions.order.capture().then((details) => {
+                alert(
+                  `Paiement PayPal effectué avec succès par ${details.payer.name.given_name}`
+                );
+                navigate("/"); // ou page de confirmation
+              });
+            },
+            onError: (err) => {
+              console.error("Erreur PayPal:", err);
+              setError("Le paiement PayPal a échoué.");
+            },
+          })
+          .render("#paypal-button-container");
+      }
+    };
+    document.body.appendChild(script);
+
+    // Nettoyage du script quand le composant est démonté ou méthode change
+    return () => {
+      document.body.removeChild(script);
+      const container = document.getElementById("paypal-button-container");
+      if (container) container.innerHTML = "";
+    };
+  }, [paymentMethod, total, navigate]);
+
+  // Stripe : handler
+  const handleStripeCheckout = async () => {
+    if (cart.length === 0) {
+      setError("Le panier est vide, impossible de payer.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const stripe = await stripePromise;
+
+      // Appel backend pour créer la session Stripe
+      const response = await fetch("/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cart,
+        }),
+      });
+      const session = await response.json();
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) setError(result.error.message);
+    } catch (err) {
+      console.error("Erreur Stripe:", err);
+      setError("Le paiement Stripe a échoué.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Bouton de paiement
+  const renderPaymentButton = () => {
+    if (paymentMethod === "paypal") {
+      return <div id="paypal-button-container"></div>;
+    }
+    return (
+      <button
+        onClick={handleStripeCheckout}
+        disabled={loading || cart.length === 0}
+      >
+        {loading ? "Traitement…" : "Payer maintenant"}
+      </button>
+    );
+  };
 
   return (
     <div className="payment-container">
@@ -75,27 +143,7 @@ export default function Payment() {
           PayPal
         </label>
       </div>
-      {/*}
-      <div className="order-summary">
-        <h3>Récapitulatif de votre commande</h3>
-        {cart.length === 0 ? (
-          <p>Votre panier est vide.</p>
-        ) : (
-          <ul>
-            {cart.map((item, index) => (
-              <li key={index}>
-                {item.nom} – {item.option.size} {item.option.unit} ×{" "}
-                {item.quantite} :{(item.option.prix * item.quantite).toFixed(2)}{" "}
-                €
-              </li>
-            ))}
-          </ul>
-        )}
-        <p>
-          <strong>Total : {total.toFixed(2)} €</strong>
-        </p>
-      </div>
-*/}
+
       <div className="order-summary">
         <h3>Récapitulatif de votre commande</h3>
         {cart.length === 0 ? (
@@ -105,7 +153,7 @@ export default function Payment() {
             {cart.map((item) => (
               <li key={`${item._id}-${item.options.size}-${item.options.unit}`}>
                 {item.nom} – {item.options.size} {item.options.unit} ×{" "}
-                {item.quantite} :
+                {item.quantite} :{" "}
                 {(item.options.prix * item.quantite).toFixed(2)} €
               </li>
             ))}
@@ -118,9 +166,7 @@ export default function Payment() {
 
       {error && <p className="error">{error}</p>}
 
-      <button onClick={handlePayment} disabled={loading || cart.length === 0}>
-        {loading ? "Traitement…" : "Payer maintenant"}
-      </button>
+      {renderPaymentButton()}
     </div>
   );
 }
