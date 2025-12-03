@@ -1,9 +1,11 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
+const Order = require("../Model/Order");
 const { body } = require("express-validator");
 require("dotenv").config();
 const sendEmail = require("../utils/mailer"); //const { sendEmail } = require("../utils/mailer");  → ça correspond à module.exports = sendEmail.
+
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
@@ -68,13 +70,7 @@ exports.login = async (req, res) => {
         .status(401)
         .json({ message: "Paire login/mot de passe incorrecte" });
     }
-    /*
-        const token = jwt.sign(
-          { userId: user._id, role: user.role },
-          signatureToken,
-          { expiresIn: "24h" }
-        );
-    */
+
     const token = jwt.sign(
       {
         userId: user._id,
@@ -91,7 +87,7 @@ exports.login = async (req, res) => {
 
     console.log("Token généré :", token);
     console.log("ROLE UTILISATEUR :", user.role);
-    console.log("ROLE UTILISATEUR :", user.nom);
+    console.log("Nom UTILISATEUR :", user.nom);
 
     res.status(200).json({
       token,
@@ -127,3 +123,59 @@ exports.validate = (method) => {
       ];
   }
 };
+
+//03/12
+// ✅ Récupérer tous les utilisateurs (admin seulement)
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password"); // exclure le mot de passe
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Erreur récupération utilisateurs :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Erreur récupération utilisateur :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+// ✅ Récupérer les commandes d’un utilisateur par ID
+exports.getUserOrders = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Vérifie que l'ID est bien un ObjectId valide
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "ID utilisateur invalide" });
+    }
+
+    // Vérifie que l'utilisateur connecté correspond à l'ID demandé
+    if (req.user.userId !== id && req.user.role !== "admin") {
+      return res.status(403).json({ message: "Accès interdit" });
+    }
+
+    const orders = await Order.find({ userId: id });
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Erreur récupération commandes utilisateur :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+
+
+/*
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      signatureToken,
+      { expiresIn: "24h" }
+    );
+*/

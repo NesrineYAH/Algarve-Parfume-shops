@@ -8,6 +8,7 @@ export async function loginUser(credentials) {
     });
     console.log(credentials);
 
+
     const data = await res.json();
     if (!res.ok) {
       // Le backend a renvoyé une erreur (ex: 401 ou 400)
@@ -50,7 +51,7 @@ export async function getCurrentUser() {
     const token = localStorage.getItem("token");
     if (!token) return null;
 
-    const res = await fetch("http://localhost:5001/api/users/me", {
+    const res = await fetch("http://localhost:5001/api/users/moncompte", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

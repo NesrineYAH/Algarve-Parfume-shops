@@ -2,9 +2,34 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../Model/Order");
 const Product = require("../Model/product");
-const { authMiddleware } = require("../middleware/auth");
+const { authMiddleware, isAdmin } = require("../middleware/auth");
+const orderCtrl = require("../controllers/order");
 
-// ➤ CRÉER UNE PRÉ-COMMANDE OU COMMANDE
+
+// ➤ CRÉER UNE COMMANDE
+router.post("/create", authMiddleware, orderCtrl.createOrder);
+
+// ➤ METTRE À JOUR UNE COMMANDE
+router.put("/:id", authMiddleware, orderCtrl.updateOrder);
+
+// ➤ FINALISER UNE COMMANDE
+router.post("/finalize/:id", authMiddleware, orderCtrl.finalizeOrder);
+
+// ➤ RÉCUPÉRER LES COMMANDES DE L’UTILISATEUR CONNECTÉ
+router.get("/my-orders", authMiddleware, orderCtrl.getMyOrders);
+
+// ➤ SUPPRIMER UNE COMMANDE
+router.delete("/:id", authMiddleware, orderCtrl.deleteOrder);
+
+// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
+router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
+
+// ➤ RÉCUPÉRER LES COMMANDES D’UN UTILISATEUR PAR SON ID
+router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
+
+module.exports = router;
+
+/*
 router.post("/create", authMiddleware, async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -75,7 +100,7 @@ router.post("/create", authMiddleware, async (req, res) => {
     }
 });
 
-// ➤ METTRE À JOUR UNE PRÉ-COMMANDE OU COMMANDE
+
 router.put("/:id", authMiddleware, async (req, res) => {
     try {
         const { status, delivery, paymentStatus, items, totalPrice } = req.body;
@@ -102,7 +127,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
     }
 });
 
-// ➤ FINALISER UNE PRÉ-COMMANDE (passer status à "confirmed")
+
 router.post("/finalize/:id", authMiddleware, async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
@@ -119,7 +144,7 @@ router.post("/finalize/:id", authMiddleware, async (req, res) => {
     }
 });
 
-// ➤ RÉCUPÉRER LES COMMANDES D’UN UTILISATEUR
+
 router.get("/my-orders", authMiddleware, async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -134,7 +159,7 @@ router.get("/my-orders", authMiddleware, async (req, res) => {
     }
 });
 
-// ➤ SUPPRIMER UNE COMMANDE
+
 router.delete("/:id", authMiddleware, async (req, res) => {
     try {
         const deletedOrder = await Order.findByIdAndDelete(req.params.id);
@@ -152,7 +177,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 
 module.exports = router;
 
-// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
+
 router.get("/all", authMiddleware, async (req, res) => {
     try {
         const orders = await Order.find().populate("userId", "email nom prenom");
@@ -162,7 +187,7 @@ router.get("/all", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 });
-// RÉCUPÉRER TOUTES LES COMMANDES de chaque utlisateur 
+
 
 router.get("/user/:userId", async (req, res) => {
     try {
@@ -181,5 +206,4 @@ router.get("/user/:userId", async (req, res) => {
     }
 });
 
-
-module.exports = router;
+*/
