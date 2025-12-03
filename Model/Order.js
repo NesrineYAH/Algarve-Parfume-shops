@@ -1,0 +1,59 @@
+// Model Product Schéma Order commande
+const mongoose = require("mongoose");
+
+const orderSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    items: [
+        {
+            productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+            nom: { type: String, required: true },
+            quantite: { type: Number, required: true },
+            imageUrl: String,
+            options: {
+                size: { type: Number, required: true },
+                unit: { type: String, default: "ml" },
+                prix: { type: Number, required: true },
+            },
+        },
+    ],
+    totalPrice: { type: Number, required: true },
+    status: { type: String, default: "pending" },
+    createdAt: { type: Date, default: Date.now },
+    delivery: {
+        type: { type: String },
+        address: { type: String },
+        relayId: { type: String },
+    },
+    paymentStatus: { type: String, enum: ["pending", "paid", "failed"], default: "pending" },
+});
+
+
+module.exports = mongoose.model("Order", orderSchema);
+
+
+
+
+
+
+
+
+
+/*
+const mongoose = require("mongoose")
+
+const orderSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    items: [
+        {
+            productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+            quantity: Number,
+        },
+    ],
+    totalPrice: Number,
+    address: String,
+    status: { type: String, default: "pending" }, // pending, confirmed, shipped, delivered
+    createdAt: { type: Date, default: Date.now },
+});
+
+module.exports = mongoose.model("Order", orderSchema);
+*/
