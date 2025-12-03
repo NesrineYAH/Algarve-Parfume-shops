@@ -68,12 +68,26 @@ exports.login = async (req, res) => {
         .status(401)
         .json({ message: "Paire login/mot de passe incorrecte" });
     }
-
+    /*
+        const token = jwt.sign(
+          { userId: user._id, role: user.role },
+          signatureToken,
+          { expiresIn: "24h" }
+        );
+    */
     const token = jwt.sign(
-      { userId: user._id, role: user.role },
+      {
+        userId: user._id,
+        role: user.role,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email   // optionnel si tu veux aussi l’avoir
+      },
       signatureToken,
       { expiresIn: "24h" }
     );
+
+
 
     console.log("Token généré :", token);
     console.log("ROLE UTILISATEUR :", user.role);

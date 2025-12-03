@@ -13,6 +13,9 @@ function authMiddleware(req, res, next) {
     req.user = {
       userId: decodedToken.userId,
       role: decodedToken.role,
+      nom: decodedToken.nom,
+      prenom: decodedToken.prenom,
+      email: decodedToken.email
     };
     next();
   } catch (error) {

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   cart: [
     {
       productId: String,
-      quantity: Number
+      quantite: Number
     }
   ],
   favorites: [String]

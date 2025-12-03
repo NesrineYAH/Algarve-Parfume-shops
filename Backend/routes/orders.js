@@ -167,16 +167,13 @@ router.get("/all", authMiddleware, async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
     try {
         const userId = req.params.userId;
-
-        // Récupérer toutes les commandes
         const allOrders = await Order.find({ userId });
 
-        // Trier en deux groupes
         const preOrders = allOrders.filter(o => o.status === "pending");
         const orders = allOrders.filter(o => o.status === "paid");
 
-        // res.json({preOrders, orders});
-        res.json(allOrders); // <- attention à ce que tu renvoies !
+        res.json({ preOrders, orders });
+        // res.json(allOrders); // <- attention à ce que tu renvoies !
 
     } catch (error) {
         console.error("Erreur récupération commandes :", error);
