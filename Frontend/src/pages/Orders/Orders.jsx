@@ -133,8 +133,6 @@ export default function Orders() {
         ))
       )}
 
-      <hr />
-
       {/* ============================ */}
       {/*    COMMANDES CONFIRMÉES     */}
       {/* ============================ */}

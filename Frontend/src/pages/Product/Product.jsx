@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Product.scss";
 
@@ -9,6 +9,9 @@ const Product = () => {
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState(null); // option choisie
   const role = localStorage.getItem("role");
+  //03/12
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false); // 🔥 état du modal
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -89,11 +92,7 @@ const Product = () => {
     }
 
     const selectedSize = selectedOption.size;
-
-    // 🔥 Identifiant UNIQUE pour chaque taille du même produit
     const variantId = `${product._id}-${selectedSize}`;
-
-    // Vérifie si la variante existe déjà dans le panier
     const existing = cart.find((item) => item.variantId === variantId);
 
     if (existing) {
@@ -114,7 +113,8 @@ const Product = () => {
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Produit ajouté au panier !");
+    // alert("Produit ajouté au panier !");
+    setShowModal(true); // 🔥 ouvre le modal
   };
 
   return (
@@ -192,6 +192,26 @@ const Product = () => {
           Ajouter au panier
         </button>
       </div>
+      {/* 🔥 MODAL  03/12/2025*/}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Produit ajouté 🎉</h3>
+            <p>Votre produit a bien été ajouté au panier.</p>
+            <div className="modal-actions">
+              <button onClick={() => navigate("/cart")} className="btn-Add">
+                Voir mon panier
+              </button>
+              <button onClick={() => navigate("/home")} className="btn-Add">
+                Continuer mes achats
+              </button>
+            </div>
+            <button className="modal-close" onClick={() => setShowModal(false)}>
+              ✖
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Bouton Admin / Vendeur */}
       {(role === "admin" || role === "vendeur") && (
