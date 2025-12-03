@@ -99,7 +99,6 @@ const Home = () => {
                 />
               )}
               <h3>{product.nom}</h3>
-              <p>{product.prix} €</p>
               <p>{product.stock} en stock</p>
             </Link>
 
