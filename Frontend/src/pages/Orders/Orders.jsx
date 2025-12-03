@@ -19,7 +19,7 @@ export default function Orders() {
           console.log("Aucun utilisateur connecté");
           return;
         }
-
+        console.log("Utilisateur connecté :", user);
         // ⚡ Utilisation de l'ID du user depuis le contexte
         const data = await OrderService.getUserOrders(user._id);
         console.log("Data reçue :", data);

@@ -1,5 +1,6 @@
 // src/context/UserContext.js
 import { createContext, useState, useEffect } from "react";
+import { loginUser  } from "../Services/auth"
 
 export const UserContext = createContext();
 
@@ -23,3 +24,8 @@ export default function UserProvider({ children }) {
     </UserContext.Provider>
   );
 }
+
+/*
+auth.js : c’est ton service qui fait les appels API (login, logout, register, getUser, etc.).
+UserContext : c’est ton “state manager” React qui garde en mémoire l’utilisateur courant et expose des fonctions pour mettre à jour ce state.
+*/

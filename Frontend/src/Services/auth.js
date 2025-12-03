@@ -1,3 +1,4 @@
+//service/auth.js 
 export async function loginUser(credentials) {
   try {
     const res = await fetch("http://localhost:5001/api/users/login", {
@@ -42,4 +43,31 @@ export async function registerUser(credentials) {
   } catch (err) {
     return { message: "Erreur serveur" };
   }
+}
+
+export async function getCurrentUser() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    const res = await fetch("http://localhost:5001/api/users/me", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.user; // dépend de ce que ton backend renvoie
+  } catch (err) {
+    console.error("Erreur getCurrentUser:", err);
+    return null;
+  }
+}
+export function logoutUser() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  return true;
 }
