@@ -123,9 +123,6 @@ exports.validate = (method) => {
 };
 
 //03/12
-
-
-
 // ✅ Récupérer tous les utilisateurs (admin seulement)
 exports.getUsers = async (req, res) => {
   try {
