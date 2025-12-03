@@ -102,6 +102,15 @@ export default function Payment() {
     }
   };
 
+  const handleCheckout = async () => {
+    const stripe = await stripePromise;
+    const response = await fetch("/create-checkout-session", {
+      method: "POST",
+    });
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({ sessionId: session.id });
+    if (result.error) alert(result.error.message);
+  };
   // Bouton de paiement
   const renderPaymentButton = () => {
     if (paymentMethod === "paypal") {
@@ -132,7 +141,7 @@ export default function Payment() {
           />
           Carte bancaire
         </label>
-
+        <button onClick={handleCheckout}>Payer 10€</button>
         <label>
           <input
             type="radio"
