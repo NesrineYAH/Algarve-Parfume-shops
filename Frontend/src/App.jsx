@@ -6,7 +6,7 @@ import Product from "./pages/Product/Product";
 import Footer from "./components/Footer/Footer";
 import BlogBenefits from "./components/Blog/BlogBenefits";
 import Newsletter from "./components/Newsletter/Newsletter";
-import CookieModel from "./components/CookieModel/CookieModel";
+// import CookieModel from "./components/CookieModel/CookieModel";
 import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
@@ -56,7 +56,7 @@ function App() {
 
         <BlogBenefits />
         <Newsletter />
-        <CookieModel />
+       {/* <CookieModel /> */} 
         <InfoSite />
       </div>
       <Footer />

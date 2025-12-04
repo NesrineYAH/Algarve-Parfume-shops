@@ -28,7 +28,16 @@ router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
 router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
 
 module.exports = router;
+/*
+- POST /api/orders/create → createOrder
+- PUT /api/orders/:id → updateOrder
+- POST /api/orders/finalize/:id → finalizeOrder
+- GET /api/orders/my-orders → getMyOrders
+- DELETE /api/orders/:id → deleteOrder
+- GET /api/orders/all → getAllOrders
+- GET /api/orders/user/:userId → getOrdersByUserId
 
+*/
 /*
 router.post("/create", authMiddleware, async (req, res) => {
     try {

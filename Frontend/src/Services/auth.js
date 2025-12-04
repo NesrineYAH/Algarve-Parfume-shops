@@ -11,16 +11,19 @@ export async function loginUser(credentials) {
 
     const data = await res.json();
     if (!res.ok) {
-      // Le backend a renvoyé une erreur (ex: 401 ou 400)
       return { message: data.message || "Erreur serveur" };
     }
 
     // Stockage du token
     if (data.token) localStorage.setItem("token", data.token);
 
-    // Stockage du rôle
-    if (data.user && data.user.role) {
-      localStorage.setItem("role", data.user.role); // 👈 IMPORTANT
+    // Stockage des infos utilisateur
+    if (data.user) {
+      localStorage.setItem("userId", data.user._id);   // 👈 important pour fetch orders
+      localStorage.setItem("nom", data.user.nom);
+      localStorage.setItem("prenom", data.user.prenom);
+      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("role", data.user.role);
     }
 
     return data;
@@ -61,6 +64,16 @@ export async function getCurrentUser() {
 
     if (!res.ok) return null;
     const data = await res.json();
+    // Mettre à jour le localStorage pour garder l’utilisateur synchronisé
+    if (data.user) {
+      localStorage.setItem("userId", data.user._id);
+      localStorage.setItem("nom", data.user.nom);
+      localStorage.setItem("prenom", data.user.prenom);
+      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("role", data.user.role);
+    }
+
+
     return data.user; // dépend de ce que ton backend renvoie
   } catch (err) {
     console.error("Erreur getCurrentUser:", err);
@@ -69,6 +82,11 @@ export async function getCurrentUser() {
 }
 export function logoutUser() {
   localStorage.removeItem("token");
+  localStorage.removeItem("userId");
+  localStorage.removeItem("nom");
+  localStorage.removeItem("prenom");
+  localStorage.removeItem("email");
   localStorage.removeItem("role");
+
   return true;
 }

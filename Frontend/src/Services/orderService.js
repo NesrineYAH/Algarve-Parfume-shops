@@ -18,8 +18,8 @@ const OrderService = {
   // ➤ Créer une pré-commande
   createPreOrder: async (preOrderData) => {
     try {
-      const response = await api.post("/orders/create", preOrderData); // ✅ corrigé
-      const preOrderId = response.data.preOrder._id;
+      const response = await api.post("/orders/create", orderData); // ✅ corrigé
+      const preOrderId = response.data.preOrder._id; //03/12
       localStorage.setItem("preOrderId", preOrderId);
       return response.data;
     } catch (error) {

@@ -1,10 +1,8 @@
-// MonCompte.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
 import { getCurrentUser } from "../../Services/auth";
-
 
 export default function MonCompte() {
   const navigate = useNavigate();
@@ -22,14 +20,22 @@ export default function MonCompte() {
       return;
     }
 
-
-    // ✅ Recharger l’utilisateur depuis l’API /me
+    // ✅ Recharger l’utilisateur depuis l’API /moncompte
     const fetchUser = async () => {
-      const currentUser = await getCurrentUser();
-      if (!currentUser) {
+      try {
+        const res = await fetch("http://localhost:5001/api/users/moncompte", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (!data.user) {
+          navigate("/Authentification");
+        } else {
+          setUser(data.user); // contient _id, nom, prenom, email, role
+        }
+      } catch (err) {
+        console.error("Erreur chargement utilisateur :", err);
         navigate("/Authentification");
       }
-      // ⚠️ Pas besoin de setUser ici, car c’est déjà géré par UserContext
     };
     fetchUser();
 
@@ -40,7 +46,7 @@ export default function MonCompte() {
       .then((res) => res.json())
       .then((data) => setAddresses(data))
       .catch((err) => console.error("Erreur chargement adresses :", err));
-  }, [navigate]);
+  }, [navigate, setUser]);
 
   // Charger favoris depuis localStorage
   useEffect(() => {
@@ -51,17 +57,7 @@ export default function MonCompte() {
   // Charger commandes de l’utilisateur
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token || !user) return;
-
-    // Charger infos utilisateur
-    const storedUser = {
-      nom: localStorage.getItem("nom"),
-      prenom: localStorage.getItem("prenom"),
-      email: localStorage.getItem("email"),
-      role: localStorage.getItem("role"),
-    };
-
-    setUser(storedUser);
+    if (!token || !user?._id) return;
 
     fetch(`http://localhost:5001/api/orders/user/${user._id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -69,7 +65,7 @@ export default function MonCompte() {
       .then((res) => res.json())
       .then((data) => setOrders(data))
       .catch((err) => console.error("Erreur chargement commandes :", err));
-  }, [user]);
+  }, [user?._id]);
 
   const handleTabClick = (tabName) => setActiveTab(tabName);
 
@@ -80,6 +76,8 @@ export default function MonCompte() {
       </section>
     );
   }
+
+  console.log("user", user);
 
   return (
     <section className="moncompte">

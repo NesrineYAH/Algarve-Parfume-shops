@@ -68,8 +68,8 @@ const Header = () => {
             {dropdownVisible && (
               <div className="dropdown-menu">
                 <Link to="/MonCompte">Mon Compte</Link>
-                <Link to="/orders">User's Orders</Link>
-                <Link to="/history">Purchase History</Link>
+                <Link to="/Orders">Mes Commandes </Link>
+                <Link to="/history">Historique d'achat </Link>
                 <button onClick={handleLogout}>
                   <LogOut size={16} /> Logout
                 </button>

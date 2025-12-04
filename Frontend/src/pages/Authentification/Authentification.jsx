@@ -29,6 +29,8 @@ export default function Authentification() {
 
           setMessage("Connexion réussie !");
           navigate("/MonCompte");
+                   
+
         } else {
           setMessage(response.message || "Identifiants invalides");
         }

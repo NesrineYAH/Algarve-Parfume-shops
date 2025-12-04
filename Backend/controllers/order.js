@@ -65,7 +65,7 @@ exports.createOrder = async (req, res) => {
         });
 
         await preOrder.save();
-        res.status(201).json({ message: "Commande créée avec succès", preOrder });
+        res.status(201).json({ message: "Commande créée avec succès", order });
     } catch (error) {
         console.error("Erreur création commande :", error.message);
         res.status(500).json({ error: error.message });
