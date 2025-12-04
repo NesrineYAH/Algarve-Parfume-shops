@@ -16,10 +16,10 @@ api.interceptors.request.use((config) => {
 
 const OrderService = {
   // ➤ Créer une pré-commande
-  createPreOrder: async (preOrderData) => {
+  createPreOrder: async (orderData) => {
     try {
       const response = await api.post("/orders/create", orderData); // ✅ corrigé
-      const preOrderId = response.data.preOrder._id; //03/12
+      const preOrderId = response.data.order._id; //03/12
       localStorage.setItem("preOrderId", preOrderId);
       return response.data;
     } catch (error) {

@@ -10,11 +10,9 @@ exports.createOrder = async (req, res) => {
         }
 
         const { items, totalPrice, delivery } = req.body;
-
         if (!items || !items.length) {
             return res.status(400).json({ message: "Aucun article dans la commande" });
         }
-
         const enrichedItems = await Promise.all(
             items.map(async (item) => {
                 const product = await Product.findById(item.productId);
@@ -55,7 +53,7 @@ exports.createOrder = async (req, res) => {
             })
         );
 
-        const preOrder = new Order({
+        const order = new Order({
             userId: req.user.userId,
             items: enrichedItems,
             totalPrice: Number(totalPrice || 0),
@@ -64,7 +62,7 @@ exports.createOrder = async (req, res) => {
             delivery,
         });
 
-        await preOrder.save();
+        await order.save();
         res.status(201).json({ message: "Commande créée avec succès", order });
     } catch (error) {
         console.error("Erreur création commande :", error.message);
