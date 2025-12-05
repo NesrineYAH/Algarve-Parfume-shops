@@ -11,10 +11,6 @@ router.post("/login", userCtrl.login);
 router.get("/moncompte", authMiddleware, (req, res) => {
     res.json({ user: req.user });
 });
-
-// ➤ Récupérer les commandes d’un utilisateur par ID
-router.get("/user/:id", authMiddleware, userCtrl.getUserOrders);
-
 // ➤ Récupérer tous les utilisateurs (admin seulement)
 router.get("/all", authMiddleware, isAdmin, userCtrl.getUsers);
 // 05/12  ajout forgotPassword & resetPassword
@@ -23,4 +19,4 @@ router.post("/reset-password/:token", userCtrl.resetPassword);
 
 
 module.exports = router;
-// yahoumnesrine@gmail.com   *Neshadil 
+//  *Neshadil

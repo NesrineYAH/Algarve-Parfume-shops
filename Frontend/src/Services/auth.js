@@ -67,23 +67,35 @@ export async function getCurrentUser() {
     });
 
     if (!res.ok) return null;
+
     const data = await res.json();
-    // Mettre à jour le localStorage pour garder l’utilisateur synchronisé
-    if (data.user) {
-      localStorage.setItem("userId", data.user._id);
-      localStorage.setItem("nom", data.user.nom);
-      localStorage.setItem("prenom", data.user.prenom);
-      localStorage.setItem("email", data.user.email);
-      localStorage.setItem("role", data.user.role);
-    }
+    if (!data.user) return null;
 
+    // 🔥 Normalisation du user
+    const normalizedUser = {
+      _id: data.user._id || data.user.userId,   // ✔ compatible backend
+      nom: data.user.nom,
+      prenom: data.user.prenom,
+      email: data.user.email,
+      role: data.user.role,
+    };
 
-    return data.user; // dépend de ce que ton backend renvoie
+    // 🔥 synchronisation localStorage
+    localStorage.setItem("userId", normalizedUser._id);
+    localStorage.setItem("nom", normalizedUser.nom);
+    localStorage.setItem("prenom", normalizedUser.prenom);
+    localStorage.setItem("email", normalizedUser.email);
+    localStorage.setItem("role", normalizedUser.role);
+
+    return normalizedUser;
+
   } catch (err) {
     console.error("Erreur getCurrentUser:", err);
     return null;
   }
 }
+
+
 export function logoutUser() {
   localStorage.removeItem("token");
   localStorage.removeItem("userId");
@@ -113,3 +125,37 @@ export async function resetPassword(token, password) {
   });
   return res.json();
 }
+
+/*
+export async function getCurrentUser() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    const res = await fetch("http://localhost:5001/api/users/moncompte", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.user) {
+      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("nom", data.user.nom);
+      localStorage.setItem("prenom", data.user.prenom);
+      localStorage.setItem("email", data.user.email);
+      localStorage.setItem("role", data.user.role);
+    }
+
+
+    return data.user; // dépend de ce que ton backend renvoie
+  } catch (err) {
+    console.error("Erreur getCurrentUser:", err);
+    return null;
+  }
+}
+
+*/

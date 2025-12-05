@@ -7,7 +7,6 @@ require("dotenv").config();
 const sendEmail = require("../utils/mailer"); //const { sendEmail } = require("../utils/mailer");  → ça correspond à module.exports = sendEmail.
 const crypto = require("crypto");
 
-
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
 const signatureToken = process.env.JWT_SECRET;
@@ -125,51 +124,7 @@ exports.validate = (method) => {
   }
 };
 
-//03/12
-// ✅ Récupérer tous les utilisateurs (admin seulement)
-exports.getUsers = async (req, res) => {
-  try {
-    const users = await User.find().select("-password"); // exclure le mot de passe
-    res.status(200).json(users);
-  } catch (error) {
-    console.error("Erreur récupération utilisateurs :", error);
-    res.status(500).json({ message: "Erreur serveur", error: error.message });
-  }
-};
-
-exports.getUserById = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("-password");
-    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
-    res.status(200).json(user);
-  } catch (error) {
-    console.error("Erreur récupération utilisateur :", error);
-    res.status(500).json({ message: "Erreur serveur", error: error.message });
-  }
-};
-
-// ✅ Récupérer les commandes d’un utilisateur par ID
-exports.getUserOrders = async (req, res) => {
-  try {
-    const { id } = req.params;
-    // Vérifie que l'ID est bien un ObjectId valide
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "ID utilisateur invalide" });
-    }
-    // Vérifie que l'utilisateur connecté correspond à l'ID demandé
-    if (req.user.userId !== id && req.user.role !== "admin") {
-      return res.status(403).json({ message: "Accès interdit" });
-    }
-    const orders = await Order.find({ userId: id });
-    res.status(200).json(orders);
-  } catch (error) {
-    console.error("Erreur récupération commandes utilisateur :", error);
-    res.status(500).json({ message: "Erreur serveur", error: error.message });
-  }
-};
-
 // 05/12 ajout forgotPassword & resetPassword
-
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -230,7 +185,48 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
+//03/12
+// ✅ Récupérer tous les utilisateurs (admin seulement)
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password"); // exclure le mot de passe
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Erreur récupération utilisateurs :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
 
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Erreur récupération utilisateur :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+// ✅ Récupérer les commandes d’un utilisateur par ID
+exports.getUserOrders = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // Vérifie que l'ID est bien un ObjectId valide
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "ID utilisateur invalide" });
+    }
+    // Vérifie que l'utilisateur connecté correspond à l'ID demandé
+    if (req.user.userId !== id && req.user.role !== "admin") {
+      return res.status(403).json({ message: "Accès interdit" });
+    }
+    const orders = await Order.find({ userId: id });
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Erreur récupération commandes utilisateur :", error);
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
 
 /*
     const token = jwt.sign(

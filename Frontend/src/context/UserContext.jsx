@@ -11,7 +11,14 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await getCurrentUser();
-      setUser(currentUser);
+   //   setUser(currentUser);
+setUser({
+  _id: currentUser._id,
+  nom: currentUser.nom,
+  prenom: currentUser.prenom,
+  email: currentUser.email,
+  role: currentUser.role
+});
     };
     fetchUser();
   }, []);
