@@ -151,17 +151,14 @@ exports.getUserById = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const { id } = req.params;
-
     // Vérifie que l'ID est bien un ObjectId valide
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "ID utilisateur invalide" });
     }
-
     // Vérifie que l'utilisateur connecté correspond à l'ID demandé
     if (req.user.userId !== id && req.user.role !== "admin") {
       return res.status(403).json({ message: "Accès interdit" });
     }
-
     const orders = await Order.find({ userId: id });
     res.status(200).json(orders);
   } catch (error) {

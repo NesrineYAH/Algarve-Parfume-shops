@@ -8,7 +8,6 @@ export async function loginUser(credentials) {
     });
     console.log(credentials);
 
-
     const data = await res.json();
     if (!res.ok) {
       return { message: data.message || "Erreur serveur" };
@@ -40,10 +39,17 @@ export async function registerUser(credentials) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
     });
+    console.log(credentials);
+    //   const text = await res.text();
+    //   const data = JSON.parse(text);
+    const data = await res.json();
+    if (!res.ok) {
+      // ⛔ Retourne une erreur si le backend a renvoyé 400 ou autre
+      return { success: false, message: data.message };
+    }
+    //    return data;
+    return { success: true, data };
 
-    const text = await res.text();
-    const data = JSON.parse(text);
-    return data;
   } catch (err) {
     return { message: "Erreur serveur" };
   }
