@@ -16,7 +16,6 @@ export default function Authentification() {
     try {
       if (activeTab === "login") {
         const response = await loginUser(form);
-
         if (response.token) {
           // Stockage
           localStorage.setItem("token", response.token);
@@ -31,6 +30,7 @@ export default function Authentification() {
         } else {
           setMessage(response.message || "Identifiants invalides");
         }
+        
       } else {
         // REGISTER
         const response = await registerUser(form);
@@ -119,6 +119,16 @@ export default function Authentification() {
             {showPassword ? "👁‍🗨" : "👀"}
           </span>
         </div>
+
+         {/* 👉 Ajouter ce bloc ICI  05/12*/}
+  {activeTab === "login" && (
+    <p 
+      className="forgot-password"
+      onClick={() => navigate("/mot-de-passe-oublie")}
+    >
+      Mot de passe oublié ?
+    </p>
+  )}
 
         <button type="submit">
           {activeTab === "login" ? "Se connecter" : "S'inscrire"}
