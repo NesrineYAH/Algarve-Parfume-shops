@@ -84,6 +84,10 @@ exports.updateOrder = async (req, res) => {
         if (!updatedOrder) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
+        // Vérification que l'utilisateur est propriétaire ou admin
+        if (updatedOrder.userId.toString() !== req.user.userId && req.user.role !== "admin") {
+            return res.status(403).json({ message: "Accès interdit" });
+        }
 
         return res.status(200).json({ message: "Commande mise à jour", order: updatedOrder });
     } catch (error) {
@@ -114,14 +118,16 @@ exports.getMyOrders = async (req, res) => {
         if (!req.user || !req.user.userId) {
             return res.status(401).json({ message: "Utilisateur non authentifié" });
         }
-
-        const orders = await Order.find({ userId: req.user.userId });
-        return res.status(200).json(orders);
+        const allOrders = await Order.find({ userId: req.user.userId });
+        const preOrders = allOrders.filter(o => o.status === "pending" && o.paymentStatus === "pending");
+        const orders = allOrders.filter(o => o.status === "confirmed" && o.paymentStatus === "paid");
+        return res.status(200).json({ preOrders, orders });
     } catch (error) {
-        console.error("Erreur récupération commandes utilisateur:", error.message);
+        console.error(error);
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 // ➤ SUPPRIMER UNE COMMANDE
 exports.deleteOrder = async (req, res) => {
     try {

@@ -4,12 +4,162 @@ import "./Orders.scss";
 import { UserContext } from "../../context/UserContext";
 
 export default function Orders() {
+  const [preOrders, setPreOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user) return;
+
+      try {
+        console.log("Utilisateur connecté :", user);
+        // ⚡ Récupère pré-commandes et commandes confirmées depuis le backend
+        const data = await OrderService.getUserOrders(user._id);
+        console.log("Data reçue :", data);
+
+        setPreOrders(data.preOrders || []);
+        setOrders(data.orders || []);
+      } catch (err) {
+        console.error("Erreur fetch orders:", err);
+      }
+    };
+
+    fetchOrders();
+  }, [user]);
+
+  const getImageUrl = (imageUrl) =>
+    imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";
+
+  const handleDelete = async (orderId) => {
+    try {
+      await OrderService.deleteOrder(orderId);
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+      alert("Commande supprimée !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur suppression commande");
+    }
+  };
+
+  const handleUpdate = async (orderId) => {
+    try {
+      const updated = await OrderService.updateOrder(orderId, {
+        status: "confirmed",
+        paymentStatus: "paid",
+      });
+      const updatedOrder = updated.order;
+
+      // Retire des pré-commandes et ajoute aux commandes confirmées
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setOrders((prev) => [...prev, updatedOrder]);
+
+      alert("Commande confirmée !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la mise à jour");
+    }
+  };
+
+  return (
+    <div className="orders-container">
+      <h1>Mes Commandes</h1>
+
+      {user && (
+        <p>
+          Bonjour {user.prenom} {user.nom} ({user.email})
+        </p>
+      )}
+
+      <h2>Pré-commandes</h2>
+      {preOrders.length === 0 ? (
+        <p>Aucune pré-commande pour le moment.</p>
+      ) : (
+        preOrders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <h3>Pré-commande n°{order._id}</h3>
+            <p>Status : {order.status}</p>
+            <p>Paiement : {order.paymentStatus}</p>
+
+            <div className="order-items">
+              {order.items.map((item, idx) => (
+                <div className="order-item" key={idx}>
+                  <img
+                    className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.nom}
+                  />
+                  <div className="item-details">
+                    <h4>{item.nom}</h4>
+                    <p>
+                      Taille : {item.options?.size} {item.options?.unit}
+                    </p>
+                    <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantite}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => handleDelete(order._id)} className="Button">
+              Supprimer
+            </button>
+            <button onClick={() => handleUpdate(order._id)} className="Button">
+              Confirmer et payer
+            </button>
+          </div>
+        ))
+      )}
+
+      <h2>Commandes Confirmées</h2>
+      {orders.length === 0 ? (
+        <p>Aucune commande confirmée.</p>
+      ) : (
+        orders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <h3>Commande n°{order._id}</h3>
+            <p>Status : {order.status}</p>
+            <p>Paiement : {order.paymentStatus}</p>
+
+            <div className="order-items">
+              {order.items.map((item, idx) => (
+                <div className="order-item" key={idx}>
+                  <img
+                    className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.nom}
+                  />
+                  <div className="item-details">
+                    <h4>{item.nom}</h4>
+                    <p>
+                      Taille : {item.options?.size} {item.options?.unit}
+                    </p>
+                    <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantite}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => handleDelete(order._id)} className="Button">
+              Supprimer la commande
+            </button>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+
+
+/*
+export default function Orders() {
   console.log("Orders page loaded");
 
   const [orders, setOrders] = useState([]);
   const [preOrders, setPreOrders] = useState([]);
-
-  // ✅ Récupération du user depuis UserContext
   const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -20,20 +170,18 @@ export default function Orders() {
           return;
         }
         console.log("Utilisateur connecté :", user);
-        // ⚡ Utilisation de l'ID du user depuis le contexte
         const data = await OrderService.getUserOrders(user._id);
         console.log("Data reçue :", data);
 
-        // Séparation pré-commandes et confirmées
         const pre = data.filter(
           (o) => o.status === "pending" && o.paymentStatus === "pending"
         );
-        const confirmed = data.filter(
+        const orders  = data.filter(
           (o) => o.status === "confirmed" && o.paymentStatus === "paid"
         );
 
         setPreOrders(pre);
-        setOrders(confirmed);
+        setOrders(orders);
       } catch (err) {
         console.error("Erreur fetch orders:", err);
       }
@@ -83,7 +231,6 @@ export default function Orders() {
     <div className="orders-container">
       <h1>Mes Commandes</h1>
 
-      {/* ✅ Affichage du nom/prénom si dispo */}
       {user && (
         <p>
           Bonjour {user.prenom} {user.nom} ({user.email})
@@ -175,7 +322,7 @@ export default function Orders() {
     </div>
   );
 }
-
+*/
 /*
 On ajoute UserContext dans Orders.jsx pour :
 
