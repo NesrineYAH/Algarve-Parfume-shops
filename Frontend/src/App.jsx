@@ -55,7 +55,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
-<Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
 
         <BlogBenefits />

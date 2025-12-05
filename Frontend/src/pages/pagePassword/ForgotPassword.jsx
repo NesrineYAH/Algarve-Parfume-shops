@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { forgotPassword } from "../../Services/auth";
+import "./pagePassword.scss"
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div>
+    <div className="Auth-container">
       <h2>Mot de passe oublié</h2>
       <form onSubmit={handleSubmit}>
         <input 
