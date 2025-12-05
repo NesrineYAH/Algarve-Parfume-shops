@@ -31,7 +31,6 @@ export async function loginUser(credentials) {
     return { message: "Erreur serveur !!" };
   }
 }
-
 export async function registerUser(credentials) {
   try {
     const res = await fetch("http://localhost:5001/api/users/register", {
@@ -54,7 +53,6 @@ export async function registerUser(credentials) {
     return { message: "Erreur serveur" };
   }
 }
-
 export async function getCurrentUser() {
   try {
     const token = localStorage.getItem("token");
@@ -95,4 +93,23 @@ export function logoutUser() {
   localStorage.removeItem("role");
 
   return true;
+}
+
+// 05/12 ajout forgotPassword & resetPassword
+export async function forgotPassword(email) {
+  const res = await fetch("http://localhost:5001/api/users/forgot-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  return res.json();
+}
+
+export async function resetPassword(token, password) {
+  const res = await fetch(`http://localhost:5001/api/users/reset-password/${token}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password }),
+  });
+  return res.json();
 }

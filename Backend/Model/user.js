@@ -19,7 +19,9 @@ const userSchema = new mongoose.Schema({
       quantite: Number
     }
   ],
-  favorites: [String]
+  favorites: [String],
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 module.exports = mongoose.model("User", userSchema);
 

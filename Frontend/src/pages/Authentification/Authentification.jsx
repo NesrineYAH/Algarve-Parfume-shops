@@ -131,7 +131,6 @@ export default function Authentification() {
 
 
 /*
-
  const response = await registerUser(form);
         setMessage(response.message);
         if (response.token) {

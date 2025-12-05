@@ -17,5 +17,9 @@ router.get("/user/:id", authMiddleware, userCtrl.getUserOrders);
 
 // ➤ Récupérer tous les utilisateurs (admin seulement)
 router.get("/all", authMiddleware, isAdmin, userCtrl.getUsers);
+// 05/12  ajout forgotPassword & resetPassword
+router.post("/forgot-password", userCtrl.forgotPassword);
+router.post("/reset-password/:token", userCtrl.resetPassword);
+
 
 module.exports = router;
