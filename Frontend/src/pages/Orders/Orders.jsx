@@ -91,6 +91,8 @@ export default function Orders() {
             <h2>Pré-commande n°{order._id}</h2>
             <p>Status : {order.status}</p>
             <p>Paiement : {order.paymentStatus}</p>
+            <p>Prix Total : {order.totalPrice} € </p>
+
             <div className="order-items">
               {order.items.map((item, idx) => (
                 <div className="order-item" key={idx}>
