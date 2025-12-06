@@ -31,7 +31,9 @@ export default function Payment() {
 
     const script = document.createElement("script");
     script.src =
-      "https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID_SANDBOX&currency=EUR"; // <-- à remplacer
+  "https://www.paypal.com/sdk/js?client-id=AYYQRDXtAAE0a1V91P9i6MrJYy2lOIgyIgg0dT4zUT-ezZPocGBvmbl70Oeg8Y24KjsMXO_5TaNIts9t&currency=EUR"; // <-- à remplacer
+    //  "https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR";
+
     script.async = true;
     script.onload = () => {
       if (window.paypal) {
@@ -131,27 +133,27 @@ export default function Payment() {
       <CheckoutSteps step={4} />
       <h2>💳 Choisissez votre mode de paiement</h2>
 
-      <div className="payment-options">
-        <label>
-          <input
-            type="radio"
-            value="card"
-            checked={paymentMethod === "card"}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          Carte bancaire
-        </label>
-        <button onClick={handleCheckout}>Payer 10€</button>
-        <label>
-          <input
-            type="radio"
-            value="paypal"
-            checked={paymentMethod === "paypal"}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          PayPal
-        </label>
-      </div>
+   <div className="payment-options">
+  <label>
+    <input
+      type="radio"
+      value="card"
+      checked={paymentMethod === "card"}
+      onChange={(e) => setPaymentMethod(e.target.value)}
+    />
+    Carte bancaire (Stripe)
+  </label>
+
+  <label>
+    <input
+      type="radio"
+      value="paypal"
+      checked={paymentMethod === "paypal"}
+      onChange={(e) => setPaymentMethod(e.target.value)}
+    />
+    PayPal
+  </label>
+</div>
 
       <div className="order-summary">
         <h3>Récapitulatif de votre commande</h3>
@@ -179,3 +181,5 @@ export default function Payment() {
     </div>
   );
 }
+
+// "https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID_SANDBOX&currency=EUR"; // <-- à remplacer

@@ -37,8 +37,6 @@ app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
 
-//app.listen(PORT, () => console.log("Serveur API sur http://localhost:5001"));
-//app.listen(PORT, () => console.log(`Serveur API sur http://localhost:${PORT}`));
 
 module.exports = app;
 

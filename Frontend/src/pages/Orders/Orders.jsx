@@ -154,6 +154,9 @@ export default function Orders() {
             <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer la commande
             </button>
+              <button  className="Button">
+          passer  au payment 
+            </button>
           </div>
         ))
       )}
