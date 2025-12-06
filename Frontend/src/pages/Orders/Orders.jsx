@@ -3,6 +3,167 @@ import OrderService from "../../Services/orderService";
 import "./Orders.scss";
 import { UserContext } from "../../context/UserContext";
 
+
+export default function Orders() {
+  const [orders, setOrders] = useState([]);
+  const [preOrders, setPreOrders] = useState([]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+      console.log("User dans Orders.jsx :", user);
+  if (!user) return;
+
+    const fetchOrders = async () => {
+      
+      if (!user || !user._id) {
+        console.log("Utilisateur non défini ou _id manquant :", user);
+        return;
+      }
+
+      try {
+              console.log("user._id:", user._id);
+        const data = await OrderService.getUserOrders(user._id);
+        console.log("Data reçue :", data);
+
+        const pre = data.preOrders || [];
+        const confirmed = data.orders || [];
+
+        setPreOrders(pre);
+        setOrders(confirmed);
+      } catch (err) {
+        console.error("Erreur fetch orders :", err);
+      }
+    };
+
+    fetchOrders();
+  }, [user]);
+
+  const getImageUrl = (imageUrl) =>
+    imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";
+
+  const handleDelete = async (orderId) => {
+    try {
+      await OrderService.deleteOrder(orderId);
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      alert("Commande supprimée !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur suppression commande");
+    }
+  };
+
+  const handleUpdate = async (orderId) => {
+    try {
+      const updated = await OrderService.updateOrder(orderId, {
+        status: "confirmed",
+        paymentStatus: "paid",
+      });
+
+      const updatedOrder = updated.order;
+
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setOrders((prev) => [...prev, updatedOrder]);
+
+      alert("Commande confirmée !");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la mise à jour");
+    }
+  };
+
+  return (
+    <div className="orders-container">
+      <h1>Mes Commandes</h1>
+
+      {user && (
+        <p>
+          Bonjour {user.prenom} {user.nom} ({user.email})
+        </p>
+      )}
+
+      <h2>Pré-commandes</h2>
+      {preOrders.length === 0 ? (
+        <p>Aucune pré-commande pour le moment.</p>
+      ) : (
+        preOrders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <h2>Pré-commande n°{order._id}</h2>
+            <p>Status : {order.status}</p>
+            <p>Paiement : {order.paymentStatus}</p>
+            <div className="order-items">
+              {order.items.map((item, idx) => (
+                <div className="order-item" key={idx}>
+                  <img
+                    className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.nom}
+                  />
+                  <div className="item-details">
+                    <h3>{item.nom}</h3>
+                    <p>
+                      Taille : {item.options?.size} {item.options?.unit}
+                    </p>
+                    <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantite}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button onClick={() => handleDelete(order._id)} className="Button">
+              Supprimer
+            </button>
+            <button onClick={() => handleUpdate(order._id)} className="Button">
+              Confirmer et payer
+            </button>
+          </div>
+        ))
+      )}
+
+      <h2>Commandes Confirmées</h2>
+      {orders.length === 0 ? (
+        <p>Aucune commande confirmée.</p>
+      ) : (
+        orders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <h2>Commande n°{order._id}</h2>
+            <p>Status : {order.status}</p>
+            <p>Paiement : {order.paymentStatus}</p>
+            <div className="order-items">
+              {order.items.map((item, idx) => (
+                <div className="order-item" key={idx}>
+                  <img
+                    className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.nom}
+                  />
+                  <div className="item-details">
+                    <h3>{item.nom}</h3>
+                    <p>
+                      Taille : {item.options?.size} {item.options?.unit}
+                    </p>
+                    <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantite}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => handleDelete(order._id)} className="Button">
+              Supprimer la commande
+            </button>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+
+
+
+
+/*
 export default function Orders() {
   const [preOrders, setPreOrders] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -10,11 +171,14 @@ export default function Orders() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      if (!user) return;
+      if (!user || !user._id){
+         console.log("Utilisateur non défini ou _id manquant :", user);
+          return;
+        }
 
       try {
         console.log("Utilisateur connecté :", user);
-        // ⚡ Récupère pré-commandes et commandes confirmées depuis le backend
+
         const data = await OrderService.getUserOrders(user._id);
         console.log("Data reçue :", data);
 
@@ -151,7 +315,7 @@ export default function Orders() {
     </div>
   );
 }
-
+*/
 
 
 /*

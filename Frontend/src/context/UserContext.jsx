@@ -7,19 +7,33 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await getCurrentUser();
+      
    //   setUser(currentUser);
-setUser({
-  _id: currentUser._id,
-  nom: currentUser.nom,
-  prenom: currentUser.prenom,
-  email: currentUser.email,
-  role: currentUser.role
-});
+   /*
+if (currentUser) {
+      setUser({
+        _id: currentUser._id,
+        nom: currentUser.nom,
+        prenom: currentUser.prenom,
+        email: currentUser.email,
+        role: currentUser.role,
+      });
+    } else {
+      // Aucun utilisateur connecté (ex: token expiré, pas de session, etc.)
+      setUser(null);
+    }
+*/
+   if (currentUser) {
+      setUser(currentUser);
+    }
+    setLoadingUser(false);
     };
+    
     fetchUser();
   }, []);
 
