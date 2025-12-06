@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const userSchema = new mongoose.Schema({
   nom: { type: String, required: true },       // 🔹 anciennement 'name'
   prenom: { type: String, required: true },    // 🔹 nouveau champ

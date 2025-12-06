@@ -129,7 +129,7 @@ export default function Checkout() {
 
       if (!preOrderId) throw new Error("Aucune pré-commande trouvée !");
 
-      await OrderService.updatePreOrder(preOrderId, updatedOrderData);
+      await OrderService.updateOrder(preOrderId, updatedOrderData);
       console.log("Pré-commande mise à jour :", preOrderId);
 
       alert("✅ Pré-commande enregistrée avec succès !");

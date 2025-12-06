@@ -6,6 +6,8 @@ const { body } = require("express-validator");
 require("dotenv").config();
 const sendEmail = require("../utils/mailer"); //const { sendEmail } = require("../utils/mailer");  → ça correspond à module.exports = sendEmail.
 const crypto = require("crypto");
+const mongoose = require("mongoose");
+
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;

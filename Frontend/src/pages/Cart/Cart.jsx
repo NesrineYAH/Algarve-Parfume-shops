@@ -86,7 +86,7 @@ export default function Cart() {
       let preOrderId = localStorage.getItem("preOrderId");
 
       if (preOrderId) {
-        await OrderService.updatePreOrder(preOrderId, preOrderData);
+        await OrderService.updateOrder(preOrderId, preOrderData);
         console.log("Pré-commande mise à jour :", preOrderId);
       } else {
         const response = await OrderService.createPreOrder(preOrderData);
