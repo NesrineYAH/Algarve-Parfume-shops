@@ -82,12 +82,10 @@ export default function Payment() {
       const stripe = await stripePromise;
 
       // Appel backend pour créer la session Stripe
-      const response = await fetch("/create-checkout-session", {
+        const response = await fetch("http://localhost:5001/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cart,
-        }),
+        body: JSON.stringify({ cart }),
       });
       const session = await response.json();
 
@@ -162,7 +160,7 @@ export default function Payment() {
         ) : (
           <ul>
             {cart.map((item) => (
-              <li key={`${item._id}-${item.options.size}-${item.options.unit}`}>
+             <li key={`${item.variantId}-${item.options.size}-${item.options.unit}`}>
                 {item.nom} – {item.options.size} {item.options.unit} ×{" "}
                 {item.quantite} :{" "}
                 {(item.options.prix * item.quantite).toFixed(2)} €

@@ -113,7 +113,7 @@ export default function Cart() {
       ) : (
         <div className="cart-items">
           {cart.map((item, index) => (
-            <div className="cart-item" key={`${item.variantId}-${index}`}>
+               <div className="cart-item" key={`${item.variantId}-${index}`}>
               <img
                 src={`http://localhost:5001${item.imageUrl}`}
                 alt={item.nom}

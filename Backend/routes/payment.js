@@ -1,7 +1,8 @@
 // backend/routes/payment.js
 const express = require("express");
 const router = express.Router();
-const stripe = require("stripe")("VOTRE_SECRET_KEY_STRIPE"); // clé secrète Stripe
+const stripe = require("stripe")
+
 
 router.post("/create-checkout-session", async (req, res) => {
     try {
