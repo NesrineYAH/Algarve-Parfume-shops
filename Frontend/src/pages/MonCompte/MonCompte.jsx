@@ -46,7 +46,7 @@ export default function MonCompte() {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then((data) => setOrders(data))
+      .then((data) => setOrders(data.orders || [])) //.then((data) => setOrders(data)) -L’erreur “orders.map is not a function” vient de cette ligne Parce que l’API ne retourne pas un tableau, mais un objet.  
       .catch((err) => console.error("Erreur chargement commandes :", err));
   }, [user]);
 

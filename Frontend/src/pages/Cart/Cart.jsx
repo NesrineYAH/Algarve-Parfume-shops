@@ -90,7 +90,7 @@ export default function Cart() {
         console.log("Pré-commande mise à jour :", preOrderId);
       } else {
         const response = await OrderService.createPreOrder(preOrderData);
-        preOrderId = response.preOrder._id; // ✅ récupère correctement l'ID
+        preOrderId = response.order._id; // ✅ récupère correctement l'ID
         localStorage.setItem("preOrderId", preOrderId);
         console.log("Nouvelle pré-commande créée :", preOrderId);
       }
