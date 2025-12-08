@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const userSchema = new mongoose.Schema({
   nom: { type: String, required: true },       // 🔹 anciennement 'name'
   prenom: { type: String, required: true },    // 🔹 nouveau champ
@@ -19,7 +20,9 @@ const userSchema = new mongoose.Schema({
       quantite: Number
     }
   ],
-  favorites: [String]
+  favorites: [String],
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 module.exports = mongoose.model("User", userSchema);
 

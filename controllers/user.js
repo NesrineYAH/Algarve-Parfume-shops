@@ -1,9 +1,13 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
+const Order = require("../Model/Order");
 const { body } = require("express-validator");
 require("dotenv").config();
 const sendEmail = require("../utils/mailer"); //const { sendEmail } = require("../utils/mailer");  → ça correspond à module.exports = sendEmail.
+const crypto = require("crypto");
+const mongoose = require("mongoose");
+
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
@@ -122,6 +126,67 @@ exports.validate = (method) => {
   }
 };
 
+// 05/12 ajout forgotPassword & resetPassword
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Email introuvable" });
+
+    // Générer un token aléatoire
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 min
+    await user.save();
+
+    // Lien vers frontend
+    const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+
+    await sendEmail({
+      to: email,
+      subject: "Réinitialisation du mot de passe",
+      html: `
+        <p>Bonjour,</p>
+        <p>Cliquez sur ce lien pour réinitialiser votre mot de passe :</p>
+        <a href="${resetLink}">Réinitialiser mon mot de passe</a>
+        <p>Le lien expire dans 15 minutes.</p>
+      `,
+    });
+
+    res.json({ message: "Email envoyé !" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }, // token non expiré
+    });
+
+    if (!user)
+      return res.status(400).json({ message: "Token invalide ou expiré" });
+
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: "Mot de passe modifié avec succès !" });
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
 //03/12
 // ✅ Récupérer tous les utilisateurs (admin seulement)
 exports.getUsers = async (req, res) => {
@@ -149,17 +214,14 @@ exports.getUserById = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const { id } = req.params;
-
     // Vérifie que l'ID est bien un ObjectId valide
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "ID utilisateur invalide" });
     }
-
     // Vérifie que l'utilisateur connecté correspond à l'ID demandé
     if (req.user.userId !== id && req.user.role !== "admin") {
       return res.status(403).json({ message: "Accès interdit" });
     }
-
     const orders = await Order.find({ userId: id });
     res.status(200).json(orders);
   } catch (error) {
@@ -167,8 +229,6 @@ exports.getUserOrders = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
-
-
 
 /*
     const token = jwt.sign(
