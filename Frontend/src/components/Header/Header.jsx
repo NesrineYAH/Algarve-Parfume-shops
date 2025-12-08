@@ -68,18 +68,17 @@ const Header = () => {
               className="icone"
               onClick={() => setDropdownVisible(!dropdownVisible)}
             />
-            {prenom ? `Bonjour ${prenom}` :  t('user.account')}
-            {dropdownVisible && (
+          {prenom ? `${t('user.greeting')} ${prenom}` : t('user.account')}       
+              {dropdownVisible && (
               <div className="dropdown-menu">
-                <Link to="/MonCompte">Mon Compte</Link>
-                <Link to="/Orders">Mes Commandes </Link>
-                <Link to="/history">Historique d'achat </Link>
+                <Link to="/MonCompte">{ t('user.account')}</Link>
+                <Link to="/Orders">{ t('user.orders')} </Link>
+                <Link to="/history">{ t('user.history')}</Link>
                 <button onClick={handleLogout}>
-                  <LogOut size={16} /> Logout
+                  <LogOut size={16} /> {t('user.logout')}
                 </button> 
               </div>
             )}
-
 
           </div>
         ) : (
