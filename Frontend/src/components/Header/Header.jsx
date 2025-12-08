@@ -3,13 +3,17 @@ import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
 import { User, ShoppingCart, Heart, Home, Bell, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.scss";
+ import LanguageSwitcher  from "../Language/Language";
+import { useTranslation } from 'react-i18next';
+
 
 const Header = () => {
+  const { t } = useTranslation();
+  const Lang = localStorage.getItem("i18nextLang");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const prenom = localStorage.getItem("prenom");
-  // const prenom = localStorage.getItem("prenom");
 
   const handleLogout = () => {
     localStorage.clear();
@@ -28,15 +32,14 @@ const Header = () => {
 
       {/* Menu */}
       <ul className="menu">
-        <li>CALENDRIERS DE L&apos;AVENT</li>
+        <li>{t('header.titleI')}</li>
         <li>
-          <Link to="/Home">Accueil</Link>
+          <Link to="/Home">{t("header.titleI")}</Link>
         </li>
         <li>
-          <Link to="/Product">Parfum</Link>
+          <Link to="/Product">{t('header.titleIII')}</Link>
         </li>
-        <li>Soin visage</li>
-        <li>Cheveux</li>
+        <li>{t('header.titlevI')}</li>
       </ul>
 
       {/* Icons */}
@@ -84,6 +87,7 @@ const Header = () => {
           />
         )}
       </div>
+      <LanguageSwitcher />
     </header>
   );
 };

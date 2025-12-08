@@ -1,4 +1,13 @@
 {
+  "header": [
+{
+  "titleI": "Accueil",
+  "titleII": "Parfum Femme",
+  "titleIII": "Parfum Homme",
+  "titleVI": "Marques"
+}
+    
+  ],
   "faqDataP": [
     {
       "question": "Quels moyens de paiement acceptez-vous ?",

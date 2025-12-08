@@ -1,4 +1,13 @@
 {
+  "header": [
+{
+  "titleI": "Home",
+  "titleII": "Women's perfume",
+  "titleIII": "Men's Parfume",
+  "titleVI": "Brands"
+}
+    
+  ],
   "faqDataP": [
     {
       "question": "What payment methods do you accept?",
