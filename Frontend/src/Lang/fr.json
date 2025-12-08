@@ -1,13 +1,18 @@
 {
-  "header": [
-{
-  "titleI": "Accueil",
-  "titleII": "Parfum Femme",
-  "titleIII": "Parfum Homme",
-  "titleVI": "Marques"
-}
-    
-  ],
+  "header": {
+    "titleI": "Accueil",
+    "titleII": "Parfum Femme",
+    "titleIII": "Parfum Homme",
+    "titleVI": "Marques"
+  },
+  "user": {
+    "greeting": "Bonjour",
+    "account": "Mon compte",
+    "orders": "Mes commandes",
+    "history": "Historique d'achat",
+    "logout": "Déconnexion"
+  },
+
   "faqDataP": [
     {
       "question": "Quels moyens de paiement acceptez-vous ?",

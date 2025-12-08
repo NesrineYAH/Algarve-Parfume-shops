@@ -1,13 +1,19 @@
 {
-  "header": [
-{
+  "header": {
   "titleI": "Home",
   "titleII": "Women's perfume",
   "titleIII": "Men's Parfume",
   "titleVI": "Brands"
-}
+}, 
+ "user": {
+    "greeting": "Hello",
+    "account": "My account",
+    "orders": "My Orders",
+    "history": "Purchase history",
+    "logout": "logout"
+  },
     
-  ],
+  
   "faqDataP": [
     {
       "question": "What payment methods do you accept?",

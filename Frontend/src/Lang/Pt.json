@@ -1,13 +1,20 @@
 {
- "header": [
-{
+ "header": {
   "titleI": "Bem-vindo",
   "titleII": "Mulheres perfume",
   "titleIII": "Perfume masculino",
   "titleVI": "Marca"
-}
+}, 
+ "user": {
+    "greeting": "Olá",
+    "account": "a minha conta",
+    "orders": "As Minhas Ordens",
+    "history": "histórico de compras",
+    "logout": "logout"
+  },
     
-  ],
+    
+  
 
   "faqDataP": [
     {

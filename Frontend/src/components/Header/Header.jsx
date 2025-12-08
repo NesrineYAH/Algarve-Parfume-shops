@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const { t } = useTranslation();
-  const Lang = localStorage.getItem("i18nextLang");
+  const Lang = localStorage.getItem("i18nextLng") || "fr";
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -32,14 +32,15 @@ const Header = () => {
 
       {/* Menu */}
       <ul className="menu">
-        <li>{t('header.titleI')}</li>
+   
         <li>
           <Link to="/Home">{t("header.titleI")}</Link>
         </li>
         <li>
-          <Link to="/Product">{t('header.titleIII')}</Link>
+          <Link to="/Product">{t('header.titleII')}</Link>
         </li>
-        <li>{t('header.titlevI')}</li>
+             <li><Link to="/Product">{t('header.titleIII')}</Link></li>
+        <li>{t('header.titleVI')}</li>
       </ul>
 
       {/* Icons */}
@@ -67,7 +68,7 @@ const Header = () => {
               className="icone"
               onClick={() => setDropdownVisible(!dropdownVisible)}
             />
-            {prenom ? `Bonjour ${prenom}` : "Mon compte"}
+            {prenom ? `Bonjour ${prenom}` :  t('user.account')}
             {dropdownVisible && (
               <div className="dropdown-menu">
                 <Link to="/MonCompte">Mon Compte</Link>
@@ -75,9 +76,11 @@ const Header = () => {
                 <Link to="/history">Historique d'achat </Link>
                 <button onClick={handleLogout}>
                   <LogOut size={16} /> Logout
-                </button>
+                </button> 
               </div>
             )}
+
+
           </div>
         ) : (
           <User
@@ -93,3 +96,16 @@ const Header = () => {
 };
 
 export default Header;
+
+/*
+
+            {prenom ? `${t('user.greeting')} ${prenom}` : t('user.account')}
+...
+<Link to="/MonCompte">{t('user.account')}</Link>
+<Link to="/Orders">{t('user.orders')}</Link>
+<Link to="/history">{t('user.history')}</Link>
+<button onClick={handleLogout}>
+  <LogOut size={16} /> {t('user.logout')}
+</button>
+*/
+
