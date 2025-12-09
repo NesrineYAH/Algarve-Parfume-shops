@@ -31,8 +31,8 @@ const Header = () => {
       </div>
 
       {/* Menu */}
-      <ul className="menu">
-   
+      <div className="menu"> 
+      <ul >
         <li>
           <Link to="/Home">{t("header.titleI")}</Link>
         </li>
@@ -42,7 +42,7 @@ const Header = () => {
              <li><Link to="/Product">{t('header.titleIII')}</Link></li>
         <li>{t('header.titleVI')}</li>
       </ul>
-
+    </div>
       {/* Icons */}
       <div className="icons">
         <Link to="/Home">

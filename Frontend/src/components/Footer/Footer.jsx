@@ -161,6 +161,13 @@ export default function Footer() {
             rel="noreferrer noopener"
           ></a>
         </li>
+              
+                    <a href={"../Contact"} target="_blank" rel="noopener noreferrer">
+                        <li>
+                        Contact
+                    </li>
+                    </a>
+                
       </ul>
 
       <ul className="footer__ul">

@@ -34,6 +34,20 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/stripe", stripeRoute);
+//09/12
+app.post("/api/contact", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: "Champs manquants" });
+  }
+
+  // Traiter : envoyer email, stocker en DB, etc.
+  console.log("Message reçu :", name, email, message);
+
+  res.status(200).json({ success: true });
+});
+
 
 
 app.get("/", (req, res) => {
