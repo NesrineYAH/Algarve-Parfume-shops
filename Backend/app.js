@@ -11,6 +11,7 @@ const orderRoutes = require("./routes/orders");
 const deliveryRoutes = require("./routes/delivery");
 const paymentRoutes = require("./routes/payment");
 const stripeRoute = require("./routes/stripe");
+const contactRoutes = require("./routes/contact.js");
 require("./mongoDB/DB");
 
 const app = express();
@@ -34,19 +35,8 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/stripe", stripeRoute);
-//09/12
-app.post("/api/contact", async (req, res) => {
-  const { name, email, message } = req.body;
+app.use("/api/contact", contactRoutes);
 
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: "Champs manquants" });
-  }
-
-  // Traiter : envoyer email, stocker en DB, etc.
-  console.log("Message reçu :", name, email, message);
-
-  res.status(200).json({ success: true });
-});
 
 
 

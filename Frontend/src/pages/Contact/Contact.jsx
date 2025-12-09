@@ -23,7 +23,7 @@ export default function Contact() {
     setStatus("Envoi en cours...");
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("/api/contacts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -31,7 +31,7 @@ export default function Contact() {
 
       if (response.ok) {
         setStatus("Message envoyé avec succès !");
-        setFormData({ name: "", email: "", message: "" });
+        setFormData({ name: "", email: "", message: "", reason: "" });
       } else {
         setStatus("Erreur lors de l’envoi du message.");
       }
