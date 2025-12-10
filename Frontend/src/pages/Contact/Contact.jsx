@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import "./Contact.scss"
+import "./Contact.scss";
+import { sendContact } from "../../Services/contactService";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
-      reason: "", // 👈 nouveau champ
+    reason: "", // 👈 nouveau champ
   });
 
   const [status, setStatus] = useState("");
@@ -22,21 +23,12 @@ export default function Contact() {
     e.preventDefault();
     setStatus("Envoi en cours...");
 
-    try {
-      const response = await fetch("/api/contacts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus("Message envoyé avec succès !");
-        setFormData({ name: "", email: "", message: "", reason: "" });
-      } else {
-        setStatus("Erreur lors de l’envoi du message.");
-      }
+      try {
+      await sendContact(formData);
+      setStatus("Message envoyé !");
+      setFormData({ name: "", email: "", message: "", reason: "" });
     } catch (error) {
-      setStatus("Erreur serveur.");
+      setStatus("Erreur lors de l’envoi.");
     }
   };
 
@@ -99,3 +91,22 @@ export default function Contact() {
 
   );
 }
+
+/*
+  try {
+      const response = await fetch("/api/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus("Message envoyé avec succès !");
+        setFormData({ name: "", email: "", message: "", reason: "" });
+      } else {
+        setStatus("Erreur lors de l’envoi du message.");
+      }
+    } catch (error) {
+      setStatus("Erreur serveur.");
+    }
+      */
