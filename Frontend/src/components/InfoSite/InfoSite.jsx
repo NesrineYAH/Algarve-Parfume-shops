@@ -75,7 +75,12 @@ const InfoSite = () => {
             rel="noopener noreferrer"
           >
             <img
-              src="/images/icons/apps.png"
+              src="/images/icons/appI.png"
+              alt="Google Play apps.web"
+              className="icone"
+            />
+               <img
+              src="/images/icons/appII.png"
               alt="Google Play apps.web"
               className="icone"
             />

@@ -10,7 +10,7 @@ function LanguageSwitcher() {
   };
 
   return (
-    <label  className="language-switcher">
+    <label  className="languageSwitcher">
         <select> 
       <option  onClick={() => changeLanguage('fr')}>🇫🇷 Fr</option>
       <option  onClick={() => changeLanguage('en')}>🇬🇧 En </option>

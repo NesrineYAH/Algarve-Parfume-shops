@@ -3,7 +3,7 @@ const router = express.Router();
 const Contact = require("../Model/Contact");
 
 router.post("/", async (req, res) => {
-
+    console.log("REQUÊTE :", req.body);
     const { name, email, message, reason } = req.body;
 
     if (!name || !email || !message || !reason) {

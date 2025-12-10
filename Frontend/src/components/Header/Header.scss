@@ -1,126 +1,158 @@
-header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    z-index: 1000;
-    box-sizing: border-box;
-    width: 100%;
-    margin: 1%;
-    background-color: #f2c8dd;
+   .header {
+       box-sizing: border-box;
 
-    .logo {
-        width: 80px;
-        height: auto;
-        cursor: pointer;
-    }
-
-    ul {
-        display: flex;
-        gap: 1.8rem;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        li {
-            font-weight: 500;
-            font-size: 0.95rem;
-            cursor: pointer;
-            color: #444;
-            transition: color 0.2s ease-in-out;
-            font-weight: 600;
-
-            &:hover {
-                color: #e91e63; // rose
-            }
-        }
-    }
-
-    .menu,
-    .icons {
-        display: flex;
-        gap: 1rem;
+       position: sticky;
+       z-index: 1000;
+       width: 100%;
+       margin: 2%;
 
 
-        .icone,
-        svg {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            color: #181719;
-            transition: color 0.2s ease-in-out;
+       &__Banner {
+           background-color: #88667e;
+           box-sizing: border-box;
+           margin: -2% -2% 0;
+           height: 40px;
+           padding: 5px;
+           //  position: relative;
+           color: #fefefe;
 
-            &:hover {
-                color: #e91e63;
-            }
-        }
-    }
 
-    .user-dropdown {
-        position: relative;
+           .banner-close {
+               position: absolute;
+               top: 5px;
+               right: 10px;
+               background: transparent;
+               border: none;
+               cursor: pointer;
+               color: #fefefe;
+           }
+       }
 
-        .dropdown-menu {
-            position: absolute;
-            top: 25px;
-            right: 0;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            min-width: 180px;
-            z-index: 100;
+       &__section {
+           box-sizing: border-box;
+           box-shadow: 0 2px 6px rgba(210, 163, 195, 0.1);
+           position: sticky;
+           z-index: 1000;
+           margin: 2%;
+           display: flex;
+           flex-direction: row;
+           justify-content: space-around;
+           text-align: center;
+           padding: 15px;
+           width: 100%;
 
-            a,
-            button {
-                padding: 10px 15px;
-                text-align: left;
-                font-size: 14px;
-                color: #333;
-                text-decoration: none;
-                background: none;
-                border: none;
-                cursor: pointer;
+           .logo {
+               width: 80px;
+               height: auto;
+               cursor: pointer;
+           }
 
-                &:hover {
-                    background-color: #f0f0f0;
-                }
+           ul {
+               display: flex;
+               gap: 1.8rem;
+               list-style: none;
+               margin: 0;
+               padding: 0;
 
-                button {
-                    display: flex;
-                    align-items: center;
-                    gap: 5px;
-                }
-            }
-        }
-    }
+               li {
+                   font-weight: 500;
+                   font-size: 0.95rem;
+                   cursor: pointer;
+                   color: #444;
+                   transition: color 0.2s ease-in-out;
+                   font-weight: 600;
 
-}
+                   &:hover {
+                       color: #e91e63; // rose
+                   }
+               }
+           }
 
-/* ✅ Responsive : menu mobile */
-@media (max-width: 768px) {
-    header {
-        ul {
-            display: none; // cache le menu sur mobile
-        }
+           .menu,
+           .icons {
+               display: flex;
+               gap: 1rem;
 
-        .icons {
-            gap: 0.75rem;
 
-            .icone,
-            svg {
-                width: 24px;
-                height: 24px;
-                cursor: pointer;
-                color: #181719;
-                transition: color 0.2s ease-in-out;
+               .icone,
+               svg {
+                   width: 24px;
+                   height: 24px;
+                   cursor: pointer;
+                   color: #181719;
+                   transition: color 0.2s ease-in-out;
 
-                &:hover {
-                    color: #e91e63;
-                }
-            }
-        }
-    }
-}
+                   &:hover {
+                       color: #e91e63;
+                   }
+               }
+           }
+
+           .user-dropdown {
+               position: relative;
+
+               .dropdown-menu {
+                   position: absolute;
+                   top: 25px;
+                   right: 0;
+                   background: #fff;
+                   border: 1px solid #ddd;
+                   border-radius: 6px;
+                   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+                   display: flex;
+                   flex-direction: column;
+                   min-width: 180px;
+                   z-index: 100;
+
+                   a,
+                   button {
+                       padding: 10px 15px;
+                       text-align: left;
+                       font-size: 14px;
+                       color: #333;
+                       text-decoration: none;
+                       background: none;
+                       border: none;
+                       cursor: pointer;
+
+                       &:hover {
+                           background-color: #f0f0f0;
+                       }
+
+                       button {
+                           display: flex;
+                           align-items: center;
+                           gap: 5px;
+                       }
+                   }
+               }
+           }
+
+       }
+
+       /* ✅ Responsive : menu mobile */
+       @media (max-width: 768px) {
+           header {
+               ul {
+                   display: none; // cache le menu sur mobile
+               }
+
+               .icons {
+                   gap: 0.75rem;
+
+                   .icone,
+                   svg {
+                       width: 24px;
+                       height: 24px;
+                       cursor: pointer;
+                       color: #181719;
+                       transition: color 0.2s ease-in-out;
+
+                       &:hover {
+                           color: #e91e63;
+                       }
+                   }
+               }
+           }
+       }
+   }

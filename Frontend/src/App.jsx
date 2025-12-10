@@ -14,7 +14,6 @@ import AdminAddProduct from "./pages/admin/add-product";
 import AdminProductManagement from "./pages/admin/AdminProductManagement";
 import EditProduct from "./pages/admin/EditProduct";
 import FAQ from "./pages/FAQ/FAQ";
-import "./App.scss";
 import Authentification from "./pages/Authentification/Authentification";
 import MonCompte from "./pages/MonCompte/MonCompte";
 import Cart from "./pages/Cart/Cart";
@@ -34,7 +33,7 @@ function App() {
     <>
       <div className="App">
         <Headers />
-        <h1 id="title">Parfume-Algarve-shop</h1>
+        
 
         <Routes>
           <Route path="/Home" element={<Home />} />
