@@ -4,16 +4,16 @@ const Contact = require("../Model/Contact");
 
 router.post("/", async (req, res) => {
     console.log("REQUÊTE :", req.body);
-    const { name, email, message, reason } = req.body;
+    const { nom, email, message, reason } = req.body;
 
-    if (!name || !email || !message || !reason) {
+    if (!nom || !email || !message || !reason) {
         return res.status(400).json({ error: "Champs manquants" });
     }
 
     // sauvegarde en base
     try {
         const newContact = await Contact.create({
-            name,
+            nom,
             email,
             message,
             reason,

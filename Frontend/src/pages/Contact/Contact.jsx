@@ -4,7 +4,7 @@ import { sendContact } from "../../Services/contactService";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    name: "",
+    nom: "",
     email: "",
     message: "",
     reason: "", // 👈 nouveau champ
@@ -26,7 +26,7 @@ export default function Contact() {
       try {
       await sendContact(formData);
       setStatus("Message envoyé !");
-      setFormData({ name: "", email: "", message: "", reason: "" });
+      setFormData({ nom: "", email: "", message: "", reason: "" });
     } catch (error) {
       setStatus("Erreur lors de l’envoi.");
     }
@@ -59,24 +59,30 @@ export default function Contact() {
     </div>
         <label className="contact-label">Nom</label>
         <input
+           name="nom"
+           value={formData.nom}
+            onChange={handleChange}
           className="contact-input"
-       
         />
       </div>
 
       <div>
         <label className="contact-label">Email</label>
-        <input
+        <input  
           className="contact-input"
-     
-        />
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange} />
       </div>
 
       <div>
         <label className="contact-label">Message</label>
         <textarea
+          name="message"
           className="contact-textarea"
-       
+           value={formData.message} 
+             onChange={handleChange}
         />
       </div>
 
