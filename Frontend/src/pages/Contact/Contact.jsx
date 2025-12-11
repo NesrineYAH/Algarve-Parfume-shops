@@ -5,6 +5,7 @@ import { sendContact } from "../../Services/contactService";
 export default function Contact() {
   const [formData, setFormData] = useState({
     nom: "",
+    prenom: "",
     email: "",
     message: "",
     reason: "", // 👈 nouveau champ
@@ -19,18 +20,33 @@ export default function Contact() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("Envoi en cours...");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setStatus("Envoi en cours...");
 
-      try {
-      await sendContact(formData);
-      setStatus("Message envoyé !");
-      setFormData({ nom: "", email: "", message: "", reason: "" });
-    } catch (error) {
+  try {
+    const response = await sendContact(formData);
+
+    if (response.success) {
+      setStatus("Message envoyé avec succès !");
+      setFormData({
+        nom: "",
+        prenom: "",
+        email: "",
+        message: "",
+        reason: "",
+      });
+    } else {
       setStatus("Erreur lors de l’envoi.");
     }
-  };
+
+  } catch (error) {
+    console.error("Erreur formulaire contact:", error);
+    setStatus("Erreur lors de l’envoi.");
+  }
+};
+
+
 
   return (
 <div className="contact-container">
@@ -38,8 +54,7 @@ export default function Contact() {
     <h1 className="contact-title">Contactez-nous</h1>
 
     <form onSubmit={handleSubmit} className="contact-form">
-
-      <div>
+ 
    <div>
   <label className="contact-label">Motif du contact</label>
   <select
@@ -57,6 +72,7 @@ export default function Contact() {
     <option value="autre">Autre demande</option>
   </select>
     </div>
+     <div>
         <label className="contact-label">Nom</label>
         <input
            name="nom"
@@ -65,7 +81,15 @@ export default function Contact() {
           className="contact-input"
         />
       </div>
-
+  <div>
+        <label className="contact-label">Prénom</label>
+        <input
+           name="prenom"
+           value={formData.prenom}
+            onChange={handleChange}
+          className="contact-input"
+        />
+      </div>
       <div>
         <label className="contact-label">Email</label>
         <input  
@@ -91,7 +115,17 @@ export default function Contact() {
       </button>
     </form>
 
-    {status && <p className="contact-status">{status}</p>}
+    {/* {status && <p className="contact-status">{status}</p>} */}
+    {status && (
+  <p
+    className={`status-message ${
+      status.includes("succès") ? "success" : "error"
+    }`}
+  >
+    {status}
+  </p>
+)}
+
   </div>
 </div>
 

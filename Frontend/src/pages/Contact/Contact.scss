@@ -83,8 +83,20 @@ select {
 }
 
 /* Message de statut */
-.contact-status {
+.status-message {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
     text-align: center;
-    margin-top: 1rem;
-    font-weight: 600;
+}
+
+.status-message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
 }
