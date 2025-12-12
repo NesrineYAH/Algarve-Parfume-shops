@@ -32,8 +32,55 @@
     "sending": "Enviando...",
     "success": "¡Mensaje enviado con éxito!",
     "error": "Error al enviar."
-  }
+  },
 
+"faqDataP": {
+    
+      "Q1": "¿Qué medios de pago aceptan?",
+      "R1": "Aceptamos tarjetas bancarias (Visa, Mastercard), PayPal y tarjetas regalo.",
+      "Q2": "¿El pago en línea es seguro?",
+      "R2": "Sí, todas las transacciones están protegidas por un protocolo SSL y sistemas de verificación bancaria.",
+      "Q3": "¿Puedo pagar en varias cuotas?",
+      "R3": "Ofrecemos el pago en 3 cuotas sin intereses a través de nuestro socio financiero.",
+      "Q4": "¿Cómo usar un código promocional o una tarjeta regalo?",
+      "R4": "Puede introducir su código promocional o número de tarjeta regalo durante el pago, antes de validar el pedido." 
+},
+
+"faqDataC": { 
+    
+      "Q1": "¿Cómo realizar un pedido?",
+      "R1": "Añada sus productos al carrito, valide su carrito y luego siga los pasos de pago y entrega.",
+      "Q2": "¿Puedo modificar o cancelar mi pedido?",
+      "R2": "Sí, mientras su pedido no haya sido enviado, puede modificarlo o cancelarlo desde su espacio de cliente.",
+      "Q3": "¿Cómo saber si mi pedido está confirmado?",
+      "R3": "Recibirá un correo electrónico de confirmación con el resumen de su pedido.",
+      "Q4": "¿Puedo pedir sin crear una cuenta?",
+      "R4": "Sí, es posible realizar un pedido como invitado, pero le aconsejamos crear una cuenta para seguir sus pedidos."
+    
+},
+
+"faqDataL": {
+      "Q1": "¿Cuáles son los plazos de entrega?",
+      "R1": "La entrega estándar tarda de 2 a 5 días laborables. Hay una opción exprés disponible en 24/48h.",
+      "Q2": "¿Realizan envíos internacionales?",
+      "R2": "Sí, entregamos en la mayoría de los países. Los plazos y costes varían según el destino.",
+      "Q3": "¿Cuáles son los gastos de envío?",
+      "R3": "Los gastos de envío se calculan automáticamente durante el pago en función del peso y del destino.",
+      "Q4": "¿Cómo seguir mi pedido?",
+      "R4": "Se le enviará un número de seguimiento por correo electrónico en cuanto se expida su paquete."
+    },
+
+"faqDataR": {
+
+      "Q1": "¿Puedo devolver un perfume si no me gusta?",
+      "R1": "Sí, dispone de 14 días tras la recepción para realizar una devolución, siempre que el producto esté intacto y sin abrir.",
+      "Q2": "¿Cómo realizar una devolución o un cambio?",
+      "R2": "Conéctese a su espacio de cliente, seleccione el pedido correspondiente y siga las instrucciones de devolución.", 
+      "Q3": "¿Los gastos de devolución corren por mi cuenta?",
+      "R3": "Los gastos de devolución son gratuitos si el producto es defectuoso o no conforme. En caso contrario, corren por su cuenta.",
+      "Q4": "¿Cuándo recibiré el reembolso tras una devolución?",
+      "R4": "El reembolso se efectúa en un plazo de 7 días laborables tras la recepción y verificación del producto devuelto."
+    }
 
 
 

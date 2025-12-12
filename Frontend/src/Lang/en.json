@@ -33,79 +33,50 @@
     "error": "Error while sending."
   },
   
-  "faqDataP": [
-    {
-      "question": "What payment methods do you accept?",
-      "answer": "We accept credit cards (Visa, Mastercard), PayPal, and gift cards."
+  "faqDataP": {
+      "Q1": "What payment methods do you accept?",
+      "R1": "We accept credit cards (Visa, Mastercard), PayPal, and gift cards.",
+      "Q2": "Is online payment secure?",
+      "R2": "Yes, all transactions are protected by SSL encryption and verified by banking systems.",
+      "Q3": "Can I pay in installments?",
+      "R3": "We offer payment in 3 installments with no fees through our financial partner.",
+      "Q4": "How can I use a promo code or gift card?",
+      "R4": "You can enter your promo code or gift card number during checkout before confirming your order."
     },
-    {
-      "question": "Is online payment secure?",
-      "answer": "Yes, all transactions are protected by SSL encryption and verified by banking systems."
-    },
-    {
-      "question": "Can I pay in installments?",
-      "answer": "We offer payment in 3 installments with no fees through our financial partner."
-    },
-    {
-      "question": "How can I use a promo code or gift card?",
-      "answer": "You can enter your promo code or gift card number during checkout before confirming your order."
-    }
-  ],
+  
 
-  "faqDataC": [
-    {
-      "question": "How do I place an order?",
-      "answer": "Add your products to the cart, validate your cart, and follow the steps for payment and delivery."
+  "faqDataC": {
+      "Q1": "How do I place an order?",
+      "R1": "Add your products to the cart, validate your cart, and follow the steps for payment and delivery.",
+      "Q2": "Can I modify or cancel my order?",
+      "R2": "Yes, as long as your order has not been shipped, you can modify or cancel it from your customer account.",
+      "Q3": "How do I know if my order is confirmed?",
+      "R3": "You will receive a confirmation email with the summary of your order.",
+      "Q4": "Can I order without creating an account?",
+      "R4": "Yes, you can order as a guest, but we recommend creating an account to track your orders."
     },
-    {
-      "question": "Can I modify or cancel my order?",
-      "answer": "Yes, as long as your order has not been shipped, you can modify or cancel it from your customer account."
-    },
-    {
-      "question": "How do I know if my order is confirmed?",
-      "answer": "You will receive a confirmation email with the summary of your order."
-    },
-    {
-      "question": "Can I order without creating an account?",
-      "answer": "Yes, you can order as a guest, but we recommend creating an account to track your orders."
-    }
-  ],
+  
 
-  "faqDataL": [
-    {
-      "question": "What are the delivery times?",
-      "answer": "Standard delivery takes 2 to 5 business days. An express option is available within 24/48 hours."
+  "faqDataL": {
+      "Q1": "What are the delivery times?",
+      "R1": "Standard delivery takes 2 to 5 business days. An express option is available within 24/48 hours.",
+      "Q2": "Do you deliver internationally?",
+      "R2": "Yes, we deliver to most countries. Delivery times and fees vary depending on the destination.",
+      "Q3": "What are the shipping fees?",
+      "R3": "Shipping fees are automatically calculated at checkout based on weight and destination.",
+      "Q4": "How can I track my order?",
+      "R4": "A tracking number will be sent to you by email once your package has been shipped."
     },
-    {
-      "question": "Do you deliver internationally?",
-      "answer": "Yes, we deliver to most countries. Delivery times and fees vary depending on the destination."
-    },
-    {
-      "question": "What are the shipping fees?",
-      "answer": "Shipping fees are automatically calculated at checkout based on weight and destination."
-    },
-    {
-      "question": "How can I track my order?",
-      "answer": "A tracking number will be sent to you by email once your package has been shipped."
+  
+  "faqDataR": {
+      "Q1": "Can I return a perfume if I don’t like it?",
+      "R1": "Yes, you have 14 days after receiving your order to return it, provided the product is intact and unopened.",
+      "Q2": "How do I make a return or exchange?",
+      "R2": "Log in to your customer account, select the relevant order, and follow the return instructions.",  
+      "Q3": "Are return shipping costs my responsibility?",
+      "R3": "Return shipping is free if the product is defective or incorrect. Otherwise, the costs are your responsibility.",
+      "Q4": "When will I be refunded after a return?",
+      "R4": "Refunds are processed within 7 business days after receiving and checking the returned product."
     }
-  ],
-
-  "faqDataR": [
-    {
-      "question": "Can I return a perfume if I don’t like it?",
-      "answer": "Yes, you have 14 days after receiving your order to return it, provided the product is intact and unopened."
-    },
-    {
-      "question": "How do I make a return or exchange?",
-      "answer": "Log in to your customer account, select the relevant order, and follow the return instructions."
-    },
-    {
-      "question": "Are return shipping costs my responsibility?",
-      "answer": "Return shipping is free if the product is defective or incorrect. Otherwise, the costs are your responsibility."
-    },
-    {
-      "question": "When will I be refunded after a return?",
-      "answer": "Refunds are processed within 7 business days after receiving and checking the returned product."
-    }
-  ]
+  
 }
