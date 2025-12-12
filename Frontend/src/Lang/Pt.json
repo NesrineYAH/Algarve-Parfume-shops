@@ -27,14 +27,11 @@
     "email": "Email",
     "message": "Mensagem",
     "send": "Enviar",
-
     "sending": "Enviando...",
     "success": "Mensagem enviada com sucesso!",
     "error": "Erro ao enviar."
   },
     
-  
-
   "faqDataP": [
     {
       "question": "Quais métodos de pagamento vocês aceitam?",
