@@ -93,7 +93,25 @@
         "question": "Como acompanhar meu pedido?",
         "answer": "Um número de rastreamento será enviado por e-mail assim que seu pacote for despachado."
       }
-    ]
+    ],
+    "returns": [
+    {
+      "question" :" Posso devolver um perfume se não gostar?",
+      "answer": "sim, tem 14 dias após a receção para efectuar uma devolução, desde que o produto esteja intacto e fechado."
+    },
+    {
+      "question" :" Como fazer uma devolução ou uma troca?",
+      "answer": "inicie sessão na sua área de cliente, seleccione a encomenda em causa e siga as instruções de devolução."
+    },
+    {
+      "question" :" os custos de devolução são da minha responsabilidade?",
+      "answer": "os custos de devolução são gratuitos Se o produto estiver defeituoso ou não conforme. Caso contrário, eles permanecem às suas custas."
+    },
+    {
+      "question" :" quando serei reembolsado após uma devolução?",
+      "answer": "o reembolso é efectuado no prazo de 7 dias úteis após a receção e verificação do Produto devolvido."
+    }
+  ]
     
   }
 }

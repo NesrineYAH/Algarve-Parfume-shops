@@ -19,11 +19,7 @@ const paymentFaq = t("faq.payment", { returnObjects: true });
     <section id="Faq">
       <div className="Faq-page">
           <h1>{t("faq.PrincipalTitle")}</h1>
-        <p>
-          Cette page explique comment notre site utilise les cookies pour
-          améliorer votre expérience et assurer le bon fonctionnement du
-          service.
-        </p>
+      
          <h2>{t("faq.PaymentTitle")}</h2>
         <div className="Faq-section">
           {paymentFaq.map((item, index) => (
@@ -47,7 +43,7 @@ const paymentFaq = t("faq.payment", { returnObjects: true });
         </div>
         {/** */}
         <h2>{t("faq.OrdersTitle")}</h2>
-        <div className="consent-section">
+        <div className="Faq-section">
           {ordersFaq.map((item, index) => (
             <article className="option" key={index}>
               <div className="option__div" onClick={() => togglePref(index)}>
@@ -68,7 +64,7 @@ const paymentFaq = t("faq.payment", { returnObjects: true });
           ))}
         </div>
          <h2>{t("faq.DeliveryTitle")}</h2>
-        <div className="consent-section">
+        <div className="Faq-section">
           {deliveryFaq.map((item, index) => (
             <article className="option" key={index}>
               <div className="option__div" onClick={() => togglePref(index)}>
@@ -89,7 +85,7 @@ const paymentFaq = t("faq.payment", { returnObjects: true });
           ))}
         </div>
         <h2>{t('faq.ReturnsTitle')}</h2>
-        <div className="consent-section">
+        <div className="Faq-section">
           {returnsFaq.map((item, index) => (
             <article className="option" key={index}>
               <div className="option__div" onClick={() => togglePref(index)}>
