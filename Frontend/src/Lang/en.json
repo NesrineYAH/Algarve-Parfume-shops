@@ -12,7 +12,26 @@
     "history": "Purchase history",
     "logout": "logout"
   },
-    
+    "contact": {
+    "title": "Contact us",
+    "reason_label": "Reason for contact",
+    "reason_default": "-- Select a reason --",
+    "reason_commande": "Issue with my order",
+    "reason_produit": "Question about a product",
+    "reason_retour": "Request a return or refund",
+    "reason_compte": "Account issue",
+    "reason_autre": "Other request",
+
+    "nom": "Last name",
+    "prenom": "First name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+
+    "sending": "Sending...",
+    "success": "Message sent successfully!",
+    "error": "Error while sending."
+  },
   
   "faqDataP": [
     {

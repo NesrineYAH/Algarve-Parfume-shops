@@ -13,6 +13,30 @@
     "logout": "Déconnexion"
   },
 
+
+  "contact": {
+    "title": "Contactez-nous",
+    "reason_label": "Motif du contact",
+    "reason_default": "-- Sélectionnez un motif --",
+    "reason_commande": "Problème avec ma commande",
+    "reason_produit": "Question sur un produit",
+    "reason_retour": "Faire un retour ou un remboursement",
+    "reason_compte": "Problème de compte",
+    "reason_autre": "Autre demande",
+
+    "nom": "Nom",
+    "prenom": "Prénom",
+    "email": "Email",
+    "message": "Message",
+    "send": "Envoyer",
+
+    "sending": "Envoi en cours...",
+    "success": "Message envoyé avec succès !",
+    "error": "Erreur lors de l’envoi."
+  },
+
+
+
   "faqDataP": [
     {
       "question": "Quels moyens de paiement acceptez-vous ?",

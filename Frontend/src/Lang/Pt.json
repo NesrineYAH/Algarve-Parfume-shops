@@ -12,7 +12,26 @@
     "history": "histórico de compras",
     "logout": "logout"
   },
-    
+     "contact": {
+    "title": "Contacte-nos",
+    "reason_label": "Motivo do contato",
+    "reason_default": "-- Selecione um motivo --",
+    "reason_commande": "Problema com o meu pedido",
+    "reason_produit": "Pergunta sobre um produto",
+    "reason_retour": "Solicitar devolução ou reembolso",
+    "reason_compte": "Problema com a conta",
+    "reason_autre": "Outro pedido",
+
+    "nom": "Sobrenome",
+    "prenom": "Nome",
+    "email": "Email",
+    "message": "Mensagem",
+    "send": "Enviar",
+
+    "sending": "Enviando...",
+    "success": "Mensagem enviada com sucesso!",
+    "error": "Erro ao enviar."
+  },
     
   
 
