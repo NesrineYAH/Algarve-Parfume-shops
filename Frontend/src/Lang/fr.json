@@ -41,8 +41,20 @@
   "presente" : "Emballage cadeau offert",
   "Samples": "Échantillons offerts",
   "Gift_Card": "Carte cadeau",
-  "Customer_Service": "Service client"
+  "Customer_Service": "Service client",
+    "Customer_ServiceP": "6j/7"
   }, 
+  
+  "service": {
+    "title": "Service Client",
+    "intro": "Notre équipe est disponible pour répondre à vos questions et vous accompagner.",
+    "contact": "Contactez-nous",
+    "hours": "Disponible 6j/7",
+    "email": "Envoyez-nous un email",
+    "phone": "Appelez-nous"
+  },
+
+
   "faq": {  
     "PrincipalTitle": "Foire Aux Questions",
     "PaymentTitle":"Paiement",

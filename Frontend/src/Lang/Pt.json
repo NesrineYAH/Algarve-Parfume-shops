@@ -38,9 +38,17 @@
   "presente" : "Embalagem de presente grátis",
   "Samples": "Amostras oferecidas",
   "Gift_Card": "Cartão oferta",
-  "Customer_Service": "serviço de Apoio ao cliente"
+  "Customer_Service": "serviço de Apoio ao cliente",
+      "Customer_ServiceP": "6j/7"
   },
-
+  "service": {
+    "title": "Atendimento ao Cliente",
+    "intro": "Nossa equipe está disponível para responder às suas perguntas e ajudá-lo.",
+    "contact": "Entre em contato",
+    "hours": "Disponível 6 dias por semana",
+    "email": "Envie-nos um e-mail",
+    "phone": "Ligue para nós"
+  },
   "faq": {
         "PrincipalTitle": "Perguntas Frequentes",
         "PaymentTitle":"Pagamento",

@@ -39,8 +39,18 @@
   "presente" : "free gift packaging",
   "Samples": "Samples Offred",
   "Gift_Card": "Gift Card",
-  "Customer_Service": "Customer Service"
+  "Customer_Service": "Customer Service",
+      "Customer_ServiceP": "6j/7"
   },
+  "service": {
+    "title": "Customer Service",
+    "intro": "Our team is available to answer your questions and assist you.",
+    "contact": "Contact us ",
+    "hours": "Available 6 days a week",
+    "email": "Send us an email",
+    "phone": "Call us"
+  },
+
   "faq": {
     "PrincipalTitle": "Frequently Asked Questions",
     "PaymentTitle":"Payment",

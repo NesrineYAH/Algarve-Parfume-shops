@@ -40,8 +40,20 @@
   "presente" : "Embalaje de regalo gratis",
   "Samples": "Muestras ofrecidas",
   "Gift_Card": "Tarjeta de regalo",
-  "Customer_Service": "servicio al cliente"
+  "Customer_Service": "servicio al cliente",
+      "Customer_ServiceP": "6j/7"
   },
+
+
+  "service": {
+    "title": "Servicio al Cliente",
+    "intro": "Nuestro equipo está disponible para responder sus preguntas y ayudarle.",
+    "contact": "Contáctenos",
+    "hours": "Disponible 6 días a la semana",
+    "email": "Envíenos un correo electrónico",
+    "phone": "Llámenos"
+  },
+
   "faq": {
     "PrincipalTitle": "Preguntas Frecuentes",
     "PaymentTitle":"Pago",

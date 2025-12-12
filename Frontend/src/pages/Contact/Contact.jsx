@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import "./Contact.scss";
 import { sendContact } from "../../Services/contactService";
 import { useTranslation } from "react-i18next";
+import { FaPhoneFlip  } from "react-icons/fa6";
+import { IoMail } from "react-icons/io5";
+import { faLocationDot, faComments } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -129,7 +134,27 @@ const handleSubmit = async (e) => {
           </p>
         )}
       </div>
+     <div className="service-client">
+
+      <p className="intro">{t("service.intro")}</p>
+
+      <div className="contact-options">
+        <h2>{t("service.contact")}</h2>
+        <ul>
+          <li>{t("service.hours")}</li>
+          <li>  <IoMail /> {t("service.email")}</li>
+          <li><FaPhoneFlip /> {t("service.phone")}</li>
+             <li> <FontAwesomeIcon icon={faLocationDot}  /> Av. Francisco Sá Carneiro, 8125-507 Quarteira, Portugal </li>
+        </ul>
+        <div className="chat-service">
+        <FontAwesomeIcon icon={faComments} size="2x" />
+        <span>Chatter avec notre service client</span>
+      </div>
+      </div>
+        
+    </div> 
     </div>
+    
   );
 
 }
