@@ -31,60 +31,69 @@
     "success": "Mensagem enviada com sucesso!",
     "error": "Erro ao enviar."
   },
+  
+
+  "faq": {
+        "PrincipalTitle": "Perguntas Frequentes",
+        "PaymentTitle":"Pagamento",
+        "OrdersTitle" : "Comandos",
+        "DeliveryTitle": "Entrega",
+        "ReturnsTitle": "Devolução e reembolso",
+
+    "payment": [
+      {
+        "question": "Quais métodos de pagamento vocês aceitam?",
+        "answer": "Aceitamos cartões bancários (Visa, Mastercard), PayPal e cartões presente."
+      },
+      {
+        "question": "O pagamento online é seguro?",
+        "answer": "Sim, todas as transações são protegidas por um protocolo SSL e sistemas de verificação bancária."
+      },
+      {
+        "question": "Posso pagar em várias vezes?",
+        "answer": "Oferecemos pagamento em 3 vezes sem juros através do nosso parceiro financeiro."
+      },
+      {
+        "question": "Como usar um código promocional ou um cartão presente?",
+        "answer": "Você pode inserir seu código promocional ou número do cartão presente durante o pagamento, antes da confirmação do pedido."
+      }
+    ],
+    "orders": [
+      {
+        "question": "Como fazer um pedido?",
+        "answer": "Adicione seus produtos ao carrinho, valide seu carrinho e siga as etapas de pagamento e entrega."
+      },
+      {
+        "question": "Posso modificar ou cancelar meu pedido?",
+        "answer": "Sim, enquanto seu pedido não tiver sido enviado, você pode modificá-lo ou cancelá-lo na sua conta de cliente."
+      },
+      {
+        "question": "Como saber se meu pedido está confirmado?",
+        "answer": "Você receberá um e-mail de confirmação com o resumo do seu pedido."
+      },
+      {
+        "question": "Posso fazer um pedido sem criar uma conta?",
+        "answer": "Sim, é possível fazer um pedido como convidado, mas recomendamos criar uma conta para acompanhar seus pedidos."
+      }
+    ],
+    "delivery": [
+      {
+        "question": "Quais são os prazos de entrega?",
+        "answer": "A entrega padrão leva de 2 a 5 dias úteis. Uma opção expressa está disponível em 24/48h."
+      },
+      {
+        "question": "Vocês entregam internacionalmente?",
+        "answer": "Sim, entregamos na maioria dos países. Os prazos e custos variam conforme o destino."
+      },
+      {
+        "question": "Quais são as taxas de entrega?",
+        "answer": "As taxas de entrega são calculadas automaticamente durante o pagamento com base no peso e no destino."
+      },
+      {
+        "question": "Como acompanhar meu pedido?",
+        "answer": "Um número de rastreamento será enviado por e-mail assim que seu pacote for despachado."
+      }
+    ]
     
-  "faqDataP": 
-    {
-      "Q1": "Quais métodos de pagamento vocês aceitam?",
-      "R1": "Aceitamos cartões de crédito (Visa, Mastercard), PayPal e cartões-presente.",
-      "Q2": "O pagamento online é seguro?",
-      "R2": "Sim, todas as transações são protegidas por criptografia SSL e verificadas pelos sistemas bancários.",
-      "Q3": "Posso pagar em parcelas?",
-      "R3": "Oferecemos pagamento em 3 parcelas sem juros através do nosso parceiro financeiro.",
-      "Q4": "Como usar um código promocional ou cartão-presente?",
-      "R4": "Você pode inserir seu código promocional ou número do cartão-presente durante o checkout, antes de confirmar o pedido."
-    },
-  
-  "faqDataC": 
-    {
-      "Q1": "Como faço um pedido?",
-      "R1": "Adicione os produtos ao carrinho, valide o carrinho e siga as etapas de pagamento e entrega.",
-  
-      "Q2": "Posso modificar ou cancelar meu pedido?",
-      "R2": "Sim, enquanto o pedido não tiver sido enviado, você pode modificá-lo ou cancelá-lo na sua conta de cliente.",
- 
-      "Q3": "Como sei se meu pedido foi confirmado?",
-      "R3": "Você receberá um e-mail de confirmação com o resumo do seu pedido.",
- 
-      "Q4": "Posso fazer um pedido sem criar uma conta?",
-      "R4": "Sim, é possível comprar como convidado, mas recomendamos criar uma conta para acompanhar seus pedidos."
-    },
-
-
-  "faqDataL": 
-    {
-      "Q1": "Quais são os prazos de entrega?",
-      "R1": "A entrega padrão leva de 2 a 5 dias úteis. A opção expressa está disponível em 24/48h.",
-      "Q2": "Vocês entregam internacionalmente?",
-      "R2": "Sim, entregamos na maioria dos países. Os prazos e taxas variam conforme o destino.",
-      "Q3": "Quais são as taxas de envio?",
-      "R3": "As taxas de envio são calculadas automaticamente no checkout com base no peso e no destino.",
-      "Q4": "Como posso acompanhar meu pedido?",
-      "R4": "Um número de rastreamento será enviado por e-mail assim que o pacote for despachado."
-    },
-
-  "faqDataR": 
-    {
-      "Q1": "Posso devolver um perfume se não gostar?",
-      "R1": "Sim, você tem 14 dias após o recebimento para devolver, desde que o produto esteja intacto e não aberto.",
-   
-      "Q2": "Como faço uma devolução ou troca?",
-      "R2": "Acesse sua conta de cliente, selecione o pedido correspondente e siga as instruções de devolução.",
-   
-      "Q3": "Os custos de devolução são de minha responsabilidade?",
-      "R3": "A devolução é gratuita se o produto estiver defeituoso ou incorreto. Caso contrário, os custos são de sua responsabilidade.",
-   
-      "Q4": "Quando serei reembolsado após uma devolução?",
-      "R4": "O reembolso é processado em até 7 dias úteis após o recebimento e verificação do produto devolvido."
-    }
-  
+  }
 }
