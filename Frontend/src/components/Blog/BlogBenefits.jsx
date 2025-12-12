@@ -1,18 +1,21 @@
 // src/components/BlogBenefits.jsx
 import React from "react";
 import { Truck, CreditCard, Gift, Package, Tag, Headphones } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import "./BlogBenefits.scss";
 
-const benefits = [
-  { icon: <Truck />, title: "Livraison gratuite", description: "à partir de 25 €" },
-  { icon: <CreditCard />, title: "Paiement sécurisé", description: "" },
-  { icon: <Gift />, title: "Emballage cadeau offert", description: "" },
-  { icon: <Package />, title: "Échantillons offerts", description: "" },
-  { icon: <Tag />, title: "Carte cadeau", description: "" },
-  { icon: <Headphones />, title: "Service client", description: "6j/7" },
-];
-
 export default function BlogBenefits() {
+  const { t } = useTranslation();
+
+  const benefits = [
+    { icon: <Truck />, title: t("blog.Delivery"), description: t("blog.DeliveryP") },
+    { icon: <CreditCard />, title: t("blog.payment"), description: "" },
+    { icon: <Gift />, title: t("blog.presente"), description: "" },
+    { icon: <Package />, title: t("blog.Samples"), description: "" },
+    { icon: <Tag />, title: t("blog.Gift_Card"), description: "" },
+    { icon: <Headphones />, title: t("blog.Customer_Service"), description: t("blog.Customer_ServiceP") }
+  ];
+
   return (
     <section className="blog-benefits">
       <div className="benefits-container">

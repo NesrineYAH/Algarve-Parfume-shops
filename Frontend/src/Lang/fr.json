@@ -34,6 +34,15 @@
     "success": "Message envoyé avec succès !",
     "error": "Erreur lors de l’envoi."
   },
+  "blog": {
+  "Delivery": "Livraison gratuite", 
+  "DeliveryP": "à partir de 25 € d'achat",
+  "payment": "Paiement sécurisé",
+  "presente" : "Emballage cadeau offert",
+  "Samples": "Échantillons offerts",
+  "Gift_Card": "Carte cadeau",
+  "Customer_Service": "Service client"
+  }, 
   "faq": {  
     "PrincipalTitle": "Foire Aux Questions",
     "PaymentTitle":"Paiement",

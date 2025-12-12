@@ -31,7 +31,15 @@
     "success": "Mensagem enviada com sucesso!",
     "error": "Erro ao enviar."
   },
-  
+    "blog": {
+  "Delivery": "Frete grátis", 
+  "DeliveryP": "a partir de 25,5 compra",
+  "payment": "Pagamento seguro",
+  "presente" : "Embalagem de presente grátis",
+  "Samples": "Amostras oferecidas",
+  "Gift_Card": "Cartão oferta",
+  "Customer_Service": "serviço de Apoio ao cliente"
+  },
 
   "faq": {
         "PrincipalTitle": "Perguntas Frequentes",

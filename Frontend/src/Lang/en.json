@@ -32,7 +32,15 @@
     "success": "Message sent successfully!",
     "error": "Error while sending."
   },
-  
+    "blog": {
+  "Delivery": "Free shipping", 
+  "DeliveryP": "from 25 € purchase",
+  "payment": "Secure payment",
+  "presente" : "free gift packaging",
+  "Samples": "Samples Offred",
+  "Gift_Card": "Gift Card",
+  "Customer_Service": "Customer Service"
+  },
   "faq": {
     "PrincipalTitle": "Frequently Asked Questions",
     "PaymentTitle":"Payment",
