@@ -137,6 +137,7 @@
      "newsletter": {
   "title": "Suscríbase al boletín de MyPerfume",
   "prg": "Obtenga una vista previa de las buenas ofertas y noticias.", 
+  "mail":"Su dirección de correo electrónico",
   "subscribe": "Registro"
  },
   "footer": {

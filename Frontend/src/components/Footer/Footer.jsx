@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronUp } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 import "./Footer.scss";
 
 export default function Footer() {

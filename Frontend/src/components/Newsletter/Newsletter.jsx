@@ -1,8 +1,10 @@
 // src/components/Newsletter.jsx
 import React, { useState } from "react";
 import "./Newsletter.scss";
+import { useTranslation } from "react-i18next";
 
 export default function Newsletter() {
+    const { t } = useTranslation();
   const [email, setEmail] = useState("");
 
   const handleSubscribe = (e) => {
@@ -18,17 +20,17 @@ export default function Newsletter() {
   return (
     <section className="newsletter">
       <div className="newsletter-container">
-        <h2>Inscrivez-vous à la newsletter MyPerfume</h2>
-        <p>Accédez en avant-première aux bons plans & nouveautés.</p>
+        <h2>{t("newsletter.title")}</h2>
+        <p>{t("newsletter.prg")}</p>
         <form onSubmit={handleSubscribe} className="newsletter-form">
           <input
             type="email"
-            placeholder="Votre email"
+            placeholder="votre mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <button type="submit">S’inscrire</button>
+          <button type="submit">{t("newsletter.subscribe")}</button>
         </form>
       </div>
     </section>

@@ -134,6 +134,7 @@
    "newsletter": {
   "title": "Subscribe to the MyPerfume newsletter",
   "prg": "Get a preview of the good deals & news.", 
+    "mail": "Your email adress",
   "subscribe": "register"
  },
   "footer": {
