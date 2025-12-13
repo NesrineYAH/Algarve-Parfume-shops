@@ -133,7 +133,50 @@
         "answer": "El reembolso se efectúa en un plazo de 7 días laborables tras la recepción y verificación del producto devuelto."
       }
     ]
+  },
+     "newsletter": {
+  "title": "Suscríbase al boletín de MyPerfume",
+  "prg": "Obtenga una vista previa de las buenas ofertas y noticias.", 
+  "subscribe": "Registro"
+ },
+  "footer": {
+    "about": "Sobre nosotros",
+    "ourStory": "Nuestra historia",
+    "careers": "Carreras",
+    "press": "Prensa",
+    "socialResponsibility": "Responsabilidad social",
+    "blog": "Blog",
+
+    "info": "Información",
+    "sitemap": "Mapa del sitio",
+    "legalNotice": "Aviso legal",
+    "newPerfume": "Novedad perfume",
+    "faceCare": "Cuidado facial",
+    "stores": "Nuestras tiendas",
+    "beautyGuide": "Guía de compras de belleza",
+    "perfumeGuide": "Guía de perfumes",
+
+    "conditions": "Condiciones",
+    "cookiesPolicy": "Política de Cookies",
+    "terms": "Términos y Condiciones",
+    "gdpr": "RGPD",
+    "rsgp": "RSGP",
+
+    "help": "Necesitas ayuda",
+    "faq": "FAQ",
+    "whoWeAre": "Quiénes somos",
+    "contact": "Contacto",
+
+    "followUs": "Síguenos",
+    "phone": "Teléfono",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "tiktok": "TikTok",
+
+    "goTop": "Volver arriba"
   }
+
 
 
 

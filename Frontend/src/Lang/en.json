@@ -130,6 +130,50 @@
         "answer": "The refund is made within 7 business days after receipt and verification of the returned product."
       }
     ]
+  },
+   "newsletter": {
+  "title": "Subscribe to the MyPerfume newsletter",
+  "prg": "Get a preview of the good deals & news.", 
+  "subscribe": "register"
+ },
+  "footer": {
+    "about": "About us",
+    "ourStory": "Our story",
+    "careers": "Careers",
+    "press": "Press",
+    "socialResponsibility": "Social responsibility",
+    "blog": "Blog",
+
+    "info": "Information",
+    "sitemap": "Sitemap",
+    "legalNotice": "Legal notice",
+    "newPerfume": "New perfume",
+    "faceCare": "Face care",
+    "stores": "Our stores",
+    "beautyGuide": "Beauty shopping guide",
+    "perfumeGuide": "Perfume guide",
+
+    "conditions": "Terms",
+    "cookiesPolicy": "Cookies policy",
+    "terms": "Terms & Conditions",
+    "gdpr": "GDPR",
+    "rsgp": "RSGP",
+
+    "help": "Need help",
+    "faq": "FAQ",
+    "whoWeAre": "Who we are",
+    "contact": "Contact",
+
+    "followUs": "Follow us",
+    "phone": "Phone",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "tiktok": "TikTok",
+
+    "goTop": "Go to top"
   }
+
+
 }
 

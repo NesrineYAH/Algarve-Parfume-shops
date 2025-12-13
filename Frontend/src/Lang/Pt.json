@@ -129,5 +129,48 @@
     }
   ]
     
+  }, 
+     "newsletter": {
+  "title": "Subscreva a newsletter MyPerfume",
+  "prg": "Obtenha uma prévia dos bons negócios e notícias.", 
+  "subscribe": "Registo"
+ },
+  "footer": {
+    "about": "Sobre nós",
+    "ourStory": "Nossa história",
+    "careers": "Carreiras",
+    "press": "Imprensa",
+    "socialResponsibility": "Responsabilidade social",
+    "blog": "Blog",
+
+    "info": "Informações",
+    "sitemap": "Mapa do site",
+    "legalNotice": "Aviso legal",
+    "newPerfume": "Novidade perfume",
+    "faceCare": "Cuidados faciais",
+    "stores": "Nossas lojas",
+    "beautyGuide": "Guia de compras de beleza",
+    "perfumeGuide": "Guia de perfumes",
+
+    "conditions": "Condições",
+    "cookiesPolicy": "Política de Cookies",
+    "terms": "Termos e Condições",
+    "gdpr": "RGPD",
+    "rsgp": "RSGP",
+
+    "help": "Precisa de ajuda",
+    "faq": "FAQ",
+    "whoWeAre": "Quem somos",
+    "contact": "Contato",
+
+    "followUs": "Siga-nos",
+    "phone": "Telefone",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "tiktok": "TikTok",
+
+    "goTop": "Voltar ao topo"
   }
+
 }

@@ -137,7 +137,51 @@
       "answer": "Le remboursement est effectué sous 7 jours ouvrés après réception et vérification du produit retourné."
     }
   ]
- }
+ },
+ "newsletter": {
+  "title": "Inscrivez-vous à la newsletter MyPerfume",
+  "prg": "Accédez en avant-première aux bons plans & nouveautés.", 
+  "subscribe": "S’inscrire"
+ },
+  "footer": {
+    "about": "À propos de nous",
+    "ourStory": "Notre histoire",
+    "careers": "Carrières",
+    "press": "Presse",
+    "socialResponsibility": "Responsabilité sociale",
+    "blog": "Blog",
+
+    "info": "Informations",
+    "sitemap": "Plan de site",
+    "legalNotice": "Mentions légales",
+    "newPerfume": "Nouveauté parfum",
+    "faceCare": "Soin visage",
+    "stores": "Nos magasins",
+    "beautyGuide": "Guide d'achats beauté",
+    "perfumeGuide": "Guide parfums",
+
+    "conditions": "Conditions",
+    "cookiesPolicy": "Politique Cookies",
+    "terms": "CGV",
+    "gdpr": "RGPD",
+    "rsgp": "RSGP",
+
+    "help": "Besoin d'Aide",
+    "faq": "FAQ",
+    "whoWeAre": "Qui sommes-nous",
+    "contact": "Contact",
+
+    "followUs": "Suivez-nous",
+    "phone": "Tel",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "tiktok": "TikTok",
+
+    "goTop": "Retour en haut"
+  }
+
+
 }
 
   
