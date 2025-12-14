@@ -70,6 +70,9 @@ const Product = () => {
     // alert("Produit ajouté au panier !");
     setShowModal(true); // 🔥 ouvre le modal
   };
+  const ratingValue = Number(product?.rating) || 0;
+console.log("PRODUCT:", product);
+console.log("RATING:", product?.rating, typeof product?.rating);
 
   return (
     <section id="page">
@@ -121,7 +124,7 @@ const Product = () => {
 </div>
 
 
-        {/* ⭐ Notation */}
+        {/* ⭐ Notation 
         <div className="rating">
           {Array.from({ length: 5 }).map((_, i) => (
             <span
@@ -135,7 +138,25 @@ const Product = () => {
             {product.rating     ? `${product.rating.toFixed(1)}/5`: t("product.noRating")}
           </span>
         </div>
-        
+        */}
+
+{/* ⭐ Notation */}
+<div className="rating">
+  {Array.from({ length: 5 }).map((_, i) => (
+    <span
+      key={i}
+      className={i < Math.round(ratingValue) ? "star filled" : "star"}
+    >
+      ★
+    </span>
+  ))}
+
+  <span className="rating-value">
+    {ratingValue > 0
+      ? `${ratingValue.toFixed(1)}/5`
+      : t("product.noRating")}
+  </span>
+</div>
 
         {/* 💬 Commentaires */}
         <div className="Commentaires">

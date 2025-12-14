@@ -91,6 +91,7 @@ p {
     display: flex;
     align-items: center;
     margin: 15px 0;
+    cursor: pointer;
 
     .star {
         font-size: 22px;
@@ -106,6 +107,7 @@ p {
         margin-left: 10px;
         font-weight: bold;
     }
+
 }
 
 /* Commentaires */
