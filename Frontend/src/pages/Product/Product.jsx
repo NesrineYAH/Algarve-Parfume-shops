@@ -72,43 +72,51 @@ const Product = () => {
   return (
     <section id="page">
       <div className="product-container">
-        <div className="pr">
-          <img
-            src={`http://localhost:5001${product.imageUrl}`}
-            alt={product.nom}
-            className="product-image"
-          />
-          <h2>{product.nom}</h2>
-          <p>
-            <strong>Stock :</strong> {product.stock} en stock
-          </p>
-          <p>{product.description}</p>
+<div className="pr">
+  <img
+    src={`http://localhost:5001${product.imageUrl}`}
+    alt={product.nom}
+    className="product-image"
+  />
+  <h2>{product.nom}</h2>
+  <p>
+    <strong>Stock :</strong> {product.stock} en stock
+  </p>
+  <p>{product.description}</p>
 
-          {product.options && product.options.length > 0 && (
-            <div className="product-options">
-              <label>Choisir une option :</label>
-              <select
-                value={product.options.indexOf(selectedOption)}
-                onChange={(e) =>
-                  setSelectedOption(product.options[e.target.value])
-                }
-              >
-                {product.options.map((opt, index) => (
-                              
-                  <option 
-                  key={index} value={index}>
-                    {opt.size} {opt.unit} - {opt.prix} €
-                  </option>
-                  
-                ))}
-              </select>
-              <p>
-                <strong>Prix sélectionné :</strong>{" "}
-                {selectedOption ? selectedOption.prix : 0} €
-              </p>
-            </div>
-          )}
-        </div>
+  {product.options && product.options.length > 0 && (
+    <div className="product-options">
+      <label>Choisir une option :</label>
+      <select
+        value={
+          selectedOption
+            ? product.options.indexOf(selectedOption)
+            : "" // valeur vide si rien n'est sélectionné
+        }
+        onChange={(e) =>
+          setSelectedOption(product.options[e.target.value])
+        }
+      >
+        {/* Option par défaut */}
+        <option value="" disabled>
+          Sélectionner la taille
+        </option>
+
+        {product.options.map((opt, index) => (
+          <option key={index} value={index}>
+            {opt.size} {opt.unit} - {opt.prix} €
+          </option>
+        ))}
+      </select>
+
+      <p>
+        <strong>Prix sélectionné :</strong>{" "}
+        {selectedOption ? selectedOption.prix : 0} €
+      </p>
+    </div>
+  )}
+</div>
+
 
         {/* ⭐ Notation */}
         <div className="rating">
