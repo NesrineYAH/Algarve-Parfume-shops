@@ -124,22 +124,7 @@ console.log("RATING:", product?.rating, typeof product?.rating);
 </div>
 
 
-        {/* ⭐ Notation 
-        <div className="rating">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span
-              key={i}
-              className={i < (product.rating || 0) ? "star filled" : "star"}
-            >
-              ★
-            </span>
-          ))}
-          <span className="rating-value">
-            {product.rating     ? `${product.rating.toFixed(1)}/5`: t("product.noRating")}
-          </span>
-        </div>
-        */}
-
+   
 {/* ⭐ Notation */}
 <div className="rating">
   {Array.from({ length: 5 }).map((_, i) => (
@@ -222,6 +207,24 @@ console.log("RATING:", product?.rating, typeof product?.rating);
 };
 
 export default Product;
+
+
+     {/* ⭐ Notation 
+        <div className="rating">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <span
+              key={i}
+              className={i < (product.rating || 0) ? "star filled" : "star"}
+            >
+              ★
+            </span>
+          ))}
+          <span className="rating-value">
+            {product.rating     ? `${product.rating.toFixed(1)}/5`: t("product.noRating")}
+          </span>
+        </div>
+        */}
+
 
 //30/11 function addToCart
 /*

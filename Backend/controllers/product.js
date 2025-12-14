@@ -91,7 +91,40 @@ exports.updateProduct = async (req, res) => {
     }
 };
 
+// 14/12 routes pour ajouter des notations et commentaire 
+// ⭐ Ajouter un commentaire + notation
+exports.addComment = async (req, res) => {
+    try {
+        const { user, rating, text } = req.body;
 
+        if (!user || !rating) {
+            return res.status(400).json({ error: "Champs manquants" });
+        }
+
+        const product = await Product.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ error: "Produit introuvable" });
+        }
+
+        // Ajout du commentaire
+        product.comments.push({ user, rating, text });
+
+        // 🧮 recalcul de la moyenne
+        product.rating =
+            product.comments.reduce((sum, c) => sum + c.rating, 0) /
+            product.comments.length;
+
+        await product.save();
+
+        return res.status(200).json({
+            success: true,
+            product,
+        });
+    } catch (error) {
+        console.error("Erreur ajout commentaire :", error);
+        return res.status(500).json({ error: "Erreur serveur" });
+    }
+};
 
 
 
