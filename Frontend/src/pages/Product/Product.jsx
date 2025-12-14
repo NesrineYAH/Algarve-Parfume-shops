@@ -34,55 +34,7 @@ const Product = () => {
   if (error) return <p>{error}</p>;
   if (!product) return <p>Chargement du produit...</p>;
 
-  /*
-  const addToCart = () => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (!selectedOption) {
-      alert("Veuillez sélectionner une option.");
-      return;
-    }
-    // 01/12 Nettoyage automatique du panier pour éviter les undefined
-
-    // 🔥 Supprimer les items invalides : évite productId undefined
-    cart = cart.filter(
-      (item) =>
-        item &&
-        item.productId && // productId obligatoire
-        item.options && // options obligatoire
-        item.options.size // size obligatoire
-    );
-
-    const selectedSize = selectedOption.size;
-
-    // Vérifie si ce produit avec cette option existe déjà
-    const existing = cart.find(
-      (item) =>
-        item.productId === product._id &&
-        item.options &&
-        item.options.size === selectedSize
-    );
-
-    if (existing) {
-      existing.quantite += 1;
-    } else {
-      cart.push({
-        productId: product._id,
-        nom: product.nom,
-        imageUrl: product.imageUrl,
-        quantite: 1, // unité de parfum
-        options: {
-          size: selectedOption.size,
-          unit: selectedOption.unit,
-          prix: selectedOption.prix,
-          stock: selectedOption.stock,
-        },
-      });
-    }
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Produit ajouté au panier !");
-  };
-  */
   const addToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -142,9 +94,12 @@ const Product = () => {
                 }
               >
                 {product.options.map((opt, index) => (
-                  <option key={index} value={index}>
+                              
+                  <option 
+                  key={index} value={index}>
                     {opt.size} {opt.unit} - {opt.prix} €
                   </option>
+                  
                 ))}
               </select>
               <p>

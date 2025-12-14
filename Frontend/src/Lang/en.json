@@ -21,18 +21,16 @@
     "reason_retour": "Request a return or refund",
     "reason_compte": "Account issue",
     "reason_autre": "Other request",
-
     "nom": "Last name",
     "prenom": "First name",
     "email": "Email",
     "message": "Message",
     "send": "Send",
-
     "sending": "Sending...",
     "success": "Message sent successfully!",
     "error": "Error while sending."
   },
-    "blog": {
+  "blog": {
   "Delivery": "Free shipping", 
   "DeliveryP": "from 25 € purchase",
   "payment": "Secure payment",
@@ -40,7 +38,7 @@
   "Samples": "Samples Offred",
   "Gift_Card": "Gift Card",
   "Customer_Service": "Customer Service",
-      "Customer_ServiceP": "6j/7"
+  "Customer_ServiceP": "6j/7"
   },
   "service": {
     "title": "Customer Service",
@@ -50,14 +48,12 @@
     "email": "Send us an email",
     "phone": "Call us"
   },
-
   "faq": {
     "PrincipalTitle": "Frequently Asked Questions",
     "PaymentTitle":"Payment",
     "OrdersTitle" : "Orders",
     "DeliveryTitle": "Delivery",
     "ReturnsTitle": "Return and Refund",
-
     "payment": [
       {
         "question": "What payment methods do you accept?",
@@ -136,6 +132,11 @@
   "prg": "Get a preview of the good deals & news.", 
     "mail": "Your email adress",
   "subscribe": "register"
+ },
+  "infoSide": {
+  "Paymenttool": "Our payment methods",
+  "App": "Nos Applications mobiles",
+   "JoinUs": "Join us on"
  },
   "footer": {
     "about": "About us",

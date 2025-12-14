@@ -67,8 +67,7 @@ const handleSubmit = async (e) => {
               value={formData.reason}
               onChange={handleChange}
               required
-              className="contact-input"
-            >
+              className="contact-input">
               <option value="">{t("contact.reason_default")}</option>
               <option value="commande">{t("contact.reason_commande")}</option>
               <option value="produit">{t("contact.reason_produit")}</option>

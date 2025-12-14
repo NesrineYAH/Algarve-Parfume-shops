@@ -12,8 +12,6 @@
     "history": "Historique d'achat",
     "logout": "Déconnexion"
   },
-
-
   "contact": {
     "title": "Contactez-nous",
     "reason_label": "Motif du contact",
@@ -23,13 +21,11 @@
     "reason_retour": "Faire un retour ou un remboursement",
     "reason_compte": "Problème de compte",
     "reason_autre": "Autre demande",
-
     "nom": "Nom",
     "prenom": "Prénom",
     "email": "Email",
     "message": "Message",
     "send": "Envoyer",
-
     "sending": "Envoi en cours...",
     "success": "Message envoyé avec succès !",
     "error": "Erreur lors de l’envoi."
@@ -44,7 +40,6 @@
   "Customer_Service": "Service client",
     "Customer_ServiceP": "6j/7"
   }, 
-  
   "service": {
     "title": "Service Client",
     "intro": "Notre équipe est disponible pour répondre à vos questions et vous accompagner.",
@@ -53,15 +48,12 @@
     "email": "Envoyez-nous un email",
     "phone": "Appelez-nous"
   },
-
-
   "faq": {  
     "PrincipalTitle": "Foire Aux Questions",
     "PaymentTitle":"Paiement",
     "OrdersTitle" : "Commandes",
     "DeliveryTitle": "Livraison",
     "ReturnsTitle": "Retour et Remboursement",
-
   "payment": [
     {
       "question": "Quels moyens de paiement acceptez-vous ?",
@@ -80,7 +72,6 @@
       "answer": "Vous pouvez entrer votre code promo ou numéro de carte cadeau lors du paiement, avant la validation de la commande."
     }
   ],
-
   "orders": [
     {
       "question": "Comment passer une commande ?",
@@ -99,7 +90,6 @@
       "answer": "Oui, il est possible de commander en tant qu’invité, mais nous vous conseillons de créer un compte pour suivre vos commandes."
     }
   ],
-
   "delivery": [
     {
       "question": "Quels sont les délais de livraison ?",
@@ -118,7 +108,6 @@
       "answer": "Un numéro de suivi vous sera envoyé par email dès l’expédition de votre colis."
     }
   ],
-
   "returns": [
     {
       "question": "Puis-je retourner un parfum si je ne l’aime pas ?",
@@ -144,6 +133,11 @@
   "mail": "Votre Addresse email",
   "subscribe": "S’inscrire"
  },
+ "infoSide": {
+  "Paymenttool": "Nos moyens de paiement",
+  "App": "Nos Applications Mobile",
+   "JoinUs": "Retrouvez nous sur"
+ }, 
   "footer": {
     "about": "À propos de nous",
     "ourStory": "Notre histoire",

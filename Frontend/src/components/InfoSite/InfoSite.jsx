@@ -1,5 +1,10 @@
 import React from "react";
 import "./InfoSite.scss";
+import {FaLinkedin,FaPinterest,FaTiktok,
+  FaFacebook, FaPaypal, FaCcVisa, FaCcMastercard, FaCreditCard} from "react-icons/fa";
+
+ //import { SiMondialrelay } from "react-icons/si";
+
 
 const InfoSite = () => {
   const iconsPayements = [
@@ -16,29 +21,31 @@ const InfoSite = () => {
     <div className="infoSite">
       <div className="infoSite__section">
         <h3>Nos moyens de paiement</h3>
-        <div className="infoSite__icons">
-          <div className="infoSite__icons">
-            <a
-              href="https://www.paypal.com/fr/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/images/icons/Paypal.png" alt="PayPal" />
-            </a>
-            <a href="" target="_blank" rel="noopener noreferrer">
-              <img src="/images/icons/mastercard.png" alt="Mastercard" />
-            </a>
-            <a href="" target="_blank" rel="noopener noreferrer">
-              <img src="/images/icons/visa.webp" alt="VISA" />
-            </a>
-
-            <a href="" target="_blank" rel="noopener noreferrer">
-              <img src="/images/icons/CB.png" alt="CB" />
-            </a>
-          </div>
-        </div>
+      <div className="infoSite__icons">
+      <FaPaypal title="PayPal" className="icone"/>
+      <FaCcVisa title="Visa" className="icone"/>
+      <FaCcMastercard title="MasterCard" className="icone"/>
+      <FaCreditCard title="Carte bancaire" className="icone"/>
       </div>
+    </div>
 
+     <div className="infoSite__section">
+        <h3>Nos Applications Mobiles</h3>
+      <div className="infoSite__icons">
+      <FaLinkedin title="LinkedIn" className="icone"/>
+      <FaPinterest title="Pinterest" className="icone"/>
+      <FaTiktok title="TikTok" className="icone" />
+      <FaFacebook title="Facebook" className="icone" />
+      </div>   
+     </div>
+      </div>
+  
+  );
+};
+
+export default InfoSite;
+
+  /*
       <div className="infoSite__section">
         <h3>Nos partenaires de livraison</h3>
         <div className="infoSite__icons">
@@ -90,7 +97,7 @@ const InfoSite = () => {
 
       <div className="infoSite__section">
         <h3>Retrouvez nous sur</h3>
-        <div className="infoSie__icons">
+        <div className="infoSite__icons">
           <a
             href="https://facebook.com"
             target="_blank"
@@ -137,8 +144,4 @@ const InfoSite = () => {
           </a>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default InfoSite;
+      */

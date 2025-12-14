@@ -140,6 +140,11 @@
   "mail":"Su dirección de correo electrónico",
   "subscribe": "Registro"
  },
+    "infoSide": {
+  "Paymenttool": "Nuestros métodos de pago",
+  "App": "Nos Aplicaciones móviles",
+   "JoinUs": "Únete a nosotros en"
+ },
   "footer": {
     "about": "Sobre nosotros",
     "ourStory": "Nuestra historia",
