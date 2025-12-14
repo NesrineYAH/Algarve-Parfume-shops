@@ -108,7 +108,7 @@ export default function Footer() {
       <ul className="footer__ul">
         {t("footer.followUs")}
         <li>
-          {t("footer.phone")} : 075844851252
+          {t("footer.phone")} : +351 920 730 799
         </li>
         <li>
           {t("footer.facebook")}

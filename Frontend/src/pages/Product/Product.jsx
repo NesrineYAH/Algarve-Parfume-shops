@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Product.scss";
+import { useTranslation } from "react-i18next";
 
 const Product = () => {
   const { id } = useParams();
@@ -9,6 +10,7 @@ const Product = () => {
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState(null); // option choisie
   const role = localStorage.getItem("role");
+  const { t } = useTranslation();
   //03/12
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false); // 🔥 état du modal
@@ -31,9 +33,9 @@ const Product = () => {
     fetchProduct();
   }, [id]);
 
-  if (error) return <p>{error}</p>;
-  if (!product) return <p>Chargement du produit...</p>;
-
+  if (error) return <p>{t("product.error")} </p>;
+  if (!product) return <p>{t("product.loading")} </p>;
+/**/
 
   const addToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -80,13 +82,14 @@ const Product = () => {
   />
   <h2>{product.nom}</h2>
   <p>
-    <strong>Stock :</strong> {product.stock} en stock
+
+     <strong>{t("product.stock")} :</strong> {product.stock} {t("product.inStock")}
   </p>
   <p>{product.description}</p>
 
   {product.options && product.options.length > 0 && (
     <div className="product-options">
-      <label>Choisir une option :</label>
+<label>{t("product.chooseOption")}</label>
       <select
         value={
           selectedOption
@@ -99,7 +102,7 @@ const Product = () => {
       >
         {/* Option par défaut */}
         <option value="" disabled>
-          Sélectionner la taille
+  {t("product.selectSize")}
         </option>
 
         {product.options.map((opt, index) => (
@@ -110,7 +113,7 @@ const Product = () => {
       </select>
 
       <p>
-        <strong>Prix sélectionné :</strong>{" "}
+  <strong>{t("product.selectedPrice")} :</strong>{" "}
         {selectedOption ? selectedOption.prix : 0} €
       </p>
     </div>
@@ -129,15 +132,16 @@ const Product = () => {
             </span>
           ))}
           <span className="rating-value">
-            {product.rating ? `${product.rating.toFixed(1)}/5` : "Aucune note"}
+            {product.rating     ? `${product.rating.toFixed(1)}/5`: t("product.noRating")}
           </span>
         </div>
+        
 
         {/* 💬 Commentaires */}
         <div className="Commentaires">
           {product.comments && product.comments.length > 0 ? (
             <div className="comments">
-              <h4>Commentaires :</h4>
+          <h4>{t("product.comments")} :</h4>
               <ul>
                 {product.comments.map((comment, index) => (
                   <li key={index}>
@@ -147,26 +151,28 @@ const Product = () => {
               </ul>
             </div>
           ) : (
-            <p className="no-comments">Pas encore de commentaires.</p>
+
+            
+<p className="no-comments"> {t("product.noComments")}</p>
           )}
         </div>
 
         <button className="btn-Add" onClick={addToCart}>
-          Ajouter au panier
+ {t("product.addToCart")}
         </button>
       </div>
       {/* 🔥 MODAL  03/12/2025*/}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3>Produit ajouté 🎉</h3>
-            <p>Votre produit a bien été ajouté au panier.</p>
+            <h3> {t("product.addedTitle")}🎉</h3>
+            <p>{t("product.addedMessage")}</p>
             <div className="modal-actions">
               <button onClick={() => navigate("/cart")} className="btn-Add">
-                Voir mon panier
+              {t("product.viewCart")}
               </button>
               <button onClick={() => navigate("/home")} className="btn-Add">
-                Continuer mes achats
+           {t("product.continueShopping")}
               </button>
             </div>
             <button className="modal-close" onClick={() => setShowModal(false)}>
@@ -180,13 +186,13 @@ const Product = () => {
       {(role === "admin" || role === "vendeur") && (
         <div className="admin-action">
           <Link to="/admin/add-product" className="btn-Add">
-            ➕ Ajouter un produit
+            ➕  {t("product.addProduct")}
           </Link>
 
-          <Link to={`/admin/EditProduct/${product._id}`}>Modifier</Link>
+          <Link to={`/admin/EditProduct/${product._id}`} className="btn-Add">{t("product.edit")}</Link>
 
           <Link to="/admin/AdminProductManagement" className="btn-Add">
-            ➕ Supprimer un produit
+            ➕   {t("product.delete")}
           </Link>
         </div>
       )}

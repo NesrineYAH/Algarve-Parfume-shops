@@ -138,6 +138,28 @@
   "App": "Nos Applications Mobile",
    "JoinUs": "Retrouvez nous sur"
  }, 
+  "product": {
+    "loading": "Chargement du produit...",
+    "error": "Produit introuvable ou erreur serveur.",
+    "stock": "Stock",
+    "inStock": "en stock",
+    "chooseOption": "Choisir une option",
+    "selectSize": "Sélectionner la taille",
+    "selectedPrice": "Prix sélectionné",
+    "noRating": "Aucune note",
+    "comments": "Commentaires",
+    "noComments": "Pas encore de commentaires.",
+    "addToCart": "Ajouter au panier",
+    "addedTitle": "Produit ajouté 🎉",
+    "addedMessage": "Votre produit a bien été ajouté au panier.",
+    "viewCart": "Voir mon panier",
+    "continueShopping": "Continuer mes achats",
+    "addProduct": "Ajouter un produit",
+    "edit": "Modifier",
+    "delete": "Supprimer un produit"
+  },
+
+
   "footer": {
     "about": "À propos de nous",
     "ourStory": "Notre histoire",

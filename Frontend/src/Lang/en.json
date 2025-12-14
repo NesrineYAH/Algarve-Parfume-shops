@@ -138,6 +138,27 @@
   "App": "Nos Applications mobiles",
    "JoinUs": "Join us on"
  },
+  "product": {
+    "loading": "Loading product...",
+    "error": "Product not found or server error.",
+    "stock": "Stock",
+    "inStock": "in stock",
+    "chooseOption": "Choose an option",
+    "selectSize": "Select size",
+    "selectedPrice": "Selected price",
+    "noRating": "No rating yet",
+    "comments": "Comments",
+    "noComments": "No comments yet.",
+    "addToCart": "Add to cart",
+    "addedTitle": "Product added 🎉",
+    "addedMessage": "Your product has been added to the cart.",
+    "viewCart": "View my cart",
+    "continueShopping": "Continue shopping",
+    "addProduct": "Add product",
+    "edit": "Edit",
+    "delete": "Delete product"
+  },
+
   "footer": {
     "about": "About us",
     "ourStory": "Our story",
