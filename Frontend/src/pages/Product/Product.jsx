@@ -128,6 +128,7 @@ console.log("RATING:", product?.rating, typeof product?.rating);
 {/* ⭐ Notation */}
 <div className="rating">
   {Array.from({ length: 5 }).map((_, i) => (
+    
     <span
       key={i}
       className={i < Math.round(ratingValue) ? "star filled" : "star"}
@@ -225,62 +226,3 @@ export default Product;
         </div>
         */}
 
-
-//30/11 function addToCart
-/*
-const addToCart = () => {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  const selectedSize = selectedOption.size;
-
-
-  const existing = cart.find(
-    (item) => item._id === product._id && item.option.size === selectedSize
-  );
-
-  if (existing) {
-
-    existing.Quantite += 1;
-  } else {
-    cart.push({
-      _id: product._id,
-      nom: product.nom,
-      imageUrl: product.imageUrl,
-      Quantite: 1, épart
-      option: {
-        size: selectedSize, 
-        unit: selectedOption.unit, 
-        prix: selectedOption.prix, on
-      },
-    });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Produit ajouté au panier !");
-};
-*/
-//30/11 function addToCart
-
-/*
- const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    
-
-    // Vérifie si le produit avec la même option est déjà dans le panier
-    const existing = cart.find(
-      (item) =>
-        item.id === product._id &&
-        item.option.quantity === selectedOption.quantity
-    );
-
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({
-        id: product._id,
-        nom: product.nom,
-        option: selectedOption,
-        quantity: 1,
-      });
-    }
-      */
