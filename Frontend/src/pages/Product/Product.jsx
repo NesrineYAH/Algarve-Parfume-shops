@@ -249,9 +249,11 @@ const reportComment = async (commentId) => {
 
         {/* 15/12 à 13h00  comment comme mariaunod */}
         <div className="review-summary">
-  <h3>{t("product.reviewsTitle")}</h3>
+  {/* <h3>{t("product.reviewsTitle")}</h3> */}  
+  <h3>Note et avis</h3>
   <p className="average-rating">
-    {product.rating.toFixed(1)} / 5 ⭐ ({product.comments.length} {t("product.reviewsCount")})
+    {product.rating.toFixed(1)} / 5 ⭐ ({product.comments.length})
+      {/*  {t("product.reviewsCount")}) */}  
   </p>
 
   <div className="rating-breakdown">
@@ -280,7 +282,7 @@ const reportComment = async (commentId) => {
       </div>
 
       <div className="comment-meta">
-        <span>{t("product.skinType")}: {comment.skinType || "—"}</span>
+        {/* <span>{t("product.skinType")}: {comment.skinType || "—"}</span> */}
         <span>{t("product.usageTime")}: {comment.usageTime || "—"}</span>
       </div>
 

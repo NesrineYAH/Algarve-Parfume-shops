@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Comment = require("../Model/Comment");
 const Product = require("../Model/product");
-
+const authMiddleware = require("../middleware/auth");
 
 // ✅ Récupérer les commentaires d’un produit
 router.get("/products/:id/comments", async (req, res) => {
@@ -20,15 +20,15 @@ router.get("/products/:id/comments", async (req, res) => {
 });
 
 // ✅ Ajouter un commentaire à un produit
-router.post("/products/:id/comments", async (req, res) => {
+router.post("/products/:id/comments", authMiddleware, async (req, res) => {
     try {
         const { rating, text } = req.body;
-        const userId = req.user?._id || req.body.userId; // selon ton système d'auth
-        /*
-                if (!rating || !text) {
-                    return res.status(400).json({ error: "Rating et texte sont requis" });
-                }
-        */
+        // const userId = req.user?._id || req.body.userId; // selon ton système d'auth
+        const userId = req.user?.userId;
+
+        if (!userId) {
+            return res.status(401).json({ error: "Utilisateur non authentifié" });
+        }
 
         if (rating === undefined || rating === null || text.trim() === "") {
             return res.status(400).json({ error: "Rating et texte sont requis" });
@@ -48,7 +48,7 @@ router.post("/products/:id/comments", async (req, res) => {
         const comment = new Comment({
             productId,
             userId,
-            rating,
+            rating: ratingNumber,
             text,
         });
 

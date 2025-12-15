@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import "./Review.scss"; // tu peux créer un fichier de style
+import "./Review.scss"; 
+
 
 const Review = () => {
-  const { id } = useParams(); // récupère l'id du produit depuis l'URL
+  const { id } = useParams(); // ← ID du produit
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -21,19 +22,23 @@ const Review = () => {
     try {
       setError("");
       const token = localStorage.getItem("token");
-
+        console.log("TOKEN:", token);
       await axios.post(
         `http://localhost:5001/api/products/${id}/comments`,
         { rating, text },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setSuccess("Votre avis a été envoyé avec succès !");
       setRating(0);
       setText("");
     } catch (err) {
-      setError("Erreur lors de l'envoi du commentaire.");
       console.error(err);
+      setError("Erreur lors de l'envoi du commentaire.");
     }
   };
 
@@ -42,7 +47,6 @@ const Review = () => {
       <h2>Donner votre avis</h2>
 
       <form onSubmit={handleSubmit} className="review-form">
-        {/* ⭐ Choix de la note */}
         <div className="rating-input">
           <label>Votre note :</label>
           {Array.from({ length: 5 }).map((_, i) => (
@@ -57,7 +61,6 @@ const Review = () => {
           ))}
         </div>
 
-        {/* 📝 Champ texte */}
         <div className="text-input">
           <label>Votre commentaire :</label>
           <textarea
@@ -67,11 +70,9 @@ const Review = () => {
           />
         </div>
 
-        {/* ⚠️ Messages */}
         {error && <p className="error">{error}</p>}
         {success && <p className="success">{success}</p>}
 
-        {/* 🚀 Bouton */}
         <button type="submit" className="btn-submit">
           Envoyer mon avis
         </button>
@@ -81,3 +82,7 @@ const Review = () => {
 };
 
 export default Review;
+
+
+
+//        `http://localhost:5001/api/products/${id}/comments`,
