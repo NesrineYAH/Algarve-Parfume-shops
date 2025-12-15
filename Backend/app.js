@@ -11,7 +11,8 @@ const orderRoutes = require("./routes/orders");
 const deliveryRoutes = require("./routes/delivery");
 const paymentRoutes = require("./routes/payment");
 const stripeRoute = require("./routes/stripe");
-const contactRoutes = require("./routes/contacts.js");
+const contactRoutes = require("./routes/contacts");
+const commentsRoutes = require("./routes/comments");
 require("./mongoDB/DB");
 
 const app = express();
@@ -36,6 +37,8 @@ app.use("/api/delivery", deliveryRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/stripe", stripeRoute);
 app.use("/api/contacts", contactRoutes);
+app.use("/api/comments", commentsRoutes);
+
 
 
 
