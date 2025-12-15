@@ -156,7 +156,10 @@
     "continueShopping": "Continuer mes achats",
     "addProduct": "Ajouter un produit",
     "edit": "Modifier",
-    "delete": "Supprimer un produit"
+    "delete": "Supprimer un produit",
+    "skinType": "Type de peau",
+    "usageTime" : "Moment d'utilisation",
+     "report": "signaler"
   },
 
 

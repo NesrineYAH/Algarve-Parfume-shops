@@ -24,6 +24,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    width: 100%;
 }
 
 .product-image {
@@ -174,6 +175,71 @@ p {
     font-size: 18px;
     cursor: pointer;
 }
+
+//15/12/2025
+.review-summary {
+    margin-top: 2rem;
+
+    .average-rating {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .rating-breakdown {
+        margin-top: 1rem;
+
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        progress {
+            width: 100px;
+            height: 8px;
+        }
+    }
+}
+
+.comment-card {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    background: #f9f9f9;
+
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+
+    .comment-meta {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0.5rem 0;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .comment-rating {
+        color: gold;
+    }
+
+    .comment-actions {
+        margin-top: 0.5rem;
+
+
+        button {
+            margin-right: 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    }
+}
+
 
 
 

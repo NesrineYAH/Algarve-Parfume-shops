@@ -30,11 +30,7 @@ const Product = () => {
         );
         setProduct(response.data);
 
-{/*}
-        if (response.data.options && response.data.options.length > 0) {
-          setSelectedOption(response.data.options[0]);
-        }
-*/}
+
      // ✅ On garde selectedOption = null
       setSelectedOption(null);
         // initialisation rating
@@ -115,6 +111,19 @@ const Product = () => {
       setCommentLoading(false);
     }
   };
+//15/12/2025
+const reportComment = async (commentId) => {
+  try {
+    await axios.post(
+      `http://localhost:5001/api/comments/${commentId}/report`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    alert("Commentaire signalé !");
+  } catch (err) {
+    console.error("Erreur lors du signalement :", err);
+  }
+};
 
   return (
     <section id="page">
@@ -132,27 +141,8 @@ const Product = () => {
           <p>{product.description}</p>
 
           {product.options && product.options.length > 0 && (
-      //       <div className="product-options">
-      //         <label>{t("product.chooseOption")}</label>
-      //  <select
-      //       value={selectedOption ? product.options.indexOf(selectedOption) : ""}
-      //         onChange={(e) => setSelectedOption(product.options[e.target.value])}
-      //      >
-      //  <option value="" > {t("product.selectSize")}    </option>  {/* "Sélectionner une taille" */}
-     
-      //    {product.options.map((opt, index) => (
-      //    <option key={index} value={index}>
-      //      {opt.size} {opt.unit} - {opt.prix} €
-      //      </option>
-      //          ))}
-      //           </select>
 
-      //         <p>
-      //           <strong>{t("product.selectedPrice")} :</strong>{" "}
-      //           {selectedOption ? selectedOption.prix : 0} €
-      //         </p>
-      //       </div>
-      <div className="product-options">
+              <div className="product-options">
   <label>{t("product.chooseOption")}</label>
   <select
     value={selectedOption ? selectedOption.size : ""}
@@ -180,7 +170,7 @@ const Product = () => {
     <strong>{t("product.selectedPrice")} :</strong>{" "}
     {selectedOption ? selectedOption.prix : 0} €
   </p>
-     </div>
+              </div>
 
           )}
         </div>
@@ -234,23 +224,6 @@ const Product = () => {
 {/* rating +comment+formulaire coemmentaire */} 
 
 
-        {/* 🔹 Commentaires */}
-        <div className="Commentaires">
-          {product.comments && product.comments.length > 0 ? (
-            <div className="comments">
-              <h4>{t("product.comments")} :</h4>
-              <ul>
-                {product.comments.map((comment, index) => (
-                  <li key={index}>
-                    <strong>{comment.user}</strong> : {comment.text}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="no-comments">{t("product.noComments")}</p>
-          )}
-        </div>
 
         {/* 🔹 Formulaire commentaire */}
         <div className="comment-form">
@@ -267,6 +240,63 @@ const Product = () => {
           </button>
         </div>
 
+        {/* 15/12 à 13h00  comment comme mariaunod */}
+        <div className="review-summary">
+  <h3>{t("product.reviewsTitle")}</h3>
+  <p className="average-rating">
+    {product.rating.toFixed(1)} / 5 ⭐ ({product.comments.length} {t("product.reviewsCount")})
+  </p>
+
+  <div className="rating-breakdown">
+    {[5, 4, 3, 2, 1].map((star) => {
+      const count = product.comments.filter(c => c.rating === star).length;
+      return (
+        <div key={star} className="rating-row">
+          <span>{star} ★</span>
+          <progress value={count} max={product.comments.length}></progress>
+          <span>{count}</span>
+        </div>
+      );
+    })}
+  </div>
+        </div>
+              {/* 15/12 à 13h00  comment comme mariaunod */}
+         <div className="comments">
+       <h4>{t("product.comments")} :</h4>
+           {product.comments.map((comment, index) => (
+    <div key={index} className="comment-card">
+      <div className="comment-header">
+        <strong>{comment.user}</strong>
+        <span className="comment-date">
+          {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
+        </span>
+      </div>
+
+      <div className="comment-meta">
+        <span>{t("product.skinType")}: {comment.skinType || "—"}</span>
+        <span>{t("product.usageTime")}: {comment.usageTime || "—"}</span>
+      </div>
+
+      <div className="comment-rating">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span key={i} className={i < comment.rating ? "star filled" : "star"}>★</span>
+        ))}
+      </div>
+
+      <p className="comment-text">{comment.text}</p>
+
+      <div className="comment-actions">
+        <button>👍</button>
+        <button>👎</button>
+    <button onClick={() => reportComment(comment._id)}>
+  {t("product.report")}
+</button>
+      </div>
+    </div>
+  ))}
+       </div>
+
+
         {/* 🔹 Admin */}
         {(role === "admin" || role === "vendeur") && (
           <div className="admin-action">
@@ -282,7 +312,46 @@ const Product = () => {
 
 export default Product;
 
+        {/* 🔹 Commentaires 
+        <div className="Commentaires">
+            <h4>{t("product.comments")} :</h4>
+          {product.comments && product.comments.length > 0 ? (
+            <div className="comments">
+              <h4>{t("product.comments")} :</h4>
+              <ul>
+                {product.comments.map((comment, index) => (
+                  <li key={index}>
+                    <strong>{comment.user}</strong> : {comment.text}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="no-comments">{t("product.noComments")}</p>
+          )}
+        </div>
+*/}
 
+      //       <div className="product-options">
+      //         <label>{t("product.chooseOption")}</label>
+      //  <select
+      //       value={selectedOption ? product.options.indexOf(selectedOption) : ""}
+      //         onChange={(e) => setSelectedOption(product.options[e.target.value])}
+      //      >
+      //  <option value="" > {t("product.selectSize")}    </option>  {/* "Sélectionner une taille" */}
+     
+      //    {product.options.map((opt, index) => (
+      //    <option key={index} value={index}>
+      //      {opt.size} {opt.unit} - {opt.prix} €
+      //      </option>
+      //          ))}
+      //           </select>
+
+      //         <p>
+      //           <strong>{t("product.selectedPrice")} :</strong>{" "}
+      //           {selectedOption ? selectedOption.prix : 0} €
+      //         </p>
+      //       </div>
 
 /*
 Uncaught Error: Rendered more hooks than during the previous render
