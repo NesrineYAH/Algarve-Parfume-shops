@@ -1,49 +1,45 @@
-// Model Product Schéma des produits
+// Model Product - Schéma des produits
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
-  nom: { type: String, required: true },
-  description: { type: String },
-  imageUrl: String,
-  stock: { type: Number, default: 0 },
-  categorie_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Categorie",
+const productSchema = new mongoose.Schema(
+  {
+    nom: { type: String, required: true },
+    description: { type: String },
+    imageUrl: String,
+    stock: { type: Number, default: 0 },
+    categorie_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Categorie",
+    },
+    options: [
+      {
+        size: { type: Number, required: true },
+        unit: { type: String, default: "ml" },
+        prix: { type: Number, required: true },
+        stock: { type: Number, default: 0 },
+      },
+    ],
+
+    // ⭐ Notation moyenne
+    rating: {
+      type: Number,
+      default: 0,
+    },
+
+    // ⭐ Commentaires + note
+    comments: [
+      {
+        //    user: { type: String, required: true },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        rating: { type: Number, min: 1, max: 5, required: true },
+        text: { type: String },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
-  options: [
-    {
-      size: { type: Number, required: true },
-      unit: { type: String, default: "ml" },
-      prix: { type: Number, required: true },
-      stock: { type: Number, default: 0 }
-    }
-  ],
-});
+  {
+    timestamps: true, // ✅ ICI
+  }
+);
 
 module.exports = mongoose.model("Product", productSchema);
-
-//Quantite: { type: Number, required: true },       // 👈 nombre d’articles 
-
-
-
-
-
-
-
-
-/*
-// Schéma des produits
-const productSchema = new mongoose.Schema({
-  nom: String,
-  prix: Number,
-  description: String,
-  imageUrl: String,
-  stock: Number,
-  categorie_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Categorie", // Assure-toi que ce modèle existe
-  },
-});
-
-module.exports = mongoose.model("Product", productSchema);
-*/

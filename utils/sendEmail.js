@@ -1,22 +1,22 @@
-const User = require("../models/User");
+const User = require("../Model/User");
 const jwt = require("jsonwebtoken");
-const sendEmail = require("../utils/sendEmail");
+const sendEmail = require("./mailer");
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { nom, prenom, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Cet email est déjà utilisé." });
     }
 
-    const user = new User({ name, email, password });
+    const user = new User({ nom, prenom, email, password });
     await user.save();
 
     // ✅ Envoi de l’email de confirmation
     const html = `
-      <h2>Bienvenue, ${name} 🌸</h2>
+      <h2>Bienvenue, ${prenom} 🌸</h2>
       <p>Merci de vous être inscrit sur <strong>Algarve Parfume</strong>.</p>
       <p>Votre compte est maintenant actif.</p>
       <p>Connectez-vous dès maintenant pour découvrir nos parfums :</p>
