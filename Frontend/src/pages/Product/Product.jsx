@@ -223,7 +223,14 @@ const reportComment = async (commentId) => {
 
 {/* rating +comment+formulaire coemmentaire */} 
 
-
+       <div className="review-button">
+  <button 
+    className="btn-Add" 
+    onClick={() => navigate(`/review/${product._id}`)}
+  >
+    ✍️ Ajouter un avis
+  </button>
+</div>
 
         {/* 🔹 Formulaire commentaire */}
         <div className="comment-form">

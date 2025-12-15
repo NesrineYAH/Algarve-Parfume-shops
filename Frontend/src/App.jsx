@@ -25,6 +25,7 @@ import Payment from "./pages/Payment/Payment";
 import ForgotPassword from "./pages/pagePassword/ForgotPassword";
 import ResetPassword from "./pages/pagePassword/ResetPassword";
 import Contact from "./pages/Contact/Contact";
+import Review from "./pages/Review/Review";
 
 
 
@@ -59,6 +60,7 @@ function App() {
           <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/Contact" element={<Contact />} />
+          <Route path="/review/:id" element={<Review />} />
         </Routes>
 
         <BlogBenefits />
