@@ -94,10 +94,11 @@ exports.updateProduct = async (req, res) => {
 // 14/12 routes pour ajouter des notations et commentaire 
 // ⭐ Ajouter un commentaire + notation
 exports.addComment = async (req, res) => {
-    try {
-        const { user, rating, text } = req.body;
 
-        if (!user || !rating) {
+    try {
+        const { rating, text } = req.body;
+
+        if (!rating) {
             return res.status(400).json({ error: "Champs manquants" });
         }
 
@@ -106,8 +107,14 @@ exports.addComment = async (req, res) => {
             return res.status(404).json({ error: "Produit introuvable" });
         }
 
-        // Ajout du commentaire
-        product.comments.push({ user, rating, text });
+
+
+        // 2️⃣ Ajouter le commentaire avec userId
+        product.comments.push({
+            userId: req.user.userId, // ← ici
+            rating,
+            text,
+        });
 
         // 🧮 recalcul de la moyenne
         product.rating =
@@ -116,9 +123,14 @@ exports.addComment = async (req, res) => {
 
         await product.save();
 
+        const populatedProduct = await Product.findById(req.params.id).populate(
+            "comments.userId",
+            "nom prenom email"
+        );
+
         return res.status(200).json({
             success: true,
-            product,
+            product: populatedProduct,
         });
     } catch (error) {
         console.error("Erreur ajout commentaire :", error);

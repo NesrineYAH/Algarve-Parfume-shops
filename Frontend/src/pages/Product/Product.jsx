@@ -14,6 +14,13 @@ const Product = () => {
   //03/12
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false); // 🔥 état du modal
+  const [hoverRating, setHoverRating] = useState(0); // pour le survol
+const [userRating, setUserRating] = useState(0);   // pour la note choisie
+//15/12
+const [commentText, setCommentText] = useState("");
+const [commentLoading, setCommentLoading] = useState(false);
+const [commentError, setCommentError] = useState("");
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -74,6 +81,53 @@ const Product = () => {
 console.log("PRODUCT:", product);
 console.log("RATING:", product?.rating, typeof product?.rating);
 
+//15/12
+const submitComment = async () => {
+  if (!userRating) {
+    setCommentError(t("product.selectRating"));
+    return;
+  }
+
+  if (!commentText.trim()) {
+    setCommentError(t("product.writeComment"));
+    return;
+  }
+
+  try {
+    setCommentLoading(true);
+    setCommentError("");
+
+    const token = localStorage.getItem("token");
+
+    const response = await axios.post(
+      `http://localhost:5001/api/products/${id}/comment`,
+      {
+        rating: userRating,
+        text: commentText,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // 🔄 mettre à jour le produit avec la réponse backend
+    setProduct(response.data.product);
+
+    // reset formulaire
+    setUserRating(0);
+    setHoverRating(0);
+    setCommentText("");
+  } catch (err) {
+    setCommentError(t("product.commentError"));
+    console.error(err);
+  } finally {
+    setCommentLoading(false);
+  }
+};
+
+
   return (
     <section id="page">
       <div className="product-container">
@@ -125,22 +179,30 @@ console.log("RATING:", product?.rating, typeof product?.rating);
 
 
    
-{/* ⭐ Notation */}
+
+
 <div className="rating">
-  {Array.from({ length: 5 }).map((_, i) => (
-    
-    <span
-      key={i}
-      className={i < Math.round(ratingValue) ? "star filled" : "star"}
-    >
-      ★
-    </span>
-  ))}
+  {Array.from({ length: 5 }).map((_, i) => {
+    const starValue = i + 1; // 1 à 5
+
+    return (
+      <span
+        key={i}
+        className={
+          starValue <= (hoverRating || userRating) ? "star filled" : "star"
+        }
+        onMouseEnter={() => setHoverRating(starValue)}
+        onMouseLeave={() => setHoverRating(0)}
+        onClick={() => setUserRating(starValue)}
+        style={{ cursor: "pointer" }}
+      >
+        ★
+      </span>
+    );
+  })}
 
   <span className="rating-value">
-    {ratingValue > 0
-      ? `${ratingValue.toFixed(1)}/5`
-      : t("product.noRating")}
+    {product.rating > 0 ? `${product.rating.toFixed(1)}/5` : t("product.noRating")}
   </span>
 </div>
 
@@ -163,9 +225,32 @@ console.log("RATING:", product?.rating, typeof product?.rating);
 <p className="no-comments"> {t("product.noComments")}</p>
           )}
         </div>
+        <div className="comment-form">
+  <h4>{t("product.addComment")}</h4>
+
+  <textarea
+    value={commentText}
+    onChange={(e) => setCommentText(e.target.value)}
+    placeholder={t("product.commentPlaceholder")}
+    className="comment-textarea"
+  />
+
+  {commentError && <p className="error">{commentError}</p>}
+
+  <button
+    className="btn-Add"
+    onClick={submitComment}
+    disabled={commentLoading}
+  >
+    {commentLoading
+      ? t("product.sending")
+      : t("product.sendComment")}
+  </button>
+</div>
+
 
         <button className="btn-Add" onClick={addToCart}>
- {t("product.addToCart")}
+         {t("product.addToCart")}
         </button>
       </div>
       {/* 🔥 MODAL  03/12/2025*/}
@@ -209,6 +294,27 @@ console.log("RATING:", product?.rating, typeof product?.rating);
 
 export default Product;
 
+
+// 
+{/* ⭐ Notation 
+<div className="rating">
+  {Array.from({ length: 5 }).map((_, i) => (
+    
+    <span
+      key={i}
+      className={i < Math.round(ratingValue) ? "star filled" : "star"}
+    >
+      ★
+    </span>
+  ))}
+
+  <span className="rating-value">
+    {ratingValue > 0
+      ? `${ratingValue.toFixed(1)}/5`
+      : t("product.noRating")}
+  </span>
+</div>
+*/}
 
      {/* ⭐ Notation 
         <div className="rating">
