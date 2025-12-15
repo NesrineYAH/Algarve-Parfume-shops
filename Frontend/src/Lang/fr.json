@@ -161,14 +161,14 @@
 
 
   "footer": {
-    "about": "À propos de nous",
+    "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",
     "careers": "Carrières",
     "press": "Presse",
     "socialResponsibility": "Responsabilité sociale",
     "blog": "Blog",
 
-    "info": "Informations",
+    "info": "INFORMATIONS",
     "sitemap": "Plan de site",
     "legalNotice": "Mentions légales",
     "newPerfume": "Nouveauté parfum",
@@ -177,24 +177,23 @@
     "beautyGuide": "Guide d'achats beauté",
     "perfumeGuide": "Guide parfums",
 
-    "conditions": "Conditions",
+    "conditions": "CONDITIONS",
     "cookiesPolicy": "Politique Cookies",
     "terms": "CGV",
     "gdpr": "RGPD",
     "rsgp": "RSGP",
 
-    "help": "Besoin d'Aide",
+    "help": "BESOIN D'AIDE",
     "faq": "FAQ",
     "whoWeAre": "Qui sommes-nous",
     "contact": "Contact",
 
-    "followUs": "Suivez-nous",
+    "followUs": "SUIVEZ NOUS",
     "phone": "Tel",
     "facebook": "Facebook",
     "instagram": "Instagram",
     "linkedin": "LinkedIn",
     "tiktok": "TikTok",
-
     "goTop": "Retour en haut"
   }
 

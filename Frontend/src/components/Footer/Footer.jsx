@@ -8,9 +8,10 @@ export default function Footer() {
 
   return (
     <footer className="footer">
-      {/* À propos */}
+
+      <div>
+      <h3>{t("footer.about")}</h3>
       <ul className="footer__ul">
-        {t("footer.about")}
         <li>
           <a href="../AboutUs/#aboutus" className="TitreH3">
             {t("footer.ourStory")}
@@ -37,10 +38,12 @@ export default function Footer() {
           </a>
         </li>
       </ul>
+     </div> 
 
-      {/* Informations */}
+     <div>
+      <h3>{t("footer.info")}</h3>
       <ul className="footer__ul">
-        {t("footer.info")}
+ 
         <li>
           <a href="../../SiteMap/#sitemap" className="TitreH3">
             {t("footer.sitemap")}
@@ -77,10 +80,11 @@ export default function Footer() {
           </a>
         </li>
       </ul>
+      </div>
 
-      {/* Conditions */}
+       <div>
+  <h3>{t("footer.conditions")}</h3>
       <ul className="footer__ul">
-        {t("footer.conditions")}
         <li>{t("footer.cookiesPolicy")}</li>
         <li>{t("footer.legalNotice")}</li>
         <li>{t("footer.cookiesPolicy")}</li>
@@ -88,10 +92,11 @@ export default function Footer() {
         <li>{t("footer.gdpr")}</li>
         <li>{t("footer.rsgp")}</li>
       </ul>
+       </div>
 
-      {/* Aide */}
+        <div>
+       <h3>{t("footer.help")}</h3>
       <ul className="footer__ul">
-        {t("footer.help")}
         <a href="../FAQ" target="_blank" rel="noreferrer noopener">
           <li>{t("footer.faq")}</li>
         </a>
@@ -103,10 +108,11 @@ export default function Footer() {
           <li>{t("footer.contact")}</li>
         </a>
       </ul>
+        </div>
 
-      {/* Réseaux sociaux */}
+        <div> 
+       <h3>{t("footer.followUs")}</h3>
       <ul className="footer__ul">
-        {t("footer.followUs")}
         <li>
           {t("footer.phone")} : +351 920 730 799
         </li>
@@ -127,8 +133,8 @@ export default function Footer() {
           <a href="https://www.tiktok.com/" target="_blank" rel="noreferrer noopener"></a>
         </li>
       </ul>
+       </div>
 
-      {/* Bouton retour en haut */}
       <a className="fa" title={t("footer.goTop")} href="/home">
         <FaChevronUp id="toTop" />
       </a>
