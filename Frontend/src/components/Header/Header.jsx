@@ -95,7 +95,7 @@ const Header = () => {
         <Link to="/Cart">
           <ShoppingCart className="icone" />
         </Link>
-   <Link to="/Notifications" className="notification-icon"> 
+   <Link to="/notifications" className="notification-icon"> 
         <Bell className="icone" />
 {unreadCount > 0 && (
           <span className="badge">{unreadCount}</span>

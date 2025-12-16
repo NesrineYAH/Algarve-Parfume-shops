@@ -62,7 +62,7 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/review/:id" element={<Review />} />
-             <Route path="/Notifications" element={<Notifications />} />
+             <Route path="/notifications" element={<Notifications />} />
         </Routes>
 
         <BlogBenefits />
