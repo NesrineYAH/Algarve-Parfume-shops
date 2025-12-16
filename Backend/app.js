@@ -37,7 +37,7 @@ app.use("/api/delivery", deliveryRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/stripe", stripeRoute);
 app.use("/api/contacts", contactRoutes);
-app.use("/api", commentsRoutes);
+app.use("/api/products", commentsRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");

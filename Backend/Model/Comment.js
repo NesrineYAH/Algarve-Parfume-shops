@@ -1,4 +1,4 @@
-// Comment.js
+// Model/Comment.js
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({

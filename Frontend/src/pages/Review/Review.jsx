@@ -22,7 +22,6 @@ const Review = () => {
     try {
       setError("");
       const token = localStorage.getItem("token");
-        console.log("TOKEN:", token);
       await axios.post(
         `http://localhost:5001/api/products/${id}/comments`,
         { rating, text },
