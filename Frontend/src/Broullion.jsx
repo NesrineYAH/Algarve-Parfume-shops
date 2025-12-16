@@ -181,6 +181,103 @@ const submitComment = async () => {
   )}
 </div>
 
+
+        <button className="btn-Add" onClick={addToCart}>
+         {t("product.addToCart")}
+        </button>
+      </div>
+      {/* 🔥 MODAL  03/12/2025*/}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3> {t("product.addedTitle")}🎉</h3>
+            <p>{t("product.addedMessage")}</p>
+            <div className="modal-actions">
+              <button onClick={() => navigate("/cart")} className="btn-Add">
+              {t("product.viewCart")}
+              </button>
+              <button onClick={() => navigate("/home")} className="btn-Add">
+           {t("product.continueShopping")}
+              </button>
+            </div>
+            <button className="modal-close" onClick={() => setShowModal(false)}>
+              ✖
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Déplacer le formaulaire de commentaire   03/12/2025*/}
+            {/* 🔹 Formulaire commentaire */}
+              <div className="comment-form">
+                <h4>{t("product.addComment")}</h4>
+                <textarea
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder={t("product.commentPlaceholder")}
+                  className="comment-textarea"
+                />
+                {commentError && <p className="error">{commentError}</p>}
+                <button className="btn-Add" onClick={submitComment} disabled={commentLoading}>
+                  {commentLoading ? t("product.sending") : t("product.sendComment")}
+                </button>
+              </div>
+      
+              {/* 15/12 à 13h00  comment comme mariaunod */}
+              <div className="review-summary">
+              {/* <h3>{t("product.reviewsTitle")}</h3> */}  
+                <h3>Note et avis</h3>
+                 <p className="average-rating">
+                 {product.rating.toFixed(1)} / 5 ⭐ ({product.comments.length})
+                 {/*  {t("product.reviewsCount")}) */}  
+                  </p>
+      
+        <div className="rating-breakdown">
+          {[5, 4, 3, 2, 1].map((star) => {
+            const count = product.comments.filter(c => c.rating === star).length;
+            return (
+              <div key={star} className="rating-row">
+                <span>{star} ★</span>
+                <progress value={count} max={product.comments.length}></progress>
+                <span>{count}</span>
+              </div>
+            );
+          })}
+        </div>
+              </div>
+              
+
+
+
+
+
+
+
+
+
+
+
+      {/* Bouton Admin / Vendeur */}
+      {(role === "admin" || role === "vendeur") && (
+        <div className="admin-action">
+          <Link to="/admin/add-product" className="btn-Add">
+            ➕  {t("product.addProduct")}
+          </Link>
+
+          <Link to={`/admin/EditProduct/${product._id}`} className="btn-Add">{t("product.edit")}</Link>
+
+          <Link to="/admin/AdminProductManagement" className="btn-Add">
+            ➕   {t("product.delete")}
+          </Link>
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default Product;
+
+/*
 <div className="rating">
   {Array.from({ length: 5 }).map((_, i) => {
     const starValue = i + 1;
@@ -202,7 +299,6 @@ const submitComment = async () => {
     {product.rating > 0 ? `${product.rating.toFixed(1)}/5` : t("product.noRating")}
   </span>
 </div>
-
 
         <div className="Commentaires">
           {product.comments && product.comments.length > 0 ? (
@@ -246,47 +342,4 @@ const submitComment = async () => {
 </div>
 
 
-        <button className="btn-Add" onClick={addToCart}>
-         {t("product.addToCart")}
-        </button>
-      </div>
-      {/* 🔥 MODAL  03/12/2025*/}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h3> {t("product.addedTitle")}🎉</h3>
-            <p>{t("product.addedMessage")}</p>
-            <div className="modal-actions">
-              <button onClick={() => navigate("/cart")} className="btn-Add">
-              {t("product.viewCart")}
-              </button>
-              <button onClick={() => navigate("/home")} className="btn-Add">
-           {t("product.continueShopping")}
-              </button>
-            </div>
-            <button className="modal-close" onClick={() => setShowModal(false)}>
-              ✖
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Bouton Admin / Vendeur */}
-      {(role === "admin" || role === "vendeur") && (
-        <div className="admin-action">
-          <Link to="/admin/add-product" className="btn-Add">
-            ➕  {t("product.addProduct")}
-          </Link>
-
-          <Link to={`/admin/EditProduct/${product._id}`} className="btn-Add">{t("product.edit")}</Link>
-
-          <Link to="/admin/AdminProductManagement" className="btn-Add">
-            ➕   {t("product.delete")}
-          </Link>
-        </div>
-      )}
-    </section>
-  );
-};
-
-export default Product;
+*/

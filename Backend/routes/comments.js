@@ -4,7 +4,6 @@ const Comment = require("../Model/Comment");
 const Product = require("../Model/product");
 const { authMiddleware } = require("../middleware/auth");
 
-
 router.get("/:id/comments", async (req, res) => {
     try {
         const productId = req.params.id;
@@ -24,29 +23,20 @@ router.get("/:id/comments", async (req, res) => {
 
 // ✅ Ajouter un commentaire à un produit POST /api/products/:id/comments
 router.post("/:id/comments", authMiddleware, async (req, res) => {
-
     try {
         const { rating, text } = req.body;
         const userId = req.user?._id || req.user?.userId;
 
         if (!userId) {
-            return res
-                .status(401)
-                .json({ error: "Utilisateur non authentifié" });
+            return res.status(401).json({ error: "Utilisateur non authentifié" });
         }
 
         if (!text || text.trim() === "" || rating === undefined) {
-            return res
-                .status(400)
-                .json({ error: "Rating et texte sont requis" });
+            return res.status(400).json({ error: "Rating et texte sont requis" });
         }
 
         const ratingNumber = Number(rating);
-        if (
-            Number.isNaN(ratingNumber) ||
-            ratingNumber < 1 ||
-            ratingNumber > 5
-        ) {
+        if (Number.isNaN(ratingNumber) || ratingNumber < 1 || ratingNumber > 5) {
             return res.status(400).json({ error: "Rating invalide" });
         }
 
@@ -64,8 +54,7 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         // 🔄 Recalcul de la note moyenne
         const comments = await Comment.find({ productId });
         const avgRating =
-            comments.reduce((acc, c) => acc + c.rating, 0) /
-            comments.length;
+            comments.reduce((acc, c) => acc + c.rating, 0) / comments.length;
 
         await Product.findByIdAndUpdate(productId, {
             rating: avgRating,
@@ -82,6 +71,68 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         });
     }
 });
+//
+// 🚩 REPORT
+router.post("/:productId/comments/:commentId/report", authMiddleware, async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        await Comment.findByIdAndUpdate(commentId, { reported: true });
+        res.json({ message: "Commentaire signalé" });
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+}
+);
+
+// 👍 LIKE
+router.post("/:productId/comments/:commentId/like", authMiddleware, async (req, res) => {
+    try {
+        const { commentId } = req.params;
+        const userId = req.user._id;
+        const comment = await Comment.findById(commentId);
+        if (!comment)
+            return res.status(404).json({ error: "Commentaire introuvable" });
+        if (comment.likes.includes(userId)) {
+            comment.likes.pull(userId);
+        } else {
+            comment.likes.push(userId);
+            comment.dislikes.pull(userId);
+        }
+        await comment.save();
+        res.json(comment);
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+}
+);
+
+// route poster un like sur un commentaire
+
+router.post("/:productId/comments/:commentId/dislike", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const commentId = req.params.id;
+
+        const comment = await Comment.findById(commentId);
+
+        if (!comment)
+            return res.status(404).json({ error: "Commentaire introuvable" });
+
+        // Si déjà disliké → on retire
+        if (comment.dislikes.includes(userId)) {
+            comment.dislikes.pull(userId);
+        } else {
+            comment.dislikes.push(userId);
+            comment.likes.pull(userId); // Retire le like si existant
+        }
+
+        await comment.save();
+        res.json(comment);
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+}
+);
 
 module.exports = router;
 
@@ -94,18 +145,6 @@ const stats = await Comment.aggregate([
 const avgRating = stats[0]?.avgRating || 0;
 
 */
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
 // ✅ Récupérer les commentaires d’un produit
