@@ -1,4 +1,4 @@
-// Comment.js
+// Model/Comment.js
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
@@ -15,6 +15,10 @@ const commentSchema = new mongoose.Schema({
     rating: { type: Number, min: 1, max: 5, required: true },
     text: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
+    // 👍👎 Ajout
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
 });
 
 module.exports = mongoose.model("Comment", commentSchema);
