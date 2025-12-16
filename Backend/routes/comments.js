@@ -41,6 +41,12 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         }
 
         const productId = req.params.id;
+        // ✅ Récupérer le produit avant de créer la notification
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: "Produit non trouvé" });
+        }
+
 
         const comment = new Comment({
             productId,
@@ -59,7 +65,13 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         await Product.findByIdAndUpdate(productId, {
             rating: avgRating,
         });
-
+   // 🔔 Créer la notification pour le propriétaire du produit
+    await Notification.create({
+      userId: product.ownerId, // maintenant product existe
+      title: "Nouveau commentaire",
+      message: "Un utilisateur a commenté votre produit",
+      type: "comment",
+    });
         res.status(201).json({
             message: "Commentaire ajouté",
             comment,
@@ -71,7 +83,7 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         });
     }
 });
-//
+
 // 🚩 REPORT
 router.post("/:productId/comments/:commentId/report", authMiddleware, async (req, res) => {
     try {
