@@ -7,6 +7,7 @@ import LanguageSwitcher from "../Language/Language";
 import { useTranslation } from "react-i18next";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 
+
 // ✅ Déclarer TypingAnimation en dehors de Header
 const TypingAnimation = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -41,6 +42,10 @@ const Header = () => {
     localStorage.removeItem("token");
     navigate("/Authentification");
   };
+    // ✅ OBLIGATOIRE : déclaration AVANT return
+  const [notifications, setNotifications] = useState([]);
+  const unreadCount = notifications.filter(n => !n.isRead).length;
+
 
   return (
     

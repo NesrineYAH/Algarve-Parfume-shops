@@ -26,6 +26,7 @@ import ForgotPassword from "./pages/pagePassword/ForgotPassword";
 import ResetPassword from "./pages/pagePassword/ResetPassword";
 import Contact from "./pages/Contact/Contact";
 import Review from "./pages/Review/Review";
+import Notifications from "./pages/Notifications/Notifications";
 
 
 
@@ -61,6 +62,7 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/review/:id" element={<Review />} />
+             <Route path="/Notifications" element={<Notifications />} />
         </Routes>
 
         <BlogBenefits />
