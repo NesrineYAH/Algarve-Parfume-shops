@@ -91,8 +91,7 @@ exports.updateProduct = async (req, res) => {
     }
 };
 
-// 14/12 routes pour ajouter des notations et commentaire 
-// ⭐ Ajouter un commentaire + notation
+
 exports.addComment = async (req, res) => {
 
     try {
