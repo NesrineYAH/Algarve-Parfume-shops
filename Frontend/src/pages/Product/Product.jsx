@@ -277,9 +277,14 @@ const dislikeComment = async (commentId) => {
         {/* ⭐ Bloc résumé des avis */}
         <div className="review-summary">
           <h3>Note et avis</h3>
-          <p className="average-rating">
+          {/* <p className="average-rating">
             {product.rating.toFixed(1)} / 5 ⭐ ({comments.length})
-          </p>
+          </p> */}
+
+          <p className="average-rating">
+  {product?.rating?.toFixed ? product.rating.toFixed(1) : "—"} / 5 ⭐ ({comments.length})
+</p>
+
 
           <div className="rating-breakdown">
             {[5, 4, 3, 2, 1].map((star) => {

@@ -19,10 +19,9 @@ const productSchema = new mongoose.Schema(
         stock: { type: Number, default: 0 },
       },
     ],
-
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // si tu l’as ajouté
   },
-   { timestamps: true, }// ✅ ICI
+  { timestamps: true, }// ✅ ICI
 );
 
 module.exports = mongoose.model("Product", productSchema);
