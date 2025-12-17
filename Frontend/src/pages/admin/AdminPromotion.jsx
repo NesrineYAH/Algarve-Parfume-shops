@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef  } from "react";
 import axios from "axios";
 
 const AdminPromotion = () => {
@@ -7,6 +7,8 @@ const AdminPromotion = () => {
   const [imageFile, setImageFile] = useState(null);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +21,7 @@ const AdminPromotion = () => {
       formData.append("title", title);
       formData.append("message", message);
       if (imageFile) {
-        formData.append("image", images); // ✅ doit matcher upload.single("image")
+        formData.append("image", imageFile); // ✅ doit matcher upload.single("image")
       }
 
       await axios.post(
@@ -37,6 +39,12 @@ const AdminPromotion = () => {
       setTitle("");
       setMessage("");
       setImageFile(null);
+
+      // ✅ vider réellement l’input file
+     if (fileInputRef.current) {
+     fileInputRef.current.value = "";
+    }
+
     } catch (err) {
       console.error(err);
       setError("Erreur lors de l’envoi de la promotion");
@@ -59,6 +67,7 @@ const AdminPromotion = () => {
         <input
           type="file"
           accept="image/*"
+          ref={fileInputRef}
           onChange={(e) => setImageFile(e.target.files[0])}
         />
 
@@ -79,3 +88,7 @@ const AdminPromotion = () => {
 };
 
 export default AdminPromotion;
+
+/**
+ les notifications des promos ou soldes ou par exemple Noel arrive dans l'espace personnel de users et même des les émails des users n'est pas ? je voudrais même en envyer des prormotions des notificatios recu dans les émails
+ */
