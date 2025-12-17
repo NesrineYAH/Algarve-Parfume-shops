@@ -15,12 +15,11 @@ const AdminPromotion = () => {
 
     try {
       const token = localStorage.getItem("token");
-
       const formData = new FormData();
       formData.append("title", title);
       formData.append("message", message);
       if (imageFile) {
-        formData.append("image", imageFile); // champ image
+        formData.append("image", images); // ✅ doit matcher upload.single("image")
       }
 
       await axios.post(
@@ -29,7 +28,7 @@ const AdminPromotion = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            // ❌ NE PAS mettre Content-Type ici
           },
         }
       );
@@ -54,6 +53,7 @@ const AdminPromotion = () => {
           placeholder="Titre de la promo"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
 
         <input
@@ -66,6 +66,7 @@ const AdminPromotion = () => {
           placeholder="Message promotionnel"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          required
         />
 
         <button type="submit">Envoyer la promotion</button>

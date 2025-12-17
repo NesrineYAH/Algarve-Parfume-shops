@@ -25,15 +25,22 @@ const Notifications = () => {
       <h3>Notifications</h3>
 
       {notifications.map((n) => (
-        
         <div
           key={n._id}
           className={`notification ${n.isRead ? "read" : "unread"}`}
         >
-            <img src={n.imageUrl} alt={n.title} />
-          <strong>{n.title}</strong>
-          <p>{n.message}</p>
+            
+       <div className="notification__content">
+            <img  src={`http://localhost:5001${n.imageUrl}`}
+  alt={n.title} className="notification__content__img"/>
+          <strong className="title">{n.title}</strong>
+          <p className="message">{n.message}</p>
+          </div>
+          <span className="notification__time">
+            {new Date(n.createdAt).toLocaleString()}
+          </span>
         </div>
+        
       ))}
     </div>
   );
