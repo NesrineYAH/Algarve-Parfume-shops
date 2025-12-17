@@ -18,8 +18,8 @@ router.put("/:id/read", authMiddleware, async (req, res) => {
     await Notification.findByIdAndUpdate(req.params.id, { isRead: true });
     res.json({ message: "Notification lue" });
 });
-router.post("/promo", isAdmin, async (req, res) => {
-    const { title, message } = req.body;
+router.post("/promo", authMiddleware, isAdmin, async (req, res) => {
+    const { title, message, discount, newPrice, imageUrl } = req.body
 
     // Tous les utilisateurs
     const users = await User.find({}, "_id");
@@ -29,6 +29,9 @@ router.post("/promo", isAdmin, async (req, res) => {
         title,
         message,
         type: "promo",
+        discount,
+        newPrice,
+        imageUrl,
     }));
 
     await Notification.insertMany(notifications);

@@ -7,20 +7,26 @@ const { authMiddleware, isAdmin } = require("../middleware/auth");
 // POST /api/promotions
 router.post("/", authMiddleware, isAdmin, async (req, res) => {
     try {
-        const { title, message } = req.body;
+        const { title, message, discount, newPrice, imageUrl } = req.body
 
-        if (!title || !message) {
-            return res.status(400).json({ error: "Titre et message requis" });
+        if (!title || !message || !imageUrl) {
+            return res.status(400).json({ error: "Titre et message et image requis" });
         }
 
         const users = await User.find({}, "_id");
 
-        const notifications = users.map((user) => ({
+
+        const notifications = users.map(user => ({
             userId: user._id,
             title,
             message,
             type: "promo",
+            discount,
+            newPrice,
+            imageUrl,
         }));
+
+
 
         await Notification.insertMany(notifications);
 

@@ -4,6 +4,7 @@ import axios from "axios";
 const AdminPromotion = () => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
@@ -15,12 +16,20 @@ const AdminPromotion = () => {
     try {
       const token = localStorage.getItem("token");
 
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("message", message);
+      if (imageFile) {
+        formData.append("image", imageFile); // champ image
+      }
+
       await axios.post(
         "http://localhost:5001/api/promotions",
-        { title, message },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -28,7 +37,9 @@ const AdminPromotion = () => {
       setSuccess("Promotion envoyée avec succès !");
       setTitle("");
       setMessage("");
+      setImageFile(null);
     } catch (err) {
+      console.error(err);
       setError("Erreur lors de l’envoi de la promotion");
     }
   };
@@ -43,6 +54,12 @@ const AdminPromotion = () => {
           placeholder="Titre de la promo"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
         />
 
         <textarea
