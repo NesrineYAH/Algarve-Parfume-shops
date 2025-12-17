@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Notification = require("../Model/Notification");
 const User = require("../Model/User");
-const { authMiddleware } = require("../middleware/auth");
+const { authMiddleware, isAdmin } = require("../middleware/auth");
 
 // 🔔 Récupérer notifications utilisateur
 router.get("/", authMiddleware, async (req, res) => {
@@ -18,7 +18,7 @@ router.put("/:id/read", authMiddleware, async (req, res) => {
     await Notification.findByIdAndUpdate(req.params.id, { isRead: true });
     res.json({ message: "Notification lue" });
 });
-router.post("/promo", authAdmin, async (req, res) => {
+router.post("/promo", isAdmin, async (req, res) => {
     const { title, message } = req.body;
 
     // Tous les utilisateurs

@@ -343,6 +343,9 @@ const dislikeComment = async (commentId) => {
             >
               ➕ {t("product.delete")}
             </Link>
+             <Link to="/admin/promotions"  className="btn-Add">
+          Créer une promotion
+        </Link>
           </div>
         )}
       </div>

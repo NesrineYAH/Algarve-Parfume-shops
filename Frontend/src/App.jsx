@@ -12,6 +12,7 @@ import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 import AdminAddProduct from "./pages/admin/add-product";
 import AdminProductManagement from "./pages/admin/AdminProductManagement";
+import AdminPromotion from "./pages/admin/AdminPromotion";
 import EditProduct from "./pages/admin/EditProduct";
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
@@ -47,6 +48,7 @@ function App() {
           />{" "}
           {/* <Route path="/admin/EditProduct" element={<EditProduct />} /> */}
           <Route path="/admin/EditProduct/:id" element={<EditProduct />} />
+          <Route path="/admin/promotions" element={<AdminPromotion />} />
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />
@@ -63,6 +65,7 @@ function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/review/:id" element={<Review />} />
              <Route path="/notifications" element={<Notifications />} />
+             
         </Routes>
 
         <BlogBenefits />

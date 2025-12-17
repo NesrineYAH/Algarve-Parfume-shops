@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Notification = require("../models/Notification");
-const User = require("../models/User");
-const authAdmin = require("../middleware/authAdmin");
+const Notification = require("../Model/Notification");
+const User = require("../Model/User");
+const { authMiddleware, isAdmin } = require("../middleware/auth");
 
 // POST /api/promotions
-router.post("/", authAdmin, async (req, res) => {
+router.post("/", authMiddleware, isAdmin, async (req, res) => {
     try {
         const { title, message } = req.body;
 
