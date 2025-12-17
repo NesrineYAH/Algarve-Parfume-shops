@@ -3,6 +3,8 @@ const router = express.Router();
 const Notification = require("../Model/Notification");
 const User = require("../Model/User");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
+const sendPromoEmail = require("../utils/mailer");
+
 
 // 🔔 Récupérer notifications utilisateur
 router.get("/", authMiddleware, async (req, res) => {

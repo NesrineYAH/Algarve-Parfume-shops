@@ -32,7 +32,7 @@ const Notifications = () => {
             
        <div className="notification__content">
             <img  src={`http://localhost:5001${n.imageUrl}`}
-  alt={n.title} className="notification__content__img"/>
+           alt={n.title} className="notification__content__img"/>
           <strong className="title">{n.title}</strong>
           <p className="message">{n.message}</p>
           </div>

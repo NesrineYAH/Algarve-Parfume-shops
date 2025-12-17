@@ -4,13 +4,16 @@ const Notification = require("../Model/Notification");
 const User = require("../Model/User");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const uploads = require("../middleware/multer-config");
+const { sendPromoEmail } = require("../utils/mailer");
+// const { sendPromoEmail } = require("../utils/sendPromoEmail");
+
 
 // POST /api/promotions
 router.post(
     "/",
     authMiddleware,
     isAdmin,
-    uploads.single("image"), // 🔥 ICI
+    uploads.single("image"),
     async (req, res) => {
         try {
             const { title, message, discount, newPrice } = req.body;
@@ -19,12 +22,8 @@ router.post(
                 return res.status(400).json({ error: "Titre et message requis" });
             }
 
-            const imageUrl = req.file
-                ? `/uploads/${req.file.filename}`
-                : null;
-
-            const users = await User.find({}, "_id");
-
+            const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+            const users = await User.find({}, "_id email");
             const notifications = users.map((user) => ({
                 userId: user._id,
                 title,
@@ -37,13 +36,32 @@ router.post(
 
             await Notification.insertMany(notifications);
 
-            res.status(201).json({ message: "Promotion envoyée à tous les utilisateurs" });
+            // ✅ Emails
+            await Promise.all(
+                users
+                    .filter(user => user.email) // 🔥 évite l’erreur
+                    .map(user =>
+                        sendPromoEmail({
+                            to: user.email,
+                            title,
+                            message,
+                            imageUrl,
+                            discount,
+                            newPrice
+                        })
+                    )
+            );
+
+            res.status(201).json({
+                message: "Promotion envoyée + notifications + emails",
+            });
         } catch (err) {
             console.error(err);
             res.status(500).json({ error: "Erreur création promotion" });
         }
     }
 );
+
 
 module.exports = router;
 

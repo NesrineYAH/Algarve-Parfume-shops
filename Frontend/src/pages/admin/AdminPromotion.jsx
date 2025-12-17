@@ -90,5 +90,4 @@ const AdminPromotion = () => {
 export default AdminPromotion;
 
 /**
- les notifications des promos ou soldes ou par exemple Noel arrive dans l'espace personnel de users et même des les émails des users n'est pas ? je voudrais même en envyer des prormotions des notificatios recu dans les émails
  */
