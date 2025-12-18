@@ -79,10 +79,10 @@ const Header = () => {
             <Link to="/Home">{t("header.titleI")}</Link>
           </li>
           <li>
-            <Link to="/Product">{t("header.titleII")}</Link>
+            <Link to="/products?genre=femme">{t("header.titleII")}</Link>
           </li>
           <li>
-            <Link to="/Product">{t("header.titleIII")}</Link>
+            <Link to="/products?genre=homme">{t("header.titleIII")}</Link>
           </li>
           <li>{t("header.titleVI")}</li>
         </ul>

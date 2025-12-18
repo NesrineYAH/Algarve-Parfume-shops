@@ -40,6 +40,7 @@ function App() {
 
         <Routes>
           <Route path="/Home" element={<Home />} />
+           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
           <Route path="/admin/add-product" element={<AdminAddProduct />} />
           <Route

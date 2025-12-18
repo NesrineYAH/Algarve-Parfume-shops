@@ -7,7 +7,6 @@ import "./admin.scss";
 const AdminAddProduct = () => {
   const [nom, setNom] = useState("");
   const [genre, setGenre] = useState("");
-
  // const [prix, setPrix] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null); // fichier image

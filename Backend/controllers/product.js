@@ -3,7 +3,6 @@ const Product = require("../Model/product");
 require("dotenv").config();
 
 // ➤ Ajouter un produit
-// ➤ Ajouter un produit
 exports.addProduct = async (req, res) => {
     try {
         const { nom, description, categorie_id, genre } = req.body;
@@ -40,9 +39,9 @@ exports.addProduct = async (req, res) => {
             description,
             imageUrl,
             categorie_id,
-            genre,               // ✅ NOUVEAU CHAMP
+            genre, // ✅ NOUVEAU CHAMP
             options,
-            ownerId: req.user.userId,   // ✅ Correction
+            ownerId: req.user.userId, // ✅ Correction
         });
 
         await newProduct.save();
@@ -51,23 +50,26 @@ exports.addProduct = async (req, res) => {
             message: "Produit ajouté avec succès",
             product: newProduct,
         });
-
     } catch (error) {
         console.error("Erreur ajout produit :", error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
 
+// ➤ Récupérer tous les produits mise à jours 18/12
 
-
-// ➤ Récupérer tous les produits
 exports.getProducts = async (req, res) => {
     try {
-        const produits = await Product.find();
+ const { genre } = req.query;
+
+        let filter = {}; 
+        
+        if (genre) {
+            filter.genre = genre;
+        }
+        const produits = await Product.find(filter); 
         res.json(produits);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+    } catch (err) { res.status(500).json({ message: err.message }); }
 };
 
 
@@ -75,25 +77,25 @@ exports.getProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
     try {
         const produit = await Product.findById(req.params.id);
-        if (!produit) return res.status(404).json({ message: "Produit non trouvé" });
-        res.json(produit);   // ??Cela signifie : il renvoie directement l’objet produit, pas un objet enveloppé dans { product: ... }.
+        if (!produit)
+            return res.status(404).json({ message: "Produit non trouvé" });
+        res.json(produit); // ??Cela signifie : il renvoie directement l’objet produit, pas un objet enveloppé dans { product: ... }.
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
-
 
 // ➤ Supprimer un produit
 exports.deleteProduct = async (req, res) => {
     try {
         const produit = await Product.findByIdAndDelete(req.params.id);
-        if (!produit) return res.status(404).json({ message: "Produit non trouvé" });
+        if (!produit)
+            return res.status(404).json({ message: "Produit non trouvé" });
         res.json({ message: "Produit supprimé" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
-
 
 // ➤ Modifier un produit
 exports.updateProduct = async (req, res) => {
@@ -105,21 +107,26 @@ exports.updateProduct = async (req, res) => {
             updatedData.imageUrl = `/uploads/${req.file.filename}`;
         }
 
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.id,
+            updatedData,
+            { new: true }
+        );
 
         if (!updatedProduct)
             return res.status(404).json({ message: "Produit introuvable" });
 
-        res.json({ message: "Produit modifié avec succès", product: updatedProduct });
+        res.json({
+            message: "Produit modifié avec succès",
+            product: updatedProduct,
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
 
-
 exports.addComment = async (req, res) => {
-
     try {
         const { rating, text } = req.body;
 
@@ -131,8 +138,6 @@ exports.addComment = async (req, res) => {
         if (!product) {
             return res.status(404).json({ error: "Produit introuvable" });
         }
-
-
 
         // 2️⃣ Ajouter le commentaire avec userId
         product.comments.push({
@@ -162,14 +167,6 @@ exports.addComment = async (req, res) => {
         return res.status(500).json({ error: "Erreur serveur" });
     }
 };
-
-
-
-
-
-
-
-
 
 /*
 18/12/2025 
