@@ -6,7 +6,7 @@ import "./admin.scss";
 
 const AdminAddProduct = () => {
   const [nom, setNom] = useState("");
-  const [prix, setPrix] = useState("");
+ // const [prix, setPrix] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null); // fichier image
   const [stock, setStock] = useState("");
@@ -14,6 +14,10 @@ const AdminAddProduct = () => {
   const [message, setMessage] = useState("");
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+  //18/12
+  const [size, setSize] = useState("");
+  const [optionPrix, setOptionPrix] = useState("");
+  const [optionStock, setOptionStock] = useState("");
 
   useEffect(() => {
     const role = localStorage.getItem("role");
@@ -36,36 +40,32 @@ const AdminAddProduct = () => {
     fetchCategories();
   }, [navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const formData = new FormData(); // pour envoyer fichier + autres données
-      formData.append("nom", nom);
-      formData.append("prix", prix);
-      formData.append("description", description);
-      formData.append("stock", stock);
-      formData.append("image", imageFile); // IMPORTANT
-      formData.append("categorie_id", categorieId);
-      /*
-      if (imageFile) {
-        formData.append("image", imageFile); // clé attendue côté backend
-      }
-*/
-      const data = await addProduct(formData); // assure-toi que addProduct supporte FormData
-      setMessage(data.message);
+  try {
+    const formData = new FormData();
+    formData.append("nom", nom);
+    formData.append("description", description);
+    formData.append("categorie_id", categorieId);
 
-      // reset
-      setNom("");
-      setPrix("");
-      setDescription("");
-      setStock("");
-      setCategorieId("");
-      setImageFile(null);
-    } catch (error) {
-      setMessage("Erreur lors de l'ajout du produit.");
+    if (imageFile) {
+      formData.append("image", imageFile);
     }
-  };
+
+    const data = await addProduct(formData);
+    setMessage(data.message);
+
+    // reset
+    setNom("");
+    setDescription("");
+    setCategorieId("");
+    setImageFile(null);
+  } catch (error) {
+    setMessage("Erreur lors de l'ajout du produit.");
+  }
+};
+
 
   return (
     <div className="admin-add-product">
@@ -79,10 +79,16 @@ const AdminAddProduct = () => {
           required
         />
         <input
+         type="number"
+         placeholder="Taille (ex: 50)"
+         value={size}
+         onChange={(e) => setSize(e.target.value)}
+         required />
+        <input
           type="number"
           placeholder="Prix"
-          value={prix}
-          onChange={(e) => setPrix(e.target.value)}
+          value={optionPrix}
+          onChange={(e) => setOptionPrix(e.target.value)}
           required
         />
         <textarea
@@ -90,12 +96,13 @@ const AdminAddProduct = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <input
-          type="number"
-          placeholder="Stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-        />
+         <input
+       type="number"
+         placeholder="Stock"
+         value={optionStock}
+         onChange={(e) => setOptionStock(e.target.value)}
+          required
+         />
 
         {/* Upload image depuis PC */}
         <input
@@ -128,3 +135,47 @@ const AdminAddProduct = () => {
 };
 
 export default AdminAddProduct;
+
+
+/*
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData(); // pour envoyer fichier + autres données
+      formData.append("nom", nom);
+      formData.append("description", description);
+      formData.append("stock", stock);
+      formData.append("image", imageFile); // IMPORTANT
+      formData.append("categorie_id", categorieId);
+      /*
+      if (imageFile) {
+        formData.append("image", imageFile); // clé attendue côté backend
+      }
+
+    
+    formData.append(
+      "options",
+      JSON.stringify([
+        {
+          size: Number(size),
+          prix: Number(optionPrix),
+          stock: Number(optionStock),
+        },
+      ])
+    );
+      const data = await addProduct(formData); 
+      setMessage(data.message);
+
+
+      setNom("");
+      setPrix("");
+      setDescription("");
+      setStock("");
+      setCategorieId("");
+      setImageFile(null);
+    } catch (error) {
+      setMessage("Erreur lors de l'ajout du produit.");
+    }
+  };
+  */

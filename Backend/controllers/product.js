@@ -5,33 +5,43 @@ require("dotenv").config();
 // ➤ Ajouter un produit
 exports.addProduct = async (req, res) => {
     try {
-        const imageUrl = req.file
-            ? `/uploads/${req.file.filename}`
-            : req.body.imageUrl;
+        const { nom, description, categorie_id } = req.body;
 
-        if (!req.body.nom || !req.body.prix || !req.body.categorie_id) {
-            return res.status(400).json({ message: "Nom, prix et catégorie requis" });
+        if (!nom || !categorie_id) {
+            return res.status(400).json({ message: "Nom et catégorie requis" });
         }
 
+        const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+        // 🔥 OPTIONS AUTOMATIQUES POUR PARFUM
+        const options = [
+            { size: 10, unit: "ml", prix: 5, stock: 100 },
+            { size: 30, unit: "ml", prix: 15, stock: 100 },
+            { size: 50, unit: "ml", prix: 25, stock: 100 },
+            { size: 100, unit: "ml", prix: 45, stock: 100 },
+        ];
+
         const newProduct = new Product({
-            nom: req.body.nom,
-            prix: req.body.prix,
-            description: req.body.description,
-            stock: req.body.stock,
+            nom,
+            description,
             imageUrl,
-            categorie_id: req.body.categorie_id,
+            categorie_id,
+            options,
+            ownerId: req.user.id, // admin ou vendeur
         });
 
         await newProduct.save();
 
-        res
-            .status(201)
-            .json({ message: "Produit ajouté avec succès", product: newProduct });
+        res.status(201).json({
+            message: "Parfum ajouté avec succès",
+            product: newProduct,
+        });
     } catch (error) {
-        console.error("Erreur lors de l'ajout du produit :", error);
+        console.error("Erreur ajout produit :", error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 
 
 // ➤ Récupérer tous les produits
