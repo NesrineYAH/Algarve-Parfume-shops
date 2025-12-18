@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { registerUser, loginUser } from "../../Services/auth";
 import { useNavigate } from "react-router-dom";
 import "./Authentification.scss";
+import { UserContext } from "../../context/UserContext";
+
 
 export default function Authentification() {
   const [activeTab, setActiveTab] = useState("login");
@@ -9,7 +11,8 @@ export default function Authentification() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
+//18/12
+/*
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -58,6 +61,44 @@ export default function Authentification() {
       setMessage("Erreur serveur, veuillez réessayer.");
     }
   };
+  */
+//18/12
+const { handleLogin, handleRegister } = useContext(UserContext);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setMessage("");
+
+  try {
+    if (activeTab === "login") {
+      // 🔵 Connexion via UserContext
+      const response = await handleLogin(form);
+
+      if (response.user) {
+        setMessage("Connexion réussie !");
+        navigate("/MonCompte");
+      } else {
+        setMessage(response.message || "Identifiants invalides");
+      }
+
+    } else {
+      // 🔵 Inscription via UserContext
+      const response = await handleRegister(form);
+
+      if (response.user) {
+        setMessage("Inscription réussie !");
+        navigate("/MonCompte");
+      } else {
+        setMessage(response.message || "Erreur lors de l'inscription");
+      }
+    }
+
+  } catch (err) {
+    console.error(err);
+    setMessage("Erreur serveur, veuillez réessayer.");
+  }
+};
+
 
   return (
     <div className="Auth-container">

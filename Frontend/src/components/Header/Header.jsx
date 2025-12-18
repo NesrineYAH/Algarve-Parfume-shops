@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext  } from "react";
 import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
 import { User, ShoppingCart, Heart, Home, Bell, LogOut, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import "./Header.scss";
 import LanguageSwitcher from "../Language/Language";
 import { useTranslation } from "react-i18next";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
+import { UserContext } from "../../context/UserContext";
 
 
 // ✅ Déclarer TypingAnimation en dehors de Header
@@ -26,15 +27,19 @@ const TypingAnimation = () => {
   );
 };
 
+
 const Header = () => {
   const { t } = useTranslation();
   const Lang = localStorage.getItem("i18nextLng") || "fr";
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [bannerVisible, setBannerVisible] = useState(true); // ✅ état pour afficher/fermer la bannière
+  const [bannerVisible, setBannerVisible] = useState(true); 
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const prenom = localStorage.getItem("prenom");
-
+  const { user, handleLogout } = useContext(UserContext);
+    const [notifications, setNotifications] = useState([]);
+  const unreadCount = notifications.filter(n => !n.isRead).length;
+/* 18/12/2025
   const handleLogout = () => {
     localStorage.clear();
     localStorage.removeItem("cart");
@@ -42,9 +47,7 @@ const Header = () => {
     localStorage.removeItem("token");
     navigate("/Authentification");
   };
-    // ✅ OBLIGATOIRE : déclaration AVANT return
-  const [notifications, setNotifications] = useState([]);
-  const unreadCount = notifications.filter(n => !n.isRead).length;
+   */ 
 
 
   return (
@@ -95,13 +98,59 @@ const Header = () => {
         <Link to="/Cart">
           <ShoppingCart className="icone" />
         </Link>
-   <Link to="/notifications" className="notification-icon"> 
+        <Link to="/notifications" className="notification-icon"> 
         <Bell className="icone" />
-{unreadCount > 0 && (
+          {unreadCount > 0 && (
           <span className="badge">{unreadCount}</span>
         )}
-</Link>
-        {/* User Icon with dropdown */}
+     </Link>
+       
+        {user  ? (
+          <div
+            className="user-dropdown"
+            onMouseEnter={() => setDropdownVisible(true)}
+            onMouseLeave={() => setDropdownVisible(false)}
+          >
+            <User
+              className="icone"
+              onClick={() => setDropdownVisible(!dropdownVisible)}
+            />
+            {/* {prenom ? `${t("user.greeting")} ${prenom}` : t("user.account")} */}
+            {`Bonjour ${user.prenom}`}
+            {dropdownVisible && (
+              <div className="dropdown-menu">
+                <Link to="/MonCompte">{t("user.account")}</Link>
+                <Link to="/Orders">{t("user.orders")}</Link>
+                <Link to="/history">{t("user.history")}</Link>
+                <button onClick={handleLogout}>
+                  <LogOut size={16} /> {t("user.logout")} 
+                </button>
+              </div>
+            )}
+            
+          </div>
+        ) : (
+          <User
+            className="icone"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/Authentification")}
+          />
+        )}
+      </div>
+      
+      <LanguageSwitcher />
+      </section>
+    </header>
+
+  );
+};
+
+export default Header;
+
+
+//18/12/2025
+
+      {/*}
         {token ? (
           <div
             className="user-dropdown"
@@ -132,16 +181,10 @@ const Header = () => {
             onClick={() => navigate("/Authentification")}
           />
         )}
-      </div>
-      
-      <LanguageSwitcher />
-      </section>
-    </header>
+        */}
 
-  );
-};
 
-export default Header;
+
 
 
 /*

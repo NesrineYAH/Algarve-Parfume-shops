@@ -76,6 +76,7 @@ export default function MonCompte() {
           <button onClick={() => setActiveTab("favorites")}>Mes Favoris</button>
           <button onClick={() => setActiveTab("payments")}>Mes Moyens de Paiement</button>
           <button onClick={handleLogout}>Déconnexion</button>
+          
         </aside>
 
         <main className="moncompte__content">
