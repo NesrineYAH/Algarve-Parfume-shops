@@ -41,7 +41,7 @@ const UserProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // 🟢 3️⃣ LOGIN : stocker user + token
+  // stocker user + token
   const handleLogin = async (credentials) => {
     const data = await loginUser(credentials);
 
@@ -53,7 +53,7 @@ const UserProvider = ({ children }) => {
     return data;
   };
 
-  // 🟢 4️⃣ REGISTER : même logique que login
+  // même logique que login
   const handleRegister = async (credentials) => {
     const data = await registerUser(credentials);
 
@@ -65,7 +65,7 @@ const UserProvider = ({ children }) => {
     return data;
   };
 
-  // 🟢 5️⃣ LOGOUT : supprimer user + token
+  // supprimer user + token
   const handleLogout = () => {
     logoutUser();
     setUser(null);
