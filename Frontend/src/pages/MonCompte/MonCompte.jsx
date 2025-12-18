@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
+
 
 export default function MonCompte() {
   const navigate = useNavigate();
   const { user, handleLogout } = useContext(UserContext);
-
   const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState("infos");
   const [favorites, setFavorites] = useState([]);
   const [orders, setOrders] = useState([]);
+
 
   // 🟢 1. Vérification token + charger les adresses
   useEffect(() => {
@@ -146,6 +147,7 @@ export default function MonCompte() {
             <h2>Mes Moyens de Paiement</h2>
           )}
         </main>
+          
       </div>
     </section>
   );

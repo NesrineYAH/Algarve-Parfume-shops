@@ -33,6 +33,7 @@ const AdminProductManagement = () => {
       await deleteProduct(id);
       setMessage("Produit supprimé avec succès");
       fetchProducts(); // actualiser la liste
+      navigate("/admin/AdminProductManagement");
     } catch (err) {
       console.error(err);
       setMessage("Erreur lors de la suppression");

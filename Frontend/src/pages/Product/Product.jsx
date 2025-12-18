@@ -8,10 +8,11 @@ import { useTranslation } from "react-i18next";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+    const { t } = useTranslation();
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const role = localStorage.getItem("role");
-  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
@@ -341,7 +342,7 @@ const dislikeComment = async (commentId) => {
               to="/admin/AdminProductManagement"
               className="btn-Add"
             >
-              ➕ {t("product.delete")}
+               {t("product.delete")}
             </Link>
              <Link to="/admin/promotions"  className="btn-Add">
           Créer une promotion
