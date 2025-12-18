@@ -27,10 +27,11 @@ exports.addProduct = async (req, res) => {
             imageUrl,
             categorie_id,
             options,
-            ownerId: req.user.id, // admin ou vendeur
+            ownerId: req.user.userId    //pars ownerId: req.user._id 
         });
 
         await newProduct.save();
+        console.log("USER =", req.user);
 
         res.status(201).json({
             message: "Parfum ajouté avec succès",
@@ -156,6 +157,7 @@ exports.addComment = async (req, res) => {
 
 
 /*
+18/12/2025 
 Ici je destructure req.body avec une valeur par défaut {} pour éviter undefined.
 Le fallback imageBody || "" garantit que imageUrl n’est jamais undefined.
 //22/11/2025
