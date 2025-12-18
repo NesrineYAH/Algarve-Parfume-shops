@@ -6,6 +6,8 @@ import "./admin.scss";
 
 const AdminAddProduct = () => {
   const [nom, setNom] = useState("");
+  const [genre, setGenre] = useState("");
+
  // const [prix, setPrix] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null); // fichier image
@@ -48,6 +50,8 @@ const handleSubmit = async (e) => {
     formData.append("nom", nom);
     formData.append("description", description);
     formData.append("categorie_id", categorieId);
+    formData.append("genre", genre);
+
 
     if (imageFile) {
       formData.append("image", imageFile);
@@ -78,6 +82,13 @@ const handleSubmit = async (e) => {
           onChange={(e) => setNom(e.target.value)}
           required
         />
+        <select value={genre} onChange={(e) => setGenre(e.target.value)} required>
+  <option value="">-- Choisir genre --</option>
+  <option value="homme">Homme</option>
+  <option value="femme">Femme</option>
+  <option value="mixte">Mixte</option>
+</select>
+
         <input
          type="number"
          placeholder="Taille (ex: 50)"

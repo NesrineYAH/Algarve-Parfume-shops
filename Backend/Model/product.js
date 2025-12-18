@@ -11,6 +11,12 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Categorie",
     },
+    genre: {
+      type: String,
+      enum: ["homme", "femme", "mixte"],
+      required: true
+    },
+
     options: [
       {
         size: { type: Number, required: true },

@@ -3,17 +3,30 @@ const Product = require("../Model/product");
 require("dotenv").config();
 
 // ➤ Ajouter un produit
+// ➤ Ajouter un produit
 exports.addProduct = async (req, res) => {
     try {
-        const { nom, description, categorie_id } = req.body;
+        const { nom, description, categorie_id, genre } = req.body;
 
-        if (!nom || !categorie_id) {
-            return res.status(400).json({ message: "Nom et catégorie requis" });
+        // ✅ Vérification des champs obligatoires
+        if (!nom || !categorie_id || !genre) {
+            return res.status(400).json({
+                message: "Nom, catégorie et genre sont requis",
+            });
         }
 
+        // ✅ Vérification du genre
+        const genresAutorises = ["homme", "femme", "mixte"];
+        if (!genresAutorises.includes(genre)) {
+            return res.status(400).json({
+                message: "Genre invalide (homme, femme ou mixte)",
+            });
+        }
+
+        // ✅ Image
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-        // 🔥 OPTIONS AUTOMATIQUES POUR PARFUM
+        // ✅ OPTIONS AUTOMATIQUES POUR PARFUM
         const options = [
             { size: 10, unit: "ml", prix: 5, stock: 100 },
             { size: 30, unit: "ml", prix: 15, stock: 100 },
@@ -21,22 +34,24 @@ exports.addProduct = async (req, res) => {
             { size: 100, unit: "ml", prix: 45, stock: 100 },
         ];
 
+        // ✅ Création du produit
         const newProduct = new Product({
             nom,
             description,
             imageUrl,
             categorie_id,
+            genre,               // ✅ NOUVEAU CHAMP
             options,
-            ownerId: req.user.userId    //pars ownerId: req.user._id 
+            ownerId: req.user.userId,   // ✅ Correction
         });
 
         await newProduct.save();
-        console.log("USER =", req.user);
 
         res.status(201).json({
-            message: "Parfum ajouté avec succès",
+            message: "Produit ajouté avec succès",
             product: newProduct,
         });
+
     } catch (error) {
         console.error("Erreur ajout produit :", error);
         res.status(500).json({ message: "Erreur serveur" });
