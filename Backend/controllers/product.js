@@ -60,14 +60,14 @@ exports.addProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
     try {
- const { genre } = req.query;
+        const { genre } = req.query;
 
-        let filter = {}; 
-        
+        let filter = {};
+
         if (genre) {
             filter.genre = genre;
         }
-        const produits = await Product.find(filter); 
+        const produits = await Product.find(filter);
         res.json(produits);
     } catch (err) { res.status(500).json({ message: err.message }); }
 };
