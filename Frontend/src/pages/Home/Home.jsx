@@ -3,6 +3,8 @@ import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 import { Heart } from "lucide-react";
+import { useLocation } from "react-router-dom"
+import { getProductsByGenre, getAllProducts } from "../../Services/productService";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -27,7 +29,7 @@ const Home = () => {
 
     localStorage.setItem("cart", JSON.stringify(cart));
   };
-
+/*
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -45,6 +47,51 @@ const Home = () => {
 
     fetchProducts();
   }, []);
+*/
+
+ const location = useLocation();
+
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/api/products");
+      const data = await res.json();
+      const prod = Array.isArray(data) ? data : data.products;
+
+      setProducts(prod);
+
+      // 🔥 récupération du genre depuis l’URL
+      const params = new URLSearchParams(location.search);
+      const genre = params.get("genre");
+
+      // 🔥 filtrage
+      if (genre) {
+        const filteredByGenre = prod.filter(
+          (p) => p.genre?.toLowerCase() === genre.toLowerCase()
+        );
+        setFiltered(filteredByGenre);
+      } else {
+        setFiltered(prod);
+      }
+    } catch (err) {
+      setError("Impossible de récupérer les produits.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [location.search]);
+
+
+
+
+
+
+
+
+
 
   const handleSearch = (query) => {
     if (!query.trim()) return setFiltered(products);

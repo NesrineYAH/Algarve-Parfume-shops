@@ -37,7 +37,6 @@ function App() {
       <div className="App">
         <Headers />
         
-
         <Routes>
           <Route path="/Home" element={<Home />} />
            <Route path="/product" element={<Product />} />

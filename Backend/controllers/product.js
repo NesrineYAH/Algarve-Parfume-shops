@@ -57,7 +57,6 @@ exports.addProduct = async (req, res) => {
 };
 
 // ➤ Récupérer tous les produits mise à jours 18/12
-
 exports.getProducts = async (req, res) => {
     try {
         const { genre } = req.query;

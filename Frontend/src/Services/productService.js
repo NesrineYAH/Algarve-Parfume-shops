@@ -3,7 +3,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5001/api/products";
 
-// 🔹 Ajouter un produit
 export const addProduct = async (productData) => {
   try {
     const token = localStorage.getItem("token");
@@ -17,12 +16,11 @@ export const addProduct = async (productData) => {
   }
 };
 
-// 🔹 (Optionnel) Récupérer tous les produits
 export const getAllProducts = async () => {
   const response = await axios.get(`${API_URL}`);
   return response.data;
 };
-// 🔹 Récupérer un produit par ID
+
 export const getProductById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
@@ -32,13 +30,36 @@ export const getProductById = async (id) => {
     throw error;
   }
 };
-// 🔹 (Optionnel) Supprimer un produit
+
 export const deleteProduct = async (id) => {
   const token = localStorage.getItem("token");
   const response = await axios.delete(`${API_URL}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
+};
+
+export const getProductsByGenre = async (genre) => {
+  try {
+    const response = await axios.get(`${API_URL}`, { params: { genre } });
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors du filtrage des produits :", error);
+    throw error;
+  }
+};
+
+export const updateProduct = async (id, updatedData) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.put(`${API_URL}/${id}`, updatedData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Erreur lors de la modification du produit :", error);
+    throw error;
+  }
 };
 
 /*
