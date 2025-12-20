@@ -133,10 +133,9 @@ router.post("/:productId/comments/:commentId/like", authMiddleware, async (req, 
 router.post("/:productId/comments/:commentId/dislike", authMiddleware, async (req, res) => {
     try {
         const userId = req.user._id;
-        const commentId = req.params.id;
+        const { commentId } = req.params;
 
         const comment = await Comment.findById(commentId);
-
         if (!comment)
             return res.status(404).json({ error: "Commentaire introuvable" });
 
