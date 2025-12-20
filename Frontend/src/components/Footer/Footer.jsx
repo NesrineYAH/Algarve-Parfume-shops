@@ -50,30 +50,28 @@ export default function Footer() {
           </a>
           
         </li>
-        
-    
         <li>
           <a href="" className="TitreH3">
             {t("footer.newPerfume")}
           </a>
         </li>
         <li>
-          <a href="../MentionLegales/#mentionsLegales" className="TitreH3">
+          <a href="" className="TitreH3">
             {t("footer.faceCare")}
           </a>
         </li>
         <li>
-          <a href="../MentionLegales/#mentionsLegales" className="TitreH3">
+          <a href="" className="TitreH3">
             {t("footer.stores")}
           </a>
         </li>
         <li>
-          <a href="../MentionLegales/#mentionsLegales" className="TitreH3">
+          <a href="" className="TitreH3">
             {t("footer.beautyGuide")}
           </a>
         </li>
         <li>
-          <a href="../MentionLegales/#mentionsLegales" className="TitreH3">
+          <a href="" className="TitreH3">
             {t("footer.perfumeGuide")}
           </a>
         </li>
@@ -91,7 +89,7 @@ export default function Footer() {
       
         <li><Link to="/CGV">{t("footer.terms")} Conditions Générales de Vente</Link></li>
         <li><Link to="/PolitiqueConfidentialite">{t("footer.gdpr")} Politique de Confidentialité</Link></li>
-        <li>{t("footer.rsgp")}</li>
+                <li><Link to="/securite-produits">{t("footer.rsgp")} Sécurité des Produits</Link></li>
       </ul>
        </div>
 

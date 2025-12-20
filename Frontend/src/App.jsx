@@ -31,6 +31,7 @@ import Notifications from "./pages/Notifications/Notifications";
 import MentionsLegales from "./pages/PageSite/MentionsLegales";
 import CGV from "./pages/PageSite/CGV";
 import PolitiqueConfidentialite from "./pages/PageSite/PolitiqueConfidentialite";
+import SecuriteProduits from "./pages/PageSite/SecuriteProduits";
 
 
 function App() {
@@ -66,10 +67,11 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/review/:id" element={<Review />} />
-            <Route path="/notifications" element={<Notifications />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/cgv" element={<CGV />} />
-        <Route path="/mentions-legales" element={<MentionsLegales />} />
-             <Route path="/PolitiqueConfidentialite" element={<PolitiqueConfidentialite />} />
+         <Route path="/mentions-legales" element={<MentionsLegales />} />
+         <Route path="/PolitiqueConfidentialite" element={<PolitiqueConfidentialite />} />
+          <Route path="/securite-produits" element={<SecuriteProduits />} />
         </Routes>
 
         <BlogBenefits />
