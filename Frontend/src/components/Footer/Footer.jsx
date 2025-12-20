@@ -88,8 +88,9 @@ export default function Footer() {
           <Link to="/mentions-legales"> {t("footer.legalNotice")}</Link>
         </li>
         <li>{t("footer.cookiesPolicy")}</li>
-        <li>{t("footer.terms")}</li>
-        <li>{t("footer.gdpr")}</li>
+      
+        <li><Link to="/CGV">{t("footer.terms")} Conditions Générales de Vente</Link></li>
+        <li><Link to="/PolitiqueConfidentialite">{t("footer.gdpr")} Politique de Confidentialité</Link></li>
         <li>{t("footer.rsgp")}</li>
       </ul>
        </div>
