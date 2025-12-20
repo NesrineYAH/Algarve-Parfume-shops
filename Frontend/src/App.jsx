@@ -32,7 +32,7 @@ import MentionsLegales from "./pages/PageSite/MentionsLegales";
 import CGV from "./pages/PageSite/CGV";
 import PolitiqueConfidentialite from "./pages/PageSite/PolitiqueConfidentialite";
 import SecuriteProduits from "./pages/PageSite/SecuriteProduits";
-
+import AvisClients from "./pages/AvisClients/AvisClients";
 
 function App() {
   return (
@@ -72,6 +72,7 @@ function App() {
          <Route path="/mentions-legales" element={<MentionsLegales />} />
          <Route path="/PolitiqueConfidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="/securite-produits" element={<SecuriteProduits />} />
+          <Route path="/avis-clients" element={<AvisClients />} />
         </Routes>
 
         <BlogBenefits />

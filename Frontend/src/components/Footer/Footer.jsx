@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 import { FaChevronUp } from "react-icons/fa6";
 import "./Footer.scss";
 import { Link } from "react-router-dom";
+import RatingStars from "../ReviewSection/RatingStars";
+
+
 export default function Footer() {
   const { t } = useTranslation();
 
@@ -133,7 +136,9 @@ export default function Footer() {
         </li>
       </ul>
        </div>
-
+        <Link to="/avis-clients" className="footer__logo"> 
+        <RatingStars rating={4.5} totalReviews={128} />
+        </Link>
       <a className="fa" title={t("footer.goTop")} href="/home">
         <FaChevronUp id="toTop" />
       </a>

@@ -1,26 +1,45 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import ReviewCard from "../../components/ReviewSection/ReviewCard";
 
-const RatingStars = ({ rating = 4.5, totalReviews = 128 }) => {
-  const navigate = useNavigate();
+const reviews = [
+  {
+    id: 1,
+    name: "Sofia",
+    rating: 5,
+    comment: "Parfum authentique, livraison rapide, je recommande !",
+    date: "12/09/2025",
+  },
+  {
+    id: 2,
+    name: "Karim",
+    rating: 4,
+    comment: "Très bonne tenue, emballage soigné.",
+    date: "08/09/2025",
+  },
+  {
+    id: 3,
+    name: "Laura",
+    rating: 5,
+    comment: "Service client au top, parfum original.",
+    date: "02/09/2025",
+  },
+];
 
+const AvisClients = () => {
   return (
-    <div
-      onClick={() => navigate("/avis-clients")}
-      style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
-    >
-      <div>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span key={star} style={{ color: "#f5a623", fontSize: "18px" }}>
-            {rating >= star ? "★" : "☆"}
-          </span>
+    <div className="legal-page">
+      <h1>Avis de nos clients</h1>
+      <p>
+        Découvrez les avis laissés par nos clients après leur commande.
+      </p>
+
+      <div className="reviews-list">
+        {reviews.map((review) => (
+          <ReviewCard key={review.id} review={review} />
         ))}
       </div>
-      <span style={{ marginLeft: "8px", fontSize: "14px" }}>
-        {rating}/5 ({totalReviews} avis)
-      </span>
     </div>
   );
 };
 
-export default RatingStars;
+export default AvisClients;
