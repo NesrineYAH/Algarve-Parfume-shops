@@ -27,7 +27,7 @@ const Product = () => {
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
 
-  // 🔹 Récupération du produit
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -48,7 +48,7 @@ const Product = () => {
     fetchProduct();
   }, [id]);
 
-  // 🔹 Récupération des commentaires
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -65,8 +65,6 @@ const Product = () => {
   }, [id]);
 
 
-
-  // 🔹 Ajouter au panier
   const addToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -94,7 +92,10 @@ const Product = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
     setShowModal(true);
   };
-  const reportComment = async (commentId) => {
+
+
+
+const reportComment = async (commentId) => {
   try {
     const token = localStorage.getItem("token"); // 🔥 Manquait !
 
@@ -104,7 +105,7 @@ const Product = () => {
     }
 
     await axios.post(
-      `http://localhost:5001/api/comments/${id}/report`,
+      `http://localhost:5001/api/products/${id}/comments/${commentId}/report`,
       {},
       {
         headers: {
@@ -120,16 +121,12 @@ const Product = () => {
   }
 };
 
-
-   // 🔹 Rendu conditionnel APRÈS les hooks
-  if (error) return <p>{t("product.error")}</p>;
-  if (!product) return <p>{t("product.loading")}</p>;
-  
 const likeComment = async (commentId) => {
+  //  `http://localhost:5001/api/products/${commentId}/like`,
   try {
     const token = localStorage.getItem("token");
     const res = await axios.post(
-      `http://localhost:5001/api/comments/${commentId}/like`,
+     `http://localhost:5001/api/products/${id}/comments/${commentId}/like`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -145,7 +142,7 @@ const dislikeComment = async (commentId) => {
   try {
     const token = localStorage.getItem("token");
     const res = await axios.post(
-      `http://localhost:5001/api/comments/${commentId}/dislike`,
+    `http://localhost:5001/api/products/${id}/comments/${commentId}/dislike`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -156,11 +153,17 @@ const dislikeComment = async (commentId) => {
     console.error(err);
   }
 };
+  const refresh = () => {
+    axios.get(`http://localhost:5001/api/products/${id}/comments`)
+      .then(res => setComments(res.data));
+  };
 
 
 
 
-
+  if (error) return <p>{t("product.error")}</p>;
+  if (!product) return <p>{t("product.loading")}</p>;
+   // 🔹 Rendu conditionnel APRÈS les hooks
   return (
     <section id="page">
       <div className="product-container">
@@ -318,7 +321,7 @@ const dislikeComment = async (commentId) => {
                     <div className="comment-actions">
          <button onClick={() => likeComment(comment._id)}> 👍 {comment.likes?.length || 0} </button>
          <button onClick={() => dislikeComment(comment._id)}> 👎 {comment.dislikes?.length || 0} </button>
-         <button onClick={() => reportComment(comment._id)}> {t("product.report")} </button>
+         <button onClick={() => reportComment(comment._id)}> {t("product.report")} 🚩</button>
       </div>
               <small>
                 {new Date(comment.createdAt).toLocaleDateString("fr-FR")}

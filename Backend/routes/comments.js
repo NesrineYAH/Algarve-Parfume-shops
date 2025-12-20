@@ -139,7 +139,7 @@ router.post("/:productId/comments/:commentId/dislike", authMiddleware, async (re
         if (!comment)
             return res.status(404).json({ error: "Commentaire introuvable" });
 
-        // Si déjà disliké → on retire
+
         if (comment.dislikes.includes(userId)) {
             comment.dislikes.pull(userId);
         } else {

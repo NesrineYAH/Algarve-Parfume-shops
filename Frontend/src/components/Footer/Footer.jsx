@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronUp } from "react-icons/fa6";
 import "./Footer.scss";
-
+import { Link } from "react-router-dom";
 export default function Footer() {
   const { t } = useTranslation();
 
@@ -48,12 +48,10 @@ export default function Footer() {
           <a href="../../SiteMap/#sitemap" className="TitreH3">
             {t("footer.sitemap")}
           </a>
+          
         </li>
-        <li>
-          <a href="../MentionLegales/#mentionsLegales" className="TitreH3">
-            {t("footer.legalNotice")}
-          </a>
-        </li>
+        
+    
         <li>
           <a href="" className="TitreH3">
             {t("footer.newPerfume")}
@@ -86,7 +84,9 @@ export default function Footer() {
   <h3>{t("footer.conditions")}</h3>
       <ul className="footer__ul">
         <li>{t("footer.cookiesPolicy")}</li>
-        <li>{t("footer.legalNotice")}</li>
+            <li>
+          <Link to="/mentions-legales"> {t("footer.legalNotice")}</Link>
+        </li>
         <li>{t("footer.cookiesPolicy")}</li>
         <li>{t("footer.terms")}</li>
         <li>{t("footer.gdpr")}</li>

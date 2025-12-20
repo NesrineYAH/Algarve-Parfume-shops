@@ -28,7 +28,8 @@ import ResetPassword from "./pages/pagePassword/ResetPassword";
 import Contact from "./pages/Contact/Contact";
 import Review from "./pages/Review/Review";
 import Notifications from "./pages/Notifications/Notifications";
-
+import MentionsLegales from "./pages/PageSite/MentionsLegales";
+import CGV from "./pages/PageSite/CGV";
 
 
 function App() {
@@ -65,7 +66,8 @@ function App() {
           <Route path="/Contact" element={<Contact />} />
           <Route path="/review/:id" element={<Review />} />
             <Route path="/notifications" element={<Notifications />} />
-             
+          <Route path="/cgv" element={<CGV />} />
+        <Route path="/mentions-legales" element={<MentionsLegales />} />
         </Routes>
 
         <BlogBenefits />
