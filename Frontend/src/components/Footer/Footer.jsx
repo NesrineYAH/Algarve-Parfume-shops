@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronUp } from "react-icons/fa6";
 import "./Footer.scss";
@@ -6,8 +6,13 @@ import { Link } from "react-router-dom";
 import RatingStars from "../ReviewSection/RatingStars";
 
 
+
 export default function Footer() {
+  const [comments, setComments] = useState([]);
   const { t } = useTranslation();
+const averageRating =
+  comments.reduce((sum, c) => sum + c.rating, 0) / comments.length || 0;
+
 
   return (
     <footer className="footer">
@@ -137,7 +142,8 @@ export default function Footer() {
       </ul>
        </div>
         <Link to="/avis-clients" className="footer__logo"> 
-        <RatingStars rating={4.5} totalReviews={128} />
+       <RatingStars rating={4.5} totalReviews={128} /> 
+           {/*    <RatingStars rating={averageRating.toFixed(1)} totalReviews={comments.length} />*/}
         </Link>
       <a className="fa" title={t("footer.goTop")} href="/home">
         <FaChevronUp id="toTop" />
