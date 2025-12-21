@@ -159,8 +159,6 @@ const dislikeComment = async (commentId) => {
   };
 
 
-
-
   if (error) return <p>{t("product.error")}</p>;
   if (!product) return <p>{t("product.loading")}</p>;
    // 🔹 Rendu conditionnel APRÈS les hooks

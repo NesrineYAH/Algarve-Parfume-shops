@@ -1,6 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReviewCard from "../../components/ReviewSection/ReviewCard";
 
+
+
+const AvisClients = () => {
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5001/api/comments")
+      .then((res) => res.json())
+      .then((data) => {
+        const filtered = data.filter(
+          (c) =>
+            c.isApproved &&
+            (c.type === "brand" || c.type === "experience")
+        );
+        setComments(filtered);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return <p>Chargement des avis...</p>;
+
+  return (
+    <div className="legal-page">
+      <h1>Avis clients</h1>
+      <p>Avis sur la marque et l’expérience d’achat.</p>
+
+      {comments.length === 0 && <p>Aucun avis pour le moment.</p>}
+
+      {comments.map((review) => (
+        <ReviewCard key={review._id} review={review} />
+      ))}
+    </div>
+  );
+};
+
+export default AvisClients;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 const reviews = [
   {
     id: 1,
@@ -24,22 +90,4 @@ const reviews = [
     date: "02/09/2025",
   },
 ];
-
-const AvisClients = () => {
-  return (
-    <div className="legal-page">
-      <h1>Avis de nos clients</h1>
-      <p>
-        Découvrez les avis laissés par nos clients après leur commande.
-      </p>
-
-      <div className="reviews-list">
-        {reviews.map((review) => (
-          <ReviewCard key={review.id} review={review} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default AvisClients;
+*/

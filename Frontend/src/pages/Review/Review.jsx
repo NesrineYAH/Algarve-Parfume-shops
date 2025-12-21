@@ -31,7 +31,6 @@ const Review = () => {
           },
         }
       );
-
       setSuccess("Votre avis a été envoyé avec succès !");
       setRating(0);
       setText("");
