@@ -1,26 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ReviewCard from "../../components/ReviewSection/ReviewCard";
-
+import { CommentsContext } from "../../context/CommentsContext";
 
 
 const AvisClients = () => {
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("http://localhost:5001/api/comments")
-      .then((res) => res.json())
-      .then((data) => {
-        const filtered = data.filter(
-          (c) =>
-            c.isApproved &&
-            (c.type === "brand" || c.type === "experience")
-        );
-        setComments(filtered);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+  const { comments, loading } = useContext(CommentsContext); // ✅ source unique
 
   if (loading) return <p>Chargement des avis...</p>;
 
@@ -39,6 +23,7 @@ const AvisClients = () => {
 };
 
 export default AvisClients;
+
 
 
 

@@ -4,11 +4,12 @@ import { FaChevronUp } from "react-icons/fa6";
 import "./Footer.scss";
 import { Link } from "react-router-dom";
 import RatingStars from "../ReviewSection/RatingStars";
-
+import { CommentsContext } from "../../context/CommentsContext";
 
 
 export default function Footer() {
-  const [comments, setComments] = useState([]);
+  const { comments, loading } = React.useContext(CommentsContext);
+  
   const { t } = useTranslation();
 const averageRating =
   comments.reduce((sum, c) => sum + c.rating, 0) / comments.length || 0;
