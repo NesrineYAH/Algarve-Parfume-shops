@@ -1,18 +1,20 @@
+// routes/avis.js
 const express = require("express");
 const router = express.Router();
 const Avis = require("../Model/Avis");
 const { authMiddleware } = require("../middleware/auth");
-
+const mongoose = require("mongoose");
 
 router.get("/", async (req, res) => {
     try {
         const avis = await Avis.find()
-            .populate("userId", "name")
-            .sort({ createdAt: -1 });
+            .populate("userId", "nom") // afficher le nom de l'utilisateur
+            .sort({ createdAt: -1 });   // du plus récent au plus ancien
 
         res.status(200).json(avis);
     } catch (err) {
-        res.status(500).json({ message: "Erreur serveur" });
+        console.error(err);
+        res.status(500).json({ message: "Erreur serveur lors de la récupération des avis" });
     }
 });
 
@@ -20,7 +22,9 @@ router.get("/", async (req, res) => {
 router.post("/", authMiddleware, async (req, res) => {
     try {
         const { rating, text } = req.body;
-        const userId = req.user.id;
+        const userId = req.user.userId;
+        console.log("REQ.BODY:", req.body);
+        console.log("USER ID:", userId);
 
         if (!rating || !text) {
             return res.status(400).json({
@@ -32,13 +36,14 @@ router.post("/", authMiddleware, async (req, res) => {
             userId,
             rating,
             text,
-            verifiedPurchase: true, // à améliorer plus tard
+            verifiedPurchase: true, // tu peux améliorer plus tard avec une vraie vérif
         });
 
         const savedAvis = await avis.save();
         res.status(201).json(savedAvis);
     } catch (err) {
-        res.status(500).json({ message: "Erreur serveur" });
+        console.error(err);
+        res.status(500).json({ message: "Erreur serveur lors de l'ajout de l'avis" });
     }
 });
 

@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { UserContext } from "./UserContext"; // si tu stockes le token dans UserContext
 
 export const AvisContext = createContext();
 
@@ -6,12 +7,14 @@ export function AvisProvider({ children }) {
   const [avis, setAvis] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Récupération du token depuis UserContext ou localStorage
+  const { user } = useContext(UserContext); 
+  const token = user?.token || localStorage.getItem("token");
+
   useEffect(() => {
-    // ✅ URL cohérente avec ton backend
     fetch("http://localhost:5001/api/avis")
       .then((res) => res.json())
       .then((data) => {
-        // 🔹 Pas de filtre isApproved/type car ton modèle Avis n'a pas ces champs
         setAvis(data);
         setLoading(false);
       })
@@ -24,14 +27,20 @@ export function AvisProvider({ children }) {
   // ➕ Ajouter un avis
   const addAvis = async (newAvis) => {
     try {
+      if (!token) {
+        throw new Error("Utilisateur non authentifié");
+      }
+
       const res = await fetch("http://localhost:5001/api/avis", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 🔹 si auth, ajouter Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`, // 🔑 indispensable pour éviter le 401
         },
         body: JSON.stringify(newAvis),
       });
+
+      if (!res.ok) throw new Error("Erreur lors de l'envoi de l'avis");
 
       const savedAvis = await res.json();
 

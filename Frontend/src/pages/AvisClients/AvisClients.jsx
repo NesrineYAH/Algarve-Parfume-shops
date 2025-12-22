@@ -32,15 +32,15 @@ const AvisClients = () => {
   if (loading) return <p>Chargement des avis...</p>;
 
   return (
-    <div className="review-page">
+    <div className="review-page Reviewpage">
       <h1>Avis clients</h1>
       <p>Avis sur la marque et l’expérience d’achat.</p>
 
-      {avis.length === 0 && <p>Aucun avis pour le moment.</p>}
+      {avis.length === 0 && <p>Aucun avis pour le moment.</p>} 
 
-      {avis.map((review) => (
-        <ReviewCard key={review._id} review={review} />
-      ))}
+       {avis.map((review, index) => (
+      <ReviewCard key={review._id || index} review={review} />
+    ))}
 
       <div className="add-review-section">
         <h2>Laisser un avis</h2>

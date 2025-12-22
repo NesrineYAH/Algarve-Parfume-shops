@@ -10,13 +10,13 @@ import { AvisProvider } from "./context/AvisContext"; // ✅ Contexte Avis
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
+     <UserProvider>
       <AvisProvider>
-        <UserProvider>
           <CartProvider>
             <App />
           </CartProvider>
+         </AvisProvider>
         </UserProvider>
-      </AvisProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
