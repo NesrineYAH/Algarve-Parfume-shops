@@ -13,6 +13,9 @@ const paymentRoutes = require("./routes/payment");
 const stripeRoute = require("./routes/stripe");
 const contactRoutes = require("./routes/contacts");
 const commentsRoutes = require("./routes/comments");
+const notificationsRoutes = require("./routes/notifications");
+const promotionsRoutes = require("./routes/promotions");
+const avisRoutes = require("./routes/avis");
 require("./mongoDB/DB");
 
 const app = express();
@@ -38,6 +41,9 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/stripe", stripeRoute);
 app.use("/api/contacts", contactRoutes);
 app.use("/api/products", commentsRoutes);
+app.use("/api/notifications", notificationsRoutes);
+app.use("/api/promotions", promotionsRoutes);
+app.use("/api/avis", avisRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
