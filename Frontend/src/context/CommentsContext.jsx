@@ -21,8 +21,25 @@ export function CommentsProvider({ children }) {
       .catch(() => setLoading(false));
   }, []);
 
+  // ➕ Ajouter un avis
+  const addComment = async (newComment) => {
+    const res = await fetch("http://localhost:5001/api/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newComment),
+    });
+
+    const savedComment = await res.json();
+
+    // 🔥 mise à jour instantanée
+    setComments((prev) => [savedComment, ...prev]);
+  };
+
+
   return (
-    <CommentsContext.Provider value={{ comments, loading }}>
+    <CommentsContext.Provider value={{ comments, loading, addComment }}>
       {children}
     </CommentsContext.Provider>
   );
