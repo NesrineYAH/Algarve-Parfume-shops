@@ -11,6 +11,12 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Categorie",
     },
+    genre: {
+      type: String,
+      enum: ["homme", "femme", "mixte"],
+      required: true
+    },
+
     options: [
       {
         size: { type: Number, required: true },
@@ -19,26 +25,9 @@ const productSchema = new mongoose.Schema(
         stock: { type: Number, default: 0 },
       },
     ],
-
-    // ⭐ Notation moyenne
-    rating: {
-      type: Number,
-      default: 0,
-    },
-
-    // ⭐ Commentaires + note
-    comments: [
-      {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-        rating: { type: Number, min: 1, max: 5, required: true },
-        text: { type: String },
-        createdAt: { type: Date, default: Date.now },
-      },
-    ],
+    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // si tu l’as ajouté
   },
-  {
-    timestamps: true, // ✅ ICI
-  }
+  { timestamps: true, }// ✅ ICI
 );
 
 module.exports = mongoose.model("Product", productSchema);

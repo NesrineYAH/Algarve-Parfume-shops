@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Comment = require("../Model/Comment");
 const Product = require("../Model/product");
+const Notification = require("../Model/Notification");
+const mongoose = require("mongoose");
 const { authMiddleware } = require("../middleware/auth");
 
 router.get("/:id/comments", async (req, res) => {
@@ -21,7 +23,8 @@ router.get("/:id/comments", async (req, res) => {
     }
 });
 
-// ✅ Ajouter un commentaire à un produit POST /api/products/:id/comments
+
+// ✅ Ajouter un commentaire à un produit POST /api/products/:id/comments 
 router.post("/:id/comments", authMiddleware, async (req, res) => {
     try {
         const { rating, text } = req.body;
@@ -42,6 +45,13 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
 
         const productId = req.params.id;
 
+        // ✅ Récupérer le produit avant de créer la notification
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ error: "Produit non trouvé" });
+        }
+
+        // Créer le commentaire
         const comment = new Comment({
             productId,
             userId,
@@ -56,9 +66,20 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         const avgRating =
             comments.reduce((acc, c) => acc + c.rating, 0) / comments.length;
 
-        await Product.findByIdAndUpdate(productId, {
-            rating: avgRating,
-        });
+        await Product.findByIdAndUpdate(productId, { rating: avgRating });
+
+        // 🔔 Créer la notification pour le propriétaire du produit
+        if (product.ownerId) {
+            await Notification.create({
+                userId: product.ownerId,
+                title: "Nouveau commentaire",
+                message: "Un utilisateur a commenté votre produit",
+                type: "comment",
+            });
+        } else {
+            console.warn("Produit sans ownerId, notification non créée");
+        }
+
 
         res.status(201).json({
             message: "Commentaire ajouté",
@@ -71,7 +92,8 @@ router.post("/:id/comments", authMiddleware, async (req, res) => {
         });
     }
 });
-//
+
+
 // 🚩 REPORT
 router.post("/:productId/comments/:commentId/report", authMiddleware, async (req, res) => {
     try {
@@ -107,18 +129,16 @@ router.post("/:productId/comments/:commentId/like", authMiddleware, async (req, 
 );
 
 // route poster un like sur un commentaire
-
 router.post("/:productId/comments/:commentId/dislike", authMiddleware, async (req, res) => {
     try {
         const userId = req.user._id;
-        const commentId = req.params.id;
+        const { commentId } = req.params;
 
         const comment = await Comment.findById(commentId);
-
         if (!comment)
             return res.status(404).json({ error: "Commentaire introuvable" });
 
-        // Si déjà disliké → on retire
+
         if (comment.dislikes.includes(userId)) {
             comment.dislikes.pull(userId);
         } else {

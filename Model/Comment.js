@@ -18,7 +18,7 @@ const commentSchema = new mongoose.Schema({
     // 👍👎 Ajout
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-
+    reported: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Comment", commentSchema);
