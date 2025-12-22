@@ -1,19 +1,42 @@
-.review-page {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background: #f9f9f9;
-    border-radius: 8px;
+.Reviewpage {
+    width: 96%;
 
-    h2 {
-        text-align: center;
-        margin-bottom: 1rem;
+    .review-page {
+        width: 100%;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background: #f9f9f9;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+        gap: 50px;
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .ReviewCard {
+            width: 600px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+
     }
 
     .review-form {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        width: 600px;
+        position: relative;
+        background-position: 50% 50%;
+
 
         .rating-input {
             font-size: 1.5rem;
@@ -56,14 +79,4 @@
             color: green;
         }
     }
-}
-
-.ReviewCard {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background: #f9f9f9;
-    border-radius: 8px;
-
-
 }

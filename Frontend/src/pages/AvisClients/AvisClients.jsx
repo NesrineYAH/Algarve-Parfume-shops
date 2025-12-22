@@ -32,9 +32,11 @@ const AvisClients = () => {
   if (loading) return <p>Chargement des avis...</p>;
 
   return (
-    <div className="review-page Reviewpage">
-      <h1>Avis clients</h1>
+    <section className="Reviewpage"> 
+       <h1>Avis clients</h1>
       <p>Avis sur la marque et l’expérience d’achat.</p>
+    <div className="review-page">
+   
 
       {avis.length === 0 && <p>Aucun avis pour le moment.</p>} 
 
@@ -42,9 +44,11 @@ const AvisClients = () => {
       <ReviewCard key={review._id || index} review={review} />
     ))}
 
-      <div className="add-review-section">
+ 
+    </div>
+         <div className="review-form">
         <h2>Laisser un avis</h2>
-        <form onSubmit={handleSubmit} className="review-form">       
+        <form onSubmit={handleSubmit}>       
           <div className="rating-input">
             <label>Votre note :</label>
             {[1, 2, 3, 4, 5].map((star) => (
@@ -79,7 +83,7 @@ const AvisClients = () => {
           </p>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 
