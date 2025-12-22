@@ -1,7 +1,7 @@
 // pages/SiteMap/SiteMap.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import "./SiteMap.scss";
+import "./PageSite.scss";
 
 const SiteMap = () => {
   return (

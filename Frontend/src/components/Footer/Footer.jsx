@@ -5,6 +5,7 @@ import "./Footer.scss";
 import { Link } from "react-router-dom";
 import RatingStars from "../ReviewSection/RatingStars";
 import { AvisContext } from "../../context/AvisContext";
+// import LanguageSwitcher from "../Language/Language";
 
 
 export default function Footer() {
@@ -16,45 +17,14 @@ const averageRating =
 
 
   return (
-    <footer className="footer">
-
+    <footer id="Footer">
+      <div className="footer">
       <div>
-      <h3>{t("footer.about")}</h3>
-      <ul className="footer__ul">
-        <li>
-          <a href="../AboutUs/#aboutus" className="TitreH3">
-            {t("footer.ourStory")}
-          </a>
-        </li>
-        <li>
-          <a href="../AboutUs/#aboutus" className="TitreH3">
-            {t("footer.careers")}
-          </a>
-        </li>
-        <li>
-          <a href="../AboutUs/#aboutus" className="TitreH3">
-            {t("footer.press")}
-          </a>
-        </li>
-        <li>
-          <a href="../AboutUs/#aboutus" className="TitreH3">
-            {t("footer.socialResponsibility")}
-          </a>
-        </li>
-        <li>
-          <a href="../AboutUs/#aboutus" className="TitreH3">
-            {t("footer.blog")}
-          </a>
-        </li>
-      </ul>
-     </div> 
-
-     <div>
       <h3>{t("footer.info")}</h3>
       <ul className="footer__ul">
  
         <li>
-          <a href="../../SiteMap/#sitemap" className="TitreH3">
+          <a href="/sitemap" className="TitreH3">
             {t("footer.sitemap")}
           </a>
           
@@ -79,11 +49,7 @@ const averageRating =
             {t("footer.beautyGuide")}
           </a>
         </li>
-        <li>
-          <a href="" className="TitreH3">
-            {t("footer.perfumeGuide")}
-          </a>
-        </li>
+      
       </ul>
       </div>
 
@@ -142,13 +108,23 @@ const averageRating =
         </li>
       </ul>
        </div>
-        <Link to="/avis-clients" className="footer__logo"> 
-       <RatingStars rating={4.5} totalReviews={128} /> 
+      
+  
+                    {/* <LanguageSwitcher /> */}
+      <div>
+        <h3> NOS RÉCOMPENSES</h3> 
+           <Link to="/avis-clients" className="footer__logo"> 
+          <RatingStars rating={4.5} totalReviews={128} /> 
            {/*    <RatingStars rating={averageRating.toFixed(1)} totalReviews={comments.length} />*/}
         </Link>
-      <a className="fa" title={t("footer.goTop")} href="/home">
+
+       </div> 
+      </div>
+        <a className="fa" title={t("footer.goTop")} href="/home">
         <FaChevronUp id="toTop" />
       </a>
+      <div>        <h3>© 2024 MyPerfume. © 2025 Tous droits réservés</h3></div>             
+{/** {t("footer.allRights")} **/}
     </footer>
   );
 }

@@ -33,6 +33,9 @@ import CGV from "./pages/PageSite/CGV";
 import PolitiqueConfidentialite from "./pages/PageSite/PolitiqueConfidentialite";
 import SecuriteProduits from "./pages/PageSite/SecuriteProduits";
 import AvisClients from "./pages/AvisClients/AvisClients";
+import SiteMap from "./pages/PageSite/SiteMap";
+
+
 
 function App() {
   return (
@@ -73,6 +76,8 @@ function App() {
          <Route path="/PolitiqueConfidentialite" element={<PolitiqueConfidentialite />} />
           <Route path="/securite-produits" element={<SecuriteProduits />} />
           <Route path="/avis-clients" element={<AvisClients />} />
+          <Route path="/sitemap" element={<SiteMap />} />
+
         </Routes>
 
         <BlogBenefits />
