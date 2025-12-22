@@ -129,7 +129,6 @@ router.post("/:productId/comments/:commentId/like", authMiddleware, async (req, 
 );
 
 // route poster un like sur un commentaire
-
 router.post("/:productId/comments/:commentId/dislike", authMiddleware, async (req, res) => {
     try {
         const userId = req.user._id;

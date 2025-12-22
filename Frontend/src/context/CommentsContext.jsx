@@ -23,7 +23,7 @@ export function CommentsProvider({ children }) {
 
   // ➕ Ajouter un avis
   const addComment = async (newComment) => {
-    const res = await fetch("http://localhost:5001/api/comments", {
+    const res = await fetch("http://localhost:5001/api/avis", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
