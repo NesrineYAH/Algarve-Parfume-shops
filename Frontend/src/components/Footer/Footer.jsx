@@ -34,11 +34,7 @@ const averageRating =
             {t("footer.newPerfume")}
           </a>
         </li>
-        <li>
-          <a href="" className="TitreH3">
-            {t("footer.faceCare")}
-          </a>
-        </li>
+    
         <li>
           <a href="" className="TitreH3">
             {t("footer.stores")}
@@ -56,15 +52,24 @@ const averageRating =
        <div>
   <h3>{t("footer.conditions")}</h3>
       <ul className="footer__ul">
-        <li>{t("footer.cookiesPolicy")}</li>
-            <li>
+
+     
+
+       
+        <li>
+           <Link to="/PolitiqueCookies" rel="noopener noreferrer">{t("footer.cookiesPolicy")}
+           </Link>
+  
+          </li>
+    
+          <li>
           <Link to="/mentions-legales"> {t("footer.legalNotice")}</Link>
         </li>
-        <li>{t("footer.cookiesPolicy")}</li>
-      
+     
+    
         <li><Link to="/CGV">{t("footer.terms")} Conditions Générales de Vente</Link></li>
-        <li><Link to="/PolitiqueConfidentialite">{t("footer.gdpr")} Politique de Confidentialité</Link></li>
-                <li><Link to="/securite-produits">{t("footer.rsgp")} Sécurité des Produits</Link></li>
+        <li><Link to="/PolitiqueConfidentialite"> </Link></li>
+                <li><Link to="/securite-produits">Sécurité des Produits</Link></li>
       </ul>
        </div>
 
@@ -108,7 +113,6 @@ const averageRating =
         </li>
       </ul>
        </div>
-      
   
                     {/* <LanguageSwitcher /> */}
       <div>
