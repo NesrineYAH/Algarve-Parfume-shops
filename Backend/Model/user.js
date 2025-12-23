@@ -1,6 +1,95 @@
 const mongoose = require("mongoose");
 
+const userSchema = new mongoose.Schema({
+  // 🧍 Identité
+  nom: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  prenom: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 
+  // 📧 Authentification
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+
+  // 🎭 Rôle
+  role: {
+    type: String,
+    enum: ["client", "admin"],
+    default: "client",
+  },
+
+  // 📅 Métadonnées
+  date_creation: {
+    type: Date,
+    default: Date.now,
+  },
+
+  // ✅ Vérification email
+  confirmationCode: {
+    type: String,
+    unique: true,
+  },
+  status: {
+    type: String,
+    enum: ["Pending", "Active"],
+    default: "Pending",
+  },
+
+  // 🛒 Panier
+  cart: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      quantite: {
+        type: Number,
+        default: 1,
+      },
+    },
+  ],
+
+  // ❤️ Favoris
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
+
+  // 🔑 Reset mot de passe
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
+
+  // 💳 Paiement (Stripe)
+  stripeCustomerId: {
+    type: String,
+    default: null,
+  },
+});
+
+module.exports = mongoose.model("User", userSchema);
+
+/*
 const userSchema = new mongoose.Schema({
   nom: { type: String, required: true },       // 🔹 anciennement 'name'
   prenom: { type: String, required: true },    // 🔹 nouveau champ
@@ -25,6 +114,4 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpires: { type: Date },
 });
 module.exports = mongoose.model("User", userSchema);
-
-//  nom: { type: String, required: true },       // 🔹 anciennement 'name'
-//  prenom: { type: String, required: true },    // 🔹 nouveau champ
+*/
