@@ -34,6 +34,11 @@ import PolitiqueConfidentialite from "./pages/PageSite/PolitiqueConfidentialite"
 import SecuriteProduits from "./pages/PageSite/SecuriteProduits";
 import AvisClients from "./pages/AvisClients/AvisClients";
 import SiteMap from "./pages/PageSite/SiteMap";
+import PaymentMethods from "./pages/Payment/PaymentMethods";
+import Confirmation from "./pages/Confirmation/Confirmation";
+
+
+
 
 
 
@@ -77,6 +82,8 @@ function App() {
           <Route path="/securite-produits" element={<SecuriteProduits />} />
           <Route path="/avis-clients" element={<AvisClients />} />
           <Route path="/sitemap" element={<SiteMap />} />
+          <Route path="/paiement-methods" element={<PaymentMethods />} />
+          <Route path="/confirmation" element={<Confirmation />} />
 
         </Routes>
 
