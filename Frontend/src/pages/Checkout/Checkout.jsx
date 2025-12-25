@@ -9,20 +9,11 @@ import "./Checkout.scss";
 
 export default function Checkout() {
   const { cartItems } = useContext(CartContext);
-  const { user, loading } = useContext(UserContext);
   const [cart, setCart] = useState([]);
   const [deliveryMode, setDeliveryMode] = useState("domicile");
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
-
-    //23/12/2025
-  useEffect(() => {
-  if (!loading && !user) {
-    navigate("/login", {
-      state: { redirectTo: "/checkout" },
-    });
-  }
-}, [user, loading, navigate]);
+  
 
   // Charger le panier : priorité au context, sinon fallback localStorage
   useEffect(() => {
@@ -49,19 +40,43 @@ export default function Checkout() {
     const price = Number(opt.prix || 0);
     return sum + price * qty;
   }, 0);
+  /* 25/12/2025
+const handleOrder = async () => {
+  try {
+    const preOrderId = localStorage.getItem("preOrderId");
 
-  const handleOrder = async () => {
-    if (!cart || cart.length === 0) {
-      alert("Votre panier est vide");
+    if (!preOrderId) {
+      alert("Aucune pré-commande trouvée");
+      navigate("/cart");
       return;
     }
 
+    await OrderService.finalizeOrder(preOrderId);
+
+    alert("✅ Commande confirmée !");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("preOrderId");
+
+    navigate("/confirmation");
+  } catch (error) {
+    console.error("Erreur finalisation :", error.response || error);
+    alert("❌ Impossible de confirmer la commande");
+  }
+};
+*/
+const handleOrder = async () => {
+  if (!cart || cart.length === 0) {
+    alert("Votre panier est vide");
+    return;
+  }
+
+  try {
     const itemsForOrder = cart.map((item) => {
       const opt = getSelectedOption(item);
       return {
         productId: item.productId || item._id,
         variantId: item.variantId,
-        nom: item.nom || "Produit",
+        nom: item.nom,
         quantite: Number(item.quantite || 1),
         imageUrl: item.imageUrl || "",
         options: {
@@ -72,31 +87,32 @@ export default function Checkout() {
       };
     });
 
-    const updatedOrderData = {
+    const orderData = {
       items: itemsForOrder,
       totalPrice: Number(total.toFixed(2)),
       delivery: {
         type: deliveryMode,
         address: deliveryMode === "domicile" ? address : "",
       },
+      status: "pending",
+      paymentStatus: "pending",
     };
 
-    try {
-      const preOrderId = localStorage.getItem("preOrderId");
-      console.log("Pré-commande ID:", preOrderId);
+    // 🟢 Création de la pré-commande
+    const response = await OrderService.createPreOrder(orderData);
+    const preOrderId = response.order._id;
 
-      if (!preOrderId) throw new Error("Aucune pré-commande trouvée !");
+    localStorage.setItem("preOrderId", preOrderId);
 
-      await OrderService.updateOrder(preOrderId, updatedOrderData);
-      console.log("Pré-commande mise à jour :", preOrderId);
+    // ➡️ Étape suivante : paiement
+    navigate("/Delivery");
+  } catch (error) {
+    console.error("Erreur création pré-commande :", error.response || error);
+    alert("❌ Impossible de passer à l’étape paiement");
+  }
+};
 
-      alert("✅ Pré-commande enregistrée avec succès !");
-      navigate("/delivery");
-    } catch (error) {
-      console.error("Erreur lors de la pré-commande :", error);
-      alert("❌ Impossible d’enregistrer la pré-commande");
-    }
-  };
+ 
 
   return (
     <div className="checkout-container">
@@ -152,8 +168,12 @@ export default function Checkout() {
           </button>
         </Link>
       </div>
+    </div>
+  );
+}
 
-      {/* Choix du mode de livraison */}
+
+      {/* Choix du mode de livraison 
       <div style={{ marginTop: 20 }}>
         <label>
           <input
@@ -185,13 +205,12 @@ export default function Checkout() {
           />
         </div>
       )}
-    </div>
-  );
-}
+*/}
+
 
 
   /*
-  const handleOrder = async () => {
+   const handleOrder = async () => {
     if (!cart || cart.length === 0) {
       alert("Votre panier est vide");
       return;
@@ -201,6 +220,7 @@ export default function Checkout() {
       const opt = getSelectedOption(item);
       return {
         productId: item.productId || item._id,
+        variantId: item.variantId,
         nom: item.nom || "Produit",
         quantite: Number(item.quantite || 1),
         imageUrl: item.imageUrl || "",
@@ -219,23 +239,16 @@ export default function Checkout() {
         type: deliveryMode,
         address: deliveryMode === "domicile" ? address : "",
       },
-      // status reste "pending" jusqu'au paiement
     };
 
     try {
       const preOrderId = localStorage.getItem("preOrderId");
-      console.log("Pré-commande ID:", preOrderId); //02/12
-
-      if (preOrderId) {
-        await OrderService.updatePreOrder(updatedOrderData);
-        console.log("Pré-commande mise à jour :", preOrderId);
-      } else {
-        const newPreOrder = await OrderService.createPreOrder(updatedOrderData);
-        console.log("Nouvelle pré-commande créée :", newPreOrder._id);
-      }
+      if (!preOrderId) throw new Error("Aucune pré-commande trouvée !");
+      await OrderService.updateOrder(preOrderId, updatedOrderData);
+      console.log("Pré-commande mise à jour :", preOrderId);
 
       alert("✅ Pré-commande enregistrée avec succès !");
-      navigate("/delivery"); // étape suivante
+      navigate("/delivery");
     } catch (error) {
       console.error("Erreur lors de la pré-commande :", error);
       alert("❌ Impossible d’enregistrer la pré-commande");

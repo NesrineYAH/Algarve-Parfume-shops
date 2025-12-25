@@ -36,7 +36,7 @@ import AvisClients from "./pages/AvisClients/AvisClients";
 import SiteMap from "./pages/PageSite/SiteMap";
 import PaymentMethods from "./pages/Payment/PaymentMethods";
 import Confirmation from "./pages/Confirmation/Confirmation";
-
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 
 
 
@@ -60,6 +60,7 @@ function App() {
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />
           <Route path="/Authentification" element={<Authentification />} />
+          <Route path="/Authentification/checkout" element={<Authentification />} />
           <Route path="/MonCompte" element={<MonCompte />} />
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
@@ -80,6 +81,7 @@ function App() {
           <Route path="/sitemap" element={<SiteMap />} />
           <Route path="/paiement-methods" element={<PaymentMethods />} />
           <Route path="/confirmation" element={<Confirmation />} />
+          <Route path="*" element={<ErrorPage />} />
 
         </Routes>
 

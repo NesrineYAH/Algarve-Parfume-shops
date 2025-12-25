@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
 import { registerUser, loginUser } from "../../Services/auth";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Authentification.scss";
 import { UserContext } from "../../context/UserContext";
+
 
 
 export default function Authentification() {
@@ -11,58 +12,11 @@ export default function Authentification() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-//18/12
-/*
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const location = useLocation();
+// 🔑 clé magique
+const redirectTo = location.state?.redirectTo || "/MonCompte";
 
-    try {
-      if (activeTab === "login") {
-        const response = await loginUser(form);
-        if (response.token) {
-          // Stockage
-          localStorage.setItem("token", response.token);
-          localStorage.setItem("userId", response.user._id);
-          localStorage.setItem("nom", response.user.nom);
-          localStorage.setItem("prenom", response.user.prenom);
-          localStorage.setItem("email", response.user.email);
-          localStorage.setItem("role", response.user.role);
 
-          setMessage("Connexion réussie !");
-          navigate("/MonCompte");
-        } else {
-          setMessage(response.message || "Identifiants invalides");
-        }
-        
-      } else {
-        // REGISTER
-        const response = await registerUser(form);
-
-        // ❌ Erreur d'inscription
-        if (!response.success) {
-          setMessage(response.message);
-          return;
-        }
-
-        // ✔ Succès inscription
-        const user = response.data.user;
-
-        localStorage.setItem("token", response.data.token || "");
-        localStorage.setItem("userId", user._id);
-        localStorage.setItem("nom", user.nom);
-        localStorage.setItem("prenom", user.prenom);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("role", user.role);
-
-        setMessage("Inscription réussie !");
-        navigate("/login"); // tu peux changer ici selon ton choix
-      }
-    } catch (err) {
-      setMessage("Erreur serveur, veuillez réessayer.");
-    }
-  };
-  */
-//18/12
 const { handleLogin, handleRegister } = useContext(UserContext);
 
 const handleSubmit = async (e) => {
@@ -76,7 +30,8 @@ const handleSubmit = async (e) => {
 
       if (response.user) {
         setMessage("Connexion réussie !");
-        navigate("/MonCompte");
+  //      navigate("/MonCompte");
+         navigate(redirectTo);
       } else {
         setMessage(response.message || "Identifiants invalides");
       }
@@ -98,6 +53,9 @@ const handleSubmit = async (e) => {
     setMessage("Erreur serveur, veuillez réessayer.");
   }
 };
+// 24/12/2025 
+// const redirectTo = location.state?.redirectTo || "/";
+// navigate(redirectTo);
 
 
   return (
@@ -179,6 +137,62 @@ const handleSubmit = async (e) => {
     </div>
   );
 }
+
+//18/12
+/*
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (activeTab === "login") {
+        const response = await loginUser(form);
+        if (response.token) {
+          // Stockage
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("userId", response.user._id);
+          localStorage.setItem("nom", response.user.nom);
+          localStorage.setItem("prenom", response.user.prenom);
+          localStorage.setItem("email", response.user.email);
+          localStorage.setItem("role", response.user.role);
+
+          setMessage("Connexion réussie !");
+          navigate("/MonCompte");
+        } else {
+          setMessage(response.message || "Identifiants invalides");
+        }
+        
+      } else {
+        // REGISTER
+        const response = await registerUser(form);
+
+        // ❌ Erreur d'inscription
+        if (!response.success) {
+          setMessage(response.message);
+          return;
+        }
+
+        // ✔ Succès inscription
+        const user = response.data.user;
+
+        localStorage.setItem("token", response.data.token || "");
+        localStorage.setItem("userId", user._id);
+        localStorage.setItem("nom", user.nom);
+        localStorage.setItem("prenom", user.prenom);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("role", user.role);
+
+        setMessage("Inscription réussie !");
+        navigate("/login"); // tu peux changer ici selon ton choix
+      }
+    } catch (err) {
+      setMessage("Erreur serveur, veuillez réessayer.");
+    }
+  };
+  */
+//18/12
+
+
+
 
 
 /*

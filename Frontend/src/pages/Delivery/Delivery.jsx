@@ -105,6 +105,18 @@ export default function Delivery({ onDeliveryChange }) {
       setLoading(false);
     }, 500); // simulate API delay
   }, []);
+  // handleFinalize 
+  const handleFinalize = async () => {
+  const preOrderId = localStorage.getItem("preOrderId");
+  if (!preOrderId) return;
+
+  await OrderService.finalizeOrder(preOrderId);
+
+  localStorage.removeItem("cart");
+  localStorage.removeItem("preOrderId");
+
+  navigate("/confirmation");
+};
 
   return (
     <div className="delivery-container">

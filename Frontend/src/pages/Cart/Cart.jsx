@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Cart.scss";
 import { Trash2 } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
-import OrderService from "../../Services/orderService";
+import { UserContext } from "../../context/UserContext";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
-  const [deliveryMode, setDeliveryMode] = useState("domicile");
-  const [address, setAddress] = useState("");
-  const currentStep = 1;
+  const { user, loading } = useContext(UserContext);
   const navigate = useNavigate();
+  const currentStep = 1;
 
+  // Charger le panier depuis localStorage
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);
@@ -23,26 +23,27 @@ export default function Cart() {
   };
 
   const increaseQuantity = (variantId) => {
-    const updated = cart.map((item) =>
-      item.variantId === variantId
-        ? { ...item, quantite: item.quantite + 1 }
-        : item
+    updateCart(
+      cart.map((item) =>
+        item.variantId === variantId
+          ? { ...item, quantite: item.quantite + 1 }
+          : item
+      )
     );
-    updateCart(updated);
   };
 
   const decreaseQuantity = (variantId) => {
-    const updated = cart.map((item) =>
-      item.variantId === variantId && item.quantite > 1
-        ? { ...item, quantite: item.quantite - 1 }
-        : item
+    updateCart(
+      cart.map((item) =>
+        item.variantId === variantId && item.quantite > 1
+          ? { ...item, quantite: item.quantite - 1 }
+          : item
+      )
     );
-    updateCart(updated);
   };
 
   const removeItem = (variantId) => {
-    const updated = cart.filter((item) => item.variantId !== variantId);
-    updateCart(updated);
+    updateCart(cart.filter((item) => item.variantId !== variantId));
   };
 
   const total = cart.reduce(
@@ -51,56 +52,22 @@ export default function Cart() {
     0
   );
 
-  const handlePreOrder = async () => {
+  const handleNextStep = () => {
     if (cart.length === 0) {
       alert("Votre panier est vide");
       return;
     }
-    //  const variantId = `${product._id}-${selectedOption.size}-${selectedOption.unit}`;
 
-    const itemsForOrder = cart.map((item) => ({
-      productId: item.productId,
-      variantId: item.variantId, // ✅ ajouter la référence de la variante
-      nom: item.nom,
-      quantite: Number(item.quantite),
-      imageUrl: item.imageUrl,
-      options: {
-        size: Number(item.options?.size),
-        unit: item.options?.unit || "ml",
-        prix: Number(item.options?.prix || 0),
-      },
-    }));
-
-    const preOrderData = {
-      items: itemsForOrder,
-      totalPrice: Number(total),
-      status: "pending",
-      paymentStatus: "pending",
-      delivery: {
-        type: deliveryMode,
-        address: deliveryMode === "domicile" ? address : "",
-      },
-    };
-
-    try {
-      let preOrderId = localStorage.getItem("preOrderId");
-
-      if (preOrderId) {
-        await OrderService.updateOrder(preOrderId, preOrderData);
-        console.log("Pré-commande mise à jour :", preOrderId);
-      } else {
-        const response = await OrderService.createPreOrder(preOrderData);
-        preOrderId = response.order._id; // ✅ récupère correctement l'ID
-        localStorage.setItem("preOrderId", preOrderId);
-        console.log("Nouvelle pré-commande créée :", preOrderId);
-      }
-
-      alert("Pré-commande enregistrée !");
-      navigate("/checkout");
-    } catch (error) {
-      console.error("Erreur lors de la pré-commande :", error);
-      alert("Impossible d'enregistrer la pré-commande");
+    // 🔐 Si non connecté → login puis checkout
+    if (!user) {
+      navigate("/Authentification", {
+        state: { redirectTo: "/checkout" },
+      });
+      return;
     }
+
+    // ✅ Connecté → checkout
+    navigate("/checkout");
   };
 
   return (
@@ -113,17 +80,18 @@ export default function Cart() {
       ) : (
         <div className="cart-items">
           {cart.map((item, index) => (
-               <div className="cart-item" key={`${item.variantId}-${index}`}>
+            <div className="cart-item" key={`${item.variantId}-${index}`}>
               <img
                 src={`http://localhost:5001${item.imageUrl}`}
                 alt={item.nom}
                 className="cart-item__img"
               />
+
               <div className="item-details">
                 <h3>{item.nom}</h3>
-                <p>{(item.options?.prix || 0).toFixed(2)} €</p>
+                <p>{Number(item.options?.prix || 0).toFixed(2)} €</p>
                 <p>
-                  Option choisie : {item.options?.size} {item.options?.unit}
+                  Option : {item.options?.size} {item.options?.unit}
                 </p>
 
                 <div className="quantity-control">
@@ -145,10 +113,10 @@ export default function Cart() {
           ))}
 
           <div className="cart-summary">
-            <h2>Total: {total.toFixed(2)} €</h2>
+            <h2>Total : {total.toFixed(2)} €</h2>
 
-            <button className="checkout-btn" onClick={handlePreOrder}>
-              étape suivante
+            <button className="checkout-btn" onClick={handleNextStep}>
+              Étape suivante
             </button>
           </div>
         </div>
@@ -156,3 +124,4 @@ export default function Cart() {
     </div>
   );
 }
+
