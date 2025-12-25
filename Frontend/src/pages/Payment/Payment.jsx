@@ -5,34 +5,230 @@ import { CartContext } from "../../context/CartContext";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { loadStripe } from "@stripe/stripe-js";
 
+
+
+const stripePromise = loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLIC_KEY
+);
+
 export default function Payment() {
-  const location = useLocation();
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
-  const cart = cartItems || [];
+//  const cart = cartItems || [];
+const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
+console.log("Cart depuis contexte ou localStorage :", cart);
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Calcul total
+  useEffect(() => {
+    if (!cart || cart.length === 0) {
+       setError("Le panier est vide, impossible de payer.");
+       navigate("/cart");
+    }
+  }, [cart, navigate]);
+
+  // 💰 Total
+  const total = cart.reduce(
+    (sum, item) =>
+      sum + Number(item.options?.prix || 0) * Number(item.quantite || 1),
+    0
+  );
+
+  /* STRIPE */
+  const handleStripePayment = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(
+        "http://localhost:5001/api/stripe/create-checkout-session",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: cart,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erreur création session Stripe");
+      }
+
+      const session = await response.json();
+      const stripe = await stripePromise;
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        setError(result.error.message);
+      }
+    } catch (err) {
+      console.error("Stripe error:", err);
+      setError("Le paiement Stripe a échoué.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /*  PAYPAL */
+
+useEffect(() => {
+  if (paymentMethod !== "paypal") return;
+
+  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+
+  if (!paypalClientId) {
+    setError("PayPal client ID manquant");
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
+  script.async = true;
+
+  script.onload = () => {
+    if (!window.paypal) return;
+
+    window.paypal
+      .Buttons({
+        createOrder: (_, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              { amount: { value: total.toFixed(2) } },
+            ],
+          });
+        },
+        onApprove: async (_, actions) => {
+          await actions.order.capture();
+          navigate("/delivery");
+        },
+        onError: (err) => {
+          console.error("PayPal error:", err);
+          setError("Le paiement PayPal a échoué.");
+        },
+      })
+      .render("#paypal-button-container");
+  };
+
+  document.body.appendChild(script);
+
+  return () => {
+    document.body.removeChild(script);
+    const container = document.getElementById("paypal-button-container");
+    if (container) container.innerHTML = "";
+  };
+}, [paymentMethod, total, navigate]);
+
+
+
+  /* UI */
+  return (
+    <div className="payment-container">
+      <CheckoutSteps step={3} />
+
+      <h2>💳 Choisissez votre mode de paiement</h2>
+
+      <div className="payment-options">
+        <label>
+          <input
+            type="radio"
+            value="card"
+            checked={paymentMethod === "card"}
+            onChange={() => setPaymentMethod("card")}
+          />
+          Carte bancaire (Stripe)
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="paypal"
+            checked={paymentMethod === "paypal"}
+            onChange={() => setPaymentMethod("paypal")}
+          />
+          PayPal
+        </label>
+      </div>
+
+      <div className="order-summary">
+        <h3>Récapitulatif de la commande</h3>
+        <ul>
+          {cart.map((item) => (
+            <li key={item.variantId}>
+              {item.nom} – {item.options.size} {item.options.unit} ×{" "}
+              {item.quantite} ={" "}
+              {(item.options.prix * item.quantite).toFixed(2)} €
+            </li>
+          ))}
+        </ul>
+        <strong>Total : {total.toFixed(2)} €</strong>
+      </div>
+
+      {error && <p className="error">{error}</p>}
+
+      {paymentMethod === "paypal" ? (
+        <div id="paypal-button-container" />
+      ) : (
+        <button
+          className="pay-btn"
+          onClick={handleStripePayment}
+          disabled={loading}
+        >
+          {loading ? "Paiement en cours..." : "Payer maintenant"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+export default function Payment() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { cartItems } = useContext(CartContext);
+  const cart = cartItems || [];
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const total = cart.reduce(
     (sum, item) =>
       sum + Number(item.options?.prix || 0) * Number(item.quantite || 0),
     0
   );
 
-  // Stripe : load stripe object
-  const stripePromise = loadStripe("VOTRE_PUBLISHABLE_KEY_STRIPE"); // <-- à remplacer
 
-  // PayPal : charger le script
+     const stripePromise = loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLIC_KEY
+);
+
   useEffect(() => {
     if (paymentMethod !== "paypal") return;
 
     const script = document.createElement("script");
     script.src =
-  "https://www.paypal.com/sdk/js?client-id=AYYQRDXtAAE0a1V91P9i6MrJYy2lOIgyIgg0dT4zUT-ezZPocGBvmbl70Oeg8Y24KjsMXO_5TaNIts9t&currency=EUR"; // <-- à remplacer
-    //  "https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=EUR";
+  "https://www.paypal.com/sdk/js?client-id&currency=EUR"; 
 
     script.async = true;
     script.onload = () => {
@@ -49,7 +245,7 @@ export default function Payment() {
                 alert(
                   `Paiement PayPal effectué avec succès par ${details.payer.name.given_name}`
                 );
-                navigate("/"); // ou page de confirmation
+                navigate("/confirmation"); 
               });
             },
             onError: (err) => {
@@ -62,7 +258,6 @@ export default function Payment() {
     };
     document.body.appendChild(script);
 
-    // Nettoyage du script quand le composant est démonté ou méthode change
     return () => {
       document.body.removeChild(script);
       const container = document.getElementById("paypal-button-container");
@@ -81,7 +276,6 @@ export default function Payment() {
     try {
       const stripe = await stripePromise;
 
-      // Appel backend pour créer la session Stripe
         const response = await fetch("http://localhost:5001/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -179,5 +373,5 @@ export default function Payment() {
     </div>
   );
 }
+*/
 
-// "https://www.paypal.com/sdk/js?client-id=TON_CLIENT_ID_SANDBOX&currency=EUR"; // <-- à remplacer

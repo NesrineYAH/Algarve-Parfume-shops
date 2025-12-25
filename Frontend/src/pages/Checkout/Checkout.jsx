@@ -112,8 +112,6 @@ const handleOrder = async () => {
   }
 };
 
- 
-
   return (
     <div className="checkout-container">
       <CheckoutSteps step={2} />

@@ -1,39 +1,52 @@
 const express = require("express");
 const Stripe = require("stripe");
 require("dotenv").config();
-
-
 const router = express.Router();
 
-// Ta clé secrète Stripe (NE JAMAIS mettre dans le frontend)
-const stripe = new Stripe("process.env.sdk_test");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // ✅ corrige
 
 router.post("/create-checkout-session", async (req, res) => {
-    try {
-        const { cart } = req.body;
+  try {
+    const { cart } = req.body;
 
-        const line_items = cart.map((item) => ({
-            price_data: {
-                currency: "eur",
-                product_data: { name: item.nom },
-                unit_amount: Math.round(item.options.prix * 100),
-            },
-            quantity: item.quantite,
-        }));
+  console.log("Cart reçu :", cart);
 
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            line_items,
-            success_url: "http://localhost:5173/success",
-            cancel_url: "http://localhost:5173/cancel",
-        });
-
-        res.json({ id: session.id });
-    } catch (err) {
-        console.error("Erreur Stripe :", err);
-        res.status(500).json({ error: "Erreur Stripe" });
+    if (!cart || !Array.isArray(cart) || cart.length === 0) {
+      return res.status(400).json({ error: "Le panier est vide ou invalide" });
     }
+    const line_items = cart.map((item) => {
+      const amount = Math.round(Number(item.options?.prix || 0) * 100);
+      const quantity = Number(item.quantite || 1);
+
+    //  if (amount <= 0) throw new Error("Prix invalide pour Stripe");
+   if (!prix || !quantity) {
+        throw new Error(`Item invalide: ${item.nom}`);
+      }
+
+
+      return {
+        price_data: {
+          currency: "eur",
+          product_data: { name: item.nom || "Produit" },
+          unit_amount: amount,
+        },
+        quantity,
+      };
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items,
+      success_url: "http://localhost:5173/success",
+      cancel_url: "http://localhost:5173/cancel",
+    });
+
+    res.json({ id: session.id });
+  } catch (err) {
+    console.error("Erreur Stripe :", err);
+    res.status(500).json({ error: "Erreur création session Stripe" });
+  }
 });
 
 module.exports = router;
