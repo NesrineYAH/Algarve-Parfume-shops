@@ -37,43 +37,41 @@ console.log("Cart depuis contexte ou localStorage :", cart);
   );
 
   /* STRIPE */
-  const handleStripePayment = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+const handleStripePayment = async () => {
+  try {
+    setLoading(true);
+    setError(null);
 
-      const response = await fetch(
-        "http://localhost:5001/api/stripe/create-checkout-session",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            items: cart,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Erreur création session Stripe");
+    const response = await fetch(
+      "http://localhost:5001/api/stripe/create-checkout-session",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cart }),
       }
+    );
 
-      const session = await response.json();
-      const stripe = await stripePromise;
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-
-      if (result.error) {
-        setError(result.error.message);
-      }
-    } catch (err) {
-      console.error("Stripe error:", err);
-      setError("Le paiement Stripe a échoué.");
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      const errData = await response.json();
+      throw new Error(errData.error || "Erreur création session Stripe");
     }
-  };
+
+    const { id: sessionId } = await response.json();
+
+    if (!sessionId) {
+      throw new Error("ID de session Stripe introuvable");
+    }
+
+    // Redirection manuelle vers Stripe Checkout
+    window.location.href = `https://checkout.stripe.com/pay/${sessionId}`;
+
+  } catch (err) {
+    console.error("Stripe error:", err);
+    setError(err.message || "Le paiement Stripe a échoué.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   /*  PAYPAL */
 
@@ -126,13 +124,11 @@ useEffect(() => {
 
 
 
-  /* UI */
   return (
     <div className="payment-container">
       <CheckoutSteps step={3} />
 
       <h2>💳 Choisissez votre mode de paiement</h2>
-
       <div className="payment-options">
         <label>
           <input
@@ -154,7 +150,6 @@ useEffect(() => {
           PayPal
         </label>
       </div>
-
       <div className="order-summary">
         <h3>Récapitulatif de la commande</h3>
         <ul>
@@ -170,7 +165,6 @@ useEffect(() => {
       </div>
 
       {error && <p className="error">{error}</p>}
-
       {paymentMethod === "paypal" ? (
         <div id="paypal-button-container" />
       ) : (

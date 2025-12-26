@@ -23,6 +23,7 @@ import Orders from "./pages/Orders/Orders";
 import Delivery from "./pages/Delivery/Delivery";
 import Checkout from "./pages/Checkout/Checkout";
 import Payment from "./pages/Payment/Payment";
+import Success from "./pages/Payment/Success";
 import ForgotPassword from "./pages/pagePassword/ForgotPassword";
 import ResetPassword from "./pages/pagePassword/ResetPassword";
 import Contact from "./pages/Contact/Contact";
@@ -68,6 +69,7 @@ function App() {
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/success" element={<Success />} />
           <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/Contact" element={<Contact />} />
