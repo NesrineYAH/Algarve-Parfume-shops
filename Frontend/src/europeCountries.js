@@ -1,0 +1,18 @@
+export const EUROPE_COUNTRIES = [
+  { code: "PT", name: "Portugal", dial: "+351" },
+  { code: "FR", name: "France", dial: "+33" },
+  { code: "ES", name: "Espagne", dial: "+34" },
+  { code: "DE", name: "Allemagne", dial: "+49" },
+  { code: "IT", name: "Italie", dial: "+39" },
+  { code: "BE", name: "Belgique", dial: "+32" },
+  { code: "NL", name: "Pays-Bas", dial: "+31" },
+  { code: "LU", name: "Luxembourg", dial: "+352" },
+  { code: "CH", name: "Suisse", dial: "+41" },
+  { code: "AT", name: "Autriche", dial: "+43" },
+  { code: "IE", name: "Irlande", dial: "+353" },
+  { code: "PL", name: "Pologne", dial: "+48" },
+  { code: "SE", name: "Suède", dial: "+46" },
+  { code: "NO", name: "Norvège", dial: "+47" },
+  { code: "DK", name: "Danemark", dial: "+45" },
+  { code: "FI", name: "Finlande", dial: "+358" },
+];
