@@ -4,8 +4,6 @@ import axios from "axios";
 import "./Product.scss";
 import { useTranslation } from "react-i18next";
 
-import { getProductsByGenre, getAllProducts } from "../../Services/productService";
-
 
 const Product = () => {
   const { id } = useParams();

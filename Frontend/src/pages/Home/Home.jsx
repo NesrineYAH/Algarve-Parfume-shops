@@ -6,6 +6,7 @@ import { Heart } from "lucide-react";
 import { useLocation } from "react-router-dom"
 import { getProductsByGenre, getAllProducts } from "../../Services/productService";
 
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -136,7 +137,7 @@ const fetchRatings = async (productsList) => {
 
   return (
     <div className="home">
-      <h2>Nos Produits</h2>
+          {/*    <h2>Nos Produits</h2> */}
       <SearchBar onSearch={handleSearch} className="searchBar" />
       <div className="grid">
         {filtered.map((product) => (
@@ -165,8 +166,10 @@ const fetchRatings = async (productsList) => {
               )}
               <h3>{product.nom}</h3>
               <p>{product.stock} en stock</p>
-            </Link>
+<p> à partir de {Math.min(...product.options.map(o => o.prix))} € </p>
 
+            </Link>
+{/* <p>à partir de {product.options[0].prix} €</p>*/}
 <div className="rating">
   ⭐ {ratings[product._id] === 0
         ? "0"
