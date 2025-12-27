@@ -16,6 +16,7 @@ const commentsRoutes = require("./routes/comments");
 const notificationsRoutes = require("./routes/notifications");
 const promotionsRoutes = require("./routes/promotions");
 const avisRoutes = require("./routes/avis");
+const stripeWebhook = require("./routes/stripeWebhook");
 require("./mongoDB/DB");
 
 const app = express();
@@ -24,6 +25,8 @@ const PORT = process.env.PORT || 5000;
 // Middlewares
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(bodyParser.json());
+// ⚠️ WEBHOOK AVANT express.json()
+app.use("/api/stripe", stripeWebhook);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));

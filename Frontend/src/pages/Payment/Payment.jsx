@@ -35,7 +35,7 @@ export default function Payment() {
 
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
+/*
 const handleStripePayment = async () => {
   try {
     setLoading(true);
@@ -73,6 +73,37 @@ const handleStripePayment = async () => {
   } catch (err) {
     console.error("Stripe error:", err);
     setError(err.message || "Le paiement Stripe a échoué.");
+  } finally {
+    setLoading(false);
+  }
+};
+*/
+const handleStripePayment = async () => {
+  try {
+    setLoading(true);
+    setError(null);
+
+    const response = await fetch(
+      "http://localhost:5001/api/stripe/create-checkout-session",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cart }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!data.url) {
+      throw new Error("URL Stripe manquante");
+    }
+
+    // ✅ SEULE MÉTHODE QUI FONCTIONNE
+    window.location.href = data.url;
+
+  } catch (err) {
+    console.error(err);
+    setError(err.message);
   } finally {
     setLoading(false);
   }

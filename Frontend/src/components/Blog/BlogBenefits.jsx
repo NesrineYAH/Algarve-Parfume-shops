@@ -11,7 +11,7 @@ export default function BlogBenefits() {
     { icon: <Truck />, title: t("blog.Delivery"), description: t("blog.DeliveryP") },
     { icon: <CreditCard />, title: t("blog.payment"), description: "" },
     { icon: <Gift />, title: t("blog.presente"), description: "" },
-    { icon: <Package />, title: t("blog.Samples"), description: "" },
+    // { icon: <Package />, title: t("blog.Samples"), description: "" },
     { icon: <Tag />, title: t("blog.Gift_Card"), description: "" },
     { icon: <Headphones />, title: t("blog.Customer_Service"), description: t("blog.Customer_ServiceP") }
   ];

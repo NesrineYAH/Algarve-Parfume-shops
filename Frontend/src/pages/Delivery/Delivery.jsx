@@ -150,7 +150,7 @@ export default function Delivery() {
           </div>
         </div>
 
-        <Link to="/Payment">
+        <Link to="/payment">
           <button className="Button">Continuer vers le paiement</button>
         </Link>
       </form>

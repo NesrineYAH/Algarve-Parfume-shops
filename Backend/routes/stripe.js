@@ -10,49 +10,40 @@ router.post("/create-checkout-session", async (req, res) => {
   try {
     const { cart } = req.body;
 
-    console.log("Cart reçu :", cart); // doit être un tableau
-
-    // Vérification du panier
     if (!cart || !Array.isArray(cart) || cart.length === 0) {
-      return res.status(400).json({ error: "Le panier est vide ou invalide" });
+      return res.status(400).json({ error: "Panier invalide" });
     }
 
-    // Préparation des items pour Stripe
-    const line_items = cart.map((item) => {
-      const amount = Math.round(Number(item.options?.prix || 0) * 100);
-      const quantity = Number(item.quantite || 1);
-
-      if (!amount || !quantity) {
-        throw new Error(`Item invalide: ${item.nom}`);
-      }
-
-      return {
-        price_data: {
-          currency: "eur",
-          product_data: { name: item.nom || "Produit" },
-          unit_amount: amount,
+    const line_items = cart.map((item) => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.nom || "Produit",
         },
-        quantity,
-      };
-    });
+        unit_amount: Math.round(item.options.prix * 100),
+      },
+      quantity: item.quantite || 1,
+    }));
 
-    // Création de la session Stripe
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
       mode: "payment",
       line_items,
       success_url: "http://localhost:5173/success",
       cancel_url: "http://localhost:5173/cancel",
     });
 
-    console.log("Session Stripe créée :", session.id);
+    console.log("✅ Session Stripe créée :", session.id);
+    console.log("➡️ URL Stripe :", session.url);
 
-    // Envoi de l'ID de session au frontend
-    res.json({ id: session.id });
+    // 🔥 IMPORTANT
+    res.json({ url: session.url });
+
   } catch (err) {
-    console.error("Erreur Stripe :", err);
-    res.status(500).json({ error: "Erreur création session Stripe" });
+    console.error("❌ Stripe error:", err);
+    res.status(500).json({ error: "Erreur Stripe" });
   }
 });
+
+
 
 module.exports = router;

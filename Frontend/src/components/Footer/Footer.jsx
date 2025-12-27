@@ -27,7 +27,6 @@ const averageRating =
           <a href="/sitemap" className="TitreH3">
             {t("footer.sitemap")}
           </a>
-          
         </li>
         <li>
           <a href="" className="TitreH3">
@@ -37,7 +36,10 @@ const averageRating =
     
         <li>
           <a href="" className="TitreH3">
-            {t("footer.stores")}
+            {t("footer.stores")}        <br />
+            Av. Francisco Sá Carneiro, 
+            <br />
+            8125-507 Quarteira, Portugal
           </a>
         </li>
         <li>
