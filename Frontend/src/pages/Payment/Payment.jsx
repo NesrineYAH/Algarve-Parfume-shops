@@ -5,18 +5,14 @@ import { CartContext } from "../../context/CartContext";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { loadStripe } from "@stripe/stripe-js";
 
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-
-const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLIC_KEY
-);
 
 export default function Payment() {
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
-//  const cart = cartItems || [];
-const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
-console.log("Cart depuis contexte ou localStorage :", cart);
+  const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
+  console.log("Cart depuis contexte ou localStorage :", cart);
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
@@ -36,7 +32,10 @@ console.log("Cart depuis contexte ou localStorage :", cart);
     0
   );
 
-  /* STRIPE */
+
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
 const handleStripePayment = async () => {
   try {
     setLoading(true);
@@ -62,8 +61,14 @@ const handleStripePayment = async () => {
       throw new Error("ID de session Stripe introuvable");
     }
 
-    // Redirection manuelle vers Stripe Checkout
-    window.location.href = `https://checkout.stripe.com/pay/${sessionId}`;
+    // 🔹 Nouvelle méthode : utiliser Stripe.js pour redirection
+    const stripe = await stripePromise;
+    const { error } = await stripe.redirectToCheckout({ sessionId });
+
+    if (error) {
+      console.error("Stripe redirect error:", error);
+      setError(error.message);
+    }
 
   } catch (err) {
     console.error("Stripe error:", err);
