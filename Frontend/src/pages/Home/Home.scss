@@ -39,6 +39,38 @@
             box-shadow: 0 4px 12px rgba(26, 24, 24, 0.15);
         }
 
+        //27/12/2025
+        .card__favorite {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+
+            .icone {
+                width: 28px;
+                height: 28px;
+                stroke: #999; // couleur du contour par défaut
+                fill: transparent; // cœur vide
+                transition: all 0.25s ease;
+            }
+
+            // ❤️ Cœur rempli quand le produit est en favoris
+            .active {
+                stroke: red;
+                fill: red;
+            }
+
+            // 🤍 Cœur vide quand non favori
+            .red {
+                stroke: red;
+                fill: transparent;
+            }
+
+            &:hover .icone {
+                transform: scale(1.1);
+            }
+        }
+
         .card_img {
             height: 180px;
             border-radius: 8px;

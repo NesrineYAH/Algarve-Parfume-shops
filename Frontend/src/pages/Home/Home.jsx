@@ -175,7 +175,17 @@ const fetchRatings = async (productsList) => {
 
 {/*}  <div className="rating">
   ⭐ {ratings[product._id]?.toFixed(1) || "0"} 
-</div> */}
+</div> 
+
+
+// arrondir à 1 décimale ou afficher 0 si pas de note
+<div className="rating">
+  ⭐ {Number.isInteger(ratings[product._id])
+        ? ratings[product._id]
+        : ratings[product._id]?.toFixed(1)}
+</div>
+
+*/}
             <Link to={`/product/${product._id}`}>
               <button>Ajouter au panier</button>
             </Link>
