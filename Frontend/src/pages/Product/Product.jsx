@@ -64,7 +64,6 @@ const Product = () => {
     fetchComments();
   }, [id]);
 
-
   const addToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -92,8 +91,6 @@ const Product = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
     setShowModal(true);
   };
-
-
 
 const reportComment = async (commentId) => {
   try {

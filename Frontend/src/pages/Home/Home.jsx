@@ -16,40 +16,9 @@ const Home = () => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  // ✅ Fonction panier définie ici
-  const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existing = cart.find((item) => item._id === product._id);
-
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-  };
-/*
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("http://localhost:5001/api/products");
-        const data = await res.json();
-        const prod = Array.isArray(data) ? data : data.products;
-        setProducts(prod);
-        setFiltered(prod);
-      } catch (err) {
-        setError("Impossible de récupérer les produits.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-*/
-
  const location = useLocation();
+ const [ratings, setRatings] = useState({});
+// pour stocker les commentaires par produit
 
 
 useEffect(() => {
@@ -85,14 +54,6 @@ useEffect(() => {
 }, [location.search]);
 
 
-
-
-
-
-
-
-
-
   const handleSearch = (query) => {
     if (!query.trim()) return setFiltered(products);
     const results = products.filter((p) =>
@@ -111,6 +72,64 @@ useEffect(() => {
     setFavorites(updated);
     localStorage.setItem("favorites", JSON.stringify(updated));
   };
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/api/products");
+      const data = await res.json();
+      const prod = Array.isArray(data) ? data : data.products;
+
+      setProducts(prod);
+      fetchRatings(prod);
+    
+      const params = new URLSearchParams(location.search);
+      const genre = params.get("genre");
+
+      if (genre) {
+        const filteredByGenre = prod.filter(
+          (p) => p.genre?.toLowerCase() === genre.toLowerCase()
+        );
+        setFiltered(filteredByGenre);
+      } else {
+        setFiltered(prod);
+      }
+    } catch (err) {
+      setError("Impossible de récupérer les produits.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [location.search]);
+
+
+// 🔥 Fonction pour récupérer les commentaires
+const fetchRatings = async (productsList) => {
+  const allRatings = {};
+
+  for (const p of productsList) {
+    try {
+      const res = await fetch(`http://localhost:5001/api/products/${p._id}/comments`);
+      const data = await res.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        const avg =
+          data.reduce((sum, c) => sum + (c.rating || 0), 0) / data.length;
+
+        allRatings[p._id] = avg;
+      } else {
+        allRatings[p._id] = 0;
+      }
+    } catch (err) {
+      allRatings[p._id] = 0;
+    }
+  }
+
+  setRatings(allRatings);
+};
+
 
   if (loading) return <p>Chargement des produits...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -135,8 +154,7 @@ useEffect(() => {
                 }`}
               />
             </div>
-
-            {/* Image + infos cliquables */}
+   
             <Link to={`/product/${product._id}`} className="card__content">
               {product.imageUrl && (
                 <img
@@ -149,11 +167,15 @@ useEffect(() => {
               <p>{product.stock} en stock</p>
             </Link>
 
-            {/* Bouton panier 
-            <button className="btn-Add" onClick={() => addToCart(product)}>
-              Ajouter au panier
-            </button>
-*/}
+<div className="rating">
+  ⭐ {ratings[product._id] === 0
+        ? "0"
+        : ratings[product._id]?.toFixed(1)}
+</div>
+
+{/*}  <div className="rating">
+  ⭐ {ratings[product._id]?.toFixed(1) || "0"} 
+</div> */}
             <Link to={`/product/${product._id}`}>
               <button>Ajouter au panier</button>
             </Link>
@@ -167,10 +189,47 @@ useEffect(() => {
 export default Home;
 
 /*
+  // ✅ Fonction panier définie ici
+  const addToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find((item) => item._id === product._id);
+
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
+*/
+  
+/*
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/products");
+        const data = await res.json();
+        const prod = Array.isArray(data) ? data : data.products;
+        setProducts(prod);
+        setFiltered(prod);
+      } catch (err) {
+        setError("Impossible de récupérer les produits.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+*/
+
+
+/*
 - Les Hooks → toujours en haut du composant, avant tout return.
 - Les fonctions utilitaires (addToCart, toggleFavorite, etc.) → tu peux les mettre avant ou après les useEffect, tant qu’elles sont définies avant leur utilisation dans le return.
 👉 Donc tu peux mettre addToCart juste après tes useState, avant ou après ton useEffect, ça ne change rien.
-
+👉 toFixed(1) force toujours un chiffre après la virgule, même si la valeur est 0.
 
 */
 
