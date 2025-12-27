@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import OrderService from "../../Services/orderService";
 import "./Orders.scss";
 import { UserContext } from "../../context/UserContext";
-
+import { Link } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -116,9 +117,15 @@ export default function Orders() {
             <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer
             </button>
-            <button onClick={() => handleUpdate(order._id)} className="Button">
-              Confirmer et payer
-            </button>
+         <button
+  onClick={() => { handleUpdate(order._id);
+    window.location.href = `/payment/${order._id}`;
+  }}
+  className="Button"
+>
+  Confirmer et payer
+</button>
+
           </div>
         ))
       )}
@@ -154,9 +161,7 @@ export default function Orders() {
             <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer la commande
             </button>
-              <button  className="Button">
-          passer  au payment 
-            </button>
+        <Link to={`/payment/${order._id}`}> <button className="Button">Passer au payment</button> </Link>
           </div>
         ))
       )}
