@@ -21,13 +21,13 @@ export default function ErrorPage() {
             ← Retour
           </button>
 
-          <Link to="/">
+          <Link to="/Home">
             <button className="primary">
               🏠 Accueil
             </button>
           </Link>
 
-          <Link to="/shop">
+          <Link to="/Home">
             <button>
               🛍️ Boutique
             </button>

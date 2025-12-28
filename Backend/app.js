@@ -24,9 +24,14 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(bodyParser.json());
+
 // ⚠️ WEBHOOK AVANT express.json()
-app.use("/api/stripe", stripeWebhook);
+app.use(
+  "/api/stripe/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  stripeWebhook
+);
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
