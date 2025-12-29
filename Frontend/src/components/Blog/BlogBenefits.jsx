@@ -17,17 +17,55 @@ export default function BlogBenefits() {
   ];
 
   return (
-    <section className="blog-benefits">
+    // <section className="blog-benefits">
+    //   <div className="benefits-container">
+    //     {benefits.map((item, index) => (
+    //       <div key={index} className="benefit-card">
+    //         <div className="icon">{item.icon}</div>
+    //         <div className="text">
+    //           <h3>{item.title}</h3>
+    //           {item.description && <p>{item.description}</p>}
+    //         </div>
+    //       </div>
+    //     ))}
+    //   </div>
+    // </section>
+
+        <section className="blog-benefits">
       <div className="benefits-container">
-        {benefits.map((item, index) => (
-          <div key={index} className="benefit-card">
-            <div className="icon">{item.icon}</div>
+      
+          <div className="benefit-card">
+            <div className="icon"> <Truck /> </div>
             <div className="text">
-              <h3>{item.title}</h3>
-              {item.description && <p>{item.description}</p>}
+              <h3>{t("blog.Delivery")}</h3>
+           <p>{t("blog.Delivery")}</p>
             </div>
           </div>
-        ))}
+   
+      <div className="benefit-card">
+            <div className="icon"> <CreditCard /> </div>
+            <div className="text">
+              <h3>{t("blog.payment")}</h3>
+           <p>{t("")}</p>
+            </div>
+       </div>
+
+           <div className="benefit-card">
+            <div className="icon"> <Gift /> </div>
+            <div className="text">
+              <h3>{t("blog.presente")}</h3>
+           <p>{t("")}</p>
+            </div>
+       </div>
+
+                  <div className="benefit-card">
+            <div className="icon">  <Headphones /> </div>
+            <div className="text">
+              <h3>{t("blog.Customer_Service")}</h3>
+           <p>{t("blog.Customer_ServiceP")}</p>
+            </div>
+       </div>
+
       </div>
     </section>
   );

@@ -1,13 +1,14 @@
 .blog-benefits {
-    padding: 50px 20px;
+    padding: 1S0px 20px;
     background-color: #f8f8f8;
 
     .benefits-container {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
+        display: flex;
+        justify-content: space-evenly;
+        //    grid-template-columns: 1fr;
+        gap: 10px;
         max-width: 1200px;
-        margin: 0 auto;
+        margin: 50px auto;
 
         @media (min-width: 600px) {
             grid-template-columns: repeat(2, 1fr);
@@ -19,6 +20,7 @@
     }
 
     .benefit-card {
+        width: 240px;
         background-color: #ebe2ea;
         padding: 8px;
         border-radius: 12px;

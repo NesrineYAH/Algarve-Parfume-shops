@@ -36,6 +36,8 @@ import SecuriteProduits from "./pages/PageSite/SecuriteProduits";
 import AvisClients from "./pages/AvisClients/AvisClients";
 import SiteMap from "./pages/PageSite/SiteMap";
 import PaymentMethods from "./pages/Payment/PaymentMethods";
+import PaymentCancelled from "./pages/Payment/PaymentCancelled";
+
 import Confirmation from "./pages/Confirmation/Confirmation";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 
@@ -70,6 +72,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/payment/:orderId" element={<Payment />} />
+          <Route path="/payment-cancelled" element={<PaymentCancelled />} />
           <Route path="/success" element={<Success />} />
           <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />

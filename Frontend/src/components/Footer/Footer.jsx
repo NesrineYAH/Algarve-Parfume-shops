@@ -5,13 +5,23 @@ import "./Footer.scss";
 import { Link } from "react-router-dom";
 import RatingStars from "../ReviewSection/RatingStars";
 import { AvisContext } from "../../context/AvisContext";
-// import LanguageSwitcher from "../Language/Language";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Footer() {
-  const { avis, loading } = React.useContext(AvisContext);
-  
+  const { avis, loading } = React.useContext(AvisContext); 
   const { t } = useTranslation();
+
+  function toggleSection(id) {
+
+  const element = document.getElementById(id);
+  if (!element) return;
+  const isOpen = element.style.display === "block";
+  element.style.display = isOpen ? "none" : "block";
+}
+
+
 const averageRating =
   avis.reduce((sum, c) => sum + c.rating, 0) / avis.length || 0;
 
@@ -33,18 +43,25 @@ const averageRating =
             {t("footer.newPerfume")}
           </a>
         </li>
-    
+
+  <li className="TitreH3" onClick={() => toggleSection("section1")}>
+ {t("footer.stores")} 
+  <div id="section1" style={{ display: "none", marginTop: "8px" }}>
+  
+    <a
+      href="https://www.google.com/maps?q=287+Rue+Pyrénées,+Paris"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "inherit", textDecoration: "none" }}
+    >   <FontAwesomeIcon icon={faLocationDot} />{" "}  Av. Francisco Sá Carneiro, 8125-507 Quarteira, Portugal 
+    </a>
+  </div>
+</li>
+
+
         <li>
           <a href="" className="TitreH3">
-            {t("footer.stores")}        <br />
-            Av. Francisco Sá Carneiro, 
-            <br />
-            8125-507 Quarteira, Portugal
-          </a>
-        </li>
-        <li>
-          <a href="" className="TitreH3">
-            {t("footer.beautyGuide")}
+            {t("footer.beautyGuide")}       
           </a>
         </li>
       

@@ -41,7 +41,8 @@ const Review = () => {
   };
 
   return (
-    <section className="review-page">
+
+    <div className="Reviewpage">
       <h2>Donner votre avis</h2>
 
       <form onSubmit={handleSubmit} className="review-form">
@@ -75,7 +76,8 @@ const Review = () => {
           Envoyer mon avis
         </button>
       </form>
-    </section>
+    </div> 
+
   );
 };
 
