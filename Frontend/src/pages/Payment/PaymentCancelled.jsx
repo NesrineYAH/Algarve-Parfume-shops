@@ -30,51 +30,5 @@ export default function PaymentCancelled() {
 }
 
 const styles = {
-  container: {
-    minHeight: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "#f8fafc",
-  },
-  card: {
-    background: "#fff",
-    padding: "2.5rem",
-    borderRadius: "12px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-    maxWidth: "420px",
-    textAlign: "center",
-  },
-  title: {
-    color: "#dc2626",
-    marginBottom: "1rem",
-  },
-  text: {
-    fontSize: "1.1rem",
-    marginBottom: "0.5rem",
-  },
-  subtext: {
-    color: "#6b7280",
-    marginBottom: "2rem",
-  },
-  actions: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-  },
-  primaryBtn: {
-    background: "#2563eb",
-    color: "#fff",
-    padding: "0.75rem",
-    borderRadius: "8px",
-    textDecoration: "none",
-    fontWeight: "bold",
-  },
-  secondaryBtn: {
-    border: "1px solid #d1d5db",
-    padding: "0.75rem",
-    borderRadius: "8px",
-    textDecoration: "none",
-    color: "#111827",
-  },
+
 };

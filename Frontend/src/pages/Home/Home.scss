@@ -55,6 +55,7 @@
                 stroke: #999; // couleur du contour par défaut
                 fill: transparent; // cœur vide
                 transition: all 0.25s ease;
+                stroke: white;
             }
 
             // ❤️ Cœur rempli quand le produit est en favoris
@@ -63,9 +64,9 @@
                 fill: red;
             }
 
-            // 🤍 Cœur vide quand non favori
             .red {
-                stroke: red;
+                //   stroke: red;
+                stroke: rgb(179, 175, 175);
                 fill: transparent;
             }
 
