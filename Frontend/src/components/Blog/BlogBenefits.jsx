@@ -57,7 +57,8 @@ export default function BlogBenefits() {
            <p>{t("")}</p>
             </div>
        </div>
-
+       
+<a href="/Contact">
                   <div className="benefit-card">
             <div className="icon">  <Headphones /> </div>
             <div className="text">
@@ -65,7 +66,7 @@ export default function BlogBenefits() {
            <p>{t("blog.Customer_ServiceP")}</p>
             </div>
        </div>
-
+</a>
       </div>
     </section>
   );

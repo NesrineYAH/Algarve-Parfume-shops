@@ -85,6 +85,9 @@ const Header = () => {
             <Link to="/home?genre=homme">{t("header.titleIII")}</Link>
           </li>
           <li>{t("header.titleVI")}</li>
+            <li>
+            <Link to="/QrCodePage">Notre App</Link>
+          </li>
         </ul>
       </div>
       <h1>MyPerfume </h1>

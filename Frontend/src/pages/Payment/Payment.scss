@@ -147,7 +147,7 @@
     justify-content: center;
     min-height: 80vh;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 .card {
@@ -155,7 +155,7 @@
     padding: 2.5rem;
     border-radius: 12p;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    max-width: 420px;
+    max-width: 620px;
     text-align: center;
 }
 
@@ -187,11 +187,12 @@
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
+    margin: 4px;
 }
 
 
 .secondaryBtn {
-    border: 1px solid #d1d5db;
+    border: 1px solid #0e0e0e;
     padding: 0.75rem;
     border-radius: 8px;
     text-decoration: none;

@@ -37,9 +37,9 @@ import AvisClients from "./pages/AvisClients/AvisClients";
 import SiteMap from "./pages/PageSite/SiteMap";
 import PaymentMethods from "./pages/Payment/PaymentMethods";
 import PaymentCancelled from "./pages/Payment/PaymentCancelled";
-
 import Confirmation from "./pages/Confirmation/Confirmation";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import QrCodePage from "./pages/App/QrCodePage"
 
 
 
@@ -88,7 +88,7 @@ function App() {
           <Route path="/paiement-methods" element={<PaymentMethods />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="*" element={<ErrorPage />} />
-
+         <Route path="/QrCodePage" element={<QrCodePage />} />
         </Routes>
 
         <BlogBenefits />
