@@ -177,12 +177,110 @@
             }
         }
     }
+
+    .FavoriteSection {
+        padding: 1rem;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+
+
+        &__Li {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            height: 150px;
+            gap: 10px;
+            position: relative;
+        }
+
+        .icone {
+            width: 24px;
+            height: 24px;
+            stroke: #999; // couleur du contour par défaut
+            fill: transparent; // cœur vide
+            transition: all 0.25s ease;
+            stroke: white;
+            position: absolute;
+            top: 10px;
+            right: 60px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: end;
+
+        }
+
+        .active {
+            stroke: red;
+            fill: red;
+        }
+
+        .red {
+            //   stroke: red;
+            stroke: rgb(179, 175, 175);
+            fill: transparent;
+        }
+
+        &:hover .icone {
+            transform: scale(1.1);
+        }
+
+        &__I {
+            display: flex;
+            justify-content: start;
+            gap: 100px;
+
+        }
+
+        &__II {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            text-align: start;
+
+            p {
+                opacity: 0.7;
+            }
+        }
+
+
+        &__img {
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            align-items: center;
+            width: 100px;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: all .6s;
+            border-radius: 5px;
+        }
+
+        .btn-Add {
+            background-color: #da4cbb;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
 }
 
 .moncompte__content {
     flex: 1;
     padding: 1rem;
-    background-color: #edbfe1;
     border-radius: 8px;
 }
 

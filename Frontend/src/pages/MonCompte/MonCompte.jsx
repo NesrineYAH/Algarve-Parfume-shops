@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
-
+import { Heart } from "lucide-react";
 
 export default function MonCompte() {
   const navigate = useNavigate();
@@ -134,11 +134,35 @@ export default function MonCompte() {
               {favorites.length === 0 ? (
                 <p>Aucun produit favori.</p>
               ) : (
-                <ul>
+                <ul className="FavoriteSection">
                   {favorites.map((prod) => (
-                    <li key={prod._id}>
-                      {prod.nom} - {prod.prix} €
+               
+                    <li
+                     className="FavoriteSection__Li">           
+                      <div className="FavoriteSection__I">
+                     <img 
+                   src={`http://localhost:5001${prod.imageUrl}`}
+                   alt={prod.nom}
+                  className="FavoriteSection__img" />
+                      </div >
+                            
+                 
+                
+                      <div className="FavoriteSection__II"  key={prod._id}> 
+                        {prod.nom} - {prod.prix} €
+                         <Heart
+                           className={`icone ${
+                   favorites.some((fav) => fav._id === prod._id)
+                    ? "active"
+                    : "red"
+                          }`}
+                       />
+                        <p> Coffret - lisseur GHD chronos Contenance </p>
+                           <button className="btn-Add">Ajouter au panier </button>
+           
+                  </div>
                     </li>
+                    
                   ))}
                 </ul>
               )}
