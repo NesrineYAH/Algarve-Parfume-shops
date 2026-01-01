@@ -27,6 +27,37 @@
             width: 100%;
         }
 
+        .icone {
+            width: 24px;
+            height: 24px;
+            stroke: #999; // couleur du contour par défaut
+            fill: transparent; // cœur vide
+            transition: all 0.25s ease;
+            stroke: white;
+            position: absolute;
+            top: 12%;
+            right: 22%;
+            cursor: pointer;
+            display: flex;
+            flex-direction: end;
+
+        }
+
+        .active {
+            stroke: rgb(227, 34, 111);
+            fill: rgb(227, 34, 111);
+        }
+
+        .red {
+            //   stroke: red;
+            stroke: rgb(179, 175, 175);
+            fill: transparent;
+        }
+
+        &:hover .icone {
+            transform: scale(1.1);
+        }
+
         .product-image {
             width: 250px;
             height: auto;

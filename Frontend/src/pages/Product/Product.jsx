@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Product.scss";
 import { useTranslation } from "react-i18next";
-
+import { Heart } from "lucide-react";
 
 const Product = () => {
   const { id } = useParams();
@@ -24,7 +24,16 @@ const Product = () => {
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
-
+    const [favorites, setFavorites] = useState([]);
+  //01/01/2026
+const favoriteItem = {
+  _id: product._id,
+  variantId: `${product._id}-${selectedOption.size}`,
+  nom: product.nom,
+  imageUrl: product.imageUrl,
+  size: selectedOption.size,
+  prix: selectedOption.price,
+};
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -152,6 +161,21 @@ const dislikeComment = async (commentId) => {
     axios.get(`http://localhost:5001/api/products/${id}/comments`)
       .then(res => setComments(res.data));
   };
+//01/01/2026
+
+const addToFavorites = (item) => {
+  const saved = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  // Vérifier si cette variante existe déjà
+  const exists = saved.some(fav => fav.variantId === item.variantId);
+
+  if (!exists) {
+    saved.push(item);
+    localStorage.setItem("favorites", JSON.stringify(saved));
+    setFavorites(saved);
+  }
+};
+
 
 
   if (error) return <p>{t("product.error")}</p>;
@@ -161,6 +185,20 @@ const dislikeComment = async (commentId) => {
     <section id="page">
       <div className="product-container">
         <div className="pr">
+                {/* Icône cœur */}
+            <div
+              className="card__favorite"
+              onClick={() => addToFavorites(product)}
+            >
+              <Heart
+                className={`icone ${
+                  favorites.some((fav) => fav._id === product._id)
+                    ? "active"
+                    : "red"
+                }`}
+              />
+            </div>
+          
           <img
             src={`http://localhost:5001${product.imageUrl}`}
             alt={product.nom}

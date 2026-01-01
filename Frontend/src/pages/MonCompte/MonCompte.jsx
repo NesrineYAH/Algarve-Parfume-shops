@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
 import { Heart } from "lucide-react";
+import { Trash2 } from "lucide-react";
+
 
 export default function MonCompte() {
   const navigate = useNavigate();
@@ -59,6 +61,33 @@ export default function MonCompte() {
       </section>
     );
   }
+  
+const moveToCart = (product) => {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Vérifier si le produit est déjà dans le panier
+  const existing = cart.find((item) => item.variantId  === product.variantId);
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantite: 1 });
+  }
+  // Sauvegarder panier
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Retirer des favoris
+  const updatedFav = favorites.filter((fav) => fav._id !== product._id);
+  setFavorites(updatedFav);
+  localStorage.setItem("favorites", JSON.stringify(updatedFav));
+};
+
+const removeFavorite = (variantId) => {
+  const updated = favorites.filter(fav => fav.variantId !== variantId);
+  setFavorites(updated);
+  localStorage.setItem("favorites", JSON.stringify(updated));
+};
+
+
 
   return (
     <section className="moncompte">
@@ -128,46 +157,47 @@ export default function MonCompte() {
             </div>
           )}
 
-          {activeTab === "favorites" && (
-            <div>
-              <h2>Mes Favoris</h2>
-              {favorites.length === 0 ? (
-                <p>Aucun produit favori.</p>
-              ) : (
-                <ul className="FavoriteSection">
-                  {favorites.map((prod) => (
-               
-                    <li
-                     className="FavoriteSection__Li">           
-                      <div className="FavoriteSection__I">
-                     <img 
-                   src={`http://localhost:5001${prod.imageUrl}`}
-                   alt={prod.nom}
-                  className="FavoriteSection__img" />
-                      </div >
-                            
-                 
-                
-                      <div className="FavoriteSection__II"  key={prod._id}> 
-                        {prod.nom} - {prod.prix} €
-                         <Heart
-                           className={`icone ${
-                   favorites.some((fav) => fav._id === prod._id)
+         {activeTab === "favorites" && (
+  <div>
+    <h2>Mes Favoris</h2>
+    {favorites.length === 0 ? (
+      <p>Aucun produit favori.</p>
+    ) : (
+      <ul className="FavoriteSection">
+        {favorites.map((prod) => (
+          <li className="FavoriteSection__Li" key={prod.variantId}>
+            <div className="FavoriteSection__I">
+              <img
+                src={`http://localhost:5001${prod.imageUrl}`}
+                alt={prod.nom}
+                className="FavoriteSection__img"
+              />
+                          
+            </div>
+  <button className="btn-Add" onClick={() => removeFavorite(prod._id)} > <Trash2 /> </button>
+            <div className="FavoriteSection__II">
+              {prod.nom} - {prod.prix} €
+              <Heart
+                className={`icone ${
+                  favorites.some((fav) => fav._id === prod._id)
                     ? "active"
                     : "red"
-                          }`}
-                       />
-                        <p> Coffret - lisseur GHD chronos Contenance </p>
-                           <button className="btn-Add">Ajouter au panier </button>
-           
-                  </div>
-                    </li>
-                    
-                  ))}
-                </ul>
-              )}
+                }`}
+              />
+              <p>Coffret - lisseur GHD chronos Contenance</p>
+
+              <button className="btn-Add" onClick={() => moveToCart(prod)}>
+                Déplacer au panier
+              </button>
+
             </div>
-          )}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+)}
+
 
           {activeTab === "payments" && (
             <h2>Mes Moyens de Paiement</h2>
