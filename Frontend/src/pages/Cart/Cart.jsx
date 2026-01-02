@@ -4,10 +4,12 @@ import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { UserContext } from "../../context/UserContext";
+import {  Link } from "react-router-dom";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const { user, loading } = useContext(UserContext);
+  
   const navigate = useNavigate();
   const currentStep = 1;
 
@@ -81,12 +83,15 @@ export default function Cart() {
         <div className="cart-items">
           {cart.map((item, index) => (
             <div className="cart-item" key={`${item.variantId}-${index}`}>
+
+             {/* <Link to={`/product/${product._id}`} >   </Link> */}
+
               <img
                 src={`http://localhost:5001${item.imageUrl}`}
                 alt={item.nom}
                 className="cart-item__img"
-              />
-
+              /> 
+            
               <div className="item-details">
                 <h3>{item.nom}</h3>
                 <p>{Number(item.options?.prix || 0).toFixed(2)} €</p>
