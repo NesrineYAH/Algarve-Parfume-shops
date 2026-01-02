@@ -14,8 +14,6 @@ export default function MonCompte() {
   const [favorites, setFavorites] = useState([]);
   const [orders, setOrders] = useState([]);
 
-
-  // 🟢 1. Vérification token + charger les adresses
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -33,13 +31,11 @@ export default function MonCompte() {
 
   }, [navigate]);
 
-  // 🟢 2. Charger favoris depuis localStorage
   useEffect(() => {
     const saved = localStorage.getItem("favorites");
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
 
-  // 🟢 3. Charger les commandes quand le user est disponible
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -53,7 +49,6 @@ export default function MonCompte() {
       .catch((err) => console.error("Erreur chargement commandes :", err));
   }, [user]);
 
-  // 🟢 Si le user n'est pas encore chargé
   if (!user) {
     return (
       <section className="moncompte">

@@ -8,32 +8,35 @@ import { Heart } from "lucide-react";
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
- 
-    const { t } = useTranslation();
+  const { t } = useTranslation();
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
   const role = localStorage.getItem("role");
-
   const navigate = useNavigate();
-
   const [showModal, setShowModal] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);
   const [userRating, setUserRating] = useState(0);
-
   const [commentText, setCommentText] = useState("");
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
-    const [favorites, setFavorites] = useState([]);
-  //01/01/2026
+
+const [quantity, setQuantity] = useState(1);
+
+  const [favorites, setFavorites] = useState(() => {
+  return JSON.parse(localStorage.getItem("favorites")) || [];
+});
+/*
 const favoriteItem = {
-  _id: product._id,
-  variantId: `${product._id}-${selectedOption.size}`,
+  productId: product._id,
+ variantId: `${product._id}-${selectedOption.size}`,
   nom: product.nom,
   imageUrl: product.imageUrl,
   size: selectedOption.size,
-  prix: selectedOption.price,
+ prix: selectedOption.prix,
+
 };
+*/
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -54,8 +57,6 @@ const favoriteItem = {
 
     fetchProduct();
   }, [id]);
-
-
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -73,7 +74,6 @@ const favoriteItem = {
 
   const addToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
     if (!selectedOption) {
       alert("Veuillez sélectionner une option.");
       return;
@@ -83,14 +83,16 @@ const favoriteItem = {
     const existing = cart.find((item) => item.variantId === variantId);
 
     if (existing) {
-      existing.quantite += 1;
+    //  existing.quantite += 1;
+      existing.quantite += quantity;
+
     } else {
       cart.push({
         productId: product._id,
         variantId,
         nom: product.nom,
         imageUrl: product.imageUrl,
-        quantite: 1,
+        quantite: quantity,
         options: selectedOption,
       });
     }
@@ -161,57 +163,86 @@ const dislikeComment = async (commentId) => {
     axios.get(`http://localhost:5001/api/products/${id}/comments`)
       .then(res => setComments(res.data));
   };
-//01/01/2026
 
-const addToFavorites = (item) => {
-  const saved = JSON.parse(localStorage.getItem("favorites")) || [];
+const addToFavorites = () => {
+  if (!product || !selectedOption) {
+    return;
+  }
 
-  // Vérifier si cette variante existe déjà
-  const exists = saved.some(fav => fav.variantId === item.variantId);
+  const favoriteItem = {
+    productId: product._id,
+    variantId: `${product._id}-${selectedOption.size}`,
+    nom: product.nom,
+    imageUrl: product.imageUrl,
+    size: selectedOption.size,
+    unit: selectedOption.unit,
+    prix: selectedOption.prix,
+  };
 
-  if (!exists) {
-    saved.push(item);
-    localStorage.setItem("favorites", JSON.stringify(saved));
-    setFavorites(saved);
+  const exists = favorites.some(
+    (fav) => fav.variantId === favoriteItem.variantId
+  );
+
+  if (exists) {
+    // Optionnel : retirer si déjà favori
+    const updated = favorites.filter(
+      (fav) => fav.variantId !== favoriteItem.variantId
+    );
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  } else {
+    const updated = [...favorites, favoriteItem];
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
   }
 };
 
-
+const increaseQuantity = () => {
+  setQuantity((prev) => prev + 1);
+};
+const decreaseQuantity = () => {
+  setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+};
+useEffect(() => {
+  setQuantity(1);
+}, [selectedOption]);
 
   if (error) return <p>{t("product.error")}</p>;
   if (!product) return <p>{t("product.loading")}</p>;
-   // 🔹 Rendu conditionnel APRÈS les hooks
+  
+
   return (
     <section id="page">
       <div className="product-container">
         <div className="pr">
-                {/* Icône cœur */}
-            <div
-              className="card__favorite"
-              onClick={() => addToFavorites(product)}
-            >
-              <Heart
-                className={`icone ${
-                  favorites.some((fav) => fav._id === product._id)
-                    ? "active"
-                    : "red"
-                }`}
-              />
-            </div>
-          
-          <img
+             <div className="card__favorite" onClick={addToFavorites}>
+  <Heart
+    className={`icone ${
+      selectedOption &&
+      favorites.some(
+        (fav) =>
+          fav.variantId === `${product._id}-${selectedOption.size}`
+      )
+        ? "active"
+        : ""
+    }`}
+  />
+          </div>
+          <div className="pr__img">
+         <img
             src={`http://localhost:5001${product.imageUrl}`}
             alt={product.nom}
             className="product-image"
           />
+          </div>
+          
+      
+         <div className="pr__part">  
           <h2>{product.nom}</h2>
-          <p>
-            <strong>{t("product.stock")} :</strong> {product.stock}{" "}
-            {t("product.inStock")}
-          </p>
+          
           <p>{product.description}</p>
 
-          {/* Options */}
+          {/* Options
           {product.options && product.options.length > 0 && (
             <div className="product-options">
               <label>{t("product.chooseOption")}</label>
@@ -239,10 +270,63 @@ const addToFavorites = (item) => {
               </p>
             </div>
           )}
-        </div>
+ */}
 
-        {/* ⭐ Rating */}
-        <div className="rating">
+ {/* Options */}
+{product.options && product.options.length > 0 && (
+  <div className="product-options">
+    {/* <p className="option-label">{t("product.chooseOption")}</p> */}
+
+    <div className="option-buttons">
+      {product.options.map((opt, index) => {
+        const isSelected = selectedOption?.size === opt.size;
+
+        return (
+          <button 
+            key={index}
+            className={`option-btn ${isSelected ? "active" : ""}`}
+            onClick={() => setSelectedOption(opt)}
+          >
+            {opt.size}
+            {opt.unit}
+          </button>
+        );
+      })}
+    </div>
+
+    <p className="price">
+      <strong>{t("product.selectedPrice")} :</strong>{" "}
+      {selectedOption ? selectedOption.prix : "--"} €
+    </p>
+  </div>
+)}
+<p>
+            <strong>{t("product.stock")} :</strong> {product.stock}{" "}
+            {t("product.inStock")}
+          </p>
+
+        {/* Quantité */}
+     <div className="quantity-selector">
+  <button onClick={decreaseQuantity} className="qty-btn">
+    −
+  </button>
+
+  <span className="qty-value">{quantity}</span>
+
+  <button onClick={increaseQuantity} className="qty-btn">
+    +
+  </button>
+      </div>
+      <p> Expédition 24/72h </p>
+
+          <button className="btn-Add" onClick={addToCart}>
+          {t("product.addToCart")}
+        </button>
+        <br />
+         <br />
+
+  {/* Rating 
+          <div className="rating">
           {Array.from({ length: 5 }).map((_, i) => {
             const starValue = i + 1;
             return (
@@ -268,12 +352,24 @@ const addToFavorites = (item) => {
               : t("product.noRating")}
           </span>
         </div>
+        */}
+        </div>
 
-        <button className="btn-Add" onClick={addToCart}>
-          {t("product.addToCart")}
-        </button>
+        
+  
+        </div>
 
-        {/* Modal */}
+        <div className="AutreSection">
+          <h2>Alma</h2>
+          <strong>Payez en 3X ou 4X avec Alma</strong>
+          <span>Payez en plusieurs fois grâce à notre partenaire <strong>ALMA</strong> ALMA, réponse immédiate. Plus d'informations </span>
+        </div>
+
+        
+
+    
+        
+
         {showModal && (
           <div className="modal-overlay">
             <div className="modal">
@@ -300,7 +396,7 @@ const addToFavorites = (item) => {
           </div>
         )}
 
-        {/* Bouton ajouter un avis */}
+
         <div className="review-button">
           <button
             className="btn-Add"
@@ -310,7 +406,7 @@ const addToFavorites = (item) => {
           </button>
         </div>
 
-        {/* ⭐ Bloc résumé des avis */}
+
         <div className="review-summary">
           <h3>Note et avis</h3>
           {/* <p className="average-rating">
