@@ -158,6 +158,15 @@
     "edit": "Edit",
     "delete": "Delete product"
   },
+   "about": {
+    "title": "Who are we?",
+    "paragraph1": "Our story begins with a friendship. Friends for over ten years, we share a common passion for the world of perfume and the elegance it represents.",
+    "paragraph2": "This passion has grown over time through discussions, discoveries, and a constant curiosity for scents and their evocative power.",
+    "paragraph3": "Over the years, the idea of creating our own perfume business became obvious. We wanted to build a place where each fragrance is carefully selected.",
+    "paragraph4": "Our approach is based on a rigorous selection of perfumes that stand out for their character, subtlety, and quality.",
+    "paragraph5": "We believe perfume reveals identity, accompanies life’s important moments, and leaves a lasting impression.",
+    "paragraph6": "Today, our brand reflects our friendship, our complementarity, and our shared ambition."
+  },
 
   "footer": {
     "about": "About us",

@@ -213,7 +213,15 @@
    "pT18" : "est en conformité avec le RGPD.",
    "pT19" : "Les bases de données sont protégées par les obligations de la loi du 1er juillet 1998 transposant ainsi la directive 96/9 du 11 mars 1996 relative à la protection juridique des BDD (bases de données)."
 },
-
+"about": {
+    "title": "Qui sommes-nous ?",
+    "paragraph1": "Notre histoire commence par une amitié. Amis depuis plus de dix ans, nous partageons une passion commune pour l’univers du parfum et l’élégance qu’il incarne.",
+    "paragraph2": "Cette passion s’est construite au fil du temps, à travers des échanges, des découvertes et une curiosité constante pour les senteurs et leur pouvoir évocateur.",
+    "paragraph3": "Au fil des années, l’idée de créer notre propre commerce s’est imposée naturellement. Nous avons souhaité bâtir un lieu où chaque fragrance est choisie avec soin.",
+    "paragraph4": "Notre démarche repose sur une sélection rigoureuse de parfums capables de séduire par leur caractère, leur subtilité et leur qualité.",
+    "paragraph5": "Nous croyons que le parfum révèle une identité, accompagne les moments importants de la vie et laisse une trace mémorable.",
+    "paragraph6": "Aujourd’hui, notre marque est le reflet de notre amitié, de notre complémentarité et de notre ambition commune."
+  }, 
   "footer": {
     "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",
