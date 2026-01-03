@@ -55,7 +55,8 @@
             }
 
             &__img {
-                width: 30%;
+                width: 32%;
+                height: 100%;
 
                 .product-image {
                     width: 300px;
@@ -68,8 +69,7 @@
 
             &__part {
                 width: 55%;
-                height: 550px;
-                border: 1px solid #d7d4d4;
+                height: 650px;
                 padding: 15px;
 
                 h2 {
@@ -126,7 +126,7 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-evenly;
-                    gap: 15px;
+                    gap: 40px;
 
                 }
 
@@ -270,16 +270,14 @@
                 }
 
             }
-
-
-
         }
 
         .AutreSection {
-            background-color: #f8cae5;
+            background-color: #f7eff4;
             width: 600px;
             border: 1px solid #767474;
             display: block;
+            text-align: start;
         }
 
         .btn-Add {

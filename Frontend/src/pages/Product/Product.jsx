@@ -235,6 +235,8 @@ useEffect(() => {
     }`}
   />
           </div>
+          
+       
           </div>
           
       
@@ -244,7 +246,7 @@ useEffect(() => {
           <p>{product.description}</p>
              <p className="price">Prix:   
       {/* <strong>{t("product.selectedPrice")} :</strong>{" "} */}
-      {selectedOption ? selectedOption.prix : "--"}  €
+      {selectedOption ? selectedOption.prix : ""}  €
       </p>
 
           {/* Options
@@ -324,8 +326,16 @@ useEffect(() => {
           <button className="btn-Add" onClick={addToCart}>
           {t("product.addToCart")}
         </button>
-        <br />
-         <br />
+ <br />
+  <br />
+  <br />
+
+      
+      <div className="AutreSection">
+          <h2>Alma</h2>
+          <strong>Payez en 3X ou 4X avec Alma</strong>
+          <span>Payez en plusieurs fois grâce à notre partenaire <strong>ALMA</strong> ALMA, réponse immédiate. Plus d'informations </span>
+        </div>
 
   {/* Rating 
           <div className="rating">
@@ -361,11 +371,6 @@ useEffect(() => {
   
         </div>
 
-        <div className="AutreSection">
-          <h2>Alma</h2>
-          <strong>Payez en 3X ou 4X avec Alma</strong>
-          <span>Payez en plusieurs fois grâce à notre partenaire <strong>ALMA</strong> ALMA, réponse immédiate. Plus d'informations </span>
-        </div>
 
         
 
@@ -398,7 +403,10 @@ useEffect(() => {
           </div>
         )}
 
-
+  <br />
+  <br />
+    <br />
+  <br />
         <div className="review-button">
           <button
             className="btn-Add"
