@@ -215,6 +215,13 @@ useEffect(() => {
     <section id="page">
       <div className="product-container">
         <div className="pr">
+          
+          <div className="pr__img">
+          <img
+            src={`http://localhost:5001${product.imageUrl}`}
+            alt={product.nom}
+            className="product-image"
+          />
              <div className="card__favorite" onClick={addToFavorites}>
   <Heart
     className={`icone ${
@@ -228,12 +235,6 @@ useEffect(() => {
     }`}
   />
           </div>
-          <div className="pr__img">
-         <img
-            src={`http://localhost:5001${product.imageUrl}`}
-            alt={product.nom}
-            className="product-image"
-          />
           </div>
           
       
@@ -241,6 +242,10 @@ useEffect(() => {
           <h2>{product.nom}</h2>
           
           <p>{product.description}</p>
+             <p className="price">Prix:   
+      {/* <strong>{t("product.selectedPrice")} :</strong>{" "} */}
+      {selectedOption ? selectedOption.prix : "--"}  €
+      </p>
 
           {/* Options
           {product.options && product.options.length > 0 && (
@@ -282,11 +287,11 @@ useEffect(() => {
         const isSelected = selectedOption?.size === opt.size;
 
         return (
+          
           <button 
             key={index}
             className={`option-btn ${isSelected ? "active" : ""}`}
-            onClick={() => setSelectedOption(opt)}
-          >
+            onClick={() => setSelectedOption(opt)}>
             {opt.size}
             {opt.unit}
           </button>
@@ -294,10 +299,7 @@ useEffect(() => {
       })}
     </div>
 
-    <p className="price">
-      <strong>{t("product.selectedPrice")} :</strong>{" "}
-      {selectedOption ? selectedOption.prix : "--"} €
-    </p>
+
   </div>
 )}
 <p>

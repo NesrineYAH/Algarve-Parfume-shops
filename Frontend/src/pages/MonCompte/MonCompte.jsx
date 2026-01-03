@@ -100,7 +100,6 @@ const removeFavorite = (variantId) => {
           <button onClick={() => setActiveTab("orders")}>Mes Commandes</button>
           <button onClick={() => setActiveTab("favorites")}>Mes Favoris</button>
           <button onClick={() => setActiveTab("PaymentMethods")}>Mes Moyens de Paiement</button>
-
           <button onClick={handleLogout}>Déconnexion</button>
                    <Link to="/paiement-methods">Mes moyens de paiement</Link>
  

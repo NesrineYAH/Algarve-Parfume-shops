@@ -14,8 +14,6 @@
         background: #fff;
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(37, 36, 36, 0.1);
-
 
         .pr {
             display: flex;
@@ -27,8 +25,8 @@
 
             .card__favorite {
                 position: absolute;
-                top: 12.5%;
-                right: 11%;
+                top: 11%;
+                left: 40%;
                 cursor: pointer;
 
                 .icone {
@@ -70,17 +68,20 @@
 
             &__part {
                 width: 55%;
-                height: 500px;
+                height: 550px;
                 border: 1px solid #d7d4d4;
+                padding: 15px;
 
                 h2 {
                     font-size: 28px;
                     margin-bottom: 10px;
+                    text-align: start;
                 }
 
                 p {
                     margin-bottom: 8px;
-                    font-size: 16px;
+                    font-size: 14px;
+                    text-align: start;
                 }
 
                 /*
@@ -111,8 +112,7 @@
                 }
 */
                 .product-options {
-                    margin-top: 60px;
-                    height: 150px;
+                    padding: 30px;
                 }
 
                 .option-label {
@@ -124,7 +124,10 @@
 
                 .option-buttons {
                     display: flex;
-                    gap: 18px;
+                    flex-direction: row;
+                    justify-content: space-evenly;
+                    gap: 15px;
+
                 }
 
                 .option-btn {
@@ -152,7 +155,9 @@
 
                 .price {
                     margin-top: 15px;
-                    font-size: 18px;
+                    font-size: 14px;
+                    text-align: start;
+                    font-weight: 700;
                 }
 
                 .btn-Add {
