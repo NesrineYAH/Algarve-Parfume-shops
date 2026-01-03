@@ -40,7 +40,7 @@ import PaymentCancelled from "./pages/Payment/PaymentCancelled";
 import Confirmation from "./pages/Confirmation/Confirmation";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import QrCodePage from "./pages/App/QrCodePage"
-
+import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
 
@@ -89,6 +89,7 @@ function App() {
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="*" element={<ErrorPage />} />
          <Route path="/QrCodePage" element={<QrCodePage />} />
+        <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
         </Routes>
 
         <BlogBenefits />

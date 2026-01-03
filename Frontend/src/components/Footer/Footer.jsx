@@ -98,10 +98,11 @@ const averageRating =
         <a href="../FAQ" target="_blank" rel="noreferrer noopener">
           <li>{t("footer.faq")}</li>
         </a>
-        <li>
-          {t("footer.whoWeAre")}
-          <a href="" title="facebook" target="_blank" rel="noreferrer noopener"></a>
-        </li>
+      
+          <a href="/QuiSommesNous" target="_blank" rel="noreferrer noopener">
+            <li>{t("footer.whoWeAre")}</li>
+          </a>
+       
         <a href="../Contact" target="_blank" rel="noopener noreferrer">
           <li>{t("footer.contact")}</li>
         </a>
