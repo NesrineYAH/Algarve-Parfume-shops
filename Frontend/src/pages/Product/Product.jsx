@@ -209,6 +209,14 @@ useEffect(() => {
 
   if (error) return <p>{t("product.error")}</p>;
   if (!product) return <p>{t("product.loading")}</p>;
+
+  //04/01/2026
+
+  const minPrice =
+  product.options && product.options.length > 0
+    ? Math.min(...product.options.map(opt => opt.prix))
+    : null;
+
   
 
   return (
@@ -223,7 +231,7 @@ useEffect(() => {
             className="product-image"
           />
              <div className="card__favorite" onClick={addToFavorites}>
-  <Heart
+      <Heart
     className={`icone ${
       selectedOption &&
       favorites.some(
@@ -233,63 +241,35 @@ useEffect(() => {
         ? "active"
         : ""
     }`}
-  />
+        />
           </div>
-          
-       
+        
           </div>
-          
-      
          <div className="pr__part">  
           <h2>{product.nom}</h2>
-          
           <p>{product.description}</p>
-             <p className="price">Prix:   
-      {/* <strong>{t("product.selectedPrice")} :</strong>{" "} */}
-      {selectedOption ? selectedOption.prix : ""}  €
-      </p>
+        <p className="price">
+  Prix :{" "}
+  {selectedOption ? (
+    <>
+      {selectedOption.prix} €
+    </>
+  ) : (
+    <>
+      {minPrice} €
+    </>
+  )}
+</p>
 
-          {/* Options
-          {product.options && product.options.length > 0 && (
-            <div className="product-options">
-              <label>{t("product.chooseOption")}</label>
-              <select
-                value={selectedOption ? selectedOption.size : ""}
-                onChange={(e) => {
-                  const selected = product.options.find(
-                    (opt) => opt.size.toString() === e.target.value
-                  );
-                  setSelectedOption(selected);
-                }}
-              >
-                <option value="">{t("product.selectSize")}</option>
-
-                {product.options.map((opt, index) => (
-                  <option key={index} value={opt.size}>
-                    {opt.size} {opt.unit} - {opt.prix} €
-                  </option>
-                ))}
-              </select>
-
-              <p>
-                <strong>{t("product.selectedPrice")} :</strong>{" "}
-                {selectedOption ? selectedOption.prix : 0} €
-              </p>
-            </div>
-          )}
- */}
-
- {/* Options */}
-{product.options && product.options.length > 0 && (
-  <div className="product-options">
+      {product.options && product.options.length > 0 && (
+        <div className="product-options">
     {/* <p className="option-label">{t("product.chooseOption")}</p> */}
 
     <div className="option-buttons">
       {product.options.map((opt, index) => {
         const isSelected = selectedOption?.size === opt.size;
-
         return (
-          
+  
           <button 
             key={index}
             className={`option-btn ${isSelected ? "active" : ""}`}
@@ -300,11 +280,9 @@ useEffect(() => {
         );
       })}
     </div>
-
-
-  </div>
-)}
-<p>
+          </div>
+          )}
+    <p>
             <strong>{t("product.stock")} :</strong> {product.stock}{" "}
             {t("product.inStock")}
           </p>
@@ -366,17 +344,7 @@ useEffect(() => {
         </div>
         */}
         </div>
-
-        
-  
         </div>
-
-
-        
-
-    
-        
-
         {showModal && (
           <div className="modal-overlay">
             <div className="modal">
@@ -497,7 +465,36 @@ useEffect(() => {
 
 export default Product;
 
+   {/* <strong>{t("product.selectedPrice")} :</strong>{" "} */}
+          {/* Options
+          {product.options && product.options.length > 0 && (
+            <div className="product-options">
+              <label>{t("product.chooseOption")}</label>
+              <select
+                value={selectedOption ? selectedOption.size : ""}
+                onChange={(e) => {
+                  const selected = product.options.find(
+                    (opt) => opt.size.toString() === e.target.value
+                  );
+                  setSelectedOption(selected);
+                }}
+              >
+                <option value="">{t("product.selectSize")}</option>
 
+                {product.options.map((opt, index) => (
+                  <option key={index} value={opt.size}>
+                    {opt.size} {opt.unit} - {opt.prix} €
+                  </option>
+                ))}
+              </select>
+
+              <p>
+                <strong>{t("product.selectedPrice")} :</strong>{" "}
+                {selectedOption ? selectedOption.prix : 0} €
+              </p>
+            </div>
+          )}
+ */}
 
 
 
