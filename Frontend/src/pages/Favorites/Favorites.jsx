@@ -40,6 +40,15 @@ export default function Favorites() {
               <div className="product-info">
                 <h3>{product.nom}</h3>
                 <p>{product.prix} €</p>
+         {/* Quantité du parfum */}
+                {product.options && product.options.length > 0 && (
+                  <p>
+                    Quantité :{" "}
+                    <strong>
+                      {product.options[0].size} {product.options[0].unit}
+                    </strong>
+                  </p>
+                )}
                 <button onClick={() => handleRemove(product._id)}>
                   Retirer
                 </button>
