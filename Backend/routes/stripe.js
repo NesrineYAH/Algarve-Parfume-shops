@@ -25,12 +25,19 @@ router.post("/create-checkout-session", async (req, res) => {
       quantity: item.quantite || 1,
     }));
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items,
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
-    });
+const session = await stripe.checkout.sessions.create({
+  mode: "payment",
+  customer: stripeCustomerId, // 👈 OBLIGATOIRE
+  payment_method_types: ["card"],
+  line_items,
+  success_url: "http://localhost:5173/success",
+  cancel_url: "http://localhost:5173/cancel",
+
+  payment_intent_data: {
+    setup_future_usage: "off_session", // 🔥 SAUVEGARDE LA CARTE
+  },
+});
+
 
     console.log("✅ Session Stripe créée :", session.id);
     console.log("➡️ URL Stripe :", session.url);

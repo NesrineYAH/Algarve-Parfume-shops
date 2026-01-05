@@ -17,6 +17,8 @@ const notificationsRoutes = require("./routes/notifications");
 const promotionsRoutes = require("./routes/promotions");
 const avisRoutes = require("./routes/avis");
 const stripeWebhook = require("./routes/stripeWebhook");
+const paymentMethodsRoutes = require("./routes/payment-methods");
+const { authMiddleware } = require("./middleware/auth");
 require("./mongoDB/DB");
 
 const app = express();
@@ -36,7 +38,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
-
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
@@ -53,10 +54,14 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
 
+
+// Routes PROTÉGÉES
+app.use("/api", authMiddleware, paymentMethodsRoutes);
+app.use(authMiddleware); // AVANT les routes protégées
+
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
-
 
 module.exports = app;
 
