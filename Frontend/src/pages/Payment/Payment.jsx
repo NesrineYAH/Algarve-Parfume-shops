@@ -173,7 +173,7 @@ useEffect(() => {
             checked={paymentMethod === "card"}
             onChange={() => setPaymentMethod("card")}
           />
-          Carte bancaire (Stripe)
+          Carte bancaire
         </label>
 
         <label>
