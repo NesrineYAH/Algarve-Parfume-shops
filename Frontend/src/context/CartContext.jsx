@@ -3,18 +3,28 @@ import { createContext, useState, useEffect } from "react";
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
-  // 🛒 Charger panier invité depuis localStorage
-  const [cartItems, setCartItems] = useState(() => {
+  // 🔄 Indique quand le panier est prêt
+  const [loading, setLoading] = useState(true);
+
+  // 🛒 Charger le panier depuis localStorage
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
     const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+    setLoading(false);
+  }, []);
 
   // 💾 Sauvegarde automatique
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+    if (!loading) {
+      localStorage.setItem("cart", JSON.stringify(cartItems));
+    }
+  }, [cartItems, loading]);
 
-  // ➕ Ajouter au panier (sans connexion)
+  // ➕ Ajouter au panier
   const addToCart = (product) => {
     setCartItems((prev) => {
       const existing = prev.find(
@@ -34,7 +44,7 @@ export default function CartProvider({ children }) {
         {
           productId: product._id,
           name: product.name,
-          price: product.price,
+          price: Number(product.price),
           image: product.image,
           quantity: 1,
         },
@@ -44,6 +54,8 @@ export default function CartProvider({ children }) {
 
   // ➖ Modifier quantité
   const updateQuantity = (productId, quantity) => {
+    if (quantity <= 0) return;
+
     setCartItems((prev) =>
       prev.map((item) =>
         item.productId === productId
@@ -76,6 +88,7 @@ export default function CartProvider({ children }) {
     <CartContext.Provider
       value={{
         cartItems,
+        loading,      // 🔑 IMPORTANT
         addToCart,
         updateQuantity,
         removeFromCart,
@@ -87,6 +100,7 @@ export default function CartProvider({ children }) {
     </CartContext.Provider>
   );
 }
+
 
 /*
 const handleCheckout = () => {

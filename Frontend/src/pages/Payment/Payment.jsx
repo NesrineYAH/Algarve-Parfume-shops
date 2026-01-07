@@ -10,8 +10,9 @@ import { loadStripe } from "@stripe/stripe-js";
 
 export default function Payment() {
   const navigate = useNavigate();
-  const { cartItems } = useContext(CartContext);
-  const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
+  const { cartItems, loading: cartLoading } = useContext(CartContext);
+  const cart = cartItems;
+//  const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
   console.log("Cart depuis contexte ou localStorage :", cart);
 
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -19,11 +20,12 @@ export default function Payment() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+      if (cartLoading) return; // ⬅️ on attend
     if (!cart || cart.length === 0) {
        setError("Le panier est vide, impossible de payer.");
        navigate("/cart");
     }
-  }, [cart, navigate]);
+  },  [cart, cartLoading, navigate]);
 
   // 💰 Total
   const total = cart.reduce(
