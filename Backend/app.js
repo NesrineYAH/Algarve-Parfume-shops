@@ -47,13 +47,12 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/payment", paymentRoutes);
-// app.use("/api/stripe", stripeRoute);
+
 app.use("/api/contacts", contactRoutes);
 app.use("/api/products", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
-
 app.use("/api/stripe", authMiddleware, stripeRoute);
 app.use("/api", authMiddleware, paymentMethodsRoutes);
 

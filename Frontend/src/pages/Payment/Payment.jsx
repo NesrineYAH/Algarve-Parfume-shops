@@ -85,14 +85,23 @@ const handleStripePayment = async () => {
     setLoading(true);
     setError(null);
 
+    const token = localStorage.getItem("token"); // ou context/auth
+
     const response = await fetch(
       "http://localhost:5001/api/stripe/create-checkout-session",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ cart }),
       }
     );
+
+    if (!response.ok) {
+      throw new Error(`Erreur serveur (${response.status})`);
+    }
 
     const data = await response.json();
 
@@ -100,16 +109,17 @@ const handleStripePayment = async () => {
       throw new Error("URL Stripe manquante");
     }
 
-    // ✅ SEULE MÉTHODE QUI FONCTIONNE
+    // ✅ Redirection Stripe Checkout
     window.location.href = data.url;
 
   } catch (err) {
-    console.error(err);
+    console.error("❌ Stripe error :", err);
     setError(err.message);
   } finally {
     setLoading(false);
   }
 };
+
 
   /*  PAYPAL */
 

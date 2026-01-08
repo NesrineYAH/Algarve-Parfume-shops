@@ -1,100 +1,49 @@
 const express = require("express");
 const Stripe = require("stripe");
-require("dotenv").config();
+const User = require("../Model/User");
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// Route création session Stripe
-router.post("/create-checkout-session", async (req, res) => {
-    console.log("USER:", req.user);
+/**
+ * GET /api/payment-methods
+ * 🔐 Auth requis
+ * 📄 Retourne les cartes sauvegardées Stripe
+ */
+router.get("/payment-methods", async (req, res) => {
   try {
-    const { cart } = req.body;
-    const user = req.user; // injecté par authMiddleware
-
-    if (!cart || !Array.isArray(cart) || cart.length === 0) {
-      return res.status(400).json({ error: "Panier invalide" });
+    // 1️⃣ Récupération utilisateur
+    const user = await User.findById(req.user.id);
+   console.log("USER AUTH :", req.user);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable" });
     }
 
-    // ✅ 1. RÉCUPÉRER OU CRÉER LE CUSTOMER STRIPE
-    let stripeCustomerId = user.stripeCustomerId;
-
-    if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
-        email: user.email,
-        name: user.name,
-      });
-
-      stripeCustomerId = customer.id;
-      user.stripeCustomerId = stripeCustomerId;
-      await user.save();
+    if (!user.stripeCustomerId) {
+      return res.json([]);
     }
 
-    // ✅ 2. CRÉER LES LINE ITEMS
-    const line_items = cart.map((item) => ({
-      price_data: {
-        currency: "eur",
-        product_data: {
-          name: item.nom || "Produit",
-        },
-        unit_amount: Math.round(item.options.prix * 100),
-      },
-      quantity: item.quantite || 1,
-    }));
-
-    // ✅ 3. CRÉER LA SESSION CHECKOUT
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      customer: stripeCustomerId,
-      line_items,
-      payment_intent_data: {
-        setup_future_usage: "off_session", // 🔥 sauvegarde la carte
-      },
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
+    // 2️⃣ Récupération des cartes Stripe
+    const paymentMethods = await stripe.paymentMethods.list({
+      customer: user.stripeCustomerId,
+      type: "card",
     });
 
-    console.log("✅ Session Stripe créée :", session.id);
-    console.log("➡️ URL Stripe :", session.url);
+    // 3️⃣ Format de réponse frontend-friendly
+    const cards = paymentMethods.data.map((pm) => ({
+      id: pm.id,
+      brand: pm.card.brand,
+      last4: pm.card.last4,
+      exp_month: pm.card.exp_month,
+      exp_year: pm.card.exp_year,
+      isDefault: pm.id === pm.customer?.invoice_settings?.default_payment_method,
+    }));
 
-    res.json({ url: session.url });
-
+    res.json(cards);
   } catch (err) {
-    console.error("❌ Stripe error:", err);
-    res.status(500).json({ error: "Erreur Stripe" });
+    console.error("❌ Payment methods error :", err);
+    res.status(500).json({ message: "Erreur serveur" });
   }
 });
 
 module.exports = router;
-
-
-/*
-
-const session = await stripe.checkout.sessions.create({
-  mode: "payment",
-  customer: stripeCustomerId, // 👈 OBLIGATOIRE
-  payment_method_types: ["card"],
-  line_items,
-  success_url: "http://localhost:5173/success",
-  cancel_url: "http://localhost:5173/cancel",
-
-  payment_intent_data: {
-    setup_future_usage: "off_session", // 🔥 SAUVEGARDE LA CARTE
-  },
-});
-
-
-
-////////////////////// encien session 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items,
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancel",
-    });
-
-
-
-
-
-*/
