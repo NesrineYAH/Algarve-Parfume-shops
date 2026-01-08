@@ -13,7 +13,7 @@ export default function Payment() {
   const { cartItems, loading: cartLoading } = useContext(CartContext);
   const cart = cartItems;
 //  const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
-  console.log("Cart depuis contexte ou localStorage :", cart);
+
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
@@ -42,52 +42,8 @@ useEffect(() => {
     0
   );
 
-
-
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-/*
-const handleStripePayment = async () => {
-  try {
-    setLoading(true);
-    setError(null);
 
-    const response = await fetch(
-      "http://localhost:5001/api/stripe/create-checkout-session",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart }),
-      }
-    );
-
-    if (!response.ok) {
-      const errData = await response.json();
-      throw new Error(errData.error || "Erreur création session Stripe");
-    }
-
-    const { id: sessionId } = await response.json();
-
-    if (!sessionId) {
-      throw new Error("ID de session Stripe introuvable");
-    }
-
-    // 🔹 Nouvelle méthode : utiliser Stripe.js pour redirection
-    const stripe = await stripePromise;
-    const { error } = await stripe.redirectToCheckout({ sessionId });
-
-    if (error) {
-      console.error("Stripe redirect error:", error);
-      setError(error.message);
-    }
-
-  } catch (err) {
-    console.error("Stripe error:", err);
-    setError(err.message || "Le paiement Stripe a échoué.");
-  } finally {
-    setLoading(false);
-  }
-};
-*/
 const handleStripePayment = async () => {
   try {
     setLoading(true);

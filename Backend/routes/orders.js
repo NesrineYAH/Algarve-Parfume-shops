@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const orderCtrl = require("../controllers/order");
+const Cart = require("../Model/Cart");
+
 
 // ➤ CRÉER UNE COMMANDE
 router.post("/create", authMiddleware, orderCtrl.createOrder);
@@ -23,6 +25,35 @@ router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
 
 // ➤ RÉCUPÉRER LES COMMANDES D’UN UTILISATEUR PAR SON ID
 router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
+
+// concel orders
+router.post("/:orderId/cancel", async (req, res) => {
+  const order = await Order.findById(req.params.orderId);
+  if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
+  if (order.status !== "pending") {
+    return res.status(400).json({ message: "Commande non annulable" });
+  }
+
+  // 🔁 Remettre les articles dans le panier
+  let cart = await Cart.findOne({ userId: order.user });
+  if (!cart) {
+    cart = new Cart({ userId: order.user, items: [] });
+  }
+
+  order.items.forEach(item => {
+    cart.items.push(item);
+  });
+
+  await cart.save();
+
+  // ❌ Annuler la commande
+  order.status = "cancelled";
+  await order.save();
+
+  res.json({ message: "Commande annulée, panier restauré" });
+});
+
 
 module.exports = router;
 
