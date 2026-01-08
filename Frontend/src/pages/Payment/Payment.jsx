@@ -18,7 +18,7 @@ export default function Payment() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+/*
   useEffect(() => {
       if (cartLoading) return; // ⬅️ on attend
     if (!cart || cart.length === 0) {
@@ -26,6 +26,14 @@ export default function Payment() {
        navigate("/cart");
     }
   },  [cart, cartLoading, navigate]);
+*/
+useEffect(() => {
+  if (!order) return;
+
+  if (order.paymentStatus === "paid") {
+    navigate("/orders");
+  }
+}, [order]);
 
   // 💰 Total
   const total = cart.reduce(
@@ -98,13 +106,10 @@ const handleStripePayment = async () => {
         body: JSON.stringify({ cart }),
       }
     );
-
     if (!response.ok) {
       throw new Error(`Erreur serveur (${response.status})`);
     }
-
     const data = await response.json();
-
     if (!data.url) {
       throw new Error("URL Stripe manquante");
     }
@@ -120,10 +125,7 @@ const handleStripePayment = async () => {
   }
 };
 
-
-
   /*  PAYPAL */
-
 useEffect(() => {
   if (paymentMethod !== "paypal") return;
 

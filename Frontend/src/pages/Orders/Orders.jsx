@@ -117,14 +117,17 @@ export default function Orders() {
             <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer
             </button>
-         <button
+         {/* <button
   onClick={() => { handleUpdate(order._id);
     window.location.href = `/payment/${order._id}`;
   }}
-  className="Button"
->
+  className="Button">
   Confirmer et payer
-</button>
+</button> */}
+
+ <Link to={`/payment/${order._id}`}>
+  <button className="Button">Confirmer et payer</button>
+</Link>
 
           </div>
         ))
