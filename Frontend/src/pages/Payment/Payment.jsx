@@ -85,10 +85,10 @@ const handleStripePayment = async () => {
     setLoading(true);
     setError(null);
 
-    const token = localStorage.getItem("token"); // ou context/auth
+    const token = localStorage.getItem("token"); // récupéré du storage ou context
 
     const response = await fetch(
-      "http://localhost:5001/api/stripe/create-checkout-session",
+      "http://localhost:5001/api/stripe/create-checkout-session", // <-- reste la même
       {
         method: "POST",
         headers: {
@@ -119,6 +119,7 @@ const handleStripePayment = async () => {
     setLoading(false);
   }
 };
+
 
 
   /*  PAYPAL */

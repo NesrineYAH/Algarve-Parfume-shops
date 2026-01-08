@@ -9,7 +9,7 @@ const cartRoutes = require("./routes/carts");
 const addressRoutes = require("./routes/addresses");
 const orderRoutes = require("./routes/orders");
 const deliveryRoutes = require("./routes/delivery");
-const paymentRoutes = require("./routes/payment");
+const paymentRoutes = require("./routes/payments");
 const stripeRoute = require("./routes/stripe");
 const contactRoutes = require("./routes/contacts");
 const commentsRoutes = require("./routes/comments");
@@ -18,6 +18,7 @@ const promotionsRoutes = require("./routes/promotions");
 const avisRoutes = require("./routes/avis");
 const stripeWebhook = require("./routes/stripeWebhook");
 const paymentMethodsRoutes = require("./routes/paymentMethods");
+const paymentsRoute = require("./routes/payments");
 const { authMiddleware } = require("./middleware/auth");
 require("./mongoDB/DB");
 
@@ -55,6 +56,7 @@ app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
 app.use("/api/stripe", authMiddleware, stripeRoute);
 app.use("/api", authMiddleware, paymentMethodsRoutes);
+app.use("/api", authMiddleware, paymentsRoute);
 
 
 app.get("/", (req, res) => {

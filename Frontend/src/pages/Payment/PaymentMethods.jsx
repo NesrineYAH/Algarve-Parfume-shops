@@ -4,21 +4,23 @@ const PaymentMethods = () => {
   const [methods, setMethods] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+useEffect(() => { 
+  const token = localStorage.getItem("token");
 
-    fetch("http://localhost:5001/api/payment-methods", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  fetch("http://localhost:5001/api/payments", { // <-- nouvelle route
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setMethods(data);
+      setLoading(false);
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setMethods(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+    .catch(() => setLoading(false));
+}, []);
+
+
 
   if (loading) return <p>Chargement...</p>;
 
