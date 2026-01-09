@@ -12,21 +12,13 @@ export default function Payment() {
   const navigate = useNavigate();
   const { cartItems, loading: cartLoading } = useContext(CartContext);
   const cart = cartItems;
-//  const cart = cartItems || JSON.parse(localStorage.getItem("cart")) || [];
-
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-/*
-  useEffect(() => {
-      if (cartLoading) return; // ⬅️ on attend
-    if (!cart || cart.length === 0) {
-       setError("Le panier est vide, impossible de payer.");
-       navigate("/cart");
-    }
-  },  [cart, cartLoading, navigate]);
-*/
+  const [order, setOrder] = useState(null);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
 useEffect(() => {
   if (!order) return;
 
@@ -35,53 +27,61 @@ useEffect(() => {
   }
 }, [order]);
 
-  // 💰 Total
+
   const total = cart.reduce(
     (sum, item) =>
       sum + Number(item.options?.prix || 0) * Number(item.quantite || 1),
     0
   );
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
-const handleStripePayment = async () => {
+ const handleStripePayment = async () => {
   try {
     setLoading(true);
     setError(null);
 
-    const token = localStorage.getItem("token"); // récupéré du storage ou context
+    const token = localStorage.getItem("token");
 
+    // ✅ Récupérer le panier réel depuis DB
+    const cartResponse = await fetch(
+      "http://localhost:5001/api/carts",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const cartData = await cartResponse.json();
+    const cart = cartData.items;
+
+    if (!cart || cart.length === 0) {
+      throw new Error("Panier vide !");
+    }
+
+    // ✅ Créer session Stripe depuis backend
     const response = await fetch(
-      "http://localhost:5001/api/stripe/create-checkout-session", // <-- reste la même
+      "http://localhost:5001/api/stripe/create-checkout-session",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ cart }),
+       //  body: JSON.stringify({ cart }),  facultatif si backend lit la DB
       }
     );
-    if (!response.ok) {
-      throw new Error(`Erreur serveur (${response.status})`);
-    }
-    const data = await response.json();
-    if (!data.url) {
-      throw new Error("URL Stripe manquante");
-    }
 
-    // ✅ Redirection Stripe Checkout
+    const data = await response.json();
+
+    if (!data.url) throw new Error("URL Stripe manquante");
+
     window.location.href = data.url;
 
   } catch (err) {
-    console.error("❌ Stripe error :", err);
+    console.error("Stripe error :", err);
     setError(err.message);
   } finally {
     setLoading(false);
   }
 };
 
-  /*  PAYPAL */
 useEffect(() => {
   if (paymentMethod !== "paypal") return;
 
@@ -189,7 +189,44 @@ useEffect(() => {
 
 
 
+/*
+const handleStripePayment = async () => {
+  try {
+    setLoading(true);
+    setError(null);
 
+    const token = localStorage.getItem("token"); // récupéré du storage ou context
+
+    const response = await fetch(
+      "http://localhost:5001/api/stripe/create-checkout-session", // <-- reste la même
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ cart }),
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`Erreur serveur (${response.status})`);
+    }
+    const data = await response.json();
+    if (!data.url) {
+      throw new Error("URL Stripe manquante");
+    }
+
+    // ✅ Redirection Stripe Checkout
+    window.location.href = data.url;
+
+  } catch (err) {
+    console.error("❌ Stripe error :", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+*/
 
 
 

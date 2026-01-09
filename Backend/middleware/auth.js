@@ -17,6 +17,7 @@ function authMiddleware(req, res, next) {
       prenom: decodedToken.prenom,
       email: decodedToken.email
     };
+
     next();
   } catch (error) {
     res.status(401).json({ error: "Token invalide" });

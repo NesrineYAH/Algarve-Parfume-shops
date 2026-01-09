@@ -4,6 +4,7 @@ import axios from "axios";
 import "./Product.scss";
 import { useTranslation } from "react-i18next";
 import { Heart } from "lucide-react";
+  import * as CartService from "../../Services/cart"; // ton service frontend
 
 const Product = () => {
   const { id } = useParams();
@@ -72,6 +73,51 @@ const favoriteItem = {
     fetchComments();
   }, [id]);
 
+
+const addToCart = async () => { 
+  if (!selectedOption) {
+    alert("Veuillez sélectionner une option.");
+    return;
+  }
+
+  const variantId = `${product._id}-${selectedOption.size}`;
+
+  // Mise à jour locale
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const existing = cart.find((item) => item.variantId === variantId);
+
+  if (existing) {
+    existing.quantite += quantity;
+  } else {
+    cart.push({
+      productId: product._id,
+      variantId,
+      nom: product.nom,
+      imageUrl: product.imageUrl,
+      quantite: quantity,
+      options: selectedOption,
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  setShowModal(true);
+
+  // 🔄 Mise à jour dans MongoDB
+  try {
+    for (const item of cart) {
+      await CartService.addToCart({
+        productId: item.productId,
+        nom: item.nom,
+        imageUrl: item.imageUrl,
+        options: item.options,
+      });
+    }
+  } catch (err) {
+console.error("Erreur ajout au panier backend :", err.response?.data || err.message);
+}
+};
+
+/*
   const addToCart = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (!selectedOption) {
@@ -83,7 +129,6 @@ const favoriteItem = {
     const existing = cart.find((item) => item.variantId === variantId);
 
     if (existing) {
-    //  existing.quantite += 1;
       existing.quantite += quantity;
 
     } else {
@@ -100,7 +145,7 @@ const favoriteItem = {
     localStorage.setItem("cart", JSON.stringify(cart));
     setShowModal(true);
   };
-
+*/
 const reportComment = async (commentId) => {
   try {
     const token = localStorage.getItem("token"); // 🔥 Manquait !

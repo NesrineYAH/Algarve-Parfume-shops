@@ -24,3 +24,4 @@ export const removeItem = async (productId) => {
     { headers: { Authorization: localStorage.getItem("token") } }
   );
 };
+

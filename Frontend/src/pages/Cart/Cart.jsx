@@ -6,6 +6,7 @@ import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { UserContext } from "../../context/UserContext";
 import {  Link } from "react-router-dom";
 
+
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const { user, loading } = useContext(UserContext);
@@ -13,7 +14,6 @@ export default function Cart() {
   const navigate = useNavigate();
   const currentStep = 1;
 
-  // Charger le panier depuis localStorage
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCart(storedCart);

@@ -36,7 +36,7 @@ export default function Checkout() {
   // Calcul du prix total
   const total = cart.reduce((sum, item) => {
     const opt = getSelectedOption(item);
-    const qty = Number(item.quantite || item.quantity || 1);
+    const qty = Number(item.quantite || 1);
     const price = Number(opt.prix || 0);
     return sum + price * qty;
   }, 0);
