@@ -21,12 +21,10 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 useEffect(() => {
   if (!order) return;
-
   if (order.paymentStatus === "paid") {
     navigate("/orders");
   }
 }, [order]);
-
 
   const total = cart.reduce(
     (sum, item) =>
@@ -45,7 +43,11 @@ useEffect(() => {
     const cartResponse = await fetch(
       "http://localhost:5001/api/carts",
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { 
+    //      Authorization: `Bearer ${token}` 
+             Authorization: `Bearer ${localStorage.getItem("token")}`,
+
+        },
       }
     );
     const cartData = await cartResponse.json();

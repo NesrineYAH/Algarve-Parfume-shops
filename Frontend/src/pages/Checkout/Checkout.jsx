@@ -9,20 +9,54 @@ import "./Checkout.scss";
 
 export default function Checkout() {
   const { cartItems } = useContext(CartContext);
+// const cart = cartItems; // 🔥 PLUS DE localStorage
+
   const [cart, setCart] = useState([]);
   const [deliveryMode, setDeliveryMode] = useState("domicile");
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
   
 
-  // Charger le panier : priorité au context, sinon fallback localStorage
-  useEffect(() => {
-    const storedCart =
-      cartItems && cartItems.length
-        ? cartItems
-        : JSON.parse(localStorage.getItem("cart")) || [];
-    setCart(storedCart);
-  }, [cartItems]);
+useEffect(() => {
+  const fetchCart = async () => {
+    try {
+      // 🟢 1️⃣ Essayer MongoDB via API
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const res = await fetch("http://localhost:5001/api/carts", {
+          headers: {
+           Authorization: `Bearer ${token}`,
+  //          Authorization: `Bearer ${localStorage.getItem("token")}`,
+
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          if (data.items && data.items.length > 0) {
+            setCart(data.items);
+            return; // ✅ panier MongoDB utilisé
+          }
+        }
+      }
+
+      // 🟡 2️⃣ Fallback localStorage
+      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCart(localCart);
+    } catch (err) {
+      console.error("❌ Erreur chargement panier :", err);
+
+      // 🔴 3️⃣ Fallback ultime
+      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCart(localCart);
+    }
+  };
+
+  fetchCart();
+}, []);
+
 
   // Fonction pour récupérer une option valide pour chaque produit
   const getSelectedOption = (item) => {
@@ -40,30 +74,7 @@ export default function Checkout() {
     const price = Number(opt.prix || 0);
     return sum + price * qty;
   }, 0);
-  /* 25/12/2025
-const handleOrder = async () => {
-  try {
-    const preOrderId = localStorage.getItem("preOrderId");
 
-    if (!preOrderId) {
-      alert("Aucune pré-commande trouvée");
-      navigate("/cart");
-      return;
-    }
-
-    await OrderService.finalizeOrder(preOrderId);
-
-    alert("✅ Commande confirmée !");
-    localStorage.removeItem("cart");
-    localStorage.removeItem("preOrderId");
-
-    navigate("/confirmation");
-  } catch (error) {
-    console.error("Erreur finalisation :", error.response || error);
-    alert("❌ Impossible de confirmer la commande");
-  }
-};
-*/
 const handleOrder = async () => {
   if (!cart || cart.length === 0) {
     alert("Votre panier est vide");
@@ -170,6 +181,31 @@ const handleOrder = async () => {
   );
 }
 
+
+  /* 25/12/2025
+const handleOrder = async () => {
+  try {
+    const preOrderId = localStorage.getItem("preOrderId");
+
+    if (!preOrderId) {
+      alert("Aucune pré-commande trouvée");
+      navigate("/cart");
+      return;
+    }
+
+    await OrderService.finalizeOrder(preOrderId);
+
+    alert("✅ Commande confirmée !");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("preOrderId");
+
+    navigate("/confirmation");
+  } catch (error) {
+    console.error("Erreur finalisation :", error.response || error);
+    alert("❌ Impossible de confirmer la commande");
+  }
+};
+*/
 
       {/* Choix du mode de livraison 
       <div style={{ marginTop: 20 }}>

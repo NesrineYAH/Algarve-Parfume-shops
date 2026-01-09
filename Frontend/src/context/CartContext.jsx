@@ -1,102 +1,84 @@
-import { createContext, useEffect, useState } from "react";
-import { getCart } from "../Services/cart"; // ton service axios
-import { addToCart as addToCartAPI } from "../Services/cart";
-
+import { createContext, useEffect, useState, useContext } from "react";
+import * as CartService from "../Services/cart";
+import { UserContext } from "./UserContext";
+import axios from "axios";
 
 export const CartContext = createContext();
 
 export default function CartProvider({ children }) {
+  const { user } = useContext(UserContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
-  useEffect(() => {
-  const fetchCart = async () => {
-    setLoading(true);
+  // 🔥 Fonction pour charger le panier depuis la DB
+  const loadCart = async () => {
+    if (!user) return setCartItems([]);
     try {
-      const res = await getCart();
+      const res = await axios.get("http://localhost:5001/api/carts", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       setCartItems(res.data.items || []);
     } catch (err) {
-      console.error("Erreur fetch cart :", err);
+      console.error("❌ loadCart:", err);
       setCartItems([]);
     } finally {
       setLoading(false);
     }
   };
 
-  fetchCart();
-}, []);
-
-/*
+  // 🔄 Charger le panier à chaque login
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+    if (!user) {
+      setCartItems([]);
+      setLoading(false);
+      return;
     }
-    setLoading(false);
-  }, []);
-*/
+    loadCart();
+  }, [user]);
 
-  useEffect(() => {
-    if (!loading) {
-      localStorage.setItem("cart", JSON.stringify(cartItems));
+  // ➕ Ajouter un article
+  const addToCart = async (item) => {
+    try {
+      await CartService.addToCart(item);
+      await loadCart();
+    } catch (err) {
+      console.error("❌ addToCart error:", err);
     }
-  }, [cartItems, loading]);
-const addToCart = async (product, selectedOption) => {
-  try {
-    const res = await addToCartAPI(product._id);
-    const cartFromServer = res.data.cart.items.map(i => ({
-      productId: i.productId,
-      nom: i.nom,
-      imageUrl: i.imageUrl,
-      quantite: i.quantite,
-      options: i.options,
-    }));
-    setCartItems(cartFromServer);
-  } catch (err) {
-    console.error("Erreur addToCart :", err);
-  }
-};
-
-  const updateQuantity = (productId, size, unit, quantite) => {
-    if (quantite <= 0) return;
-
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.productId === productId &&
-        item.options.size === size &&
-        item.options.unit === unit
-          ? { ...item, quantite }
-          : item
-      )
-    );
   };
 
-
-const removeFromCart = async (productId) => {
-  try {
-    const res = await removeItem(productId); // service axios
-    const updated = res.data.cart.items.map(i => ({
-      productId: i.productId,
-      nom: i.nom,
-      imageUrl: i.imageUrl,
-      quantite: i.quantite,
-      options: i.options,
-    }));
-    setCartItems(updated);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-  const clearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem("cart");
+  // ➖ Mettre à jour la quantité
+  const updateQuantity = async (productId, quantity) => {
+    try {
+      await CartService.updateQuantity(productId, quantity);
+      await loadCart();
+    } catch (err) {
+      console.error("❌ updateQuantity error:", err);
+    }
   };
 
+  // ❌ Supprimer un produit
+  const removeFromCart = async (productId) => {
+    try {
+      await CartService.removeItem(productId);
+      await loadCart();
+    } catch (err) {
+      console.error("❌ removeFromCart error:", err);
+    }
+  };
 
+  // 🧹 Vider le panier
+  const clearCart = async () => {
+    try {
+      await CartService.clearCart();
+      setCartItems([]);
+    } catch (err) {
+      console.error("❌ clearCart error:", err);
+    }
+  };
+
+  // 💰 Total
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.options.prix * item.quantite,
+    (sum, i) => sum + i.options.prix * i.quantite,
     0
   );
 
@@ -116,6 +98,8 @@ const removeFromCart = async (productId) => {
     </CartContext.Provider>
   );
 }
+
+
 
 
 /* 09/01/26

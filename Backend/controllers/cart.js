@@ -1,76 +1,84 @@
 const Cart = require("../Model/Cart");
 
-/* Create: POST /api/cart/add */
+
+/* ➕ Ajouter au panier */
 exports.addToCart = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { productId, nom, imageUrl, options } = req.body;
+    const userId = req.user.userId;// JWT middleware
+    const { productId, nom, imageUrl, quantite = 1, options } = req.body;
 
-    if (!productId || !nom || !options) {
-      return res.status(400).json({ message: "productId, nom et options requis" });
+       if (!productId || !options) {
+      return res.status(400).json({ message: "Données produit manquantes" });
     }
 
     let cart = await Cart.findOne({ userId });
 
+    // 🆕 Pas de panier → création
     if (!cart) {
       cart = new Cart({
         userId,
         items: [
-          {
-            productId,
+           productId,
             nom,
             imageUrl,
-            quantite: 1,
+            quantite,
             options,
-          },
         ],
       });
-    } else {
-      const item = cart.items.find(
-        (i) =>
-          i.productId.toString() === productId &&
-          i.options.size === options.size &&
-          i.options.unit === options.unit
-      );
+    }
 
-      if (item) {
-        item.quantite += 1;
-      } else {
-        cart.items.push({
-          productId,
-          nom,
-          imageUrl,
-          quantite: 1,
-          options,
-        });
-      }
+    const existing = cart.items.find(
+      (i) =>
+        i.productId.toString() === productId &&
+        i.options.size === options.size
+    );
+
+    if (existing) {
+      existing.quantite += quantite;
+    } else {
+      cart.items.push({
+        productId,
+        nom,
+        imageUrl,
+        quantite,
+        options,
+      });
     }
 
     await cart.save();
-    res.json({ message: "Produit ajouté au panier", cart });
-  } catch (error) {
-    console.error("Erreur addToCart :", error);
+    res.json(cart);
+  } catch (err) {
+    console.error("❌ addToCart error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
 
-/* Read: GET /api/cart */
+/* 📦 Récupérer le panier */
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    const cart = await Cart.findOne({ userId }).populate("items.productId");
+const cart = await Cart.findOne({ userId });
 
     if (!cart) {
       return res.json({ items: [] });
     }
 
     res.json(cart);
-  } catch (error) {
-    console.error("Erreur getCart :", error);
+  } catch (err) {
+    console.error("❌ getCart error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+/* 🧹 Vider le panier */
+exports.clearCart = async (req, res) => {
+  await Cart.findOneAndUpdate(
+    { userId: req.user.id },
+    { items: [] }
+  );
+  res.json({ message: "Panier vidé" });
+};
+
 
 /* Update: PUT /api/cart/update */
 exports.updateQuantity = async (req, res) => {
@@ -135,7 +143,7 @@ exports.removeItem = async (req, res) => {
   }
 };
 
-/* Delete: DELETE /api/cart/clear */
+/* Delete: DELETE /api/cart/clear // comment */
 exports.clearCart = async (req, res) => {
   try {
     const userId = req.user.id;

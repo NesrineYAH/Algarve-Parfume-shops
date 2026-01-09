@@ -70,6 +70,7 @@ const UserProvider = ({ children }) => {
     logoutUser();
     setUser(null);
     localStorage.removeItem("user");
+      clearCart(); // 🔥 Vider le panier à la déconnexion
   };
 
   return (
