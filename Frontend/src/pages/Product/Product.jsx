@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Product.scss";
 import { useTranslation } from "react-i18next";
 import { Heart } from "lucide-react";
   import * as CartService from "../../Services/cart"; // ton service frontend
+import { UserContext } from "../../context/UserContext";
+import { CartContext } from "../../context/CartContext";
+
 
 const Product = () => {
   const { id } = useParams();
@@ -21,6 +24,7 @@ const Product = () => {
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
+  
 
 const [quantity, setQuantity] = useState(1);
 
@@ -225,7 +229,6 @@ useEffect(() => {
   if (!product) return <p>{t("product.loading")}</p>;
 
   //04/01/2026
-
   const minPrice =
   product.options && product.options.length > 0
     ? Math.min(...product.options.map(opt => opt.prix))
@@ -274,7 +277,6 @@ useEffect(() => {
     </>
   )}
 </p>
-
       {product.options && product.options.length > 0 && (
         <div className="product-options">
     {/* <p className="option-label">{t("product.chooseOption")}</p> */}
