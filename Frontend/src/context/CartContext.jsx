@@ -26,7 +26,6 @@ export default function CartProvider({ children }) {
     }
   };
 
-  // 🔄 Charger le panier à chaque login
   useEffect(() => {
     if (!user) {
       setCartItems([]);
@@ -35,8 +34,7 @@ export default function CartProvider({ children }) {
     }
     loadCart();
   }, [user]);
-
-  // ➕ Ajouter un article
+/*
   const addToCart = async (item) => {
     try {
       await CartService.addToCart(item);
@@ -45,6 +43,11 @@ export default function CartProvider({ children }) {
       console.error("❌ addToCart error:", err);
     }
   };
+*/
+const addToCart = async (item) => {
+  await CartService.addToCart(item);
+  await loadCart();
+};
 
   // ➖ Mettre à jour la quantité
   const updateQuantity = async (productId, quantity) => {

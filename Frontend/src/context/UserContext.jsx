@@ -1,21 +1,26 @@
-// src/context/UserContext.js
-import { createContext, useState, useEffect } from "react";
-import {loginUser,registerUser, getCurrentUser, logoutUser,
+import { createContext, useState, useEffect, useContext } from "react";
+import {
+  loginUser,
+  registerUser,
+  getCurrentUser,
+  logoutUser,
 } from "../Services/auth";
+import { CartContext } from "./CartContext";
 
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
+  const cartContext = useContext(CartContext); // ✅ SAFE
+  const clearCart = cartContext?.clearCart;   // ✅ SAFE
 
   const [user, setUser] = useState(() => {
-    // 🟢 1️⃣ Charger l'utilisateur depuis localStorage au démarrage
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // 🟢 2️⃣ Vérifier le token côté serveur + mettre à jour le user
+  // 🔄 Vérifier utilisateur via token
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -28,24 +33,23 @@ const UserProvider = ({ children }) => {
           setUser(null);
           localStorage.removeItem("user");
         }
-
       } catch (err) {
         console.error("Erreur fetchUser:", err);
         setUser(null);
         localStorage.removeItem("user");
+      } finally {
+        setLoadingUser(false);
       }
-
-      setLoadingUser(false);
     };
 
     fetchUser();
   }, []);
 
-  // stocker user + token
+  // 🔐 LOGIN
   const handleLogin = async (credentials) => {
     const data = await loginUser(credentials);
 
-    if (data.user) {
+    if (data?.user) {
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
     }
@@ -53,11 +57,11 @@ const UserProvider = ({ children }) => {
     return data;
   };
 
-  // même logique que login
+  // 📝 REGISTER
   const handleRegister = async (credentials) => {
     const data = await registerUser(credentials);
 
-    if (data.user) {
+    if (data?.user) {
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
     }
@@ -65,12 +69,21 @@ const UserProvider = ({ children }) => {
     return data;
   };
 
-  // supprimer user + token
-  const handleLogout = () => {
+  // 🚪 LOGOUT (PROPRE)
+  const handleLogout = async () => {
+    try {
+      if (clearCart) {
+        await clearCart(); // 🔥 vider panier MongoDB + context
+      }
+    } catch (e) {
+      console.warn("Panier déjà vide");
+    }
+
     logoutUser();
     setUser(null);
+
     localStorage.removeItem("user");
-      clearCart(); // 🔥 Vider le panier à la déconnexion
+    localStorage.removeItem("cart"); // panier invité
   };
 
   return (
@@ -81,7 +94,7 @@ const UserProvider = ({ children }) => {
         handleLogin,
         handleRegister,
         handleLogout,
-        setUser
+        setUser,
       }}
     >
       {children}
@@ -90,6 +103,7 @@ const UserProvider = ({ children }) => {
 };
 
 export default UserProvider;
+
 
 
 /*

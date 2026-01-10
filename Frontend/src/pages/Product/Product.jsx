@@ -27,17 +27,9 @@ const [quantity, setQuantity] = useState(1);
   const [favorites, setFavorites] = useState(() => {
   return JSON.parse(localStorage.getItem("favorites")) || [];
 });
-/*
-const favoriteItem = {
-  productId: product._id,
- variantId: `${product._id}-${selectedOption.size}`,
-  nom: product.nom,
-  imageUrl: product.imageUrl,
-  size: selectedOption.size,
- prix: selectedOption.prix,
+const { user } = useContext(UserContext);
+const { addToCart: addToCartContext } = useContext(CartContext);
 
-};
-*/
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -73,79 +65,56 @@ const favoriteItem = {
     fetchComments();
   }, [id]);
 
-
-const addToCart = async () => { 
+const addToCart = async () => {
   if (!selectedOption) {
     alert("Veuillez sélectionner une option.");
     return;
   }
 
-  const variantId = `${product._id}-${selectedOption.size}`;
+  const item = {
+    productId: product._id,
+    nom: product.nom,
+    imageUrl: product.imageUrl,
+    quantite: quantity,
+    options: {
+      size: selectedOption.size,
+      unit: selectedOption.unit,
+      prix: selectedOption.prix,
+    },
+  };
 
-  // Mise à jour locale
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const existing = cart.find((item) => item.variantId === variantId);
-
-  if (existing) {
-    existing.quantite += quantity;
-  } else {
-    cart.push({
-      productId: product._id,
-      variantId,
-      nom: product.nom,
-      imageUrl: product.imageUrl,
-      quantite: quantity,
-      options: selectedOption,
-    });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  setShowModal(true);
-
-  // 🔄 Mise à jour dans MongoDB
-  try {
-    for (const item of cart) {
-      await CartService.addToCart({
-        productId: item.productId,
-        nom: item.nom,
-        imageUrl: item.imageUrl,
-        options: item.options,
-      });
-    }
-  } catch (err) {
-console.error("Erreur ajout au panier backend :", err.response?.data || err.message);
-}
-};
-
-/*
-  const addToCart = () => {
+  // 👤 UTILISATEUR NON CONNECTÉ → localStorage
+  if (!user) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (!selectedOption) {
-      alert("Veuillez sélectionner une option.");
-      return;
-    }
 
-    const variantId = `${product._id}-${selectedOption.size}`;
-    const existing = cart.find((item) => item.variantId === variantId);
+    const existing = cart.find(
+      (i) =>
+        i.productId === item.productId &&
+        i.options.size === item.options.size
+    );
 
     if (existing) {
       existing.quantite += quantity;
-
     } else {
-      cart.push({
-        productId: product._id,
-        variantId,
-        nom: product.nom,
-        imageUrl: product.imageUrl,
-        quantite: quantity,
-        options: selectedOption,
-      });
+      cart.push(item);
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
     setShowModal(true);
-  };
-*/
+    return;
+  }
+
+  // 🔐 UTILISATEUR CONNECTÉ → MongoDB
+  try {
+    await addToCartContext(item); // ✅ CartContext
+    setShowModal(true);
+  } catch (err) {
+    console.error("❌ addToCart backend error:", err);
+    alert("Erreur ajout au panier");
+  }
+};
+
+
 const reportComment = async (commentId) => {
   try {
     const token = localStorage.getItem("token"); // 🔥 Manquait !
@@ -509,6 +478,51 @@ useEffect(() => {
 };
 
 export default Product;
+
+
+
+/*
+const favoriteItem = {
+  productId: product._id,
+ variantId: `${product._id}-${selectedOption.size}`,
+  nom: product.nom,
+  imageUrl: product.imageUrl,
+  size: selectedOption.size,
+ prix: selectedOption.prix,
+
+};
+*/
+
+
+/*
+  const addToCart = () => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!selectedOption) {
+      alert("Veuillez sélectionner une option.");
+      return;
+    }
+
+    const variantId = `${product._id}-${selectedOption.size}`;
+    const existing = cart.find((item) => item.variantId === variantId);
+
+    if (existing) {
+      existing.quantite += quantity;
+
+    } else {
+      cart.push({
+        productId: product._id,
+        variantId,
+        nom: product.nom,
+        imageUrl: product.imageUrl,
+        quantite: quantity,
+        options: selectedOption,
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    setShowModal(true);
+  };
+*/
 
    {/* <strong>{t("product.selectedPrice")} :</strong>{" "} */}
           {/* Options
