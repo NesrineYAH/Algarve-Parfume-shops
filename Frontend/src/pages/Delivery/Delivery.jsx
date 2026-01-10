@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Delivery.scss";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import AddressAutocomplete from "../../components/AddressAutocomplete/AddressAutocomplete";
 import { EUROPE_COUNTRIES } from "../../europeCountries";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Delivery() {
+  const navigate = useNavigate();
+
+  const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\- ]{2,30}$/;
+
+  const [loading, setLoading] = useState(true);
+
   const [form, setForm] = useState({
     civility: "M",
     firstName: "",
@@ -19,17 +25,57 @@ export default function Delivery() {
     phone: "",
   });
 
+  // Charger les données sauvegardées
+  useEffect(() => {
+    const savedForm = localStorage.getItem("deliveryForm");
+    if (savedForm) {
+      setForm(JSON.parse(savedForm));
+    }
+    setLoading(false);
+  }, []);
+
+  // Sauvegarder automatiquement
+  useEffect(() => {
+    if (!loading) {
+      localStorage.setItem("deliveryForm", JSON.stringify(form));
+    }
+  }, [form, loading]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
+
+  const validateForm = () => {
+    if (!nameRegex.test(form.firstName)) return false;
+    if (!nameRegex.test(form.lastName)) return false;
+    if (form.address.trim() === "") return false;
+    if (form.postalCode.trim() === "") return false;
+    if (form.city.trim() === "") return false;
+    if (form.phone.trim() === "") return false;
+
+    return true;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      alert("Veuillez remplir correctement tous les champs obligatoires.");
+      return;
+    }
+
+    navigate("/payment");
+  };
+
+  if (loading) return <p>Chargement…</p>;
 
   return (
     <div className="delivery-container">
       <CheckoutSteps step={3} />
       <h2>📦 Adresse de livraison</h2>
 
-      <form className="delivery-form">
+      <form className="delivery-form" onSubmit={handleSubmit}>
         {/* Civilité */}
         <div className="form-group">
           <label>Civilité</label>
@@ -80,7 +126,7 @@ export default function Delivery() {
         {/* Adresse */}
         <div className="form-group">
           <label>Adresse</label>
-          <AddressAutocomplete 
+          <AddressAutocomplete
             value={form.address}
             onChange={(text) =>
               setForm((prev) => ({ ...prev, address: text }))
@@ -150,10 +196,12 @@ export default function Delivery() {
           </div>
         </div>
 
-        <Link to="/payment">
-          <button className="Button">Continuer vers le paiement</button>
-        </Link>
+        <button type="submit" className="Button">
+          Continuer vers le paiement
+        </button>
       </form>
     </div>
   );
 }
+
+
