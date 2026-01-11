@@ -32,7 +32,7 @@ const [quantity, setQuantity] = useState(1);
   return JSON.parse(localStorage.getItem("favorites")) || [];
 });
 const { user } = useContext(UserContext);
-const { addToCart: addToCartContext } = useContext(CartContext);
+const { addToCartContext } = useContext(CartContext);
 
 
   useEffect(() => {

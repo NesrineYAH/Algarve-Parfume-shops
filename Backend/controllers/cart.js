@@ -4,38 +4,47 @@ const Cart = require("../Model/Cart");
 /* ➕ Ajouter au panier */
 exports.addToCart = async (req, res) => {
   try {
-    const userId = req.user.userId;// JWT middleware
+    const userId = req.user.userId; // récupéré depuis le token JWT
     const { productId, nom, imageUrl, quantite = 1, options } = req.body;
 
-       if (!productId || !options) {
-      return res.status(400).json({ message: "Données produit manquantes" });
+    if (!productId || !options || !options.size || !options.prix) {
+      return res.status(400).json({ message: "Données produit incomplètes" });
     }
 
+    // Vérifier si un panier existe déjà
     let cart = await Cart.findOne({ userId });
 
-    // 🆕 Pas de panier → création
+    // 🆕 Si aucun panier → création
     if (!cart) {
       cart = new Cart({
         userId,
         items: [
-           productId,
+          {
+            productId,
             nom,
             imageUrl,
             quantite,
             options,
+          },
         ],
       });
+
+      await cart.save();
+      return res.json(cart);
     }
 
-    const existing = cart.items.find(
+    // 🔍 Vérifier si l’item existe déjà (même produit + même taille)
+    const existingItem = cart.items.find(
       (i) =>
-        i.productId.toString() === productId &&
+        i.productId.toString() === productId.toString() &&
         i.options.size === options.size
     );
 
-    if (existing) {
-      existing.quantite += quantite;
+    if (existingItem) {
+      // ➕ Ajouter la quantité
+      existingItem.quantite += quantite;
     } else {
+      // ➕ Ajouter un nouvel item
       cart.items.push({
         productId,
         nom,
@@ -47,13 +56,14 @@ exports.addToCart = async (req, res) => {
 
     await cart.save();
     res.json(cart);
+
   } catch (err) {
     console.error("❌ addToCart error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
 
-/* 📦 Récupérer le panier */
+
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -70,7 +80,7 @@ const cart = await Cart.findOne({ userId });
   }
 };
 
-/* 🧹 Vider le panier */
+
 exports.clearCart = async (req, res) => {
   await Cart.findOneAndUpdate(
     { userId: req.user.id },
@@ -79,8 +89,6 @@ exports.clearCart = async (req, res) => {
   res.json({ message: "Panier vidé" });
 };
 
-
-/* Update: PUT /api/cart/update */
 exports.updateQuantity = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -114,7 +122,7 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
-/* Delete: DELETE /api/cart/remove/:productId */
+
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -143,7 +151,7 @@ exports.removeItem = async (req, res) => {
   }
 };
 
-/* Delete: DELETE /api/cart/clear // comment */
+
 exports.clearCart = async (req, res) => {
   try {
     const userId = req.user.id;
