@@ -5,6 +5,7 @@ const cartSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   items: [
     {
+       variantId: { type: String, required: true }, // 👈 clé unique
       productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
       nom: { type: String, required: true },
       imageUrl: String,

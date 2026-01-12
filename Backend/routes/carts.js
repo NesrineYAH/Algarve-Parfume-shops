@@ -7,8 +7,9 @@ const uploads = require("../middleware/multer-config");
 
 router.post("/add", authMiddleware, cartCtrl.addToCart);
 router.get("/", authMiddleware, cartCtrl.getCart);
-router.put("/update", authMiddleware, cartCtrl.updateQuantity);
-router.delete("/remove/:productId", authMiddleware, cartCtrl.removeItem);
+router.put("/updateQuantity", authMiddleware, cartCtrl.updateQuantity);
+router.delete("/removeItem/:variantId", authMiddleware, cartCtrl.removeItem);
 router.delete("/clear", authMiddleware, cartCtrl.clearCart);
+
 
 module.exports = router;

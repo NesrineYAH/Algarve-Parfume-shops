@@ -1,4 +1,10 @@
-import { createContext, useEffect, useState, useContext, useMemo } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { UserContext } from "./UserContext";
 
 export const CartContext = createContext();
@@ -7,101 +13,10 @@ const CartProvider = ({ children }) => {
   const { user } = useContext(UserContext);
   const [cartItems, setCartItems] = useState([]);
 
-  // 🔄 Chargement du panier
-  useEffect(() => {
-    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  // 🔄 Fusion panier local + backend (clé = variantId)
 
-    if (!user?._id) {
-      // 🟡 Non connecté → afficher panier local
-      setCartItems(localCart);
-      return;
-    }
 
-    // 🟢 Connecté → fusion avec backend
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setCartItems(localCart);
-      return;
-    }
 
-    fetch("http://localhost:5001/api/carts", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const backendCart = data.items || [];
-        const mergedCart = mergeCarts(localCart, backendCart);
-        setCartItems(mergedCart);
-
-        // Synchroniser le panier backend
-        fetch("http://localhost:5001/api/carts/sync", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ userId: user._id, cartItems: mergedCart }),
-        });
-
-        localStorage.removeItem("cart");
-      })
-      .catch((err) => {
-        console.error("Erreur sync panier :", err);
-        setCartItems(localCart);
-      });
-  }, [user]);
-
-  // ➕ Ajouter au panier
-  const addToCartContext = async (item) => {
-    if (!user?._id) {
-      // NON CONNECTÉ → panier local
-      setCartItems((prev) => {
-        const updated = [...prev];
-        const exist = updated.find((i) => i.variantId === item.variantId);
-
-        if (exist) {
-          exist.quantite += item.quantite;
-        } else {
-          updated.push(item);
-        }
-
-        localStorage.setItem("cart", JSON.stringify(updated));
-        return updated;
-      });
-      return;
-    }
-
-    // CONNECTÉ → backend
-    const token = localStorage.getItem("token");
-
-    try {
-      await fetch("http://localhost:5001/api/carts/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(item),
-      });
-
-      // Recharger panier backend
-      const res = await fetch("http://localhost:5001/api/carts", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = await res.json();
-      setCartItems(data.items || []);
-    } catch (err) {
-      console.error("❌ addToCart error", err);
-    }
-  };
-
-  // 🔹 Calcul du total
-  const totalPrice = useMemo(() => {
-    return cartItems.reduce((acc, item) => acc + (item.options?.prix || 0) * (item.quantite || 0), 0);
-  }, [cartItems]);
-
-  // 🔹 Fusion des paniers
   const mergeCarts = (localCart, backendCart) => {
     const map = new Map();
 
@@ -114,11 +29,89 @@ const CartProvider = ({ children }) => {
     });
 
     return Array.from(map.values());
+
   };
-  //11/01 copilot
+
+  // 📦 Charger panier
+  useEffect(() => {
+    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // 🟡 Non connecté
+    if (!user?._id) {
+      setCartItems(localCart);
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setCartItems(localCart);
+      return;
+    }
+
+    // 🟢 Connecté
+    fetch("http://localhost:5001/api/carts", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const backendCart = data.items || [];
+        const merged = mergeCarts(localCart, backendCart);
+
+        setCartItems(merged);
+
+        // 🔄 Sync backend
+        fetch("http://localhost:5001/api/carts/sync", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ cartItems: merged }),
+        });
+
+        localStorage.removeItem("cart");
+      })
+      .catch(() => setCartItems(localCart));
+  }, [user]);
+
+  // ➕ Ajouter
+  const addToCartContext = async (item) => {
+    if (!user?._id) {
+      setCartItems((prev) => {
+        const updated = [...prev];
+        const exist = updated.find((i) => i.variantId === item.variantId);
+
+        if (exist) exist.quantite += item.quantite;
+        else updated.push(item);
+
+        localStorage.setItem("cart", JSON.stringify(updated));
+        return updated;
+      });
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    await fetch("http://localhost:5001/api/carts/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(item),
+    });
+
+    const res = await fetch("http://localhost:5001/api/carts", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+    setCartItems(data.items || []);
+  };
+
+  // ➕➖ Modifier quantité
 const updateQuantity = async (variantId, delta) => {
   if (!user?._id) {
-    // local
     setCartItems(prev => {
       const updated = prev.map(item =>
         item.variantId === variantId
@@ -131,54 +124,78 @@ const updateQuantity = async (variantId, delta) => {
     return;
   }
 
-  // backend
   const token = localStorage.getItem("token");
-  await fetch("http://localhost:5001/api/carts/update", {
+
+  const res = await fetch("http://localhost:5001/api/carts/updateQuantity", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ variantId, delta }),
+    body: JSON.stringify({
+      variantId,
+      delta: Number(delta), // ⭐ CRUCIAL
+    }),
   });
 
-  const res = await fetch("http://localhost:5001/api/carts", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  if (!res.ok) {
+    const err = await res.json();
+    console.error("UPDATE ERROR :", err);
+    return;
+  }
+
   const data = await res.json();
   setCartItems(data.items || []);
 };
-//11/01/ copilot
+
+
+  // ❌ Supprimer
 const removeFromCart = async (variantId) => {
   if (!user?._id) {
-    const updated = cartItems.filter(item => item.variantId !== variantId);
+    const updated = cartItems.filter(i => i.variantId !== variantId);
     setCartItems(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
     return;
   }
 
   const token = localStorage.getItem("token");
-  await fetch("http://localhost:5001/api/carts/remove", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ variantId }),
-  });
 
-  const res = await fetch("http://localhost:5001/api/carts", {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await fetch(
+    `http://localhost:5001/api/carts/removeItem/${variantId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const err = await res.json();
+    console.error("REMOVE ERROR :", err);
+    return;
+  }
+
   const data = await res.json();
   setCartItems(data.items || []);
 };
 
+  // 💰 Total
+  const totalPrice = useMemo(() => {
+    return cartItems.reduce(
+      (acc, item) => acc + (item.options?.prix || 0) * item.quantite,
+      0
+    );
+  }, [cartItems]);
 
   return (
     <CartContext.Provider
       value={{
-  cartItems, addToCartContext, updateQuantity, removeFromCart, setCartItems, totalPrice,
+        cartItems,
+        addToCartContext,
+        updateQuantity,
+        removeFromCart,
+        totalPrice,
       }}
     >
       {children}
@@ -187,6 +204,9 @@ const removeFromCart = async (variantId) => {
 };
 
 export default CartProvider;
+
+
+
 
 
 

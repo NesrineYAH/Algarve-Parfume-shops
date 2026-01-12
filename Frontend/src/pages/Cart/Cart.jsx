@@ -1,11 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import "./Cart.scss";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { UserContext } from "../../context/UserContext";
 import { CartContext } from "../../context/CartContext";
-
 
 export default function Cart() {
   const { user } = useContext(UserContext);
@@ -14,46 +13,9 @@ export default function Cart() {
     updateQuantity,
     removeFromCart,
     totalPrice,
-    setCartItems, // pour synchronisation après login
   } = useContext(CartContext);
+
   const navigate = useNavigate();
-  const currentStep = 1;
-
-  const mergeCarts = (localCart, backendCart) => {
-  const map = new Map();
-
-  [...backendCart, ...localCart].forEach(item => {
-    if (map.has(item.variantId)) {
-      map.get(item.variantId).quantite += item.quantite;
-    } else {
-      map.set(item.variantId, { ...item });
-    }
-  });
-
-  return Array.from(map.values());
-};
-
-  useEffect(() => {
-    if (!user) return;
-    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-    fetch(`http://localhost:5001/api/carts`)
-      .then((res) => res.json())
-      .then((data) => {
-        const backendCart = data.cartItems || [];
-     
-        const mergedCart = mergeCarts(localCart, backendCart);
-        setCartItems(mergedCart);
-
-        fetch(`http://localhost:5001/api/carts/sync`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userId: user._id, cartItems: mergedCart }),
-        });
-        localStorage.removeItem("cart");
-      })
-      .catch((err) => console.error("Erreur sync panier :", err));
-  }, [user, setCartItems]);
-
 
   const handleNextStep = () => {
     if (cartItems.length === 0) {
@@ -71,104 +33,50 @@ export default function Cart() {
     navigate("/checkout");
   };
 
-  const increaseQuantity = (variantId) => {
-    updateQuantity(variantId, 1);
-  };
-
-  const decreaseQuantity = (variantId) => {
-    updateQuantity(variantId, -1);
-  };
-
-  const removeItem = (variantId) => {
-    removeFromCart(variantId);
-  };
-/*
-useEffect(() => {
-  const loadCart = async () => {
-    const localCart =
-      JSON.parse(localStorage.getItem("cart")) || [];
-
-    if (!user?._id) {
-      setCartItems(localCart);
-      return;
-    }
-    try {
-      const res = await fetch(
-        `http://localhost:5001/api/carts/${user._id}`
-      );
-      const data = await res.json();
-
-      const backendCart = data.items || [];
-
-      // 🔵 Fusion des deux paniers
-      const mergedCart = mergeCarts(localCart, backendCart);
-
-      setCartItems(mergedCart);
-
-      // (Optionnel) Synchronisation backend
-      if (localCart.length > 0) {
-        await fetch("http://localhost:5001/api/carts/sync", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: user._id,
-            items: mergedCart,
-          }),
-        });
-
-        localStorage.removeItem("cart");
-      }
-    } catch (err) {
-      console.error("Erreur chargement panier", err);
-    }
-  };
-
-  loadCart();
-}, [user]);
-*/
   return (
     <div className="cart-container">
-      <CheckoutSteps step={currentStep} />
+      <CheckoutSteps step={1} />
       <h1>🛒 Votre Panier</h1>
 
       {cartItems.length === 0 ? (
         <p className="empty-message">Votre panier est vide.</p>
       ) : (
         <div className="cart-items">
-          {cartItems.map((item, index) => (
-            <div className="cart-item" key={`${item.variantId}-${index}`}>
-              <img
-                src={`http://localhost:5001${item.imageUrl}`}
-                alt={item.nom}
-                className="cart-item__img"
-              />
-              <div className="item-details">
-                <h3>{item.nom}</h3>
-                <p>{Number(item.options?.prix || 0).toFixed(2)} €</p>
-                <p>
-                  Option : {item.options?.size} {item.options?.unit}
-                </p>
+        {cartItems.map((item) => (
+  <div className="cart-item" key={item.variantId}>
+    <img
+      src={`http://localhost:5001${item.imageUrl}`}
+      alt={item.nom}
+      className="cart-item__img"
+      onClick={() => navigate(`/produit/${item.productId}`)}
+    />
 
-                <div className="quantity-control">
-                  <button onClick={() => decreaseQuantity(item.variantId)}>
-                    -
-                  </button>
-                  <span>{item.quantite}</span>
-                  <button onClick={() => increaseQuantity(item.variantId)}>
-                    +
-                  </button>
-                </div>
-              </div>
+    <div className="item-details">
+      <h3>{item.nom}</h3>
+      <p>{Number(item.options?.prix || 0).toFixed(2)} €</p>
+      <p>
+        Option : {item.options?.size} {item.options?.unit}
+      </p>
 
-              <Trash2
-                className="delete-icon"
-                onClick={() => removeItem(item.variantId)}
-              />
-            </div>
-          ))}
+      <div className="quantity-control">
+     <button onClick={() => updateQuantity(item.variantId, -1)}>-</button>
+
+        <span>{item.quantite}</span>
+        <button onClick={() => updateQuantity(item.variantId, 1)}>+</button>
+      </div>
+    </div>
+
+    <Trash2       className="delete-icon"
+onClick={() => removeFromCart(item.variantId)} />
+
+  </div>
+))}
+
 
           <div className="cart-summary">
-            <h2>Total : {totalPrice.toFixed(2)} €</h2>
+            {/* <h2>Total : {totalPrice.toFixed(2)} €</h2> */}
+            <h2>Total : {Number(totalPrice || 0).toFixed(2)} €</h2>
+
             <button className="checkout-btn" onClick={handleNextStep}>
               Étape suivante
             </button>
@@ -178,6 +86,9 @@ useEffect(() => {
     </div>
   );
 }
+
+
+
 
 
 

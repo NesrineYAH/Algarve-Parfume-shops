@@ -1,12 +1,12 @@
+//Cart.js/controllers
 const Cart = require("../Model/Cart");
 
-/* ➕ Ajouter au panier */
 exports.addToCart = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { productId, nom, imageUrl, quantite = 1, options } = req.body;
+    const { variantId, productId, nom, imageUrl, quantite = 1, options } = req.body;
 
-    if (!productId || !options || !options.size || !options.prix) {
+    if (!variantId || !productId || !options || !options.size || !options.prix) {
       return res.status(400).json({ message: "Données produit incomplètes" });
     }
 
@@ -17,6 +17,7 @@ exports.addToCart = async (req, res) => {
         userId,
         items: [
           {
+            variantId,
             productId,
             nom,
             imageUrl,
@@ -30,16 +31,13 @@ exports.addToCart = async (req, res) => {
       return res.json({ items: cart.items });
     }
 
-    const existingItem = cart.items.find(
-      (i) =>
-        i.productId.toString() === productId.toString() &&
-        i.options.size === options.size
-    );
+    const existingItem = cart.items.find(i => i.variantId === variantId);
 
     if (existingItem) {
       existingItem.quantite += quantite;
     } else {
       cart.items.push({
+        variantId,
         productId,
         nom,
         imageUrl,
@@ -56,7 +54,7 @@ exports.addToCart = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-/* 📦 Récupérer le panier */
+
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -71,73 +69,65 @@ exports.getCart = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-/* 🔄 Mettre à jour la quantité */
+
 exports.updateQuantity = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { productId, size, unit, quantite } = req.body;
+    const { variantId, delta } = req.body;
 
-    if (!productId || quantite == null || !size || !unit)
-      return res.status(400).json({ message: "productId, size, unit et quantite requis" });
+    if (!variantId || delta === undefined) {
+      return res.status(400).json({ message: "variantId et delta requis" });
+    }
 
     const cart = await Cart.findOne({ userId });
     if (!cart) return res.status(404).json({ message: "Panier vide" });
 
-    const item = cart.items.find(
-      (i) =>
-        i.productId.toString() === productId.toString() &&
-        i.options.size === size &&
-        i.options.unit === unit
-    );
+    const item = cart.items.find(i => i.variantId === variantId);
+    if (!item) return res.status(404).json({ message: "Produit non trouvé" });
 
-    if (!item) return res.status(404).json({ message: "Produit non trouvé dans panier" });
+    item.quantite = Math.max(1, item.quantite + delta);
 
-    item.quantite = quantite;
     await cart.save();
-
     res.json({ items: cart.items });
 
-  } catch (error) {
-    console.error("Erreur updateQuantity :", error);
+  } catch (err) {
+    console.error("❌ updateQuantity error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-/* ❌ Supprimer un item */
+
+
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { productId, size, unit } = req.body;
+    const { variantId } = req.params;
 
-    if (!productId || !size || !unit)
-      return res.status(400).json({ message: "productId, size et unit requis" });
+    if (!variantId) {
+      return res.status(400).json({ message: "variantId requis" });
+    }
 
     const cart = await Cart.findOne({ userId });
     if (!cart) return res.status(404).json({ message: "Panier vide" });
 
-    cart.items = cart.items.filter(
-      (i) =>
-        !(
-          i.productId.toString() === productId.toString() &&
-          i.options.size === size &&
-          i.options.unit === unit
-        )
-    );
-
+    cart.items = cart.items.filter(i => i.variantId !== variantId);
     await cart.save();
-    res.json({ items: cart.items });
 
-  } catch (error) {
-    console.error("Erreur removeItem :", error);
+    res.json({ items: cart.items });
+  } catch (err) {
+    console.error("❌ removeItem error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+
+
 /* 🧹 Vider le panier */
 exports.clearCart = async (req, res) => {
   try {
     const userId = req.user.userId;
     const cart = await Cart.findOne({ userId });
 
-    if (!cart) return res.json({ message: "Panier déjà vide" });
+    if (!cart) return res.json({ items: [] });
 
     cart.items = [];
     await cart.save();
@@ -149,6 +139,7 @@ exports.clearCart = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
 
 
 
