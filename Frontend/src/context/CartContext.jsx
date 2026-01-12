@@ -15,11 +15,8 @@ const CartProvider = ({ children }) => {
 
   // 🔄 Fusion panier local + backend (clé = variantId)
 
-
-
   const mergeCarts = (localCart, backendCart) => {
     const map = new Map();
-
     [...backendCart, ...localCart].forEach((item) => {
       if (map.has(item.variantId)) {
         map.get(item.variantId).quantite += item.quantite;
@@ -58,6 +55,7 @@ const CartProvider = ({ children }) => {
         const merged = mergeCarts(localCart, backendCart);
 
         setCartItems(merged);
+console.log(cartItems);
 
         // 🔄 Sync backend
         fetch("http://localhost:5001/api/carts/sync", {

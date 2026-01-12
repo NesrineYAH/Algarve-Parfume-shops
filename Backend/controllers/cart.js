@@ -1,4 +1,4 @@
-//Cart.js/controllers
+//cart.js/controllers
 const Cart = require("../Model/Cart");
 
 exports.addToCart = async (req, res) => {
@@ -96,7 +96,6 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
-
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -118,8 +117,6 @@ exports.removeItem = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
-
 
 /* 🧹 Vider le panier */
 exports.clearCart = async (req, res) => {

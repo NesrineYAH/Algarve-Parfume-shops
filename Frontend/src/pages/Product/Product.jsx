@@ -75,7 +75,11 @@ const addToCart = async () => {
     return;
   }
 
+  // ✅ VARIANT ID UNIQUE ET STABLE
+  const variantId = `${product._id}_${selectedOption.size}`;
+
   const item = {
+    variantId, // ⭐ OBLIGATOIRE
     productId: product._id,
     nom: product.nom,
     imageUrl: product.imageUrl,
@@ -87,15 +91,11 @@ const addToCart = async () => {
     },
   };
 
-  // 👤 UTILISATEUR NON CONNECTÉ → localStorage
+  // 👤 NON CONNECTÉ → localStorage
   if (!user) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const existing = cart.find(
-      (i) =>
-        i.productId === item.productId &&
-        i.options.size === item.options.size
-    );
+    const existing = cart.find(i => i.variantId === variantId);
 
     if (existing) {
       existing.quantite += quantity;
@@ -108,16 +108,15 @@ const addToCart = async () => {
     return;
   }
 
-  // 🔐 UTILISATEUR CONNECTÉ → MongoDB
+  // 🔐 CONNECTÉ → MongoDB
   try {
-    await addToCartContext(item); // ✅ CartContext
+    await addToCartContext(item);
     setShowModal(true);
   } catch (err) {
     console.error("❌ addToCart backend error:", err);
     alert("Erreur ajout au panier");
   }
 };
-
 
 const reportComment = async (commentId) => {
   try {
