@@ -10,6 +10,7 @@ export default function MonCompte() {
   const navigate = useNavigate();
   const { user, handleLogout } = useContext(UserContext);
   const [addresses, setAddresses] = useState([]);
+
   const [activeTab, setActiveTab] = useState("infos");
   const [favorites, setFavorites] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -20,8 +21,6 @@ export default function MonCompte() {
       navigate("/Authentification");
       return;
     }
-
-    // Charger les adresses de l'utilisateur
     fetch("http://localhost:5001/api/addresses", {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -35,12 +34,11 @@ export default function MonCompte() {
     const saved = localStorage.getItem("favorites");
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (!token || !user || !user._id) return;
-
     fetch(`http://localhost:5001/api/orders/user/${user._id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -56,7 +54,7 @@ export default function MonCompte() {
       </section>
     );
   }
-  
+
 const moveToCart = (product) => {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -82,8 +80,6 @@ const removeFavorite = (variantId) => {
   localStorage.setItem("favorites", JSON.stringify(updated));
 };
 
-
-
   return (
     <section className="moncompte">
       <div>
@@ -101,7 +97,8 @@ const removeFavorite = (variantId) => {
           <button onClick={() => setActiveTab("favorites")}>Mes Favoris</button>
           <button onClick={() => setActiveTab("PaymentMethods")}>Mes Moyens de Paiement</button>
           <button onClick={handleLogout}>Déconnexion</button>
-                   <Link to="/paiement-methods">Mes moyens de paiement</Link>
+              <button><Link to="/paiement-methods">Mes moyens de paiement</Link></button>
+                   
  
         </aside>
 
@@ -124,7 +121,7 @@ const removeFavorite = (variantId) => {
               ) : (
                 <ul>
                   {addresses.map((addr) => (
-                    <li key={addr._id}>
+                    <li key={addr._id} className="AddresseSection" >
                       {addr.street}, {addr.city}, {addr.postalCode}, {addr.country} ({addr.type})
                     </li>
                   ))}
@@ -142,8 +139,8 @@ const removeFavorite = (variantId) => {
               ) : (
                 <ul>
                   {orders.map((order) => (
-                    <li key={order._id}>
-                      Commande #{order._id} - {order.status} - {order.total} €
+                    <li key={order._id} className="AddresseSection" >
+                      Commande #{order._id} - {order.status} - {order.totalPrice} €
                     </li>
                   ))}
                 </ul>

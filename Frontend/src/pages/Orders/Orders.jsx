@@ -75,25 +75,29 @@ export default function Orders() {
 
   return (
     <div className="orders-container">
-      <h1>Mes Commandes</h1>
-
       {user && (
-        <p>
-          Bonjour {user.prenom} {user.nom} ({user.email})
-        </p>
+        <h1>
+          Bonjour {user.prenom}  {/*{user.nom} ({user.email}) */}
+        </h1>
       )}
 
-      <h2>Pré-commandes</h2>
+      <h2>Mes Commandes</h2>
+
+
+
+      {/* <h2>Pré-commandes</h2> */}
       {preOrders.length === 0 ? (
         <p>Aucune pré-commande pour le moment.</p>
       ) : (
         preOrders.map((order) => (
           <div className="order-card" key={order._id}>
-            <h2>Pré-commande n°{order._id}</h2>
-            <p>Status : {order.status}</p>
-            <p>Paiement : {order.paymentStatus}</p>
-            <p>Prix Total : {order.totalPrice} € </p>
-
+            
+ 
+            <h3>commande n°{order._id}</h3>   {/* Pré-commande */}
+            {/* <p>Status : {order.status}</p> */}
+            <h4>Paiement : {order.paymentStatus}</h4>
+            <h4>Prix Total : {order.totalPrice} € </h4>
+        
             <div className="order-items">
               {order.items.map((item, idx) => (
                 <div className="order-item" key={idx}>
@@ -113,10 +117,13 @@ export default function Orders() {
                 </div>
               ))}
             </div>
-
+            <div className="order_AllButtons">
             <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer
             </button>
+             <Link to={`/payment/${order._id}`}>
+            <button className="Button">Confirmer et payer</button></Link>
+            </div>
          {/* <button
   onClick={() => { handleUpdate(order._id);
     window.location.href = `/payment/${order._id}`;
@@ -125,9 +132,7 @@ export default function Orders() {
   Confirmer et payer
 </button> */}
 
- <Link to={`/payment/${order._id}`}>
-  <button className="Button">Confirmer et payer</button>
-</Link>
+
 
           </div>
         ))
@@ -139,9 +144,13 @@ export default function Orders() {
       ) : (
         orders.map((order) => (
           <div className="order-card" key={order._id}>
+     
             <h2>Commande n°{order._id}</h2>
-            <p>Status : {order.status}</p>
-            <p>Paiement : {order.paymentStatus}</p>
+            {/* <p>Status : {order.status}</p> */}
+       
+            <h4>Paiement : {order.paymentStatus}</h4>
+            <h4>Prix Total : {order.totalPrice} € </h4>
+          
             <div className="order-items">
               {order.items.map((item, idx) => (
                 <div className="order-item" key={idx}>
@@ -161,10 +170,15 @@ export default function Orders() {
                 </div>
               ))}
             </div>
+
+            <div className="order_AllButtons">
             <button onClick={() => handleDelete(order._id)} className="Button">
               Supprimer la commande
             </button>
         <Link to={`/payment/${order._id}`}> <button className="Button">Passer au payment</button> </Link>
+        <Link><button className="Button"> suivre ma commande </button></Link>
+                <Link><button className="Button"> Confirmer la réception </button></Link>
+            </div>   
           </div>
         ))
       )}

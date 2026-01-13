@@ -150,7 +150,6 @@
     .moncompte__layout {
         display: flex;
         gap: 2rem;
-
     }
 
     .moncompte__sidebar {
@@ -176,6 +175,11 @@
                 background-color: #e10c88;
             }
         }
+    }
+
+    .AddresseSection {
+        list-style-type: none;
+        padding: 10px;
     }
 
     .FavoriteSection {
