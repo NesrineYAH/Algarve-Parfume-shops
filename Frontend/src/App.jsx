@@ -14,6 +14,7 @@ import AdminAddProduct from "./pages/admin/add-product";
 import AdminProductManagement from "./pages/admin/AdminProductManagement";
 import AdminPromotion from "./pages/admin/AdminPromotion";
 import EditProduct from "./pages/admin/EditProduct";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
 import MonCompte from "./pages/MonCompte/MonCompte";
@@ -44,6 +45,7 @@ import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
 
+
 function App() {
   return (
     <>
@@ -55,6 +57,7 @@ function App() {
           <Route path="/Home" element={<Home />} />
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
+          <Route path="/admin/adminDashboard" element={<AdminDashboard />} />
           <Route path="/admin/add-product" element={<AdminAddProduct />} />
           <Route path="/admin/AdminProductManagement" element={<AdminProductManagement />}/>{" "}
           <Route path="/admin/EditProduct/:id" element={<EditProduct />} />

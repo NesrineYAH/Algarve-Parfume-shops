@@ -1,200 +1,150 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
-import { Heart } from "lucide-react";
-import { Trash2 } from "lucide-react";
-
+import { Heart, Trash2 } from "lucide-react";
 
 export default function MonCompte() {
   const navigate = useNavigate();
   const { user, handleLogout } = useContext(UserContext);
-  const [addresses, setAddresses] = useState([]);
 
+  const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState("infos");
   const [favorites, setFavorites] = useState([]);
   const [orders, setOrders] = useState([]);
 
+  /* 🔐 Vérification auth + adresses */
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/Authentification");
       return;
     }
+
     fetch("http://localhost:5001/api/addresses", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => setAddresses(data))
-      .catch((err) => console.error("Erreur chargement adresses :", err));
-
+      .then(res => res.json())
+      .then(setAddresses)
+      .catch(console.error);
   }, [navigate]);
 
+  /* ❤️ Favoris */
   useEffect(() => {
     const saved = localStorage.getItem("favorites");
     if (saved) setFavorites(JSON.parse(saved));
   }, []);
-  
 
+  /* 📦 Commandes */
   useEffect(() => {
+    if (!user?._id) return;
+
     const token = localStorage.getItem("token");
-    if (!token || !user || !user._id) return;
     fetch(`http://localhost:5001/api/orders/user/${user._id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => setOrders(data.orders || [])) //.then((data) => setOrders(data)) -L’erreur “orders.map is not a function” vient de cette ligne Parce que l’API ne retourne pas un tableau, mais un objet.  
-      .catch((err) => console.error("Erreur chargement commandes :", err));
+      .then(res => res.json())
+      .then(data => setOrders(data.orders || []))
+      .catch(console.error);
   }, [user]);
 
+  /* 🚀 REDIRECTION ADMIN / VENDEUR */
+  useEffect(() => {
+    if (user && (user.role === "admin" || user.role === "vendeur")) {
+   //   navigate("/AdminDashboard");
+   navigate("/admin/AdminDashboard");
+
+    }
+  }, [user, navigate]);
+
   if (!user) {
-    return (
-      <section className="moncompte">
-        <h2>Chargement du compte...</h2>
-      </section>
-    );
+    return <h2>Chargement du compte...</h2>;
   }
 
-const moveToCart = (product) => {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  /* 🛒 */
+  const moveToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find(i => i.variantId === product.variantId);
 
-  // Vérifier si le produit est déjà dans le panier
-  const existing = cart.find((item) => item.variantId  === product.variantId);
-  if (existing) {
-    existing.quantity += 1;
-  } else {
-    cart.push({ ...product, quantite: 1 });
-  }
-  // Sauvegarder panier
-  localStorage.setItem("cart", JSON.stringify(cart));
+    if (existing) existing.quantity += 1;
+    else cart.push({ ...product, quantity: 1 });
 
-  // Retirer des favoris
-  const updatedFav = favorites.filter((fav) => fav._id !== product._id);
-  setFavorites(updatedFav);
-  localStorage.setItem("favorites", JSON.stringify(updatedFav));
-};
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-const removeFavorite = (variantId) => {
-  const updated = favorites.filter(fav => fav.variantId !== variantId);
-  setFavorites(updated);
-  localStorage.setItem("favorites", JSON.stringify(updated));
-};
+    const updated = favorites.filter(f => f.variantId !== product.variantId);
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
+
+  const removeFavorite = (variantId) => {
+    const updated = favorites.filter(f => f.variantId !== variantId);
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
 
   return (
     <section className="moncompte">
-      <div>
-        <h1>Mon Compte</h1>
-        <h2>
-          Bienvenue, {user.prenom} {user.nom} !
-        </h2>
-      </div>
+      <h1>Mon Compte</h1>
+      <h2>Bienvenue, {user.prenom} {user.nom}</h2>
 
       <div className="moncompte__layout">
         <aside className="moncompte__sidebar">
-          <button onClick={() => setActiveTab("infos")}>Mes Informations</button>
-          <button onClick={() => setActiveTab("addresses")}>Mes Adresses</button>
-          <button onClick={() => setActiveTab("orders")}>Mes Commandes</button>
-          <button onClick={() => setActiveTab("favorites")}>Mes Favoris</button>
-          <button onClick={() => setActiveTab("PaymentMethods")}>Mes Moyens de Paiement</button>
+          <button onClick={() => setActiveTab("infos")}>Infos</button>
+          <button onClick={() => setActiveTab("addresses")}>Adresses</button>
+          <button onClick={() => setActiveTab("orders")}>Commandes</button>
+          <button onClick={() => setActiveTab("favorites")}>Favoris</button>
+
+          <Link to="/paiement-methods">Moyens de paiement</Link>
           <button onClick={handleLogout}>Déconnexion</button>
-              <button><Link to="/paiement-methods">Mes moyens de paiement</Link></button>
-                   
- 
         </aside>
 
         <main className="moncompte__content">
           {activeTab === "infos" && (
-            <div>
-              <h2>Mes Informations</h2>
-              <p><strong>Nom :</strong> {user.nom}</p>
-              <p><strong>Prénom :</strong> {user.prenom}</p>
+            <>
               <p><strong>Email :</strong> {user.email}</p>
               <p><strong>Rôle :</strong> {user.role}</p>
-            </div>
+            </>
           )}
 
           {activeTab === "addresses" && (
-            <div>
-              <h2>Mes Adresses</h2>
-              {addresses.length === 0 ? (
-                <p>Aucune adresse enregistrée.</p>
-              ) : (
-                <ul>
-                  {addresses.map((addr) => (
-                    <li key={addr._id} className="AddresseSection" >
-                      {addr.street}, {addr.city}, {addr.postalCode}, {addr.country} ({addr.type})
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <button onClick={() => navigate("/add-adresse")}>➕ Ajouter une adresse</button>
-            </div>
+            <>
+              {addresses.map(addr => (
+                <li key={addr._id}>
+                  {addr.street}, {addr.city}
+                </li>
+              ))}
+              <button onClick={() => navigate("/add-adresse")}>
+                ➕ Ajouter une adresse
+              </button>
+            </>
           )}
 
           {activeTab === "orders" && (
-            <div>
-              <h2>Mes Commandes</h2>
-              {orders.length === 0 ? (
-                <p>Aucune commande trouvée.</p>
-              ) : (
-                <ul>
-                  {orders.map((order) => (
-                    <li key={order._id} className="AddresseSection" >
-                      Commande #{order._id} - {order.status} - {order.totalPrice} €
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            orders.length === 0
+              ? <p>Aucune commande</p>
+              : orders.map(o => (
+                  <p key={o._id}>
+                    #{o._id} – {o.status} – {o.totalPrice} €
+                  </p>
+                ))
           )}
 
-         {activeTab === "favorites" && (
-  <div>
-    <h2>Mes Favoris</h2>
-    {favorites.length === 0 ? (
-      <p>Aucun produit favori.</p>
-    ) : (
-      <ul className="FavoriteSection">
-        {favorites.map((prod) => (
-          <li className="FavoriteSection__Li" key={prod.variantId}>
-            <div className="FavoriteSection__I">
-              <img
-                src={`http://localhost:5001${prod.imageUrl}`}
-                alt={prod.nom}
-                className="FavoriteSection__img"
-              />
-                          
-            </div>
-  <button className="btn-Add" onClick={() => removeFavorite(prod._id)} > <Trash2 /> </button>
-            <div className="FavoriteSection__II">
-              {prod.nom} - {prod.prix} €
-              <Heart
-                className={`icone ${
-                  favorites.some((fav) => fav._id === prod._id)
-                    ? "active"
-                    : "red"
-                }`}
-              />
-              <p>Coffret - lisseur GHD chronos Contenance</p>
+          {activeTab === "favorites" && (
+            favorites.map(prod => (
+              <div key={prod.variantId}>
+                <img src={`http://localhost:5001${prod.imageUrl}`} alt={prod.nom} />
+                <p>{prod.nom} – {prod.prix} €</p>
 
-              <button className="btn-Add" onClick={() => moveToCart(prod)}>
-                Déplacer au panier
-              </button>
+                <Trash2 onClick={() => removeFavorite(prod.variantId)} />
+                <Heart className="active" />
 
-            </div>
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-)}
-
-
-          {activeTab === "payments" && (
-            <h2>Mes Moyens de Paiement</h2>
+                <button onClick={() => moveToCart(prod)}>
+                  Ajouter au panier
+                </button>
+              </div>
+            ))
           )}
         </main>
-          
       </div>
     </section>
   );

@@ -15,7 +15,6 @@ const AdminAddProduct = () => {
   const [message, setMessage] = useState("");
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
-  //18/12
   const [size, setSize] = useState("");
   const [optionPrix, setOptionPrix] = useState("");
   const [optionStock, setOptionStock] = useState("");
