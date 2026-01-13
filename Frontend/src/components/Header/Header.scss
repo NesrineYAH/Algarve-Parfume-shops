@@ -1,6 +1,5 @@
    .header {
        box-sizing: border-box;
-
        position: sticky;
        z-index: 1000;
        width: 100%;
@@ -41,11 +40,20 @@
            padding: 15px;
            width: 100%;
 
-           .logo {
-               width: 80px;
-               height: auto;
-               cursor: pointer;
+           .logo-container {
+               border-radius: 50%;
+
+               .logo {
+                   width: 80px;
+                   height: auto;
+                   object-fit: cover;
+                   cursor: pointer;
+                   border-radius: 50%;
+                   border: 2px solid #88667e;
+               }
+
            }
+
 
            ul {
                display: flex;

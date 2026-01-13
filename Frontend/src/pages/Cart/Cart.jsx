@@ -29,7 +29,7 @@ export default function Cart() {
       });
       return;
     }
-
+c
     navigate("/checkout");
   };
 

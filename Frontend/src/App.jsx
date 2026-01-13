@@ -44,10 +44,10 @@ import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
 
-
 function App() {
   return (
     <>
+
       <div className="App">
         <Headers />
         
@@ -98,6 +98,7 @@ function App() {
         <InfoSite />
       </div>
       <Footer />
+
     </>
   );
 }
