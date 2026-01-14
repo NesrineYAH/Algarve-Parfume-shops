@@ -4,14 +4,14 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "./admin.scss";
 
-const AdminProductManagement = () => {
+const AdminProductMng = () => {
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if (role !== "admin") {
+    if (role !== "admin" || role !== "vendeur") {
       navigate("/"); // redirige si pas admin
     }
 
@@ -91,4 +91,4 @@ const AdminProductManagement = () => {
   );
 };
 
-export default AdminProductManagement;
+export default AdminProductMng;

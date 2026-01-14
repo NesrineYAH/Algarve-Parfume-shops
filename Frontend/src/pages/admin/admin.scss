@@ -171,6 +171,26 @@
       }
     }
   }
+
+
+}
+
+
+.btn-Add {
+  background-color: #da4cbb;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+  margin: 1%;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
 

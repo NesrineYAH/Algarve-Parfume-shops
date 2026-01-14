@@ -11,7 +11,7 @@ import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 import AdminAddProduct from "./pages/admin/add-product";
-import AdminProductManagement from "./pages/admin/AdminProductManagement";
+import AdminProductMng from "./pages/admin/AdminProductMng";
 import AdminPromotion from "./pages/admin/AdminPromotion";
 import EditProduct from "./pages/admin/EditProduct";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -57,11 +57,25 @@ function App() {
           <Route path="/Home" element={<Home />} />
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
-          <Route path="/admin/adminDashboard" element={<AdminDashboard />} />
+
+          {/*Route admin*/}
+          <Route path="/admin/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/admin/add-product" element={<AdminAddProduct />} />
-          <Route path="/admin/AdminProductManagement" element={<AdminProductManagement />}/>{" "}
+          <Route path="/admin/AdminProductMng" element={<AdminProductMng />}/>{" "}
           <Route path="/admin/EditProduct/:id" element={<EditProduct />} />
           <Route path="/admin/promotions" element={<AdminPromotion />} />
+          
+            {/** route impriquées
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="add-product" element={<AdminAddProduct />} />
+              <Route path="AdminProductManagement" element={<AdminProductManagement />} />
+              <Route path="EditProduct/:id" element={<EditProduct />} />
+              <Route path="promotions" element={<AdminPromotion />} />
+             </Route>
+ 
+             */}
+          
+
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />
@@ -93,6 +107,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
+        
         </Routes>
 
         <BlogBenefits />

@@ -17,5 +17,14 @@ export default defineConfig({
         secure: false,
       },
     },
+     fs: {
+      strict: false
+    },
+    // pour SPA fallback
+  build: {
+    rollupOptions: {
+      input: '/index.html'
+    }
+  }
   },
 });
