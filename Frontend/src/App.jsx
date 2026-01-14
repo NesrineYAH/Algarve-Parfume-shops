@@ -58,12 +58,16 @@ function App() {
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
 
-          {/*Route admin*/}
-          <Route path="/admin/AdminDashboard" element={<AdminDashboard />} />
-          <Route path="/admin/add-product" element={<AdminAddProduct />} />
-          <Route path="/admin/AdminProductMng" element={<AdminProductMng />}/>{" "}
-          <Route path="/admin/EditProduct/:id" element={<EditProduct />} />
-          <Route path="/admin/promotions" element={<AdminPromotion />} />
+        {/*Route admin*/}
+      <Route path="/admin/AdminDashboard" element={<AdminDashboard />}> 
+
+       <Route path="add-product" element={<AdminAddProduct />} /> 
+       <Route path="AdminProductMng" element={<AdminProductMng />} /> 
+       <Route path="EditProduct/:id" element={<EditProduct />} /> 
+       <Route path="promotions" element={<AdminPromotion />} /> 
+       
+      </Route>
+
           
             {/** route impriquées
             <Route path="/admin" element={<AdminDashboard />}>

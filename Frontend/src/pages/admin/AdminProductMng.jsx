@@ -11,9 +11,10 @@ const AdminProductMng = () => {
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if (role !== "admin" || role !== "vendeur") {
-      navigate("/"); // redirige si pas admin
-    }
+if (role !== "admin" && role !== "vendeur") {
+  navigate("/");
+}
+
 
     fetchProducts();
   }, [navigate]);
@@ -76,10 +77,10 @@ const AdminProductMng = () => {
                 )}
               </td>
               <td>
-                <Link to="/admin/EditProduct" className="btn-Add">
+                <Link to="/admin/EditProduct" >
                   <button onClick={() => handleEdit(prod._id)}>Modifier</button>
                 </Link>
-                <button onClick={() => handleDelete(prod._id)}>
+                <button onClick={() => handleDelete(prod._id)} >
                   Supprimer
                 </button>
               </td>
