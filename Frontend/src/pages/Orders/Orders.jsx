@@ -92,7 +92,6 @@ export default function Orders() {
         preOrders.map((order) => (
           <div className="order-card" key={order._id}>
             
- 
             <h3>commande n°{order._id}</h3>   {/* Pré-commande */}
             {/* <p>Status : {order.status}</p> */}
             <h4>Paiement : {order.paymentStatus}</h4>
@@ -124,16 +123,6 @@ export default function Orders() {
              <Link to={`/payment/${order._id}`}>
             <button className="Button">Confirmer et payer</button></Link>
             </div>
-         {/* <button
-  onClick={() => { handleUpdate(order._id);
-    window.location.href = `/payment/${order._id}`;
-  }}
-  className="Button">
-  Confirmer et payer
-</button> */}
-
-
-
           </div>
         ))
       )}

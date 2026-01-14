@@ -3,10 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import "./admin.scss";
 
 export default function AdminDashboard() {
-    const [product, setProduct] = useState(null);
-
-
-//      const { id } = useParams();
+AdminDashboard
 
   return (
     <section className="admin">
