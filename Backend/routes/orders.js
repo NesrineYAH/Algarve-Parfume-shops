@@ -1,9 +1,9 @@
+//Routes/orders.js
 const express = require("express");
 const router = express.Router();
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const orderCtrl = require("../controllers/order");
 const Cart = require("../Model/Cart");
-
 
 // ➤ CRÉER UNE COMMANDE
 router.post("/create", authMiddleware, orderCtrl.createOrder);
@@ -25,6 +25,13 @@ router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
 
 // ➤ RÉCUPÉRER LES COMMANDES D’UN UTILISATEUR PAR SON ID
 router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
+router.get("/:id", orderCtrl.getOrderById);
+
+// ➤ EXPÉDIER UNE COMMANDE (ADMIN)
+router.post("/:id/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
+
+// ➤ MARQUER COMME REÇUE (CLIENT)
+router.post("/:id/deliver", authMiddleware, orderCtrl.deliverOrder);
 
 // concel orders
 router.post("/:orderId/cancel", async (req, res) => {

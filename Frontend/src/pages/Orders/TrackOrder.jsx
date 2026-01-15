@@ -4,6 +4,8 @@ export default function TrackOrder() {
   const [orderId, setOrderId] = useState("");
   const [orderData, setOrderData] = useState(null);
   const [error, setError] = useState("");
+  const [showDetails, setShowDetails] = useState(false);
+
 
   const handleTrackOrder = async () => {
     if (!orderId.trim()) {
@@ -15,7 +17,6 @@ export default function TrackOrder() {
     setOrderData(null);
 
     try {
-      // Exemple d'appel API (à adapter selon ton backend)
       const response = await fetch(`http://localhost:5001/api/orders/${orderId}`);
 
       if (!response.ok) {
@@ -27,6 +28,31 @@ export default function TrackOrder() {
     } catch (err) {
       setError("Aucune commande trouvée avec ce numéro.");
     }
+  };
+
+  const markAsDelivered = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/orders/${orderData._id}/deliver`,
+        { method: "POST", credentials: "include" }
+      );
+
+      if (!response.ok) {
+        alert("Impossible de marquer la commande comme reçue.");
+        return;
+      }
+
+      const updated = await response.json();
+      setOrderData(updated.order);
+      alert("Merci ! Votre commande est marquée comme reçue.");
+    } catch (err) {
+      alert("Erreur lors de la confirmation de réception.");
+    }
+  };
+
+  const handleRebuy = (item) => {
+    alert(`Produit ajouté au panier : ${item.nom}`);
+    // Ici tu peux appeler ton CartService.addToCart()
   };
 
   return (
@@ -50,10 +76,73 @@ export default function TrackOrder() {
 
         {orderData && (
           <div style={styles.result}>
-            <h3>Commande : {orderData.id}</h3>
+            <h3>Commande : {orderData._id}</h3>
+
+            {/* TIMELINE */}
+            <div style={styles.timeline}>
+              <div style={orderData.status !== "pending" ? styles.stepActive : styles.step}>
+                Préparée
+              </div>
+              <div style={orderData.status === "confirmed" || orderData.status === "shipped" || orderData.status === "delivered" ? styles.stepActive : styles.step}>
+                Confirmée
+              </div>
+              <div style={orderData.status === "shipped" || orderData.status === "delivered" ? styles.stepActive : styles.step}>
+                Expédiée
+              </div>
+              <div style={orderData.status === "delivered" ? styles.stepActive : styles.step}>
+                Livrée
+              </div>
+            </div>
+
             <p><strong>Statut :</strong> {orderData.status}</p>
-            <p><strong>Date :</strong> {orderData.date}</p>
-            <p><strong>Adresse :</strong> {orderData.address}</p>
+            <p><strong>Paiement :</strong> {orderData.paymentStatus}</p>
+            <p><strong>Total :</strong> {orderData.totalPrice} €</p>
+
+
+            <h4>Détails des articles</h4>
+
+<button
+  onClick={() => setShowDetails(!showDetails)}
+  style={styles.button}
+>
+  {showDetails ? "Masquer les détails" : "Afficher les détails"}
+</button>
+
+
+          {showDetails && (
+  <div>
+    <h4>Détails des articles</h4>
+    {orderData.items.map((item, i) => (
+      <div key={i} style={styles.item}>
+        <p><strong>{item.nom}</strong></p>
+        <p>Taille : {item.options.size} {item.options.unit}</p>
+        <p>Prix : {item.options.prix} €</p>
+        <p>Quantité : {item.quantite}</p>
+
+        <button
+          onClick={() => handleRebuy(item)}
+          style={styles.smallButton}
+        >
+          Racheter
+        </button>
+
+        <button
+          onClick={() => alert("Formulaire d'avis à implémenter")}
+          style={styles.smallButton}
+        >
+          Laisser un avis
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+
+            {orderData.status !== "delivered" && (
+              <button onClick={markAsDelivered} style={styles.button}>
+                J’ai reçu ma commande
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -99,6 +188,7 @@ const styles = {
     border: "none",
     borderRadius: 6,
     cursor: "pointer",
+    marginTop: 10,
   },
   error: {
     marginTop: 15,
@@ -110,5 +200,40 @@ const styles = {
     padding: 15,
     backgroundColor: "#f0f8ff",
     borderRadius: 6,
+  },
+  timeline: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 15,
+  },
+  step: {
+    padding: "6px 10px",
+    backgroundColor: "#ddd",
+    borderRadius: 5,
+    fontSize: 12,
+  },
+  stepActive: {
+    padding: "6px 10px",
+    backgroundColor: "#4caf50",
+    color: "#fff",
+    borderRadius: 5,
+    fontSize: 12,
+  },
+  item: {
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    border: "1px solid #ddd",
+  },
+  smallButton: {
+    padding: "6px 10px",
+    marginRight: 10,
+    backgroundColor: "#333",
+    color: "#fff",
+    border: "none",
+    borderRadius: 4,
+    cursor: "pointer",
+    fontSize: 12,
   },
 };

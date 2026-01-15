@@ -17,13 +17,14 @@ const orderSchema = new mongoose.Schema({
         },
     ],
     totalPrice: { type: Number, required: true },
-    status: { type: String, default: "pending" },
+    status: { type: String, enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"], 
+    default: "pending" },   
     createdAt: { type: Date, default: Date.now },
     delivery: {
-        type: { type: String },
-        address: { type: String },
-        relayId: { type: String },
+    type: String, enum: ["processing", "shipped", "in_transit", "out_for_delivery", "delivered"],
+    default: "processing"
     },
+    deliveredAt: Date,
     paymentStatus: { type: String, enum: ["pending", "paid", "failed"], default: "pending" },
 });
 

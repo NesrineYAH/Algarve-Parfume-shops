@@ -1,7 +1,7 @@
+//Controllers/order.js
 const Order = require("../Model/Order");
 const Product = require("../Model/product");
 const mongoose = require("mongoose");
-
 
 // ➤ CRÉER UNE COMMANDE
 exports.createOrder = async (req, res) => {
@@ -178,9 +178,74 @@ exports.getOrdersByUserId = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+//15/01/2026
+exports.getOrderById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "ID commande invalide" });
+        }
+
+        const order = await Order.findById(id);
+
+        if (!order) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        return res.status(200).json(order);
+    } catch (error) {
+        console.error("Erreur récupération commande:", error);
+        return res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+exports.shipOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Commande introuvable" });
+    }
+
+    order.status = "shipped";
+    order.deliveryStatus = "shipped";
+
+    await order.save();
+
+    res.json({ message: "Commande expédiée", order });
+  } catch (error) {
+    console.error("Erreur expédition commande :", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+exports.deliverOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: "Commande introuvable" });
+    }
+
+    // Vérifier que l'utilisateur est bien le propriétaire
+    if (order.userId.toString() !== req.user.userId) {
+      return res.status(403).json({ message: "Accès interdit" });
+    }
+
+    order.status = "delivered";
+    order.deliveryStatus = "delivered";
+    order.deliveredAt = new Date();
+
+    await order.save();
+
+    res.json({ message: "Commande marquée comme reçue", order });
+  } catch (error) {
+    console.error("Erreur livraison commande :", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
 
 
-
+ 
 /*const Order = require("../Model/Order");
 const Product = require("../Model/product");
 const mongoose = require("mongoose");

@@ -21,6 +21,7 @@ import MonCompte from "./pages/MonCompte/MonCompte";
 import Cart from "./pages/Cart/Cart";
 import AddAdresse from "./pages/addAdresse/addAdresse";
 import Orders from "./pages/Orders/Orders";
+import TrackOrder from "./pages/Orders/TrackOrder";
 import Delivery from "./pages/Delivery/Delivery";
 import Checkout from "./pages/Checkout/Checkout";
 import Payment from "./pages/Payment/Payment";
@@ -75,6 +76,7 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
+            <Route path="/TrackOrder" element={<TrackOrder />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />

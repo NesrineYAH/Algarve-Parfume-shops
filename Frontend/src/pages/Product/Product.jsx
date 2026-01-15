@@ -233,8 +233,6 @@ useEffect(() => {
     ? Math.min(...product.options.map(opt => opt.prix))
     : null;
 
-  
-
   return (
     <section id="page">
       <div className="product-container">
