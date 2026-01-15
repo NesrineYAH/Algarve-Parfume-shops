@@ -1,7 +1,7 @@
 import "./App.scss";
 import Headers from "./components/Header/Header";
 import Home from "./pages/Home/Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Product from "./pages/Product/Product";
 import Footer from "./components/Footer/Footer";
 import BlogBenefits from "./components/Blog/BlogBenefits";
@@ -54,32 +54,18 @@ function App() {
         <Headers />
         
         <Routes>
-          <Route path="/Home" element={<Home />} />
+      <Route path="/" element={<Navigate to="/Home" />} /> 
+       <Route path="/Home" element={<Home />} /> 
+           <Route path="*" element={<ErrorPage />} />
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
-
         {/*Route admin*/}
-      <Route path="/admin/AdminDashboard" element={<AdminDashboard />}> 
-
-       <Route path="add-product" element={<AdminAddProduct />} /> 
-       <Route path="AdminProductMng" element={<AdminProductMng />} /> 
-       <Route path="EditProduct/:id" element={<EditProduct />} /> 
-       <Route path="promotions" element={<AdminPromotion />} /> 
-       
-      </Route>
-
-          
-            {/** route impriquées
-            <Route path="/admin" element={<AdminDashboard />}>
-              <Route path="add-product" element={<AdminAddProduct />} />
-              <Route path="AdminProductManagement" element={<AdminProductManagement />} />
-              <Route path="EditProduct/:id" element={<EditProduct />} />
-              <Route path="promotions" element={<AdminPromotion />} />
-             </Route>
- 
-             */}
-          
-
+         <Route path="/admin/AdminDashboard" element={<AdminDashboard />}> 
+         <Route path="add-product" element={<AdminAddProduct />} /> 
+         <Route path="AdminProductMng" element={<AdminProductMng />} /> 
+         <Route path="EditProduct/:id" element={<EditProduct />} /> 
+         <Route path="promotions" element={<AdminPromotion />} /> 
+         </Route>         
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />
@@ -108,7 +94,6 @@ function App() {
           <Route path="/sitemap" element={<SiteMap />} />
           <Route path="/paiement-methods" element={<PaymentMethods />} />
           <Route path="/confirmation" element={<Confirmation />} />
-          <Route path="*" element={<ErrorPage />} />
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
         

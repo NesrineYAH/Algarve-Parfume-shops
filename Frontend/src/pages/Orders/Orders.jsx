@@ -73,27 +73,122 @@ export default function Orders() {
     }
   };
 
+return (
+  <div className="orders-container">
+    {user && (
+      <h1>Bonjour {user.prenom}</h1>
+    )}
+
+    <h2>Mes Commandes</h2>
+
+    {/* SI pré-commandes → afficher uniquement les pré-commandes */}
+    {preOrders.length > 0 ? (
+      <>
+
+        {preOrders.map((order) => (
+          <div className="order-card" key={order._id}>
+            <h3>Commande n°{order._id}</h3>
+            <h4>Paiement : {order.paymentStatus}</h4>
+            <h4>Prix Total : {order.totalPrice} €</h4>
+
+            <div className="order-items">
+              {order.items.map((item, idx) => (
+                <div className="order-item" key={idx}>
+                  <img
+                    className="item-image"
+                    src={getImageUrl(item.imageUrl)}
+                    alt={item.nom}
+                  />
+                  <div className="item-details">
+                    <h3>{item.nom}</h3>
+                    <p>Taille : {item.options?.size} {item.options?.unit}</p>
+                    <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                    <p>Quantité : {item.quantite}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="order_AllButtons">
+              <button onClick={() => handleDelete(order._id)} className="Button">
+                Supprimer
+              </button>
+              <Link to={`/payment/${order._id}`}>
+                <button className="Button">Confirmer et payer</button>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </>
+    ) : (
+      <>
+        {/* SINON → afficher les commandes confirmées */}
+        <h2>Commandes Confirmées</h2>
+        {orders.length === 0 ? (
+          <p>Aucune commande confirmée.</p>
+        ) : (
+          orders.map((order) => (
+            <div className="order-card" key={order._id}>
+              <h2>Commande n°{order._id}</h2>
+              <h4>Paiement : {order.paymentStatus}</h4>
+              <h4>Prix Total : {order.totalPrice} €</h4>
+
+              <div className="order-items">
+                {order.items.map((item, idx) => (
+                  <div className="order-item" key={idx}>
+                    <img
+                      className="item-image"
+                      src={getImageUrl(item.imageUrl)}
+                      alt={item.nom}
+                    />
+                    <div className="item-details">
+                      <h3>{item.nom}</h3>
+                      <p>Taille : {item.options?.size} {item.options?.unit}</p>
+                      <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                      <p>Quantité : {item.quantite}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="order_AllButtons">
+                <button onClick={() => handleDelete(order._id)} className="Button">
+                  Supprimer la commande
+                </button>
+                <Link to={`/payment/${order._id}`}>
+                  <button className="Button">Passer au paiement</button>
+                </Link>
+                <Link><button className="Button">Suivre ma commande</button></Link>
+                <Link><button className="Button">Confirmer la réception</button></Link>
+              </div>
+            </div>
+          ))
+        )}
+      </>
+    )}
+  </div>
+);
+
+}
+
+/*
   return (
     <div className="orders-container">
       {user && (
         <h1>
-          Bonjour {user.prenom}  {/*{user.nom} ({user.email}) */}
+          Bonjour {user.prenom}  
         </h1>
       )}
 
       <h2>Mes Commandes</h2>
 
-
-
-      {/* <h2>Pré-commandes</h2> */}
       {preOrders.length === 0 ? (
         <p>Aucune pré-commande pour le moment.</p>
       ) : (
         preOrders.map((order) => (
           <div className="order-card" key={order._id}>
             
-            <h3>commande n°{order._id}</h3>   {/* Pré-commande */}
-            {/* <p>Status : {order.status}</p> */}
+            <h3>commande n°{order._id}</h3>   
             <h4>Paiement : {order.paymentStatus}</h4>
             <h4>Prix Total : {order.totalPrice} € </h4>
         
@@ -134,9 +229,7 @@ export default function Orders() {
         orders.map((order) => (
           <div className="order-card" key={order._id}>
      
-            <h2>Commande n°{order._id}</h2>
-            {/* <p>Status : {order.status}</p> */}
-       
+            <h2>Commande n°{order._id}</h2>  
             <h4>Paiement : {order.paymentStatus}</h4>
             <h4>Prix Total : {order.totalPrice} € </h4>
           
@@ -173,8 +266,7 @@ export default function Orders() {
       )}
     </div>
   );
-}
-
+*/
 
 
 

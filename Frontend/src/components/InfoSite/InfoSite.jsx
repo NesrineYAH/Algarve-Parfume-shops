@@ -32,8 +32,10 @@ const InfoSite = () => {
      <div className="infoSite__section">
         <h3>Nos Applications Mobiles</h3>
       <div className="infoSite__icons">
-      <FaLinkedin title="LinkedIn" className="icone"/>
-      <FaPinterest title="Pinterest" className="icone"/>
+        <a href="https://www.linkedin.com/in/parfume-algarve-aa3474382"> <FaLinkedin title="LinkedIn" className="icone"/></a>
+     
+<a href="https://fr.pinterest.com/parfumealgrave/">      <FaPinterest title="Pinterest" className="icone"/> </a>
+
       <FaTiktok title="TikTok" className="icone" />
       <FaFacebook title="Facebook" className="icone" />
       </div>   
