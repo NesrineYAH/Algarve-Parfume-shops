@@ -3,7 +3,7 @@ const Cart = require("../Model/Cart");
 
 exports.addToCart = async (req, res) => {
   try {
-    const userId = req.user.userId;
+   const userId = req.user.userId;
     const { variantId, productId, nom, imageUrl, quantite = 1, options } = req.body;
 
     if (!variantId || !productId || !options || !options.size || !options.prix) {
@@ -134,6 +134,24 @@ exports.clearCart = async (req, res) => {
   } catch (error) {
     console.error("Erreur clearCart :", error);
     res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+exports.syncCart = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { cartItems } = req.body;
+
+    await Cart.findOneAndUpdate(
+      { userId },
+      { items: cartItems },
+      { upsert: true }
+    );
+
+    res.json({ message: "Cart synced successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Sync failed" });
   }
 };
 

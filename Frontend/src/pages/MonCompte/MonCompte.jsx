@@ -85,7 +85,7 @@ export default function MonCompte() {
   return (
     <section className="moncompte">
       <h1>Mon Compte</h1>
-      <h2>Bienvenue, {user.prenom} {user.nom}</h2>
+     <h2>Bienvenue, {user.prenom} {user.nom}</h2>
 
       <div className="moncompte__layout">
         <aside className="moncompte__sidebar">
@@ -151,7 +151,7 @@ export default function MonCompte() {
 }
 
 
-
+ 
 /*  Version 06/12/2025
 export default function MonCompte() {
   const navigate = useNavigate();

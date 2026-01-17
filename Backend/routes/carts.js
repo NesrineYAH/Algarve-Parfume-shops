@@ -10,6 +10,7 @@ router.get("/", authMiddleware, cartCtrl.getCart);
 router.put("/updateQuantity", authMiddleware, cartCtrl.updateQuantity);
 router.delete("/removeItem/:variantId", authMiddleware, cartCtrl.removeItem);
 router.delete("/clear", authMiddleware, cartCtrl.clearCart);
+router.post("/sync", authMiddleware, cartCtrl.syncCart);
 
 
 module.exports = router;

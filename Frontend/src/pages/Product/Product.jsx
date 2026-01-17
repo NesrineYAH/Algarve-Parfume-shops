@@ -451,11 +451,9 @@ useEffect(() => {
         {/* 🔹 Admin */}
         {(role === "admin" || role === "vendeur") && (
           <div className="admin-action">
-            <Link to="/admin/add-product" className="btn-Add">
-              ➕ {t("product.addProduct")}
-            </Link>
+      
             <Link
-              to={`/admin/EditProduct/${product._id}`}
+              to={`/EditProduct/${product._id}`}
               className="btn-Add"
             >
               {t("product.edit")}
@@ -466,9 +464,7 @@ useEffect(() => {
             >
                {t("product.delete")}
             </Link>
-             <Link to="/admin/promotions"  className="btn-Add">
-          Créer une promotion
-        </Link>
+        
           </div>
         )}
       </div>

@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./admin.scss";
+import { UserContext } from "../../context/UserContext";
+
 
 export default function AdminDashboard() {
-AdminDashboard
+    const { user } = useContext(UserContext);
+
+
 
   return (
     <section className="admin">
       <aside className="admin__sidebar">
-        <h2>Dashboard</h2>
+
+        <h1> AdminOps Dashboard</h1>
+             <h2>Bienvenue, {user.prenom} {user.nom} </h2>
+             <h3>{user.email}</h3>
+
 <Link to="add-product">
   <button className="btn-Add">➕ Ajouter un produit</button>
 </Link>

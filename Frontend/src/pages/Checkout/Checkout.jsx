@@ -82,21 +82,22 @@ const handleOrder = async () => {
   }
 
   try {
-    const itemsForOrder = cart.map((item) => {
-      const opt = getSelectedOption(item);
-      return {
-        productId: item.productId || item._id,
-        variantId: item.variantId,
-        nom: item.nom,
-        quantite: Number(item.quantite || 1),
-        imageUrl: item.imageUrl || "",
-        options: {
-          size: Number(opt.size || 0),
-          unit: opt.unit || "ml",
-          prix: Number(opt.prix || 0),
-        },
-      };
-    });
+const itemsForOrder = cart.map((item) => {
+  const opt = getSelectedOption(item);
+  return {
+    productId: item.productId,   // ✔ uniquement le vrai productId
+    variantId: item.variantId,
+    nom: item.nom,
+    quantite: Number(item.quantite || 1),
+    imageUrl: item.imageUrl || "",
+    options: {
+      size: Number(opt.size || 0),
+      unit: opt.unit || "ml",
+      prix: Number(opt.prix || 0),
+    },
+  };
+});
+
 
     const orderData = {
       items: itemsForOrder,

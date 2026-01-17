@@ -28,8 +28,7 @@ const CartProvider = ({ children }) => {
     return Array.from(map.values());
 
   };
-
-  // 📦 Charger panier
+ /*
   useEffect(() => {
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -71,6 +70,48 @@ console.log(cartItems);
       })
       .catch(() => setCartItems(localCart));
   }, [user]);
+*/
+// 1️⃣ Charger le panier local une seule fois
+useEffect(() => {
+  if (!user?._id) {
+    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCartItems(localCart);
+  }
+}, []); // 👈 se lance une seule fois au montage
+
+
+// 2️⃣ Charger le panier backend quand user se connecte
+useEffect(() => {
+  if (!user?._id) return;
+
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  fetch("http://localhost:5001/api/carts", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(res => res.json())
+    .then(data => {
+      const backendCart = data.items || [];
+      const merged = mergeCarts(localCart, backendCart);
+
+      setCartItems(merged);
+
+      fetch("http://localhost:5001/api/carts/sync", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ cartItems: merged }),
+      });
+
+      localStorage.removeItem("cart");
+    })
+    .catch(() => setCartItems(localCart));
+}, [user]);
 
   // ➕ Ajouter
   const addToCartContext = async (item) => {
@@ -106,7 +147,6 @@ console.log(cartItems);
     const data = await res.json();
     setCartItems(data.items || []);
   };
-
   // ➕➖ Modifier quantité
 const updateQuantity = async (variantId, delta) => {
   if (!user?._id) {
@@ -145,8 +185,6 @@ const updateQuantity = async (variantId, delta) => {
   const data = await res.json();
   setCartItems(data.items || []);
 };
-
-
   // ❌ Supprimer
 const removeFromCart = async (variantId) => {
   if (!user?._id) {

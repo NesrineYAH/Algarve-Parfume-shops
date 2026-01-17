@@ -6,8 +6,6 @@ import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { loadStripe } from "@stripe/stripe-js";
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
-
 export default function Payment() {
   const navigate = useNavigate();
   const { cartItems, loading: cartLoading } = useContext(CartContext);
@@ -32,57 +30,62 @@ useEffect(() => {
     0
   );
 
- const handleStripePayment = async () => {
+const handleStripePayment = async () => {
   try {
     setLoading(true);
     setError(null);
 
     const token = localStorage.getItem("token");
 
-    // ✅ Récupérer le panier réel depuis DB
-    const cartResponse = await fetch(
-      "http://localhost:5001/api/carts",
-      {
-        headers: { 
-    //      Authorization: `Bearer ${token}` 
-             Authorization: `Bearer ${localStorage.getItem("token")}`,
+    const cartResponse = await fetch("http://localhost:5001/api/carts", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        },
-      }
-    );
-    const cartData = await cartResponse.json();
-    const cart = cartData.items;
-
-    if (!cart || cart.length === 0) {
-      throw new Error("Panier vide !");
+    if (!cartResponse.ok) {
+      throw new Error("Erreur récupération panier");
     }
 
-    // ✅ Créer session Stripe depuis backend
+    const cartData = await cartResponse.json();
+    if (!cartData.items || cartData.items.length === 0) {
+      throw new Error("Panier vide");
+    }
+
     const response = await fetch(
-      "http://localhost:5001/api/stripe/create-checkout-session",
+  "http://localhost:5001/api/stripe/checkout-from-cart",
+      
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-       //  body: JSON.stringify({ cart }),  facultatif si backend lit la DB
       }
     );
 
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("Stripe backend:", text);
+      throw new Error("Stripe session error");
+    }
+
     const data = await response.json();
 
-    if (!data.url) throw new Error("URL Stripe manquante");
+    if (!data.url) {
+      throw new Error("URL Stripe absente");
+    }
 
     window.location.href = data.url;
 
   } catch (err) {
-    console.error("Stripe error :", err);
+    console.error(err);
     setError(err.message);
   } finally {
     setLoading(false);
   }
 };
+
 
 useEffect(() => {
   if (paymentMethod !== "paypal") return;

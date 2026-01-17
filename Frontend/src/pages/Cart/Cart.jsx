@@ -19,7 +19,7 @@ export default function Cart() {
 
   const handleNextStep = () => {
     if (cartItems.length === 0) {
-      alert("Votre panier est vide");
+      alert("Votre panier est vide !!");
       return;
     }
 
@@ -29,7 +29,7 @@ export default function Cart() {
       });
       return;
     }
-c
+
     navigate("/checkout");
   };
 

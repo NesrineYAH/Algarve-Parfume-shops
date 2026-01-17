@@ -10,18 +10,13 @@ const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
 
 
-// ===================================================
 // 🅰️ PANIER → COMMANDE (pending) → STRIPE CHECKOUT
-// ===================================================
 router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
   console.log("req.user.userId =", req.user.userId);
 
-
-//    const cart = await Cart.findOne({ userId: user._id });
-//const cart = req.body.cart || (await Cart.findOne({ userId: user._id }));
     const cart = await Cart.findOneAndUpdate({ userId: user._id });
 
 if (!cart || cart.items.length === 0) {
@@ -90,11 +85,7 @@ if (!cart || cart.items.length === 0) {
     res.status(500).json({ message: "Stripe error" });
   }
 });
-
-
-// ===================================================
 // 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
-// ===================================================
 router.post("/checkout-order/:orderId", authMiddleware,  async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderId);
@@ -140,11 +131,7 @@ router.post("/checkout-order/:orderId", authMiddleware,  async (req, res) => {
     res.status(500).json({ message: "Stripe error" });
   }
 });
-
-
-// ===================================================
 // 🔔 WEBHOOK STRIPE — CONFIRMATION PAIEMENT
-// ===================================================
 router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
