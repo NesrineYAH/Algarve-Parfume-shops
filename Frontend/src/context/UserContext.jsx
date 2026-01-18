@@ -1,41 +1,49 @@
-import { createContext, useState, useEffect, useContext } from "react";
+// UserContext.jsx
+import { createContext, useState, useEffect } from "react";
 import {
   loginUser,
   registerUser,
   getCurrentUser,
   logoutUser,
 } from "../Services/auth";
-import { CartContext } from "./CartContext";
 
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
-  const cartContext = useContext(CartContext); // ✅ SAFE
-  const clearCart = cartContext?.clearCart;   // ✅ SAFE
-
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
-
+  const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // 🔄 Vérifier utilisateur via token
+  // 🔄 Vérifier l'utilisateur au chargement
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        // 1. Vérifier si un token existe dans localStorage
+        const token = localStorage.getItem("token");
+        
+        if (!token) {
+          console.log("🔍 Aucun token trouvé, user = null");
+          setUser(null);
+          setLoadingUser(false);
+          return;
+        }
+
+        // 2. Appeler l'API pour vérifier le token
         const currentUser = await getCurrentUser();
 
         if (currentUser) {
+          console.log("✅ Utilisateur vérifié:", currentUser.email);
           setUser(currentUser);
-          localStorage.setItem("user", JSON.stringify(currentUser));
         } else {
+          // Token invalide ou expiré
+          console.log("❌ Token invalide, nettoyage...");
           setUser(null);
+          localStorage.removeItem("token");
           localStorage.removeItem("user");
         }
       } catch (err) {
-        console.error("Erreur fetchUser:", err);
+        console.error("❌ Erreur fetchUser:", err);
         setUser(null);
+        localStorage.removeItem("token");
         localStorage.removeItem("user");
       } finally {
         setLoadingUser(false);
@@ -47,43 +55,57 @@ const UserProvider = ({ children }) => {
 
   // 🔐 LOGIN
   const handleLogin = async (credentials) => {
-    const data = await loginUser(credentials);
+    try {
+      const data = await loginUser(credentials);
 
-    if (data?.user) {
-      setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // 🔥 IMPORTANT: Vérifier que data contient user ET token
+      if (data?.user && data?.token) {
+        setUser(data.user);
+        // 🔥 STOCKER LES DEUX
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+        console.log("✅ Login réussi, token enregistré");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("❌ Erreur login:", error);
+      return null;
     }
-
-    return data;
   };
 
   // 📝 REGISTER
   const handleRegister = async (credentials) => {
-    const data = await registerUser(credentials);
+    try {
+      const data = await registerUser(credentials);
 
-    if (data?.user) {
-      setUser(data.user);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data?.user && data?.token) {
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+      }
+
+      return data;
+    } catch (error) {
+      console.error("❌ Erreur register:", error);
+      return null;
     }
-
-    return data;
   };
 
-  // 🚪 LOGOUT (PROPRE)
+  // 🚪 LOGOUT
   const handleLogout = async () => {
     try {
-      if (clearCart) {
-        await clearCart(); // 🔥 vider panier MongoDB + context
-      }
-    } catch (e) {
-      console.warn("Panier déjà vide");
+      await logoutUser();
+    } catch (error) {
+      console.error("❌ Erreur logout API:", error);
+    } finally {
+      setUser(null);
+      // Supprimer TOUT
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("cart"); // Optionnel
+      console.log("🚪 Déconnexion complète");
     }
-
-    logoutUser();
-    setUser(null);
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("cart"); // panier invité
   };
 
   return (
@@ -105,6 +127,40 @@ const UserProvider = ({ children }) => {
 export default UserProvider;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* 
+  const handleLogout = async () => {
+    try {
+      if (clearCart) {
+        await clearCart(); // 🔥 vider panier MongoDB + context
+      }
+    } catch (e) {
+      console.warn("Panier déjà vide");
+    }
+
+    logoutUser();
+    setUser(null);
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("cart"); // panier invité
+  };
+*/
 
 
 /*

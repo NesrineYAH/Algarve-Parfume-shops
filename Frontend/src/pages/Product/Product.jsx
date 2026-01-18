@@ -92,22 +92,12 @@ const addToCart = async () => {
   };
 
   // 👤 NON CONNECTÉ → localStorage
-  if (!user) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const existing = cart.find(i => i.variantId === variantId);
-
-    if (existing) {
-      existing.quantite += quantity;
-    } else {
-      cart.push(item);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    setShowModal(true);
-    return;
-  }
-
+if (!user?._id) {
+  addToCartContext(item); // ⭐ MET À JOUR cartItems IMMÉDIATEMENT
+  setShowModal(true);
+  return;
+}
   // 🔐 CONNECTÉ → MongoDB
   try {
     await addToCartContext(item);

@@ -28,59 +28,23 @@ const CartProvider = ({ children }) => {
     return Array.from(map.values());
 
   };
- /*
-  useEffect(() => {
-    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // 🟡 Non connecté
+
+useEffect(() => { 
     if (!user?._id) {
-      setCartItems(localCart);
-      return;
-    }
+     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+     setCartItems(localCart);
+     console.log("CartContext cartItems:", cartItems);
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setCartItems(localCart);
-      return;
-    }
+     }
+    }, [user]);
 
-    // 🟢 Connecté
-    fetch("http://localhost:5001/api/carts", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const backendCart = data.items || [];
-        const merged = mergeCarts(localCart, backendCart);
-
-        setCartItems(merged);
-console.log(cartItems);
-
-        // 🔄 Sync backend
-        fetch("http://localhost:5001/api/carts/sync", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ cartItems: merged }),
-        });
-
-        localStorage.removeItem("cart");
-      })
-      .catch(() => setCartItems(localCart));
-  }, [user]);
-*/
-// 1️⃣ Charger le panier local une seule fois
 useEffect(() => {
-  if (!user?._id) {
-    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartItems(localCart);
-  }
-}, []); // 👈 se lance une seule fois au montage
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  setCartItems(localCart);
+}, []);
 
 
-// 2️⃣ Charger le panier backend quand user se connecte
 useEffect(() => {
   if (!user?._id) return;
 
@@ -242,175 +206,46 @@ const removeFromCart = async (variantId) => {
 export default CartProvider;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-export default function CartProvider({ children }) {
-  const { user } = useContext(UserContext);
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // 🔥 Fonction pour charger le panier depuis la DB
-  const loadCart = async () => {
-    if (!user) return setCartItems([]);
-    try {
-      const res = await axios.get("http://localhost:5001/api/carts", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setCartItems(res.data.items || []);
-    } catch (err) {
-      console.error("❌ loadCart:", err);
-      setCartItems([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+ /*
   useEffect(() => {
-    if (!user) {
-      setCartItems([]);
-      setLoading(false);
+    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // 🟡 Non connecté
+    if (!user?._id) {
+      setCartItems(localCart);
       return;
     }
-    loadCart();
-  }, [user]);
 
-const addToCart = async (item) => {
-  await CartService.addToCart(item);
-  await loadCart();
-};
-
-  // ➖ Mettre à jour la quantité
-  const updateQuantity = async (productId, quantity) => {
-    try {
-      await CartService.updateQuantity(productId, quantity);
-      await loadCart();
-    } catch (err) {
-      console.error("❌ updateQuantity error:", err);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setCartItems(localCart);
+      return;
     }
-  };
 
-  // ❌ Supprimer un produit
-  const removeFromCart = async (productId) => {
-    try {
-      await CartService.removeItem(productId);
-      await loadCart();
-    } catch (err) {
-      console.error("❌ removeFromCart error:", err);
-    }
-  };
+    // 🟢 Connecté
+    fetch("http://localhost:5001/api/carts", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const backendCart = data.items || [];
+        const merged = mergeCarts(localCart, backendCart);
 
-  const clearCart = async () => {
-    try {
-      await CartService.clearCart();
-      setCartItems([]);
-    } catch (err) {
-      console.error("❌ clearCart error:", err);
-    }
-  };
+        setCartItems(merged);
+console.log(cartItems);
 
-  const totalPrice = cartItems.reduce(
-    (sum, i) => sum + i.options.prix * i.quantite,
-    0
-  );
-
-  return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        loading,
-        addToCart,
-        updateQuantity,
-        removeFromCart,
-        clearCart,
-        totalPrice,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
-}
-*/
-
-
-
-
-
-
-
-/*
-  const addToCart = async (item) => {
-    try {
-      await CartService.addToCart(item);
-      await loadCart();
-    } catch (err) {
-      console.error("❌ addToCart error:", err);
-    }
-  };
-*/
-
-
-/* 09/01/26
-  const addToCart = (product, selectedOption) => {
-    setCartItems((prev) => {
-      const existing = prev.find(
-        (item) =>
-          item.productId === product._id &&
-          item.options.size === selectedOption.size &&
-          item.options.unit === selectedOption.unit
-      );
-
-      if (existing) {
-        return prev.map((item) =>
-          item.productId === product._id &&
-          item.options.size === selectedOption.size &&
-          item.options.unit === selectedOption.unit
-            ? { ...item, quantite: item.quantite + 1 }
-            : item
-        );
-      }
-
-      return [
-        ...prev,
-        {
-          productId: product._id,
-          nom: product.nom,
-          imageUrl: product.imageUrl,
-          quantite: 1,
-          options: {
-            size: selectedOption.size,
-            unit: selectedOption.unit,
-            prix: Number(selectedOption.prix),
+        // 🔄 Sync backend
+        fetch("http://localhost:5001/api/carts/sync", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-        },
-      ];
-    });
-  };
-*/
+          body: JSON.stringify({ cartItems: merged }),
+        });
 
-
-/* 09/01/2026
-  const removeFromCart = (productId, size, unit) => {
-    setCartItems((prev) =>
-      prev.filter(
-        (item) =>
-          !(
-            item.productId === productId &&
-            item.options.size === size &&
-            item.options.unit === unit
-          )
-      )
-    );
-  };
+        localStorage.removeItem("cart");
+      })
+      .catch(() => setCartItems(localCart));
+  }, [user]);
 */

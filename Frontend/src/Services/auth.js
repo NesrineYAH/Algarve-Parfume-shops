@@ -94,8 +94,6 @@ export async function getCurrentUser() {
     return null;
   }
 }
-
-
 export function logoutUser() {
   localStorage.removeItem("token");
   localStorage.removeItem("userId");

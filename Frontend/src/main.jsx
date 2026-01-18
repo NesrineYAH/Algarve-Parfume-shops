@@ -5,18 +5,18 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import CartProvider from "./context/CartContext";
 import UserProvider from "./context/UserContext";
-import { AvisProvider } from "./context/AvisContext"; // ✅ Contexte Avis
+import { AvisProvider } from "./context/AvisContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <>
     <BrowserRouter>
-     <UserProvider>
-      <AvisProvider>
+      <UserProvider>
+        <AvisProvider>
           <CartProvider>
             <App />
           </CartProvider>
-         </AvisProvider>
-        </UserProvider>
+        </AvisProvider>
+      </UserProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  </>
 );
