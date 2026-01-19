@@ -14,7 +14,7 @@ export default function Cart() {
     removeFromCart,
     totalPrice,
   } = useContext(CartContext);
-console.log("PANIER ACTUEL :", cartItems);
+
   const navigate = useNavigate();
 
   const handleNextStep = () => {

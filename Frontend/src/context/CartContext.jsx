@@ -14,7 +14,6 @@ const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
   // 🔄 Fusion panier local + backend (clé = variantId)
-
   const mergeCarts = (localCart, backendCart) => {
     const map = new Map();
     [...backendCart, ...localCart].forEach((item) => {

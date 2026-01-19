@@ -1,186 +1,123 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import OrderService from "../../Services/orderService";
 import { CartContext } from "../../context/CartContext";
-import { UserContext } from "../../context/UserContext";
-
 import "./Checkout.scss";
 
 export default function Checkout() {
-  const { cartItems } = useContext(CartContext);
-// const cart = cartItems; // 🔥 PLUS DE localStorage
-
-  const [cart, setCart] = useState([]);
-  const [deliveryMode, setDeliveryMode] = useState("domicile");
-  const [address, setAddress] = useState("");
+  const { cartItems, totalPrice } = useContext(CartContext);
   const navigate = useNavigate();
-  
 
-useEffect(() => {
-  const fetchCart = async () => {
+  // 🔐 Sécurité : pas d’accès au checkout sans panier
+  useEffect(() => {
+    if (!cartItems || cartItems.length === 0) {
+      navigate("/cart");
+    }
+  }, [cartItems, navigate]);
+
+  // 🟢 Création de la pré-commande
+  const handleOrder = async () => {
     try {
-      // 🟢 1️⃣ Essayer MongoDB via API
-      const token = localStorage.getItem("token");
+      const itemsForOrder = cartItems.map((item) => ({
+        productId: item.productId,
+        variantId: item.variantId,
+        nom: item.nom,
+        quantite: Number(item.quantite),
+        imageUrl: item.imageUrl,
+        options: {
+          size: item.options.size,
+          unit: item.options.unit,
+          prix: Number(item.options.prix),
+        },
+      }));
 
-      if (token) {
-        const res = await fetch("http://localhost:5001/api/carts", {
-          headers: {
-           Authorization: `Bearer ${token}`,
-  //          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const orderData = {
+        items: itemsForOrder,
+        totalPrice: Number(totalPrice.toFixed(2)),
+        status: "pending",
+        paymentStatus: "pending",
+      };
 
-          },
-        });
+      const response = await OrderService.createPreOrder(orderData);
 
-        if (res.ok) {
-          const data = await res.json();
-
-          if (data.items && data.items.length > 0) {
-            setCart(data.items);
-            return; // ✅ panier MongoDB utilisé
-          }
-        }
+      if (!response?.order?._id) {
+        throw new Error("Pré-commande non créée");
       }
 
-      // 🟡 2️⃣ Fallback localStorage
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setCart(localCart);
-    } catch (err) {
-      console.error("❌ Erreur chargement panier :", err);
+      localStorage.setItem("preOrderId", response.order._id);
 
-      // 🔴 3️⃣ Fallback ultime
-      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setCart(localCart);
+      // ➡️ Étape suivante
+      navigate("/Delivery");
+    } catch (error) {
+      console.error("❌ Erreur pré-commande :", error);
+      alert("Impossible de continuer la commande");
     }
   };
-
-  fetchCart();
-}, []);
-
-
-  // Fonction pour récupérer une option valide pour chaque produit
-  const getSelectedOption = (item) => {
-    if (!item.options) return { size: 0, unit: "ml", prix: 0 }; // fallback
-    if (Array.isArray(item.options) && item.options.length > 0)
-      return item.options[0]; // tableau
-    if (typeof item.options === "object") return item.options; // objet déjà
-    return { size: 0, unit: "ml", prix: 0 }; // fallback sûr
-  };
-
-  // Calcul du prix total
-  const total = cart.reduce((sum, item) => {
-    const opt = getSelectedOption(item);
-    const qty = Number(item.quantite || 1);
-    const price = Number(opt.prix || 0);
-    return sum + price * qty;
-  }, 0);
-
-const handleOrder = async () => {
-  if (!cart || cart.length === 0) {
-    alert("Votre panier est vide");
-    return;
-  }
-
-  try {
-const itemsForOrder = cart.map((item) => {
-  const opt = getSelectedOption(item);
-  return {
-    productId: item.productId,   // ✔ uniquement le vrai productId
-    variantId: item.variantId,
-    nom: item.nom,
-    quantite: Number(item.quantite || 1),
-    imageUrl: item.imageUrl || "",
-    options: {
-      size: Number(opt.size || 0),
-      unit: opt.unit || "ml",
-      prix: Number(opt.prix || 0),
-    },
-  };
-});
-
-
-    const orderData = {
-      items: itemsForOrder,
-      totalPrice: Number(total.toFixed(2)),
-      delivery: {
-        type: deliveryMode,
-        address: deliveryMode === "domicile" ? address : "",
-      },
-      status: "pending",
-      paymentStatus: "pending",
-    };
-
-    // 🟢 Création de la pré-commande
-    const response = await OrderService.createPreOrder(orderData);
-    const preOrderId = response.order._id;
-
-    localStorage.setItem("preOrderId", preOrderId);
-
-    // ➡️ Étape suivante : paiement
-    navigate("/Delivery");
-  } catch (error) {
-    console.error("Erreur création pré-commande :", error.response || error);
-    alert("❌ Impossible de passer à l’étape paiement");
-  }
-};
 
   return (
     <div className="checkout-container">
       <CheckoutSteps step={2} />
 
-      <h1>Finaliser la commande</h1>
+      <h1>Récapitulatif de votre commande</h1>
 
       <div className="checkout-summary">
-        <h2>Résumé du panier</h2>
-        {cart.length === 0 ? (
-          <p>Votre panier est vide.</p>
-        ) : (
-          cart.map((item, index) => {
-            const opt = getSelectedOption(item);
-            return (
-              <div key={`${item.variantId}-${index}`} className="panier-item">
-                <img
-                  src={
-                    item.imageUrl
-                      ? `http://localhost:5001${item.imageUrl}`
-                      : "/placeholder.png"
-                  }
-                  alt={item.nom}
-                  className="itemImg"
-                />
-                <div>
-                  <strong>{item.nom || item.name}</strong>
-                  <div>
-                    <small>
-                      {opt.size} {opt.unit} — {Number(opt.prix).toFixed(2)} €
-                    </small>
-                  </div>
-                </div>
-                <div>
-                  <span>Quantité: {item.quantite || item.quantity || 1}</span>
-                </div>
+        {cartItems.map((item) => (
+          <div key={item.variantId} className="panier-item">
+            <img
+              src={`http://localhost:5001${item.imageUrl}`}
+              alt={item.nom}
+              className="itemImg"
+            />
+
+            <div className="item-info">
+              <strong>{item.nom}</strong>
+              <div>
+                {item.options.size} {item.options.unit} —{" "}
+                {Number(item.options.prix).toFixed(2)} €
               </div>
-            );
-          })
-        )}
+              <div>Quantité : {item.quantite}</div>
+            </div>
+          </div>
+        ))}
 
-        <h3>Total : {total.toFixed(2)} €</h3>
+        <h3>Total : {Number(totalPrice).toFixed(2)} €</h3>
 
-        <div style={{ marginTop: 12 }}>
+        <div className="checkout-actions">
           <button className="Button" onClick={handleOrder}>
             Confirmer la commande
           </button>
-        </div>
 
-        <Link to="/cart">
-          <button className="Button" style={{ marginTop: 8 }}>
-            Modifier le panier
-          </button>
-        </Link>
+          <Link to="/cart">
+            <button className="Button secondary">
+              Modifier le panier
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   /* 25/12/2025

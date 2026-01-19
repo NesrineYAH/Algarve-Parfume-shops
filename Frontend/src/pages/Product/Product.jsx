@@ -74,10 +74,7 @@ const addToCart = async () => {
     alert("Veuillez sélectionner une option.");
     return;
   }
-
-  // ✅ VARIANT ID UNIQUE ET STABLE
   const variantId = `${product._id}_${selectedOption.size}`;
-
   const item = {
     variantId, // ⭐ OBLIGATOIRE
     productId: product._id,
@@ -90,11 +87,9 @@ const addToCart = async () => {
       prix: selectedOption.prix,
     },
   };
-
   // 👤 NON CONNECTÉ → localStorage
-
 if (!user?._id) {
-  addToCartContext(item); // ⭐ MET À JOUR cartItems IMMÉDIATEMENT
+  addToCartContext(item); 
   setShowModal(true);
   return;
 }
@@ -191,7 +186,6 @@ const addToFavorites = () => {
   );
 
   if (exists) {
-    // Optionnel : retirer si déjà favori
     const updated = favorites.filter(
       (fav) => fav.variantId !== favoriteItem.variantId
     );
