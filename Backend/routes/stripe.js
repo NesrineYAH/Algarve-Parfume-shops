@@ -6,6 +6,7 @@ const Order = require("../Model/Order");
 const { authMiddleware }  = require("../middleware/auth");
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
 

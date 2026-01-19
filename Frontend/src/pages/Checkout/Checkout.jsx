@@ -32,12 +32,14 @@ export default function Checkout() {
         },
       }));
 
-      const orderData = {
-        items: itemsForOrder,
-        totalPrice: Number(totalPrice.toFixed(2)),
-        status: "pending",
-        paymentStatus: "pending",
-      };
+ const orderData = {
+  items: itemsForOrder,
+  totalPrice: Number(totalPrice.toFixed(2)),
+  status: "pending",
+  paymentStatus: "pending",
+  createdAt: new Date(), // ⬅️ ajoute la date et l'heure
+};
+
 
       const response = await OrderService.createPreOrder(orderData);
 

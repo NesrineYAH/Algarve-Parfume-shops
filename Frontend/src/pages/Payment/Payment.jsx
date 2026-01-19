@@ -36,33 +36,48 @@ const handleStripePayment = async () => {
     setError(null);
 
     const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Utilisateur non authentifié");
+    }
 
-    const cartResponse = await fetch("http://localhost:5001/api/carts", {
+    // 🧠 1️⃣ Déterminer la source de paiement
+    const orderId =
+      location.state?.orderId || localStorage.getItem("preOrderId");
+
+    let stripeUrl = "";
+    let fetchOptions = {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    });
+    };
 
-    if (!cartResponse.ok) {
-      throw new Error("Erreur récupération panier");
+    // 🅱️ CAS 1 — Paiement depuis une COMMANDE (prioritaire)
+    if (orderId) {
+      stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
     }
-
-    const cartData = await cartResponse.json();
-    if (!cartData.items || cartData.items.length === 0) {
-      throw new Error("Panier vide");
-    }
-
-    const response = await fetch(
-  "http://localhost:5001/api/stripe/checkout-from-cart",
-      
-      {
-        method: "POST",
+    else {
+      const cartResponse = await fetch("http://localhost:5001/api/carts", {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+      });
+
+      if (!cartResponse.ok) {
+        throw new Error("Erreur récupération panier");
       }
-    );
+
+      const cartData = await cartResponse.json();
+      if (!cartData.items || cartData.items.length === 0) {
+        throw new Error("Panier vide");
+      }
+
+      stripeUrl =
+        "http://localhost:5001/api/stripe/checkout-from-cart";
+    }
+
+    // 🟢 2️⃣ Appel Stripe
+    const response = await fetch(stripeUrl, fetchOptions);
 
     if (!response.ok) {
       const text = await response.text();
@@ -76,15 +91,17 @@ const handleStripePayment = async () => {
       throw new Error("URL Stripe absente");
     }
 
+    // 🚀 3️⃣ Redirection Stripe Checkout
     window.location.href = data.url;
 
   } catch (err) {
-    console.error(err);
+    console.error("❌ Stripe error:", err);
     setError(err.message);
   } finally {
     setLoading(false);
   }
 };
+
 
 
 useEffect(() => {

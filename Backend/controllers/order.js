@@ -15,7 +15,6 @@ exports.createOrder = async (req, res) => {
         if (!items || items.length === 0) {
             return res.status(400).json({ message: "Aucun article dans la commande" });
         }
-
         const enrichedItems = await Promise.all(
             items.map(async (item) => {
                 const product = await Product.findById(item.productId);
@@ -61,8 +60,10 @@ exports.createOrder = async (req, res) => {
             status: "pending",
             paymentStatus: "pending",
             delivery,
+             createdAt: new Date(), // ⬅️ ajoute la date et l'heure
         });
-
+   
+        
         await order.save();
         return res.status(201).json({ message: "Commande créée avec succès", order });
     } catch (error) {

@@ -7,6 +7,7 @@ import { CartContext } from "../../context/CartContext";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState([]);
   const [preOrders, setPreOrders] = useState([]);
   const { user } = useContext(UserContext);
 
@@ -72,6 +73,9 @@ export default function Orders() {
       alert("Erreur lors de la mise à jour");
     }
   };
+  const date = new Date(order.createdAt); 
+// const formatted = date.toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", });
+
 
 return (
   <div className="orders-container">
@@ -80,7 +84,6 @@ return (
     )}
 
     <h2>Mes Commandes</h2>
-
     {/* SI pré-commandes → afficher uniquement les pré-commandes */}
     {preOrders.length > 0 ? (
       <>
@@ -88,8 +91,19 @@ return (
         {preOrders.map((order) => (
           <div className="order-card" key={order._id}>
             <h3>Commande n°{order._id}</h3>
-            <h4>Paiement : {order.paymentStatus}</h4>
-            <h4>Prix Total : {order.totalPrice} €</h4>
+            <p>Paiement : {order.paymentStatus}</p>
+            <p>Prix Total : {order.totalPrice} €</p>
+         <p>
+  Date de création :{" "}
+  {new Date(order.createdAt).toLocaleString("fr-FR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })}
+</p>
+
 
             <div className="order-items">
               {order.items.map((item, idx) => (
