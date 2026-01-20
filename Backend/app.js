@@ -19,6 +19,7 @@ const avisRoutes = require("./routes/avis");
 const stripeWebhook = require("./routes/stripeWebhook");
 const paymentMethodsRoutes = require("./routes/paymentMethods");
 const paymentsRoute = require("./routes/payments");
+const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
 require("./mongoDB/DB");
 
@@ -56,7 +57,7 @@ app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentRoutes);
 app.use("/api", authMiddleware, paymentMethodsRoutes);
 app.use("/api", authMiddleware, paymentsRoute);
-
+app.use("/api/users/favorites", favoritesRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");

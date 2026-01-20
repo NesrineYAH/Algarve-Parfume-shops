@@ -60,10 +60,10 @@ exports.createOrder = async (req, res) => {
             status: "pending",
             paymentStatus: "pending",
             delivery,
-             createdAt: new Date(), // ⬅️ ajoute la date et l'heure
+            createdAt: new Date(), // ⬅️ ajoute la date et l'heure
         });
-   
-        
+
+
         await order.save();
         return res.status(201).json({ message: "Commande créée avec succès", order });
     } catch (error) {
@@ -201,52 +201,52 @@ exports.getOrderById = async (req, res) => {
     }
 };
 exports.shipOrder = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
+    try {
+        const order = await Order.findById(req.params.id);
 
-    if (!order) {
-      return res.status(404).json({ message: "Commande introuvable" });
+        if (!order) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        order.status = "shipped";
+        order.deliveryStatus = "shipped";
+
+        await order.save();
+
+        res.json({ message: "Commande expédiée", order });
+    } catch (error) {
+        console.error("Erreur expédition commande :", error);
+        res.status(500).json({ message: "Erreur serveur" });
     }
-
-    order.status = "shipped";
-    order.deliveryStatus = "shipped";
-
-    await order.save();
-
-    res.json({ message: "Commande expédiée", order });
-  } catch (error) {
-    console.error("Erreur expédition commande :", error);
-    res.status(500).json({ message: "Erreur serveur" });
-  }
 };
 exports.deliverOrder = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
+    try {
+        const order = await Order.findById(req.params.id);
 
-    if (!order) {
-      return res.status(404).json({ message: "Commande introuvable" });
+        if (!order) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        // Vérifier que l'utilisateur est bien le propriétaire
+        if (order.userId.toString() !== req.user.userId) {
+            return res.status(403).json({ message: "Accès interdit" });
+        }
+
+        order.status = "delivered";
+        order.deliveryStatus = "delivered";
+        order.deliveredAt = new Date();
+
+        await order.save();
+
+        res.json({ message: "Commande marquée comme reçue", order });
+    } catch (error) {
+        console.error("Erreur livraison commande :", error);
+        res.status(500).json({ message: "Erreur serveur" });
     }
-
-    // Vérifier que l'utilisateur est bien le propriétaire
-    if (order.userId.toString() !== req.user.userId) {
-      return res.status(403).json({ message: "Accès interdit" });
-    }
-
-    order.status = "delivered";
-    order.deliveryStatus = "delivered";
-    order.deliveredAt = new Date();
-
-    await order.save();
-
-    res.json({ message: "Commande marquée comme reçue", order });
-  } catch (error) {
-    console.error("Erreur livraison commande :", error);
-    res.status(500).json({ message: "Erreur serveur" });
-  }
 };
 
 
- 
+
 /*const Order = require("../Model/Order");
 const Product = require("../Model/product");
 const mongoose = require("mongoose");

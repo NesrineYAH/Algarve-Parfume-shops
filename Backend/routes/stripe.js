@@ -3,7 +3,7 @@ const Stripe = require("stripe");
 const User = require("../Model/User");
 const Cart = require("../Model/Cart");
 const Order = require("../Model/Order");
-const { authMiddleware }  = require("../middleware/auth");
+const { authMiddleware } = require("../middleware/auth");
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -16,11 +16,11 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
-  console.log("req.user.userId =", req.user.userId);
+    console.log("req.user.userId =", req.user.userId);
 
     const cart = await Cart.findOneAndUpdate({ userId: user._id });
 
-if (!cart || cart.items.length === 0) {
+    if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: "Panier vide" });
     }
 
@@ -87,7 +87,7 @@ if (!cart || cart.items.length === 0) {
   }
 });
 // 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
-router.post("/checkout-order/:orderId", authMiddleware,  async (req, res) => {
+router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderId);
     if (!order) return res.status(404).json({ message: "Commande introuvable" });

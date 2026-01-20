@@ -29,11 +29,36 @@ export default function MonCompte() {
       .catch(console.error);
   }, [navigate]);
 
-  /* ❤️ Favoris */
-  useEffect(() => {
-    const saved = localStorage.getItem("favorites");
-    if (saved) setFavorites(JSON.parse(saved));
-  }, []);
+useEffect(() => {
+  const fetchFavorites = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setFavorites([]);
+        return;
+      }
+
+      const res = await fetch(
+        "http://localhost:5001/api/users/favorites",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) throw new Error();
+
+      const data = await res.json();
+      setFavorites(data);
+    } catch (err) {
+      console.error("Erreur chargement favoris :", err);
+    }
+  };
+
+  fetchFavorites();
+}, []);
+
 
   /* 📦 Commandes */
   useEffect(() => {

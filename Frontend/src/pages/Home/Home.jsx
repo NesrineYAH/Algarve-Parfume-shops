@@ -63,16 +63,6 @@ useEffect(() => {
     setFiltered(results);
   };
 
-  const toggleFavorite = (product) => {
-    let updated;
-    if (favorites.some((fav) => fav._id === product._id)) {
-      updated = favorites.filter((fav) => fav._id !== product._id);
-    } else {
-      updated = [...favorites, product];
-    }
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  };
 
 useEffect(() => {
   const fetchProducts = async () => {
@@ -104,6 +94,38 @@ useEffect(() => {
 
   fetchProducts();
 }, [location.search]);
+
+const toggleFavorite = async (product, user) => {
+  let updatedFavorites;
+  const isFavorite = favorites.some((fav) => fav._id === product._id);
+
+  if (isFavorite) {
+    updatedFavorites = favorites.filter((fav) => fav._id !== product._id);
+  } else {
+    updatedFavorites = [...favorites, product];
+  }
+
+  // Mise à jour locale
+  setFavorites(updatedFavorites);
+  localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+  // Si utilisateur connecté, mettre à jour MongoDB
+  if (!user?._id) {
+    try {
+      await fetch(`http://localhost:5001/api/users/favorites/${product._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`, // si tu utilises JWT
+        },
+        body: JSON.stringify({ add: !isFavorite }),
+      });
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour des favoris sur le serveur :", error);
+    }
+  }
+};
+
 
 
 // 🔥 Fonction pour récupérer les commentaires

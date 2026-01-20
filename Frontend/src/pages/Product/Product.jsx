@@ -7,6 +7,7 @@ import { Heart } from "lucide-react";
   import * as CartService from "../../Services/cart"; // ton service frontend
 import { UserContext } from "../../context/UserContext";
 import { CartContext } from "../../context/CartContext";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 
 const Product = () => {
@@ -24,13 +25,8 @@ const Product = () => {
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
-  
-
+  const { favorites, toggleFavorite } = useContext(FavoritesContext);
 const [quantity, setQuantity] = useState(1);
-
-  const [favorites, setFavorites] = useState(() => {
-  return JSON.parse(localStorage.getItem("favorites")) || [];
-});
 const { user } = useContext(UserContext);
 const { addToCartContext } = useContext(CartContext);
 
@@ -166,37 +162,55 @@ const dislikeComment = async (commentId) => {
       .then(res => setComments(res.data));
   };
 
-const addToFavorites = () => {
-  if (!product || !selectedOption) {
+const addToFavorites = async () => {
+  if (!product) return;
+
+  const token = localStorage.getItem("token");
+
+  // 👤 UTILISATEUR NON CONNECTÉ → localStorage
+  if (!token) {
+    const variantId = `${product._id}-${selectedOption?.size}`;
+    const exists = favorites.some(f => f.variantId === variantId);
+
+    const updated = exists
+      ? favorites.filter(f => f.variantId !== variantId)
+      : [
+          ...favorites,
+          {
+            productId: product._id,
+            variantId,
+            nom: product.nom,
+            imageUrl: product.imageUrl,
+            options: selectedOption,
+          },
+        ];
+
+    setFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
     return;
   }
 
-  const favoriteItem = {
-    productId: product._id,
-    variantId: `${product._id}-${selectedOption.size}`,
-    nom: product.nom,
-    imageUrl: product.imageUrl,
-    size: selectedOption.size,
-    unit: selectedOption.unit,
-    prix: selectedOption.prix,
-  };
-
-  const exists = favorites.some(
-    (fav) => fav.variantId === favoriteItem.variantId
-  );
-
-  if (exists) {
-    const updated = favorites.filter(
-      (fav) => fav.variantId !== favoriteItem.variantId
+  // 🔐 UTILISATEUR CONNECTÉ → BASE DE DONNÉES
+  try {
+    const res = await fetch(
+      `http://localhost:5001/api/users/favorites/${product._id}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  } else {
-    const updated = [...favorites, favoriteItem];
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
+
+    if (!res.ok) throw new Error("Erreur favoris");
+
+    const data = await res.json(); // favoris mis à jour (populate)
+    setFavorites(data); // ⬅️ synchro avec MongoDB
+  } catch (err) {
+    console.error("Erreur addToFavorites :", err);
   }
 };
+
 
 const increaseQuantity = () => {
   setQuantity((prev) => prev + 1);
