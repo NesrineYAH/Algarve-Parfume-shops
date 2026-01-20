@@ -45,12 +45,9 @@ import QrCodePage from "./pages/App/QrCodePage"
 import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
-
-
 function App() {
   return (
     <>
-
       <div className="App">
         <Headers />
         
@@ -60,7 +57,7 @@ function App() {
            <Route path="*" element={<ErrorPage />} />
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
-        {/*Route admin*/}
+        {/*Route admin imbriquées*/}
          <Route path="/admin/AdminDashboard" element={<AdminDashboard />}> 
          <Route path="add-product" element={<AdminAddProduct />} /> 
          <Route path="AdminProductMng" element={<AdminProductMng />} /> 

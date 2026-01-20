@@ -162,56 +162,6 @@ const dislikeComment = async (commentId) => {
       .then(res => setComments(res.data));
   };
 
-const addToFavorites = async () => {
-  if (!product) return;
-
-  const token = localStorage.getItem("token");
-
-  // 👤 UTILISATEUR NON CONNECTÉ → localStorage
-  if (!token) {
-    const variantId = `${product._id}-${selectedOption?.size}`;
-    const exists = favorites.some(f => f.variantId === variantId);
-
-    const updated = exists
-      ? favorites.filter(f => f.variantId !== variantId)
-      : [
-          ...favorites,
-          {
-            productId: product._id,
-            variantId,
-            nom: product.nom,
-            imageUrl: product.imageUrl,
-            options: selectedOption,
-          },
-        ];
-
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-    return;
-  }
-
-  // 🔐 UTILISATEUR CONNECTÉ → BASE DE DONNÉES
-  try {
-    const res = await fetch(
-      `http://localhost:5001/api/users/favorites/${product._id}`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!res.ok) throw new Error("Erreur favoris");
-
-    const data = await res.json(); // favoris mis à jour (populate)
-    setFavorites(data); // ⬅️ synchro avec MongoDB
-  } catch (err) {
-    console.error("Erreur addToFavorites :", err);
-  }
-};
-
-
 const increaseQuantity = () => {
   setQuantity((prev) => prev + 1);
 };
@@ -242,7 +192,8 @@ useEffect(() => {
             alt={product.nom}
             className="product-image"
           />
-             <div className="card__favorite" onClick={addToFavorites}>
+       {/* <div className="card__favorite" onClick={addToFavorites}>*/}
+             <div className="card__favorite"   onClick={() => toggleFavorite(product)}>
       <Heart
     className={`icone ${
       selectedOption &&
@@ -253,7 +204,9 @@ useEffect(() => {
         ? "active"
         : ""
     }`}
+
         />
+        
           </div>
         
           </div>
