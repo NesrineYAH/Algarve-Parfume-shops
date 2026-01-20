@@ -130,6 +130,7 @@ return (
               <Link to={`/payment/${order._id}`}>
                 <button className="Button">Confirmer et payer</button>
               </Link>
+           
             </div>
           </div>
         ))}
@@ -174,6 +175,7 @@ return (
                 </Link>
                 <Link><button className="Button">Suivre ma commande</button></Link>
                 <Link><button className="Button">Confirmer la réception</button></Link>
+                <Link><button className="Button">Suivez votre Commande</button></Link>
               </div>
             </div>
           ))

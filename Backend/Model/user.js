@@ -49,21 +49,6 @@ const userSchema = new mongoose.Schema({
     enum: ["Pending", "Active"],
     default: "Pending",
   },
-
-  // 🛒 Panier
-  cart: [
-    {
-      productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-      },
-      quantite: {
-        type: Number,
-        default: 1,
-      },
-    },
-  ],
-
   // ❤️ Favoris
   favorites: [
     {
