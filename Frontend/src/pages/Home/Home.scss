@@ -48,14 +48,13 @@
             right: 10px;
             cursor: pointer;
 
-
             .icone {
                 width: 24px;
                 height: 24px;
                 stroke: #999; // couleur du contour par défaut
                 fill: transparent; // cœur vide
                 transition: all 0.25s ease;
-                stroke: white;
+                stroke: rgb(73, 72, 72);
             }
 
             .active {
@@ -72,6 +71,7 @@
             &:hover .icone {
                 transform: scale(1.1);
             }
+
         }
 
         &_img {

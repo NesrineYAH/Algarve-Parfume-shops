@@ -16,7 +16,8 @@ const { favorites, toggleFavorite } = useContext(FavoritesContext);
   const [error, setError] = useState("");
  const location = useLocation();
  const [ratings, setRatings] = useState({});
-
+  const [product, setProduct] = useState([]);
+  
 const isFavorite =
   Array.isArray(favorites) &&
   favorites.some((fav) => fav._id === product._id);

@@ -108,7 +108,7 @@ export default function MonCompte() {
               favorites.map(prod => (
                 <div key={prod._id} className="favorite-item">
                   <Link to={`/product/${prod._id}`}>
-                    <img
+                    <img    className="favorites__img"
                       src={`http://localhost:5001${prod.imageUrl}`}
                       alt={prod.nom}
                     />

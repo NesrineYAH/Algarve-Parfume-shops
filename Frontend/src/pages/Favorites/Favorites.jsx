@@ -10,8 +10,6 @@ export default function Favorites() {
   // 🔒 Sécurisation
   const safeFavorites = Array.isArray(favorites) ? favorites : [];
 
-
-  
   return (
     <div className="favorites">
       <h2>❤️ Mes Favoris</h2>

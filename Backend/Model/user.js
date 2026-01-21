@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   // 🎭 Rôle
   role: {
     type: String,
-    enum: ["client", "admin"],
+    enum: ["admin", "client", "vendeur"], // ✅ Ajouté vendeur
     default: "client",
   },
 

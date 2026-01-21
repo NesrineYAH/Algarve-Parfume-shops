@@ -25,9 +25,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 /**
- * 🔹 POST /api/users/favorites/:productId
- * Toggle favori (add/remove)
- */
+
 router.post("/:productId", authMiddleware, async (req, res) => {
     try {
         const { productId } = req.params;
@@ -64,6 +62,28 @@ router.post("/:productId", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Erreur serveur favoris" });
     }
 });
+
+ */
+router.post("/:productId", authMiddleware, async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const user = await User.findById(req.user.userId);
+        if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+        const index = user.favorites.findIndex(f => f.toString() === productId);
+        if (index === -1) user.favorites.push(productId);
+        else user.favorites.splice(index, 1);
+
+        await user.save();
+        await user.populate("favorites");
+
+        res.json(user.favorites);
+    } catch (error) {
+        console.error("❌ Erreur toggle favori :", error);
+        res.status(500).json({ message: "Erreur serveur favoris" });
+    }
+});
+
 
 /**
  * 🔹 PUT /api/users/favorites/merge
