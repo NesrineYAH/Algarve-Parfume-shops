@@ -25,7 +25,7 @@ const Product = () => {
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
-  const { favorites, toggleFavorite } = useContext(FavoritesContext);
+const { favorites, toggleFavorite } = useContext(FavoritesContext);
 const [quantity, setQuantity] = useState(1);
 const { user } = useContext(UserContext);
 const { addToCartContext } = useContext(CartContext);
@@ -181,6 +181,12 @@ useEffect(() => {
     ? Math.min(...product.options.map(opt => opt.prix))
     : null;
 
+
+const safeFavorites = Array.isArray(favorites) ? favorites : [];
+const isFavorite = safeFavorites.some(
+  (fav) => fav._id === product?._id
+);
+
   return (
     <section id="page">
       <div className="product-container">
@@ -194,18 +200,9 @@ useEffect(() => {
           />
        {/* <div className="card__favorite" onClick={addToFavorites}>*/}
              <div className="card__favorite"   onClick={() => toggleFavorite(product)}>
-      <Heart
-    className={`icone ${
-      selectedOption &&
-      favorites.some(
-        (fav) =>
-          fav.variantId === `${product._id}-${selectedOption.size}`
-      )
-        ? "active"
-        : ""
-    }`}
-
-        />
+  <Heart
+    className={`icone ${isFavorite ? "active" : ""}`}
+  />
         
           </div>
         

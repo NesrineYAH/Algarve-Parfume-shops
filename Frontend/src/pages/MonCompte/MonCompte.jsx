@@ -2,15 +2,16 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
+import { FavoritesContext } from "../../context/FavoritesContext";
 import { Heart, Trash2 } from "lucide-react";
 
 export default function MonCompte() {
   const navigate = useNavigate();
   const { user, handleLogout } = useContext(UserContext);
+  const { favorites, toggleFavorite } = useContext(FavoritesContext);
 
   const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState("infos");
-  const [favorites, setFavorites] = useState([]);
   const [orders, setOrders] = useState([]);
 
   /* 🔐 Vérification auth + adresses */
@@ -29,37 +30,6 @@ export default function MonCompte() {
       .catch(console.error);
   }, [navigate]);
 
-useEffect(() => {
-  const fetchFavorites = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setFavorites([]);
-        return;
-      }
-
-      const res = await fetch(
-        "http://localhost:5001/api/users/favorites",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) throw new Error();
-
-      const data = await res.json();
-      setFavorites(data);
-    } catch (err) {
-      console.error("Erreur chargement favoris :", err);
-    }
-  };
-
-  fetchFavorites();
-}, []);
-
-
   /* 📦 Commandes */
   useEffect(() => {
     if (!user?._id) return;
@@ -76,9 +46,7 @@ useEffect(() => {
   /* 🚀 REDIRECTION ADMIN / VENDEUR */
   useEffect(() => {
     if (user && (user.role === "admin" || user.role === "vendeur")) {
-   //   navigate("/AdminDashboard");
-   navigate("/admin/AdminDashboard");
-
+      navigate("/admin/AdminDashboard");
     }
   }, [user, navigate]);
 
@@ -86,31 +54,10 @@ useEffect(() => {
     return <h2>Chargement du compte...</h2>;
   }
 
-  /* 🛒 */
-  const moveToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existing = cart.find(i => i.variantId === product.variantId);
-
-    if (existing) existing.quantity += 1;
-    else cart.push({ ...product, quantity: 1 });
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    const updated = favorites.filter(f => f.variantId !== product.variantId);
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  };
-
-  const removeFavorite = (variantId) => {
-    const updated = favorites.filter(f => f.variantId !== variantId);
-    setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  };
-
   return (
     <section className="moncompte">
       <h1>Mon Compte</h1>
-     <h2>Bienvenue, {user.prenom} {user.nom}</h2>
+      <h2>Bienvenue, {user.prenom} {user.nom}</h2>
 
       <div className="moncompte__layout">
         <aside className="moncompte__sidebar">
@@ -155,25 +102,34 @@ useEffect(() => {
           )}
 
           {activeTab === "favorites" && (
-            favorites.map(prod => (
-              <div key={prod.variantId}>
-                <img src={`http://localhost:5001${prod.imageUrl}`} alt={prod.nom} />
-                <p>{prod.nom} – {prod.prix} €</p>
+            favorites.length === 0 ? (
+              <p>Aucun favori</p>
+            ) : (
+              favorites.map(prod => (
+                <div key={prod._id} className="favorite-item">
+                  <Link to={`/product/${prod._id}`}>
+                    <img
+                      src={`http://localhost:5001${prod.imageUrl}`}
+                      alt={prod.nom}
+                    />
+                  </Link>
 
-                <Trash2 onClick={() => removeFavorite(prod.variantId)} />
-                <Heart className="active" />
+                  <p>{prod.nom}</p>
 
-                <button onClick={() => moveToCart(prod)}>
-                  Ajouter au panier
-                </button>
-              </div>
-            ))
+                  <div className="favorite-actions">
+                    <Trash2 onClick={() => toggleFavorite(prod)} />
+                    <Heart className="active" />
+                  </div>
+                </div>
+              ))
+            )
           )}
         </main>
       </div>
     </section>
   );
 }
+
 
 
  

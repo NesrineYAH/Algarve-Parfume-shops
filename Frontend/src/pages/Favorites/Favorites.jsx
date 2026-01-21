@@ -7,15 +7,20 @@ import { FavoritesContext } from "../../context/FavoritesContext";
 export default function Favorites() {
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
 
+  // 🔒 Sécurisation
+  const safeFavorites = Array.isArray(favorites) ? favorites : [];
+
+
+  
   return (
     <div className="favorites">
       <h2>❤️ Mes Favoris</h2>
 
-      {favorites.length === 0 ? (
+      {safeFavorites.length === 0 ? (
         <p>Vous n’avez aucun produit dans vos favoris.</p>
       ) : (
         <div className="favorites__grid">
-          {favorites.map((product) => (
+          {safeFavorites.map((product) => (
             <div key={product._id} className="favorites__card">
               <Link to={`/product/${product._id}`}>
                 {product.imageUrl ? (
@@ -57,4 +62,5 @@ export default function Favorites() {
     </div>
   );
 }
+
 

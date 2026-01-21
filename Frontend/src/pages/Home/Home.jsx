@@ -8,7 +8,6 @@ import { getProductsByGenre, getAllProducts } from "../../Services/productServic
 import { FavoritesContext } from "../../context/FavoritesContext";
 
 
-
 const Home = () => {
 const { favorites, toggleFavorite } = useContext(FavoritesContext);
   const [products, setProducts] = useState([]);
@@ -59,39 +58,7 @@ useEffect(() => {
     );
     setFiltered(results);
   };
-/*
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("http://localhost:5001/api/products");
-      const data = await res.json();
-      const prod = Array.isArray(data) ? data : data.products;
 
-      setProducts(prod);
-      fetchRatings(prod);
-    
-      const params = new URLSearchParams(location.search);
-      const genre = params.get("genre");
-
-      if (genre) {
-        const filteredByGenre = prod.filter(
-          (p) => p.genre?.toLowerCase() === genre.toLowerCase()
-        );
-        setFiltered(filteredByGenre);
-      } else {
-        setFiltered(prod);
-      }
-    } catch (err) {
-      setError("Impossible de récupérer les produits.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchProducts();
-}, [location.search]);
-*/
-// 🔥 Fonction pour récupérer les commentaires
 const fetchRatings = async (list) => {
     const all = {};
     for (const p of list) {
@@ -109,7 +76,6 @@ const fetchRatings = async (list) => {
     }
     setRatings(all);
   };
-
 
   if (loading) return <p>Chargement des produits...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -162,7 +128,38 @@ const fetchRatings = async (list) => {
 
 export default Home;
 
+/*
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/api/products");
+      const data = await res.json();
+      const prod = Array.isArray(data) ? data : data.products;
 
+      setProducts(prod);
+      fetchRatings(prod);
+    
+      const params = new URLSearchParams(location.search);
+      const genre = params.get("genre");
+
+      if (genre) {
+        const filteredByGenre = prod.filter(
+          (p) => p.genre?.toLowerCase() === genre.toLowerCase()
+        );
+        setFiltered(filteredByGenre);
+      } else {
+        setFiltered(prod);
+      }
+    } catch (err) {
+      setError("Impossible de récupérer les produits.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, [location.search]);
+*/
 
 {/*}  <div className="rating">
   ⭐ {ratings[product._id]?.toFixed(1) || "0"} 
