@@ -5,7 +5,9 @@ const Cart = require("../Model/Cart");
 const Order = require("../Model/Order");
 const { authMiddleware } = require("../middleware/auth");
 const router = express.Router();
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+console.log(process.env.STRIPE_SECRET_KEY)
 
 const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
@@ -58,18 +60,18 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
         product_data: {
           name: item.nom,
           description: `Option ${item.options.size}${item.options.unit}`,
-          images: item.imageUrl
-            ? [`${BACK_URL}${item.imageUrl}`]
-            : [],
+          images: item.imageUrl ? [`${BACK_URL}${item.imageUrl}`] : [],
         },
-        unit_amount: item.options.prix * 100,
+        //      unit_amount: item.options.prix * 100,
+        unit_amount: Math.round(Number(item.options.prix) * 100)
+
       },
       quantity: item.quantite,
     }));
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      customer: customerId,
+      customerId: customerId,
       line_items,
       success_url: `${FRONT_URL}/success`,
       cancel_url: `${FRONT_URL}/orders`,
@@ -108,14 +110,19 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
             ? [`${BACK_URL}${item.imageUrl}`]
             : [],
         },
-        unit_amount: item.options.prix * 100,
+        //  unit_amount: item.options.prix * 100,
+        unit_amount: Math.round(Number(item.options.prix) * 100)
+
       },
       quantity: item.quantite,
     }));
+    console.log("💡 Création session Stripe pour user:", user._id);
+    console.log("💡 customerId:", customerId);
+    console.log("💡 line_items:", JSON.stringify(line_items, null, 2));
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      customer: user.stripeCustomerId,
+      customerId: user.stripeCustomerId,
       line_items,
       success_url: `${FRONT_URL}/success`,
       cancel_url: `${FRONT_URL}/orders`,

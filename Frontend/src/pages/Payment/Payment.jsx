@@ -16,6 +16,7 @@ export default function Payment() {
   const [error, setError] = useState(null);
   const [order, setOrder] = useState(null);
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+const location = useLocation();
 
 useEffect(() => {
   if (!order) return;
@@ -48,6 +49,7 @@ const handleStripePayment = async () => {
     let fetchOptions = {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     };
@@ -78,13 +80,9 @@ const handleStripePayment = async () => {
 
     // 🟢 2️⃣ Appel Stripe
     const response = await fetch(stripeUrl, fetchOptions);
-
-    if (!response.ok) {
-      const text = await response.text();
-      console.error("Stripe backend:", text);
-      throw new Error("Stripe session error");
-    }
-
+    const text = await response.text();
+  console.error("Stripe backend:", text);
+    if (!response.ok) throw new Error("Stripe session error");
     const data = await response.json();
 
     if (!data.url) {
