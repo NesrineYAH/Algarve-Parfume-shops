@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import OrderService from "../../Services/orderService";
@@ -7,53 +7,62 @@ import "./Checkout.scss";
 
 export default function Checkout() {
   const { cartItems, totalPrice } = useContext(CartContext);
+  const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
   // 🔐 Sécurité : pas d’accès au checkout sans panier
   useEffect(() => {
+    if (checked) return;
+
     if (!cartItems || cartItems.length === 0) {
       navigate("/cart");
     }
-  }, [cartItems, navigate]);
+    setChecked(true);
+  }, [cartItems, navigate, checked]);
 
   // 🟢 Création de la pré-commande
   const handleOrder = async () => {
     try {
+      // Préparation des items pour la pré-commande
       const itemsForOrder = cartItems.map((item) => ({
         productId: item.productId,
         variantId: item.variantId,
         nom: item.nom,
         quantite: Number(item.quantite),
         imageUrl: item.imageUrl,
-        options: {
-          size: item.options.size,
-          unit: item.options.unit,
-          prix: Number(item.options.prix),
-        },
+        options: item.options
+          ? {
+              size: item.options.size,
+              unit: item.options.unit,
+              prix: Number(item.options.prix),
+            }
+          : {},
       }));
 
- const orderData = {
-  items: itemsForOrder,
-  totalPrice: Number(totalPrice.toFixed(2)),
-  status: "pending",
-  paymentStatus: "pending",
-  createdAt: new Date(), // ⬅️ ajoute la date et l'heure
-};
+      // Données de la pré-commande
+      const orderData = {
+        items: itemsForOrder,
+        totalPrice: Number(totalPrice.toFixed(2)),
+        status: "pending",          // pré-commande en attente
+        paymentStatus: "pending",   // paiement en attente
+        createdAt: new Date(),
+      };
 
-
+      // ✅ Envoi au serveur pour enregistrer la pré-commande
       const response = await OrderService.createPreOrder(orderData);
 
       if (!response?.order?._id) {
-        throw new Error("Pré-commande non créée");
+        throw new Error("Pré-commande non créée côté serveur");
       }
 
+      // 🔹 Stockage local de l'ID pour continuer le checkout
       localStorage.setItem("preOrderId", response.order._id);
 
-      // ➡️ Étape suivante
+      // ➡️ Étape suivante : livraison
       navigate("/Delivery");
     } catch (error) {
       console.error("❌ Erreur pré-commande :", error);
-      alert("Impossible de continuer la commande");
+      alert("Impossible de continuer la commande. Veuillez réessayer.");
     }
   };
 
@@ -71,12 +80,11 @@ export default function Checkout() {
               alt={item.nom}
               className="itemImg"
             />
-
             <div className="item-info">
               <strong>{item.nom}</strong>
               <div>
-                {item.options.size} {item.options.unit} —{" "}
-                {Number(item.options.prix).toFixed(2)} €
+                {item.options?.size} {item.options?.unit} —{" "}
+                {Number(item.options?.prix || 0).toFixed(2)} €
               </div>
               <div>Quantité : {item.quantite}</div>
             </div>
@@ -91,15 +99,14 @@ export default function Checkout() {
           </button>
 
           <Link to="/cart">
-            <button className="Button secondary">
-              Modifier le panier
-            </button>
+            <button className="Button secondary">Modifier le panier</button>
           </Link>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 

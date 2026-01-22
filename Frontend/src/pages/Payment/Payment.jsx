@@ -46,6 +46,7 @@ const handleStripePayment = async () => {
       location.state?.orderId || localStorage.getItem("preOrderId");
 
     let stripeUrl = "";
+    
     let fetchOptions = {
       method: "POST",
       headers: {
@@ -81,7 +82,7 @@ const handleStripePayment = async () => {
     // 🟢 2️⃣ Appel Stripe
     const response = await fetch(stripeUrl, fetchOptions);
     const text = await response.text();
-  console.error("Stripe backend:", text);
+    console.error("Stripe backend:", text);
     if (!response.ok) throw new Error("Stripe session error");
     const data = await response.json();
 
