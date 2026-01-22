@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/payments", async (req, res) => {
   try {
- const payments = await Payment.find({ user: req.user.userId }).populate("user")
+    const payments = await Payment.find({ user: req.user.userId }).populate("user")
       .sort({ createdAt: -1 });
 
     res.json(payments);

@@ -7,8 +7,10 @@ import { UserContext } from "../../context/UserContext";
 export default function AdminDashboard() {
     const { user } = useContext(UserContext);
 
+ if (!user) { return <p>Chargement...</p>; // ou redirection 
+  }
 
-
+    
   return (
     <section className="admin">
       <aside className="admin__sidebar">
@@ -29,12 +31,7 @@ export default function AdminDashboard() {
   <button className="btn-Add">🔥 Add Promotions</button>
 </Link>
 
-
-
-
-      </aside>
-
-     
+      </aside>     
       <main className="admin__content">
         <Outlet />  {/* Ici les pages enfants vont s’afficher */}
       </main>

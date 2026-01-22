@@ -1,9 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+import {createContext, useContext, useEffect, useMemo,
+useState,
 } from "react";
 import { UserContext } from "./UserContext";
 
@@ -25,7 +21,6 @@ const CartProvider = ({ children }) => {
     });
 
     return Array.from(map.values());
-
   };
 
 
@@ -42,8 +37,47 @@ useEffect(() => {
   const localCart = JSON.parse(localStorage.getItem("cart")) || [];
   setCartItems(localCart);
 }, []);
+useEffect(() => {
+  if (!user?._id) return;
 
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // 🟢 1. envoyer le panier local au backend
+  fetch("http://localhost:5001/api/carts/sync", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ cartItems: localCart }),
+  })
+    .then(() => {
+      // 🟢 2. supprimer le panier local
+      localStorage.removeItem("cart");
+
+      // 🟢 3. charger le panier backend UNIQUEMENT
+      return fetch("http://localhost:5001/api/carts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    })
+    .then(res => res.json())
+    .then(data => {
+      setCartItems(
+        (data.items || []).map(item => ({
+          ...item,
+          variantId: item.variantId.toString(),
+        }))
+      );
+    })
+    .catch(err => {
+      console.error("Sync cart error:", err);
+    });
+}, [user]);
+
+/*
 useEffect(() => {
   if (!user?._id) return;
 
@@ -75,6 +109,8 @@ useEffect(() => {
     })
     .catch(() => setCartItems(localCart));
 }, [user]);
+*/
+
 
   // ➕ Ajouter
   const addToCartContext = async (item) => {
@@ -204,47 +240,45 @@ const removeFromCart = async (variantId) => {
 
 export default CartProvider;
 
+/*
+//22/01/2026
+useEffect(() => {
+  if (!user?._id) return;
 
- /*
-  useEffect(() => {
-    const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-    // 🟡 Non connecté
-    if (!user?._id) {
-      setCartItems(localCart);
-      return;
-    }
+  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setCartItems(localCart);
-      return;
-    }
+  // 🟢 1. envoyer le panier local au backend
+  fetch("http://localhost:5001/api/carts/sync", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ cartItems: localCart }),
+  })
+    .then(() => {
+      // 🟢 2. supprimer le panier local
+      localStorage.removeItem("cart");
 
-    // 🟢 Connecté
-    fetch("http://localhost:5001/api/carts", {
-      headers: { Authorization: `Bearer ${token}` },
+      // 🟢 3. charger le panier backend UNIQUEMENT
+      return fetch("http://localhost:5001/api/carts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     })
-      .then((res) => res.json())
-      .then((data) => {
-        const backendCart = data.items || [];
-        const merged = mergeCarts(localCart, backendCart);
-
-        setCartItems(merged);
-console.log(cartItems);
-
-        // 🔄 Sync backend
-        fetch("http://localhost:5001/api/carts/sync", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ cartItems: merged }),
-        });
-
-        localStorage.removeItem("cart");
-      })
-      .catch(() => setCartItems(localCart));
-  }, [user]);
+    .then(res => res.json())
+    .then(data => {
+      setCartItems(
+        (data.items || []).map(item => ({
+          ...item,
+          variantId: item.variantId.toString(),
+        }))
+      );
+    })
+    .catch(err => {
+      console.error("Sync cart error:", err);
+    });
+}, [user]);
 */

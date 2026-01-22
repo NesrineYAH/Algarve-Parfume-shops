@@ -1,43 +1,59 @@
 //cart.js/controllers
 const Cart = require("../Model/Cart");
+const mongoose = require("mongoose");
 
 exports.addToCart = async (req, res) => {
   try {
-   const userId = req.user.userId;
-    const { variantId, productId, nom, imageUrl, quantite = 1, options } = req.body;
+    const userId = req.user.userId;
+    const {
+      variantId,
+      productId,
+      nom,
+      imageUrl,
+      quantite = 1,
+      options
+    } = req.body;
 
-    if (!variantId || !productId || !options || !options.size || !options.prix) {
+    if (
+      !variantId ||
+      !productId ||
+      !options ||
+      !options.size ||
+      !options.prix
+    ) {
       return res.status(400).json({ message: "Données produit incomplètes" });
     }
+
+    const vid = new mongoose.Types.ObjectId(variantId);
 
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
       cart = new Cart({
         userId,
-        items: [
-          {
-            variantId,
-            productId,
-            nom,
-            imageUrl,
-            quantite,
-            options,
-          },
-        ],
+        items: [{
+          variantId: vid,
+          productId,
+          nom,
+          imageUrl,
+          quantite,
+          options,
+        }],
       });
 
       await cart.save();
       return res.json({ items: cart.items });
     }
 
-    const existingItem = cart.items.find(i => i.variantId === variantId);
+    const existingItem = cart.items.find(
+      i => i.variantId.toString() === vid.toString()
+    );
 
     if (existingItem) {
       existingItem.quantite += quantite;
     } else {
       cart.items.push({
-        variantId,
+        variantId: vid,
         productId,
         nom,
         imageUrl,
@@ -79,13 +95,22 @@ exports.updateQuantity = async (req, res) => {
       return res.status(400).json({ message: "variantId et delta requis" });
     }
 
+    const vid = new mongoose.Types.ObjectId(variantId);
+
     const cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ message: "Panier vide" });
+    if (!cart) {
+      return res.status(404).json({ message: "Panier vide" });
+    }
 
-    const item = cart.items.find(i => i.variantId === variantId);
-    if (!item) return res.status(404).json({ message: "Produit non trouvé" });
+    const item = cart.items.find(
+      i => i.variantId.toString() === vid.toString()
+    );
 
-    item.quantite = Math.max(1, item.quantite + delta);
+    if (!item) {
+      return res.status(404).json({ message: "Produit non trouvé" });
+    }
+
+    item.quantite = Math.max(1, item.quantite + Number(delta));
 
     await cart.save();
     res.json({ items: cart.items });
@@ -96,27 +121,42 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
+/* removeItem avec $pull */
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { variantId } = req.params;
 
-    if (!variantId) {
-      return res.status(400).json({ message: "variantId requis" });
+    if (!mongoose.Types.ObjectId.isValid(variantId)) {
+      return res.status(400).json({ message: "variantId invalide" });
     }
 
+    const vid = new mongoose.Types.ObjectId(variantId);
+
     const cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ message: "Panier vide" });
+    if (!cart) {
+      return res.status(404).json({ message: "Panier vide" });
+    }
 
-    cart.items = cart.items.filter(i => i.variantId !== variantId);
+    const before = cart.items.length;
+
+    cart.items = cart.items.filter(
+      i => i.variantId.toString() !== vid.toString()
+    );
+
+    if (cart.items.length === before) {
+      return res.status(404).json({ message: "Produit non trouvé" });
+    }
+
     await cart.save();
-
     res.json({ items: cart.items });
+
   } catch (err) {
     console.error("❌ removeItem error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
 
 /* 🧹 Vider le panier */
 exports.clearCart = async (req, res) => {
@@ -142,15 +182,20 @@ exports.syncCart = async (req, res) => {
     const userId = req.user.userId;
     const { cartItems } = req.body;
 
+    const sanitizedItems = cartItems.map(item => ({
+      ...item,
+      variantId: new mongoose.Types.ObjectId(item.variantId)
+    }));
+
     await Cart.findOneAndUpdate(
       { userId },
-      { items: cartItems },
-      { upsert: true }
+      { items: sanitizedItems },
+      { upsert: true, new: true }
     );
 
     res.json({ message: "Cart synced successfully" });
   } catch (err) {
-    console.error(err);
+    console.error("❌ syncCart error:", err);
     res.status(500).json({ error: "Sync failed" });
   }
 };

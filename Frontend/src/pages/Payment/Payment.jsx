@@ -100,8 +100,6 @@ const handleStripePayment = async () => {
   }
 };
 
-
-
 useEffect(() => {
   if (paymentMethod !== "paypal") return;
 
@@ -148,8 +146,6 @@ useEffect(() => {
     if (container) container.innerHTML = "";
   };
 }, [paymentMethod, total, navigate]);
-
-
 
   return (
     <div className="payment-container">
@@ -247,17 +243,6 @@ const handleStripePayment = async () => {
   }
 };
 */
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

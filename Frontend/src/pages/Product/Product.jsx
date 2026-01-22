@@ -70,9 +70,9 @@ const addToCart = async () => {
     alert("Veuillez sélectionner une option.");
     return;
   }
-  const variantId = `${product._id}_${selectedOption.size}`;
+
   const item = {
-    variantId, // ⭐ OBLIGATOIRE
+    variantId: selectedOption._id, // ✅ LA SEULE BONNE VALEUR
     productId: product._id,
     nom: product.nom,
     imageUrl: product.imageUrl,
@@ -83,13 +83,15 @@ const addToCart = async () => {
       prix: selectedOption.prix,
     },
   };
-  // 👤 NON CONNECTÉ → localStorage
-if (!user?._id) {
-  addToCartContext(item); 
-  setShowModal(true);
-  return;
-}
-  // 🔐 CONNECTÉ → MongoDB
+
+  // 👤 UTILISATEUR NON CONNECTÉ → localStorage
+  if (!user?._id) {
+    addToCartContext(item);
+    setShowModal(true);
+    return;
+  }
+
+  // 🔐 UTILISATEUR CONNECTÉ → backend
   try {
     await addToCartContext(item);
     setShowModal(true);
@@ -98,6 +100,7 @@ if (!user?._id) {
     alert("Erreur ajout au panier");
   }
 };
+
 
 const reportComment = async (commentId) => {
   try {
