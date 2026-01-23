@@ -80,18 +80,17 @@ const handleStripePayment = async () => {
     }
 
     // 🟢 2️⃣ Appel Stripe
-    const response = await fetch(stripeUrl, fetchOptions);
-    const text = await response.text();
-    console.error("Stripe backend:", text);
-    if (!response.ok) throw new Error("Stripe session error");
-    const data = await response.json();
+const response = await fetch(stripeUrl, fetchOptions);
+if (!response.ok) {
+  const errorText = await response.text();
+  throw new Error(errorText || "Stripe session error");
+}
+const data = await response.json();
+console.log("Stripe backend:", data);
 
-    if (!data.url) {
-      throw new Error("URL Stripe absente");
-    }
+if (!data.url) throw new Error("URL Stripe absente");
 
-    // 🚀 3️⃣ Redirection Stripe Checkout
-    window.location.href = data.url;
+window.location.href = data.url;
 
   } catch (err) {
     console.error("❌ Stripe error:", err);

@@ -71,7 +71,7 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      customerId: customerId,
+      customer: user.stripeCustomerId, // ✅ BON NOM
       line_items,
       success_url: `${FRONT_URL}/success`,
       cancel_url: `${FRONT_URL}/orders`,
@@ -89,56 +89,71 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   }
 });
 // 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
+// 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
 router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   try {
+    // 1️⃣ Récupérer la commande
     const order = await Order.findById(req.params.orderId);
-    if (!order) return res.status(404).json({ message: "Commande introuvable" });
+    if (!order) {
+      return res.status(404).json({ message: "Commande introuvable" });
+    }
 
+    // 2️⃣ Vérifier si la commande est déjà payée
     if (order.paymentStatus === "paid") {
       return res.status(400).json({ message: "Commande déjà payée" });
     }
 
-    const user = await User.findById(order.user);
+    // 3️⃣ Récupérer l'utilisateur associé
+    const user = await User.findById(order.userId);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+    }
 
+    // 4️⃣ Créer le client Stripe si nécessaire
+    if (!user.stripeCustomerId) {
+      const customer = await stripe.customers.create({ email: user.email });
+      user.stripeCustomerId = customer.id;
+      await user.save();
+    }
+
+    // 5️⃣ Préparer les items pour Stripe
     const line_items = order.items.map(item => ({
       price_data: {
         currency: "eur",
         product_data: {
           name: item.nom,
           description: `Option ${item.options.size}${item.options.unit}`,
-          images: item.imageUrl
-            ? [`${BACK_URL}${item.imageUrl}`]
-            : [],
+          images: item.imageUrl ? [`${BACK_URL}${item.imageUrl}`] : [],
         },
-        //  unit_amount: item.options.prix * 100,
-        unit_amount: Math.round(Number(item.options.prix) * 100)
-
+        unit_amount: Math.round(Number(item.options.prix) * 100), // centimes
       },
       quantity: item.quantite,
     }));
-    console.log("💡 Création session Stripe pour user:", user._id);
-    console.log("💡 customerId:", customerId);
-    console.log("💡 line_items:", JSON.stringify(line_items, null, 2));
 
+    // 6️⃣ Créer la session Stripe
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      customerId: user.stripeCustomerId,
+      customer: user.stripeCustomerId,
       line_items,
       success_url: `${FRONT_URL}/success`,
       cancel_url: `${FRONT_URL}/orders`,
       metadata: {
         orderId: order._id.toString(),
-        userId: user._id.toString(),
+        userId: order.userId.toString(),
       },
     });
 
+    // 7️⃣ Retourner l'URL de Stripe au frontend
     res.json({ url: session.url });
 
   } catch (err) {
-    console.error("❌ Stripe order checkout error:", err);
-    res.status(500).json({ message: "Stripe error" });
+    console.error("🔥 STRIPE ERROR:", err);
+    res.status(500).json({ message: "Stripe error", detail: err.message });
   }
 });
+
+
+
 // 🔔 WEBHOOK STRIPE — CONFIRMATION PAIEMENT
 router.post(
   "/webhook",
