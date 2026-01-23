@@ -24,12 +24,28 @@ useEffect(() => {
     navigate("/orders");
   }
 }, [order]);
-
+/*
   const total = cart.reduce(
     (sum, item) =>
       sum + Number(item.options?.prix || 0) * Number(item.quantite || 1),
     0
   );
+*/
+//23/01/26 si location.state.orderId existe, utiliser order.items
+const orderFromState = location.state?.order;
+const total = orderFromState
+  ? orderFromState.items.reduce(
+      (sum, item) =>
+        sum +
+        parseFloat(item.options.prix.toString().replace(",", ".")) *
+          Number(item.quantite || 1),
+      0
+    )
+  : cart.reduce(
+      (sum, item) =>
+        sum + Number(item.options?.prix || 0) * Number(item.quantite || 1),
+      0
+    );
 
 const handleStripePayment = async () => {
   try {
@@ -45,8 +61,7 @@ const handleStripePayment = async () => {
     const orderId =
       location.state?.orderId || localStorage.getItem("preOrderId");
 
-    let stripeUrl = "";
-    
+    let stripeUrl = "";    
     let fetchOptions = {
       method: "POST",
       headers: {
@@ -80,17 +95,15 @@ const handleStripePayment = async () => {
     }
 
     // 🟢 2️⃣ Appel Stripe
-const response = await fetch(stripeUrl, fetchOptions);
-if (!response.ok) {
+   const response = await fetch(stripeUrl, fetchOptions);
+   if (!response.ok) {
   const errorText = await response.text();
   throw new Error(errorText || "Stripe session error");
-}
-const data = await response.json();
-console.log("Stripe backend:", data);
-
-if (!data.url) throw new Error("URL Stripe absente");
-
-window.location.href = data.url;
+  }
+  const data = await response.json();
+  console.log("Stripe backend:", data);
+  if (!data.url) throw new Error("URL Stripe absente");
+ window.location.href = data.url;
 
   } catch (err) {
     console.error("❌ Stripe error:", err);
@@ -175,7 +188,7 @@ useEffect(() => {
       </div>
       <div className="order-summary">
         <h3>Récapitulatif de la commande</h3>
-        <ul>
+        {/* <ul>
           {cart.map((item) => (
             <li key={item.variantId}>
               {item.nom} – {item.options.size} {item.options.unit} ×{" "}
@@ -183,8 +196,20 @@ useEffect(() => {
               {(item.options.prix * item.quantite).toFixed(2)} €
             </li>
           ))}
-        </ul>
-        <strong>Total : {total.toFixed(2)} €</strong>
+        </ul> 
+        <strong>Total : {total.toFixed(2)} €</strong>*/}
+   <ul>
+  {(orderFromState ? orderFromState.items : cart).map((item) => (
+    <li key={item.variantId || item._id}>
+      {item.nom} – {item.options.size} {item.options.unit} ×{" "}
+      {item.quantite} ={" "}
+      {(
+        parseFloat(item.options.prix.toString().replace(",", ".")) *
+        item.quantite
+      ).toFixed(2)} €
+    </li>
+     ))}
+   </ul>
       </div>
 
       {error && <p className="error">{error}</p>}

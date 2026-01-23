@@ -129,6 +129,8 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
       },
       quantity: item.quantite,
     }));
+    console.log("Stripe line_items:", line_items);
+
 
     // 6️⃣ Créer la session Stripe
     const session = await stripe.checkout.sessions.create({

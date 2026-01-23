@@ -61,6 +61,12 @@ router.post("/:orderId/cancel", async (req, res) => {
   res.json({ message: "Commande annulée, panier restauré" });
 });
 
+// GET /api/orders/:orderId
+router.get("/:orderId", authMiddleware, async (req, res) => {
+  const order = await Order.findById(req.params.orderId);
+  res.json(order);
+});
+
 
 module.exports = router;
 
