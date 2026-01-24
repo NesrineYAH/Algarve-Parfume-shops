@@ -155,7 +155,6 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
 });
 
 
-
 // 🔔 WEBHOOK STRIPE — CONFIRMATION PAIEMENT
 router.post(
   "/webhook",
@@ -192,6 +191,7 @@ router.post(
     res.json({ received: true });
   }
 );
+
 
 module.exports = router;
 

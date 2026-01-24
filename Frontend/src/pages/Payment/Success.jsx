@@ -9,19 +9,32 @@ export default function Success() {
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
-    const orderId = location.state?.orderId;
-    const token = localStorage.getItem("token");
-    localStorage.removeItem("cart");
+  const orderId = location.state?.orderId;
+  const token = localStorage.getItem("token");
+  localStorage.removeItem("cart");
 
-    if (!orderId) return;
+  if (!orderId || !token) return;
 
-    fetch(`http://localhost:5001/api/orders/${orderId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((orderData) => setOrder(orderData))
-      .catch((err) => console.error("Erreur récupération commande:", err));
-  }, [location.state]);
+  // 1️⃣ Récupérer la commande
+  fetch(`http://localhost:5001/api/orders/${orderId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => res.json())
+    .then((orderData) => setOrder(orderData))
+    .catch((err) => console.error("Erreur récupération commande:", err));
+
+  // 2️⃣ Mettre à jour le statut de la commande à "paid"
+  fetch(`http://localhost:5001/api/orders/${orderId}/mark-paid`, {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => console.log("Commande mise à jour :", data))
+    .catch((err) => console.error("Erreur mise à jour commande:", err));
+}, [location.state]);
 
   return (
     <div className="success-container">

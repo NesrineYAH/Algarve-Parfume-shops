@@ -4,6 +4,7 @@ const router = express.Router();
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const orderCtrl = require("../controllers/order");
 const Cart = require("../Model/Cart");
+const Order = require("../Model/Order");
 
 // ➤ CRÉER UNE COMMANDE
 router.post("/create", authMiddleware, orderCtrl.createOrder);
@@ -65,6 +66,28 @@ router.post("/:orderId/cancel", async (req, res) => {
 router.get("/:orderId", authMiddleware, async (req, res) => {
   const order = await Order.findById(req.params.orderId);
   res.json(order);
+});
+//routes backend temporaire pour marquer une commande comme payée
+// routes/orders.js 
+router.post("/:orderId/mark-paid", authMiddleware, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
+    if (order.paymentStatus === "paid") {
+      return res.status(400).json({ message: "Commande déjà payée" });
+    }
+
+    order.paymentStatus = "paid";
+    order.status = "paid";
+    order.paidAt = new Date();
+    await order.save();
+
+    res.json({ message: "Commande mise à jour avec succès", order });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
 

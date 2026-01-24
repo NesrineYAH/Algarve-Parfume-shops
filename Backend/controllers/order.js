@@ -247,6 +247,9 @@ exports.deliverOrder = async (req, res) => {
 
 
 
+
+
+
 /*const Order = require("../Model/Order");
 const Product = require("../Model/product");
 const mongoose = require("mongoose");

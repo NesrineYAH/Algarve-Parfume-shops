@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+// Routes
 const userRoutes = require("./routes/users");
 const ProductRoutes = require("./routes/product");
 const categorieRoutes = require("./routes/categories");
@@ -16,31 +17,33 @@ const commentsRoutes = require("./routes/comments");
 const notificationsRoutes = require("./routes/notifications");
 const promotionsRoutes = require("./routes/promotions");
 const avisRoutes = require("./routes/avis");
-const stripeWebhook = require("./routes/stripeWebhook");
 const paymentMethodsRoutes = require("./routes/paymentMethods");
 const paymentsRoute = require("./routes/payments");
 const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
+const stripeWebhook = require("./scripts/stripeWebhook");
 require("./mongoDB/DB");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middlewares
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-
-// ⚠️ WEBHOOK AVANT express.json()
-app.use(
+// ⚠️ STRIPE WEBHOOK (RAW BODY) — DOIT ÊTRE AU DÉBUT
+app.post(
   "/api/stripe/webhook",
   bodyParser.raw({ type: "application/json" }),
   stripeWebhook
 );
-app.use(bodyParser.json());
+
+// ⚡ Middlewares globaux
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ⚡ Static files
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
-// Routes
+
+// 🚀 Routes publiques
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
 app.use("/api/categories", categorieRoutes);
@@ -53,17 +56,18 @@ app.use("/api/products", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
+
+// ⚡ Routes Stripe & paiement
 app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentRoutes);
+
+// ⚡ Routes protégées avec authMiddleware
 app.use("/api", authMiddleware, paymentMethodsRoutes);
-app.use("/api", authMiddleware, paymentsRoute);
 app.use("/api/users/favorites", favoritesRoutes);
 
+// 💡 Page d’accueil
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
 
 module.exports = app;
-
-
-
