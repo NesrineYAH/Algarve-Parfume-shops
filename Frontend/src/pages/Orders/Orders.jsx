@@ -21,7 +21,6 @@ export default function Orders() {
         console.log("Utilisateur non défini ou _id manquant :", user);
         return;
       }
-
       try {
               console.log("user._id:", user._id);
         const data = await OrderService.getUserOrders(user._id);

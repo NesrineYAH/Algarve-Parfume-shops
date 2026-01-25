@@ -30,7 +30,8 @@ router.post(
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       const orderId = session.metadata?.orderId;
-
+     const userId = session.metadata?.userId;
+     
       if (!orderId) {
         console.error("❌ orderId manquant dans metadata");
         return res.status(400).json({ error: "orderId manquant" });

@@ -4,6 +4,7 @@ const Product = require("../Model/product");
 const mongoose = require("mongoose");
 
 // ➤ CRÉER UNE COMMANDE
+
 exports.createOrder = async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -15,6 +16,7 @@ exports.createOrder = async (req, res) => {
         if (!items || items.length === 0) {
             return res.status(400).json({ message: "Aucun article dans la commande" });
         }
+
         const enrichedItems = await Promise.all(
             items.map(async (item) => {
                 const product = await Product.findById(item.productId);
@@ -22,25 +24,19 @@ exports.createOrder = async (req, res) => {
 
                 const optSize = item.options?.size;
                 const optUnit = item.options?.unit || "ml";
-
-                if (!optSize) {
-                    throw new Error(`Options manquantes pour le produit : ${product.nom}`);
-                }
+                if (!optSize) throw new Error(`Options manquantes pour le produit : ${product.nom}`);
 
                 const selectedOption = product.options.find(
                     (opt) =>
                         Number(opt.size) === Number(optSize) &&
                         opt.unit.toLowerCase() === optUnit.toLowerCase()
                 );
+                if (!selectedOption) throw new Error(`Option invalide pour le produit : ${product.nom}`);
 
-                if (!selectedOption) {
-                    throw new Error(
-                        `Option invalide pour le produit : ${product.nom}.`
-                    );
-                }
-
+                const variantId = selectedOption._id; // ObjectId
                 return {
                     productId: product._id,
+                    variantId, // ObjectId
                     nom: product.nom,
                     imageUrl: product.imageUrl,
                     quantite: Number(item.quantite || 1),
@@ -54,23 +50,29 @@ exports.createOrder = async (req, res) => {
         );
 
         const order = new Order({
-            userId: req.user.userId,     // 🟢 cohérent avec authMiddleware
+            userId: req.user.userId,
             items: enrichedItems,
-            totalPrice: Number(totalPrice || 0),
-            status: "pending",
-            paymentStatus: "pending",
+            totalPrice: Number(totalPrice),
+            status: "pending",          // Enum valide
+            paymentStatus: "unpaid",   // Enum valide
             delivery,
-            createdAt: new Date(), // ⬅️ ajoute la date et l'heure
+            createdAt: new Date(),
         });
 
-
         await order.save();
-        return res.status(201).json({ message: "Commande créée avec succès", order });
+
+        return res.status(201).json({
+            message: "Commande créée avec succès",
+            order,
+        });
+
     } catch (error) {
-        console.error("Erreur création commande:", error.message);
+        console.error("❌ Erreur création commande:", error.message);
         return res.status(500).json({ error: error.message });
     }
 };
+
+
 // ➤ METTRE À JOUR UNE COMMANDE
 exports.updateOrder = async (req, res) => {
     try {
@@ -163,14 +165,16 @@ exports.getOrdersByUserId = async (req, res) => {
             return res.status(400).json({ message: "ID utilisateur invalide" });
         }
 
-        const allOrders = await Order.find({ userId });
+        const allOrders = await Order.find({ userId }).sort({ createdAt: -1 });
 
+        // 🔴 Commandes NON payées
         const preOrders = allOrders.filter(
-            (o) => o.status === "pending" && o.paymentStatus === "pending"
+            (o) => o.paymentStatus === "unpaid" //pending
         );
 
+        // 🟢 Commandes PAYÉES
         const orders = allOrders.filter(
-            (o) => o.status === "confirmed" && o.paymentStatus === "paid"
+            (o) => o.paymentStatus === "paid"
         );
 
         return res.json({ preOrders, orders });
@@ -179,6 +183,7 @@ exports.getOrdersByUserId = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 //15/01/2026
 exports.getOrderById = async (req, res) => {
     try {

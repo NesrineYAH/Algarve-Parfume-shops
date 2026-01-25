@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const api = axios.create({
   baseURL: "http://localhost:5001/api",
 });
@@ -18,47 +17,75 @@ const OrderService = {
   // ➤ Créer une pré-commande
   createPreOrder: async (orderData) => {
     try {
-      const response = await api.post("/orders/create", orderData); // ✅ corrigé
-      const preOrderId = response.data.order._id; //03/12
-      localStorage.setItem("preOrderId", preOrderId);
+      const response = await api.post("/orders/create", orderData);
+      const preOrderId = response.data.order?._id;
+      if (preOrderId) {
+        localStorage.setItem("preOrderId", preOrderId);
+      }
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la création de la pré-commande :", error);
+      console.error("❌ Erreur création pré-commande :", error);
       throw error;
     }
   },
 
   // ➤ Mettre à jour une commande
   updateOrder: async (orderId, updateData) => {
-    if (!orderId) throw new Error("orderId invalide !");
+    if (!orderId) throw new Error("orderId invalide");
     try {
       const response = await api.put(`/orders/${orderId}`, updateData);
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la mise à jour de la commande :", error);
+      console.error("❌ Erreur mise à jour commande :", error);
       throw error;
     }
   },
 
   // ➤ Récupérer une commande par ID
   getOrderById: async (orderId) => {
+    if (!orderId) throw new Error("orderId manquant");
     try {
       const response = await api.get(`/orders/${orderId}`);
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la récupération de la commande :", error);
+      console.error("❌ Erreur récupération commande :", error);
       throw error;
     }
   },
 
   // ➤ Finaliser une commande
   finalizeOrder: async (orderId) => {
+    if (!orderId) throw new Error("orderId manquant");
     try {
-      const response = await api.post(`/orders/finalize/${orderId}`); // ✅ corrigé
+      const response = await api.post(`/orders/finalize/${orderId}`);
       localStorage.removeItem("preOrderId");
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la finalisation de la commande :", error);
+      console.error("❌ Erreur finalisation commande :", error);
+      throw error;
+    }
+  },
+
+  // ➤ Marquer une commande comme PAYÉE (Stripe / Success page)
+  markPaid: async (orderId) => {
+    if (!orderId) throw new Error("orderId manquant");
+    try {
+      const response = await api.put(`/orders/${orderId}/mark-paid`);
+      return response.data;
+    } catch (error) {
+      console.error("❌ Erreur markPaid :", error);
+      throw error;
+    }
+  },
+
+  // ➤ Annuler une commande (user)
+  cancelOrder: async (orderId) => {
+    if (!orderId) throw new Error("orderId manquant");
+    try {
+      const response = await api.put(`/orders/${orderId}/cancel`);
+      return response.data;
+    } catch (error) {
+      console.error("❌ Erreur annulation commande :", error);
       throw error;
     }
   },
@@ -69,7 +96,7 @@ const OrderService = {
       const response = await api.get("/orders/all");
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la récupération des commandes :", error);
+      console.error("❌ Erreur récupération commandes :", error);
       throw error;
     }
   },
@@ -80,35 +107,45 @@ const OrderService = {
       const response = await api.get("/orders/my-orders");
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la récupération des commandes utilisateur :", error);
+      console.error("❌ Erreur récupération commandes utilisateur :", error);
       throw error;
     }
   },
 
   // ➤ Supprimer une commande
   deleteOrder: async (orderId) => {
+    if (!orderId) throw new Error("orderId manquant");
     try {
       const response = await api.delete(`/orders/${orderId}`);
       return response.data;
     } catch (error) {
-      console.error("Erreur lors de la suppression de la commande :", error);
+      console.error("❌ Erreur suppression commande :", error);
       throw error;
     }
   },
 
-  // ➤ Récupérer les commandes d’un utilisateur par son ID (admin ou profil)
+  // ➤ Récupérer les commandes d’un utilisateur par ID
   getUserOrders: async (userId) => {
+    if (!userId) throw new Error("userId manquant");
     try {
       const response = await api.get(`/orders/user/${userId}`);
       return response.data; // { preOrders, orders }
     } catch (error) {
-      console.error("Erreur lors de la récupération des commandes d’un utilisateur :", error);
+      console.error("❌ Erreur récupération commandes utilisateur :", error);
       throw error;
     }
   },
 };
 
 export default OrderService;
+
+
+
+
+
+
+
+
 
 
 

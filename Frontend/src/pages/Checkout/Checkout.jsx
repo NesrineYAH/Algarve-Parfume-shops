@@ -50,7 +50,7 @@ export default function Checkout() {
 
       // ✅ Envoi au serveur pour enregistrer la pré-commande
       const response = await OrderService.createPreOrder(orderData);
-
+                                         
       if (!response?.order?._id) {
         throw new Error("Pré-commande non créée côté serveur");
       }
