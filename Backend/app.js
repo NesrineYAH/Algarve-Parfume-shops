@@ -27,7 +27,7 @@ require("./mongoDB/DB");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ⚠️ STRIPE WEBHOOK (RAW BODY) — DOIT ÊTRE AU DÉBUT
+// app.js ⚠️ STRIPE WEBHOOK (RAW BODY) — DOIT ÊTRE AU DÉBUT
 app.post(
   "/api/stripe/webhook",
   bodyParser.raw({ type: "application/json" }),

@@ -5,148 +5,138 @@ const Cart = require("../Model/Cart");
 const Order = require("../Model/Order");
 const { authMiddleware } = require("../middleware/auth");
 const router = express.Router();
-
+require("dotenv").config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-console.log(process.env.STRIPE_SECRET_KEY)
 
 const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
 
-
-// 🅰️ PANIER → COMMANDE (pending) → STRIPE CHECKOUT
+// 🅰️ Checkout depuis le panier
 router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
     if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
-    console.log("req.user.userId =", req.user.userId);
 
-    const cart = await Cart.findOneAndUpdate({ userId: user._id });
-
+    const cart = await Cart.findOne({ userId: user._id });
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ message: "Panier vide" });
     }
 
-    // 🧾 Création de la commande (pending)
-    const totalPrice = cart.items.reduce(
-      (sum, item) => sum + item.options.prix * item.quantite,
-      0
-    );
+    //    const totalPrice = cart.items.reduce((sum, item) => sum + item.options.prix * item.quantite, 0);
+    const totalPrice = cart.items.reduce((sum, item) => {
+      const price =
+        parseFloat(item.options.prix.toString().replace(",", ".")) || 0;
+      return sum + price * item.quantite;
+    }, 0);
+
 
     const order = await Order.create({
-      user: user._id,
+      userId: user._id,
       items: cart.items,
       status: "pending",
       paymentStatus: "unpaid",
       totalPrice,
     });
 
-    // 🧹 Vider le panier immédiatement
     cart.items = [];
     await cart.save();
 
-    // 👤 Customer Stripe
-    let customerId = user.stripeCustomerId;
-    if (!customerId) {
-      const customer = await stripe.customers.create({ email: user.email });
-      customerId = customer.id;
-      user.stripeCustomerId = customerId;
-      await user.save();
-    }
-
-    // 🧾 Stripe line_items depuis la COMMANDE
-    const line_items = order.items.map(item => ({
-      price_data: {
-        currency: "eur",
-        product_data: {
-          name: item.nom,
-          description: `Option ${item.options.size}${item.options.unit}`,
-          images: item.imageUrl ? [`${BACK_URL}${item.imageUrl}`] : [],
-        },
-        //      unit_amount: item.options.prix * 100,
-        unit_amount: Math.round(Number(item.options.prix) * 100)
-
-      },
-      quantity: item.quantite,
-    }));
-
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      customer: user.stripeCustomerId, // ✅ BON NOM
-      line_items,
-      success_url: `${FRONT_URL}/success`,
-      cancel_url: `${FRONT_URL}/orders`,
-      metadata: {
-        orderId: order._id.toString(),
-        userId: user._id.toString(),
-      },
-    });
-
-    res.json({ url: session.url });
-
-  } catch (err) {
-    console.error("❌ Stripe cart checkout error:", err);
-    res.status(500).json({ message: "Stripe error" });
-  }
-});
-// 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
-router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
-  try {
-    // 1️⃣ Récupérer la commande
-    const order = await Order.findById(req.params.orderId);
-    if (!order) {
-      return res.status(404).json({ message: "Commande introuvable" });
-    }
-
-    // 2️⃣ Vérifier si la commande est déjà payée
-    if (order.paymentStatus === "paid") {
-      return res.status(400).json({ message: "Commande déjà payée" });
-    }
-
-    // 3️⃣ Récupérer l'utilisateur associé
-    const user = await User.findById(order.userId);
-    if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
-    }
-
-    // 4️⃣ Créer le client Stripe si nécessaire
+    // Créer le client Stripe si nécessaire
     if (!user.stripeCustomerId) {
       const customer = await stripe.customers.create({ email: user.email });
       user.stripeCustomerId = customer.id;
       await user.save();
     }
 
-    // 5️⃣ Préparer les items pour Stripe
-    const line_items = cartItems.map(item => ({
-      price_data: {
-        currency: "eur",
-        unit_amount: Math.round(parseFloat(item.options.prix.toString().replace(",", ".")) * 100),
-        product_data: {
-          name: item.nom,
-          images: [
-            encodeURI(`http://localhost:5001${item.imageUrl}`)
-          ],
+    // Préparer les items pour Stripe
+    const line_items = order.items.map(item => {
+      const price =
+        parseFloat(item.options.prix.toString().replace(",", ".")) || 0;
+
+      return {
+        price_data: {
+          currency: "eur",
+          unit_amount: Math.round(price * 100),
+          product_data: {
+            name: item.nom,
+            description: `Option ${item.options.size}${item.options.unit}`,
+            images: item.imageUrl
+              ? [encodeURI(`${BACK_URL}${item.imageUrl}`)]
+              : [],
+          },
         },
-      },
-      quantity: item.quantite,
-    }));
-
-    console.log("Stripe line_items:", line_items);
+        quantity: item.quantite,
+      };
+    });
 
 
-    // 6️⃣ Créer la session Stripe
     const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
       mode: "payment",
       customer: user.stripeCustomerId,
       line_items,
-      success_url: `${FRONT_URL}/success`,
+      success_url: `${FRONT_URL}/success?orderId=${order._id}`,
       cancel_url: `${FRONT_URL}/orders`,
-      metadata: {
-        orderId: order._id.toString(),
-        userId: order.userId.toString(),
-      },
+      metadata: { orderId: order._id.toString(), userId: user._id.toString() },
     });
 
-    // 7️⃣ Retourner l'URL de Stripe au frontend
+    res.json({ url: session.url });
+
+  } catch (err) {
+    console.error("❌ Stripe cart checkout error:", err);
+    res.status(500).json({ message: "Stripe error", detail: err.message });
+  }
+});
+
+// 🅱️ Checkout depuis une commande existante
+router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
+    if (order.paymentStatus === "paid") {
+      return res.status(400).json({ message: "Commande déjà payée" });
+    }
+
+    const user = await User.findById(order.userId);
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    if (!user.stripeCustomerId) {
+      const customer = await stripe.customers.create({ email: user.email });
+      user.stripeCustomerId = customer.id;
+      await user.save();
+    }
+    const line_items = order.items.map(item => {
+      const price =
+        parseFloat(item.options.prix.toString().replace(",", ".")) || 0;
+
+      return {
+        price_data: {
+          currency: "eur",
+          unit_amount: Math.round(price * 100),
+          product_data: {
+            name: item.nom,
+            description: `Option ${item.options.size}${item.options.unit}`,
+            images: item.imageUrl
+              ? [encodeURI(`${BACK_URL}${item.imageUrl}`)]
+              : [],
+          },
+        },
+        quantity: item.quantite,
+      };
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      customer: user.stripeCustomerId,
+      line_items,
+      success_url: `${FRONT_URL}/success?orderId=${order._id}`,
+      cancel_url: `${FRONT_URL}/orders`,
+      metadata: { orderId: order._id.toString(), userId: user._id.toString() },
+    });
+    ;
+
     res.json({ url: session.url });
 
   } catch (err) {
@@ -155,8 +145,7 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   }
 });
 
-
-// 🔔 WEBHOOK STRIPE — CONFIRMATION PAIEMENT
+// Webhook Stripe pour confirmer le paiement
 router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
@@ -165,11 +154,7 @@ router.post(
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(
-        req.body,
-        sig,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
+      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
     } catch (err) {
       console.error("❌ Webhook signature invalide", err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -179,22 +164,49 @@ router.post(
       const session = event.data.object;
       const orderId = session.metadata.orderId;
 
-      console.log("✅ Paiement confirmé pour order:", orderId);
-
       await Order.findByIdAndUpdate(orderId, {
         status: "paid",
         paymentStatus: "paid",
         paidAt: new Date(),
         stripeSessionId: session.id,
       });
+
+      console.log("✅ Paiement confirmé pour order:", orderId);
     }
 
     res.json({ received: true });
   }
 );
+// Webhook Stripe pour confirmer le paiement
+router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
+  const { sessionId } = req.body;
+
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  if (session.payment_status !== "paid") {
+    return res.status(400).json({ message: "Paiement non confirmé" });
+  }
+
+  const orderId = session.metadata.orderId;
+
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    {
+      paymentStatus: "paid",
+      status: "paid",
+      paidAt: new Date(),
+      stripeSessionId: session.id,
+    },
+    { new: true }
+  );
+
+  res.json({ order });
+});
 
 
 module.exports = router;
+
+
 
 
 

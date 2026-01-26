@@ -300,7 +300,6 @@ exports.cancelOrder = async (req, res) => {
             return res.status(500).json({ message: "Erreur serveur" });
         }
     };
-
 };
 // ➤ MARQUER UNE COMMANDE COMME PAYÉE (Stripe / Success page)
 exports.markOrderAsPaid = async (req, res) => {

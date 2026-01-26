@@ -16,12 +16,40 @@ export default function Payment() {
   const location = useLocation();
 
   // Vérifier si la commande est déjà payée
-  useEffect(() => {
-    if (!order) return;
-    if (order.paymentStatus === "paid") {
-      navigate("/orders");
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  const params = new URLSearchParams(location.search);
+  const sessionId = params.get("session_id");
+
+  if (!sessionId || !token) return;
+
+  const confirmPayment = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:5001/api/orders/confirm-payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ sessionId }),
+        }
+      );
+
+      if (!res.ok) throw new Error("Confirmation paiement échouée");
+
+      const data = await res.json();
+      setOrder(data.order);
+    } catch (err) {
+      console.error("❌ Erreur confirmation paiement:", err);
     }
-  }, [order, navigate]);
+  };
+
+  confirmPayment();
+}, [location.search]);
+
+
 
   const orderFromState = location.state?.order;
 
@@ -53,14 +81,13 @@ export default function Payment() {
         stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
         itemsToPay = orderFromState ? orderFromState.items : cartItems;
       } else {
-        // Paiement depuis le panier
+
         stripeUrl = `http://localhost:5001/api/stripe/checkout-from-cart`;
         itemsToPay = cartItems;
         if (!itemsToPay || itemsToPay.length === 0)
           throw new Error("Panier vide");
       }
 
-      // Préparer la requête
       const fetchOptions = {
         method: "POST",
         headers: {
@@ -70,7 +97,7 @@ export default function Payment() {
         body: JSON.stringify({ items: itemsToPay }),
       };
 
-      // Appel Stripe
+
       const response = await fetch(stripeUrl, fetchOptions);
       if (!response.ok) {
         const errorText = await response.text();
@@ -79,7 +106,6 @@ export default function Payment() {
       const data = await response.json();
       if (!data.url) throw new Error("URL Stripe absente");
 
-      // Redirection vers Stripe
       window.location.href = data.url;
     } catch (err) {
       console.error("❌ Stripe error:", err);
@@ -89,7 +115,6 @@ export default function Payment() {
     }
   };
 
-  // PayPal
   useEffect(() => {
     if (paymentMethod !== "paypal") return;
 
@@ -199,71 +224,3 @@ export default function Payment() {
   );
 }
 
-
-/*
-const handleStripePayment = async () => {
-  try {
-    setLoading(true);
-    setError(null);
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié");
-    }
-
-    // 🔥 1️⃣ On récupère l'orderId si on vient d'une commande existante
-    const orderId =
-      location.state?.orderId || localStorage.getItem("preOrderId");
-
-    let stripeUrl = "";
-    let fetchOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    // 🟢 2️⃣ CAS PRIORITAIRE : Paiement d'une commande existante
-    if (orderId) {
-      stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
-    } 
-    else {
-      // 🟡 3️⃣ CAS SECONDAIRE : Paiement depuis le panier (checkout normal)
-      const cartResponse = await fetch("http://localhost:5001/api/carts", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!cartResponse.ok) {
-        throw new Error("Erreur récupération panier");
-      }
-
-      const cartData = await cartResponse.json();
-      if (!cartData.items || cartData.items.length === 0) {
-        throw new Error("Panier vide");
-      }
-
-      stripeUrl = "http://localhost:5001/api/stripe/checkout-from-cart";
-    }
-
-    // 🟣 4️⃣ Appel Stripe
-    const response = await fetch(stripeUrl, fetchOptions);
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || "Stripe session error");
-    }
-
-    const data = await response.json();
-    if (!data.url) throw new Error("URL Stripe absente");
-
-    window.location.href = data.url;
-
-  } catch (err) {
-    console.error("❌ Stripe error:", err);
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
-
-*/
