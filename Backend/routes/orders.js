@@ -36,9 +36,9 @@ router.post("/:orderId/deliver", authMiddleware, orderCtrl.deliverOrder);
 
 // ➤ ANNULER UNE COMMANDE (CLIENT)
 router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
-
+                                                          
 // ➤ MARQUER UNE COMMANDE COMME PAYÉE
-router.post("/:orderId/mark-paid", authMiddleware, orderCtrl.markOrderAsPaid);
+// router.post("/:orderId/mark-paid", authMiddleware, orderCtrl.markOrderAsPaid);
 
 module.exports = router;
 

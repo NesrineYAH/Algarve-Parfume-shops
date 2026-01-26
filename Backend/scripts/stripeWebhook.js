@@ -86,14 +86,19 @@ router.post(
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      const orderId = session.metadata?.orderId;
-      const userId = session.metadata?.userId;
-
-      if (!orderId) {
-        console.error("❌ orderId manquant dans metadata");
-        return res.status(400).json({ error: "orderId manquant" });
-      }
-
+      const orderId = session.metadata.orderId; 
+      await Order.findByIdAndUpdate(orderId, { 
+        status: "paid", 
+        paymentStatus: "paid", 
+        paidAt: new Date(), 
+        stripeSessionId: session.id, 
+      });
+      /*
+            if (!orderId) {
+              console.error("❌ orderId manquant dans metadata");
+              return res.status(400).json({ error: "orderId manquant" });
+            }
+      */
       console.log("✅ Paiement confirmé pour order:", orderId);
 
       try {

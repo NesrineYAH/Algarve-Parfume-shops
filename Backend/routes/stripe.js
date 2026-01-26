@@ -131,7 +131,8 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
       mode: "payment",
       customer: user.stripeCustomerId,
       line_items,
-      success_url: `${FRONT_URL}/success?orderId=${order._id}`,
+      //      success_url: `${FRONT_URL}/success?orderId=${order._id}`,
+      success_url: `${FRONT_URL}/success?session_id={CHECKOUT_SESSION_ID}&orderId=${order._id}`,
       cancel_url: `${FRONT_URL}/orders`,
       metadata: { orderId: order._id.toString(), userId: user._id.toString() },
     });

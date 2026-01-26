@@ -75,8 +75,12 @@ exports.createOrder = async (req, res) => {
 // ➤ METTRE À JOUR UNE COMMANDE
 exports.updateOrder = async (req, res) => {
     try {
+        const order = await Order.findById(req.params.id);
+        if (!order) return res.status(404).json({ message: "Commande introuvable" });
+        if (order.userId.toString() !== req.user.userId && req.user.role !== "admin") {
+            return res.status(403).json({ message: "Accès interdit" });
+        }
         const updateData = req.body;
-
         const updatedOrder = await Order.findByIdAndUpdate(
             req.params.id,
             updateData,
@@ -100,14 +104,11 @@ exports.updateOrder = async (req, res) => {
 // ➤ FINALISER UNE COMMANDE
 exports.finalizeOrder = async (req, res) => {
     try {
-        //   const order = await Order.findById(req.params.id);
         const order = await Order.findById(req.params.orderId);
-        if (!order) return res.status(404).json({ message: "Commande introuvable" });
-
+        //    if (!order) return res.status(404).json({ message: "Commande introuvable" });
         order.status = "confirmed";
         order.paymentStatus = "paid";
         order.paidAt = new Date();
-
         await order.save();
 
         return res.status(200).json({ message: "Commande finalisée", order });
@@ -117,6 +118,7 @@ exports.finalizeOrder = async (req, res) => {
     }
 };
 // ➤ RÉCUPÉRER LES COMMANDES DE L’UTILISATEUR CONNECTÉ
+
 exports.getMyOrders = async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -126,30 +128,58 @@ exports.getMyOrders = async (req, res) => {
         const allOrders = await Order.find({ userId: req.user.userId })
             .sort({ createdAt: -1 });
 
-        // 🔴 Commandes NON payées
+        // 🔴 Pré-commandes (non payées)
         const preOrders = allOrders.filter(
             o => o.status === "pending" && o.paymentStatus === "unpaid"
         );
 
-        // 🟢 Commandes PAYÉES
+        // 🟢 Commandes payées et confirmées
         const orders = allOrders.filter(
             o => o.status === "confirmed" && o.paymentStatus === "paid"
         );
 
-        return res.status(200).json({ preOrders, orders });
+        // ⚫ Commandes annulées
+        const cancelledOrders = allOrders.filter(
+            o => o.status === "cancelled"
+        );
+
+        return res.status(200).json({ preOrders, orders, cancelledOrders });
+
     } catch (error) {
-        console.error(error);
+        console.error("Erreur récupération commandes:", error);
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
+
 // ➤ SUPPRIMER UNE COMMANDE
 exports.deleteOrder = async (req, res) => {
     try {
-        const deletedOrder = await Order.findByIdAndDelete(req.params.orderId);
-
-        if (!deletedOrder) {
+        const order = await Order.findById(req.params.orderId);
+        if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
+
+        // Vérification des rôles
+        const isOwner = order.userId.toString() === req.user.userId;
+        const isAdmin = req.user.role === "admin";
+        const isSeller = req.user.role === "vendeur";
+
+        // Client → doit être propriétaire
+        if (req.user.role === "client" && !isOwner) {
+            return res.status(403).json({ message: "Accès interdit" });
+        }
+
+        // Vendeur → peut supprimer seulement si tu le décides
+        if (isSeller && !isAdmin) {
+            // Ici tu peux ajouter une logique : vérifier si le vendeur est lié au produit
+            // Exemple :
+            // const product = await Product.findById(order.items[0].productId);
+            // if (product.sellerId.toString() !== req.user.userId) return res.status(403).json({ message: "Accès interdit" });
+        }
+
+        // Admin → accès total
+        await order.deleteOne();
 
         return res.status(200).json({ message: "Commande supprimée" });
     } catch (error) {
@@ -169,6 +199,8 @@ exports.getAllOrders = async (req, res) => {
     }
 };
 // ➤ RÉCUPÉRER LES COMMANDES PAR USER ID
+
+// ➤ RÉCUPÉRER LES COMMANDES PAR USER ID (ADMIN OU VENDEUR)
 exports.getOrdersByUserId = async (req, res) => {
     try {
         const { userId } = req.params;
@@ -179,22 +211,29 @@ exports.getOrdersByUserId = async (req, res) => {
 
         const allOrders = await Order.find({ userId }).sort({ createdAt: -1 });
 
-        // 🔴 Commandes NON payées
+        // 🔴 Pré-commandes
         const preOrders = allOrders.filter(
-            (o) => o.paymentStatus === "unpaid" //pending
+            o => o.status === "pending" && o.paymentStatus === "unpaid"
         );
 
-        // 🟢 Commandes PAYÉES
+        // 🟢 Commandes payées
         const orders = allOrders.filter(
-            (o) => o.paymentStatus === "paid"
+            o => o.status === "confirmed" && o.paymentStatus === "paid"
         );
 
-        return res.json({ preOrders, orders });
+        // ⚫ Commandes annulées
+        const cancelledOrders = allOrders.filter(
+            o => o.status === "cancelled"
+        );
+
+        return res.status(200).json({ preOrders, orders, cancelledOrders });
+
     } catch (error) {
         console.error("Erreur récupération commandes:", error);
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 //15/01/2026
 exports.getOrderById = async (req, res) => {
     try {
@@ -260,48 +299,44 @@ exports.deliverOrder = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 // ➤ ANNULER UNE COMMANDE (CLIENT)
 exports.cancelOrder = async (req, res) => {
-    // ➤ ANNULER UNE COMMANDE (CLIENT)
-    exports.cancelOrder = async (req, res) => {
-        try {
+    try {
+        const { orderId } = req.params;
+        const order = await Order.findById(orderId);
+        if (!order) return res.status(404).json({ message: "Commande introuvable" });
 
-            const { orderId } = req.params;
-            const order = await Order.findById(orderId);
-            if (!order) return res.status(404).json({ message: "Commande introuvable" });
-
-            // Vérifier que l'utilisateur est propriétaire
-            if (order.userId.toString() !== req.user.userId) {
-                return res.status(403).json({ message: "Accès interdit" });
-            }
-
-            // Vérifier que la commande est annulable
-            if (order.status !== "pending") {
-                return res.status(400).json({ message: "Commande non annulable" });
-            }
-
-            // Remettre les articles dans le panier
-            let cart = await Cart.findOne({ userId: req.user.userId });
-            if (!cart) cart = new Cart({ userId: req.user.userId, items: [] });
-
-            order.items.forEach(item => {
-                cart.items.push(item);
-            });
-
-            await cart.save();
-
-            // Annuler la commande
-            order.status = "cancelled";
-            await order.save();
-
-            return res.json({ message: "Commande annulée et panier restauré", order });
-        } catch (err) {
-            console.error("Erreur annulation commande :", err);
-            return res.status(500).json({ message: "Erreur serveur" });
+        // Vérifier que l'utilisateur est propriétaire
+        if (order.userId.toString() !== req.user.userId) {
+            return res.status(403).json({ message: "Accès interdit" });
         }
-    };
+
+        // Vérifier que la commande n'est pas déjà expédiée
+        const nonCancellableDelivery = ["shipped", "in_transit", "out_for_delivery", "delivered"];
+        if (nonCancellableDelivery.includes(order.delivery)) {
+            return res.status(400).json({ message: "Commande non annulable" });
+        }
+
+        // Restaurer les articles dans le panier
+        let cart = await Cart.findOne({ userId: req.user.userId });
+        if (!cart) cart = new Cart({ userId: req.user.userId, items: [] });
+
+        order.items.forEach(item => cart.items.push(item));
+        await cart.save();
+
+        // Annuler la commande
+        order.status = "cancelled";
+        await order.save();
+
+        return res.json({ message: "Commande annulée et panier restauré", order });
+    } catch (err) {
+        console.error("Erreur annulation commande :", err);
+        return res.status(500).json({ message: "Erreur serveur" });
+    }
 };
-// ➤ MARQUER UNE COMMANDE COMME PAYÉE (Stripe / Success page)
+
+/*
 exports.markOrderAsPaid = async (req, res) => {
     try {
         const { orderId } = req.params;
@@ -330,10 +365,7 @@ exports.markOrderAsPaid = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
-
-
-
+*/
 
 /*const Order = require("../Model/Order");
 const Product = require("../Model/product");

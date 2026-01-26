@@ -94,6 +94,17 @@
         font-weight: 600;
     }
 
+    .order-card.cancelled {
+        opacity: 0.6;
+        border-left: 4px solid red;
+    }
+
+    .cancelled-label {
+        color: red;
+        font-weight: bold;
+    }
+
+
 }
 
 

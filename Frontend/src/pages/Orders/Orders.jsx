@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 
 export default function Orders() {
   const { user } = useContext(UserContext);
+
   const [preOrders, setPreOrders] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [cancelledOrders, setCancelledOrders] = useState([]);
 
   useEffect(() => {
     if (!user?._id) return;
@@ -16,8 +18,10 @@ export default function Orders() {
     const fetchOrders = async () => {
       try {
         const data = await OrderService.getUserOrders(user._id);
+
         setPreOrders(data.preOrders || []);
         setOrders(data.orders || []);
+        setCancelledOrders(data.cancelledOrders || []);
       } catch (err) {
         console.error("Erreur récupération commandes :", err);
       }
@@ -26,92 +30,57 @@ export default function Orders() {
     fetchOrders();
   }, [user]);
 
-  const getImageUrl = (imageUrl) =>
-    imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";
-
-  const handleDelete = async (orderId) => {
-    await OrderService.deleteOrder(orderId);
-    setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
-    setOrders((prev) => prev.filter((o) => o._id !== orderId));
+  const getImageUrl = (url) => {
+    if (!url) return "/uploads/default.jpg";
+    if (url.startsWith("http")) return url;
+    return `http://localhost:5001${url}`;
   };
 
   const handleCancel = async (orderId) => {
-    await OrderService.cancelOrder(orderId);
-    setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+    try {
+      await OrderService.cancelOrder(orderId);
+
+      // Retirer la commande des listes actives
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+
+      // Ajouter dans les annulées
+      setCancelledOrders((prev) => [
+        ...prev,
+        { _id: orderId, status: "cancelled" }
+      ]);
+
+    } catch (err) {
+      console.error("Erreur lors de l'annulation :", err);
+    }
   };
 
-return (
-  <div className="orders-container">
-    {user && (
-      <h1>Bonjour {user.prenom}</h1>
-    )}
+  const handleDelete = async (orderId) => {
+    try {
+      await OrderService.deleteOrder(orderId);
 
-    <h2>Mes Commandes</h2>
-    {/* SI pré-commandes → afficher uniquement les pré-commandes */}
-    {preOrders.length > 0 ? (
-      <>
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setCancelledOrders((prev) => prev.filter((o) => o._id !== orderId));
+    } catch (err) {
+      console.error("Erreur suppression commande :", err);
+    }
+  };
 
-        {preOrders.map((order) => (
-          <div className="order-card" key={order._id}>
-            <h3>Commande n°{order._id}</h3>
-            <p>Paiement : {order.paymentStatus}</p>
-            <p>Prix Total : {order.totalPrice} €</p>
-         <p>
-  Date de création :{" "}
-  {new Date(order.createdAt).toLocaleString("fr-FR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  })}
-</p>
+  return (
+    <div className="orders-container">
+      {user && <h1>Bonjour {user.prenom}</h1>}
 
+      {/* SECTION PRÉ-COMMANDES */}
+      {preOrders.length > 0 && (
+        <>
+          <h2>Pré-commandes</h2>
 
-            <div className="order-items">
-              {order.items.map((item, idx) => (
-                <div className="order-item" key={idx}>
-                  <img
-                    className="item-image"
-                    src={getImageUrl(item.imageUrl)}
-                    alt={item.nom}
-                  />
-                  <div className="item-details">
-                    <h3>{item.nom}</h3>
-                    <p>Taille : {item.options?.size} {item.options?.unit}</p>
-                    <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
-                    <p>Quantité : {item.quantite}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="order_AllButtons">
-              <button onClick={() => handleDelete(order._id)} className="Button">
-                Supprimer
-              </button>
-                <Link to={`/payment/${order._id}`}>
-                  <button className="Button">Payer</button>
-                </Link>
-           <button className="Button" onClick={() => handleCancel(order._id)}>
-                  Annuler
-                </button>
-            </div>
-          </div>
-        ))}
-      </>
-    ) : (
-      <>
-        {/* SINON → afficher les commandes confirmées */}
-        <h2>Commandes Confirmées</h2>
-        {orders.length === 0 ? (
-          <p>Aucune commande confirmée.</p>
-        ) : (
-          orders.map((order) => (
+          {preOrders.map((order) => (
             <div className="order-card" key={order._id}>
-              <h2>Commande n°{order._id}</h2>
-              <h4>Paiement : {order.paymentStatus}</h4>
-              <h4>Prix Total : {order.totalPrice} €</h4>
+              <h3>Commande n°{order._id}</h3>
+              <p>Paiement : {order.paymentStatus}</p>
+              <p>Prix Total : {order.totalPrice} €</p>
 
               <div className="order-items">
                 {order.items.map((item, idx) => (
@@ -133,24 +102,97 @@ return (
 
               <div className="order_AllButtons">
                 <button onClick={() => handleDelete(order._id)} className="Button">
-                  Supprimer la commande
+                  Supprimer
                 </button>
-                <Link to={`/payment/${order._id}`}>
-                  <button className="Button">Passer au paiement</button>
+
+                <Link to={`/payment/${order._id}`} state={{ order }}>
+                  <button className="Button">Payer</button>
                 </Link>
-                <Link><button className="Button">Suivre ma commande</button></Link>
-                <Link><button className="Button">Confirmer la réception</button></Link>
-                <Link><button className="Button">Suivez votre Commande</button></Link>
+
+                <button className="Button" onClick={() => handleCancel(order._id)}>
+                  Annuler
+                </button>
               </div>
             </div>
-          ))
-        )}
-      </>
-    )}
-  </div>
-);
+          ))}
+        </>
+      )}
 
+      {/* SECTION COMMANDES PAYÉES */}
+      {orders.length > 0 && (
+        <>
+          <h2>Commandes Confirmées</h2>
+
+          {orders.map((order) => (
+            <div className="order-card" key={order._id}>
+              <h3>Commande n°{order._id}</h3>
+              <p>Paiement : {order.paymentStatus}</p>
+              <p>Prix Total : {order.totalPrice} €</p>
+
+              <div className="order-items">
+                {order.items.map((item, idx) => (
+                  <div className="order-item" key={idx}>
+                    <img
+                      className="item-image"
+                      src={getImageUrl(item.imageUrl)}
+                      alt={item.nom}
+                    />
+                    <div className="item-details">
+                      <h3>{item.nom}</h3>
+                      <p>Taille : {item.options?.size} {item.options?.unit}</p>
+                      <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
+                      <p>Quantité : {item.quantite}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="order_AllButtons">
+                <button onClick={() => handleDelete(order._id)} className="Button">
+                  Supprimer
+                </button>
+
+                <Link to={`/tracking/${order._id}`}>
+                  <button className="Button">Suivre ma commande</button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+
+      {/* SECTION COMMANDES ANNULÉES */}
+      {cancelledOrders.length > 0 && (
+        <>
+          <h2>Commandes Annulées</h2>
+
+          {cancelledOrders.map((order) => (
+            <div className="order-card cancelled" key={order._id}>
+              <h3>Commande n°{order._id}</h3>
+              <p>Status : Annulée</p>
+
+              <p className="cancelled-label">Cette commande a été annulée</p>
+            </div>
+          ))}
+        </>
+      )}
+
+      {/* SI AUCUNE COMMANDE */}
+      {preOrders.length === 0 && orders.length === 0 && cancelledOrders.length === 0 && (
+        <p>Aucune commande pour le moment.</p>
+      )}
+    </div>
+  );
 }
+
+
+
+
+
+//   const getImageUrl = (imageUrl) =>  imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";
+
+
+
 
 /*
   return (
