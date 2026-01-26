@@ -89,7 +89,6 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   }
 });
 // 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
-// 🅱️ COMMANDE PENDING → STRIPE CHECKOUT
 router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   try {
     // 1️⃣ Récupérer la commande
@@ -117,18 +116,20 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
     }
 
     // 5️⃣ Préparer les items pour Stripe
-    const line_items = order.items.map(item => ({
+    const line_items = cartItems.map(item => ({
       price_data: {
         currency: "eur",
+        unit_amount: Math.round(parseFloat(item.options.prix.toString().replace(",", ".")) * 100),
         product_data: {
           name: item.nom,
-          description: `Option ${item.options.size}${item.options.unit}`,
-          images: item.imageUrl ? [`${BACK_URL}${item.imageUrl}`] : [],
+          images: [
+            encodeURI(`http://localhost:5001${item.imageUrl}`)
+          ],
         },
-        unit_amount: Math.round(Number(item.options.prix) * 100), // centimes
       },
       quantity: item.quantite,
     }));
+
     console.log("Stripe line_items:", line_items);
 
 

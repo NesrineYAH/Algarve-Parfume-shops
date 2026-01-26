@@ -5,160 +5,138 @@ import { CartContext } from "../../context/CartContext";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { loadStripe } from "@stripe/stripe-js";
 
-// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 export default function Payment() {
   const navigate = useNavigate();
   const { cartItems, loading: cartLoading } = useContext(CartContext);
-  const cart = cartItems;
-
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [order, setOrder] = useState(null);
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-const location = useLocation();
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  const location = useLocation();
 
-useEffect(() => {
-  if (!order) return;
-  if (order.paymentStatus === "paid") {
-    navigate("/orders");
-  }
-}, [order]);
-/*
-  const total = cart.reduce(
+  // Vérifier si la commande est déjà payée
+  useEffect(() => {
+    if (!order) return;
+    if (order.paymentStatus === "paid") {
+      navigate("/orders");
+    }
+  }, [order, navigate]);
+
+  const orderFromState = location.state?.order;
+
+  // Calcul du total
+  const total = (orderFromState ? orderFromState.items : cartItems).reduce(
     (sum, item) =>
-      sum + Number(item.options?.prix || 0) * Number(item.quantite || 1),
+      sum +
+      parseFloat(item.options.prix.toString().replace(",", ".")) *
+        Number(item.quantite || 1),
     0
   );
-*/
-//23/01/26 si location.state.orderId existe, utiliser order.items
-const orderFromState = location.state?.order;
-const total = orderFromState
-  ? orderFromState.items.reduce(
-      (sum, item) =>
-        sum +
-        parseFloat(item.options.prix.toString().replace(",", ".")) *
-          Number(item.quantite || 1),
-      0
-    )
-  : cart.reduce(
-      (sum, item) =>
-        sum + Number(item.options?.prix || 0) * Number(item.quantite || 1),
-      0
-    );
 
-const handleStripePayment = async () => {
-  try {
-    setLoading(true);
-    setError(null);
+  const handleStripePayment = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("Utilisateur non authentifié");
-    }
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Utilisateur non authentifié");
 
-    // 🧠 1️⃣ Déterminer la source de paiement
-    const orderId =
-      location.state?.orderId || localStorage.getItem("preOrderId");
+      const orderId =
+        location.state?.orderId || localStorage.getItem("preOrderId");
 
-    let stripeUrl = "";    
-    let fetchOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
+      let stripeUrl = "";
+      let itemsToPay = [];
 
-    // 🅱️ CAS 1 — Paiement depuis une COMMANDE (prioritaire)
-    if (orderId) {
-      stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
-    }
-    else {
-      const cartResponse = await fetch("http://localhost:5001/api/carts", {
+      // 🅱️ Paiement depuis une commande existante
+      if (orderId) {
+        stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
+        itemsToPay = orderFromState ? orderFromState.items : cartItems;
+      } else {
+        // Paiement depuis le panier
+        stripeUrl = `http://localhost:5001/api/stripe/checkout-from-cart`;
+        itemsToPay = cartItems;
+        if (!itemsToPay || itemsToPay.length === 0)
+          throw new Error("Panier vide");
+      }
+
+      // Préparer la requête
+      const fetchOptions = {
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      });
+        body: JSON.stringify({ items: itemsToPay }),
+      };
 
-      if (!cartResponse.ok) {
-        throw new Error("Erreur récupération panier");
+      // Appel Stripe
+      const response = await fetch(stripeUrl, fetchOptions);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Stripe session error");
       }
+      const data = await response.json();
+      if (!data.url) throw new Error("URL Stripe absente");
 
-      const cartData = await cartResponse.json();
-      if (!cartData.items || cartData.items.length === 0) {
-        throw new Error("Panier vide");
-      }
+      // Redirection vers Stripe
+      window.location.href = data.url;
+    } catch (err) {
+      console.error("❌ Stripe error:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      stripeUrl =
-        "http://localhost:5001/api/stripe/checkout-from-cart";
+  // PayPal
+  useEffect(() => {
+    if (paymentMethod !== "paypal") return;
+
+    const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+    if (!paypalClientId) {
+      setError("PayPal client ID manquant");
+      return;
     }
 
-    // 🟢 2️⃣ Appel Stripe
-   const response = await fetch(stripeUrl, fetchOptions);
-   if (!response.ok) {
-  const errorText = await response.text();
-  throw new Error(errorText || "Stripe session error");
-  }
-  const data = await response.json();
-  console.log("Stripe backend:", data);
-  if (!data.url) throw new Error("URL Stripe absente");
- window.location.href = data.url;
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
+    script.async = true;
 
-  } catch (err) {
-    console.error("❌ Stripe error:", err);
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+    script.onload = () => {
+      if (!window.paypal) return;
 
-useEffect(() => {
-  if (paymentMethod !== "paypal") return;
+      window.paypal
+        .Buttons({
+          createOrder: (_, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                { amount: { value: total.toFixed(2) } },
+              ],
+            });
+          },
+          onApprove: async (_, actions) => {
+            await actions.order.capture();
+            navigate("/delivery");
+          },
+          onError: (err) => {
+            console.error("PayPal error:", err);
+            setError("Le paiement PayPal a échoué.");
+          },
+        })
+        .render("#paypal-button-container");
+    };
 
-  const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
+    document.body.appendChild(script);
 
-  if (!paypalClientId) {
-    setError("PayPal client ID manquant");
-    return;
-  }
+    return () => {
+      document.body.removeChild(script);
+      const container = document.getElementById("paypal-button-container");
+      if (container) container.innerHTML = "";
+    };
+  }, [paymentMethod, total, navigate]);
 
-  const script = document.createElement("script");
-  script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=EUR`;
-  script.async = true;
-
-  script.onload = () => {
-    if (!window.paypal) return;
-
-    window.paypal
-      .Buttons({
-        createOrder: (_, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              { amount: { value: total.toFixed(2) } },
-            ],
-          });
-        },
-        onApprove: async (_, actions) => {
-          await actions.order.capture();
-          navigate("/delivery");
-        },
-        onError: (err) => {
-          console.error("PayPal error:", err);
-          setError("Le paiement PayPal a échoué.");
-        },
-      })
-      .render("#paypal-button-container");
-  };
-
-  document.body.appendChild(script);
-
-  return () => {
-    document.body.removeChild(script);
-    const container = document.getElementById("paypal-button-container");
-    if (container) container.innerHTML = "";
-  };
-}, [paymentMethod, total, navigate]);
+  const itemsToDisplay = orderFromState ? orderFromState.items : cartItems;
 
   return (
     <div className="payment-container">
@@ -186,33 +164,26 @@ useEffect(() => {
           PayPal
         </label>
       </div>
+
       <div className="order-summary">
         <h3>Récapitulatif de la commande</h3>
-        {/* <ul>
-          {cart.map((item) => (
-            <li key={item.variantId}>
+        <ul>
+          {itemsToDisplay.map((item) => (
+            <li key={item.variantId || item._id}>
               {item.nom} – {item.options.size} {item.options.unit} ×{" "}
               {item.quantite} ={" "}
-              {(item.options.prix * item.quantite).toFixed(2)} €
+              {(
+                parseFloat(item.options.prix.toString().replace(",", ".")) *
+                item.quantite
+              ).toFixed(2)} €
             </li>
           ))}
-        </ul> 
-        <strong>Total : {total.toFixed(2)} €</strong>*/}
-   <ul>
-  {(orderFromState ? orderFromState.items : cart).map((item) => (
-    <li key={item.variantId || item._id}>
-      {item.nom} – {item.options.size} {item.options.unit} ×{" "}
-      {item.quantite} ={" "}
-      {(
-        parseFloat(item.options.prix.toString().replace(",", ".")) *
-        item.quantite
-      ).toFixed(2)} €
-    </li>
-     ))}
-   </ul>
+        </ul>
+        <strong>Total : {total.toFixed(2)} €</strong>
       </div>
 
       {error && <p className="error">{error}</p>}
+
       {paymentMethod === "paypal" ? (
         <div id="paypal-button-container" />
       ) : (
@@ -229,217 +200,70 @@ useEffect(() => {
 }
 
 
-
 /*
 const handleStripePayment = async () => {
   try {
     setLoading(true);
     setError(null);
 
-    const token = localStorage.getItem("token"); // récupéré du storage ou context
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Utilisateur non authentifié");
+    }
 
-    const response = await fetch(
-      "http://localhost:5001/api/stripe/create-checkout-session", // <-- reste la même
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ cart }),
+    // 🔥 1️⃣ On récupère l'orderId si on vient d'une commande existante
+    const orderId =
+      location.state?.orderId || localStorage.getItem("preOrderId");
+
+    let stripeUrl = "";
+    let fetchOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    // 🟢 2️⃣ CAS PRIORITAIRE : Paiement d'une commande existante
+    if (orderId) {
+      stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
+    } 
+    else {
+      // 🟡 3️⃣ CAS SECONDAIRE : Paiement depuis le panier (checkout normal)
+      const cartResponse = await fetch("http://localhost:5001/api/carts", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!cartResponse.ok) {
+        throw new Error("Erreur récupération panier");
       }
-    );
-    if (!response.ok) {
-      throw new Error(`Erreur serveur (${response.status})`);
-    }
-    const data = await response.json();
-    if (!data.url) {
-      throw new Error("URL Stripe manquante");
+
+      const cartData = await cartResponse.json();
+      if (!cartData.items || cartData.items.length === 0) {
+        throw new Error("Panier vide");
+      }
+
+      stripeUrl = "http://localhost:5001/api/stripe/checkout-from-cart";
     }
 
-    // ✅ Redirection Stripe Checkout
+    // 🟣 4️⃣ Appel Stripe
+    const response = await fetch(stripeUrl, fetchOptions);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Stripe session error");
+    }
+
+    const data = await response.json();
+    if (!data.url) throw new Error("URL Stripe absente");
+
     window.location.href = data.url;
 
   } catch (err) {
-    console.error("❌ Stripe error :", err);
+    console.error("❌ Stripe error:", err);
     setError(err.message);
   } finally {
     setLoading(false);
   }
 };
+
 */
-
-
-/*
-export default function Payment() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { cartItems } = useContext(CartContext);
-  const cart = cartItems || [];
-  const [paymentMethod, setPaymentMethod] = useState("card");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const total = cart.reduce(
-    (sum, item) =>
-      sum + Number(item.options?.prix || 0) * Number(item.quantite || 0),
-    0
-  );
-
-
-     const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLIC_KEY
-);
-
-  useEffect(() => {
-    if (paymentMethod !== "paypal") return;
-
-    const script = document.createElement("script");
-    script.src =
-  "https://www.paypal.com/sdk/js?client-id&currency=EUR"; 
-
-    script.async = true;
-    script.onload = () => {
-      if (window.paypal) {
-        window.paypal
-          .Buttons({
-            createOrder: (data, actions) => {
-              return actions.order.create({
-                purchase_units: [{ amount: { value: total.toFixed(2) } }],
-              });
-            },
-            onApprove: (data, actions) => {
-              return actions.order.capture().then((details) => {
-                alert(
-                  `Paiement PayPal effectué avec succès par ${details.payer.name.given_name}`
-                );
-                navigate("/confirmation"); 
-              });
-            },
-            onError: (err) => {
-              console.error("Erreur PayPal:", err);
-              setError("Le paiement PayPal a échoué.");
-            },
-          })
-          .render("#paypal-button-container");
-      }
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-      const container = document.getElementById("paypal-button-container");
-      if (container) container.innerHTML = "";
-    };
-  }, [paymentMethod, total, navigate]);
-
-  // Stripe : handler
-  const handleStripeCheckout = async () => {
-    if (cart.length === 0) {
-      setError("Le panier est vide, impossible de payer.");
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const stripe = await stripePromise;
-
-        const response = await fetch("http://localhost:5001/api/stripe/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart }),
-      });
-      const session = await response.json();
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-
-      if (result.error) setError(result.error.message);
-    } catch (err) {
-      console.error("Erreur Stripe:", err);
-      setError("Le paiement Stripe a échoué.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCheckout = async () => {
-    const stripe = await stripePromise;
-    const response = await fetch("/create-checkout-session", {
-      method: "POST",
-    });
-    const session = await response.json();
-    const result = await stripe.redirectToCheckout({ sessionId: session.id });
-    if (result.error) alert(result.error.message);
-  };
-  // Bouton de paiement
-  const renderPaymentButton = () => {
-    if (paymentMethod === "paypal") {
-      return <div id="paypal-button-container"></div>;
-    }
-    return (
-      <button
-        onClick={handleStripeCheckout}
-        disabled={loading || cart.length === 0}
-      >
-        {loading ? "Traitement…" : "Payer maintenant"}
-      </button>
-    );
-  };
-
-  return (
-    <div className="payment-container">
-      <CheckoutSteps step={4} />
-      <h2>💳 Choisissez votre mode de paiement</h2>
-
-   <div className="payment-options">
-  <label>
-    <input
-      type="radio"
-      value="card"
-      checked={paymentMethod === "card"}
-      onChange={(e) => setPaymentMethod(e.target.value)}
-    />
-    Carte bancaire (Stripe)
-  </label>
-
-  <label>
-    <input
-      type="radio"
-      value="paypal"
-      checked={paymentMethod === "paypal"}
-      onChange={(e) => setPaymentMethod(e.target.value)}
-    />
-    PayPal
-  </label>
-</div>
-
-      <div className="order-summary">
-        <h3>Récapitulatif de votre commande</h3>
-        {cart.length === 0 ? (
-          <p>Votre panier est vide.</p>
-        ) : (
-          <ul>
-            {cart.map((item) => (
-             <li key={`${item.variantId}-${item.options.size}-${item.options.unit}`}>
-                {item.nom} – {item.options.size} {item.options.unit} ×{" "}
-                {item.quantite} :{" "}
-                {(item.options.prix * item.quantite).toFixed(2)} €
-              </li>
-            ))}
-          </ul>
-        )}
-        <p>
-          <strong>Total : {total.toFixed(2)} €</strong>
-        </p>
-      </div>
-
-      {error && <p className="error">{error}</p>}
-
-      {renderPaymentButton()}
-    </div>
-  );
-}
-*/
-

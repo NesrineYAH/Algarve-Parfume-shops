@@ -1,38 +1,25 @@
+// pages/Orders/Orders.jsx
 import React, { useEffect, useState, useContext } from "react";
 import OrderService from "../../Services/orderService";
 import "./Orders.scss";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
-import { CartContext } from "../../context/CartContext";
 
 export default function Orders() {
-  const [orders, setOrders] = useState([]);
-  const [order, setOrder] = useState([]);
-  const [preOrders, setPreOrders] = useState([]);
   const { user } = useContext(UserContext);
+  const [preOrders, setPreOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-      console.log("User dans Orders.jsx :", user);
-  if (!user) return;
+    if (!user?._id) return;
 
     const fetchOrders = async () => {
-      
-      if (!user || !user._id) {
-        console.log("Utilisateur non défini ou _id manquant :", user);
-        return;
-      }
       try {
-              console.log("user._id:", user._id);
         const data = await OrderService.getUserOrders(user._id);
-        console.log("Data reçue :", data);
-
-        const pre = data.preOrders || [];
-        const confirmed = data.orders || [];
-
-        setPreOrders(pre);
-        setOrders(confirmed);
+        setPreOrders(data.preOrders || []);
+        setOrders(data.orders || []);
       } catch (err) {
-        console.error("Erreur fetch orders :", err);
+        console.error("Erreur récupération commandes :", err);
       }
     };
 
@@ -43,38 +30,15 @@ export default function Orders() {
     imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";
 
   const handleDelete = async (orderId) => {
-    try {
-      await OrderService.deleteOrder(orderId);
-      setOrders((prev) => prev.filter((o) => o._id !== orderId));
-      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
-      alert("Commande supprimée !");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur suppression commande");
-    }
+    await OrderService.deleteOrder(orderId);
+    setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+    setOrders((prev) => prev.filter((o) => o._id !== orderId));
   };
 
-  const handleUpdate = async (orderId) => {
-    try {
-      const updated = await OrderService.updateOrder(orderId, {
-        status: "confirmed",
-        paymentStatus: "paid",
-      });
-
-      const updatedOrder = updated.order;
-
-      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
-      setOrders((prev) => [...prev, updatedOrder]);
-
-      alert("Commande confirmée !");
-    } catch (err) {
-      console.error(err);
-      alert("Erreur lors de la mise à jour");
-    }
+  const handleCancel = async (orderId) => {
+    await OrderService.cancelOrder(orderId);
+    setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
   };
-  const date = new Date(order.createdAt); 
-// const formatted = date.toLocaleString("fr-FR", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", });
-
 
 return (
   <div className="orders-container">
@@ -126,10 +90,12 @@ return (
               <button onClick={() => handleDelete(order._id)} className="Button">
                 Supprimer
               </button>
-              <Link to={`/payment/${order._id}`}>
-                <button className="Button">Confirmer et payer</button>
-              </Link>
-           
+                <Link to={`/payment/${order._id}`}>
+                  <button className="Button">Payer</button>
+                </Link>
+           <button className="Button" onClick={() => handleCancel(order._id)}>
+                  Annuler
+                </button>
             </div>
           </div>
         ))}
