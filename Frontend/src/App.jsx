@@ -91,7 +91,7 @@ function App() {
           <Route path="/securite-produits" element={<SecuriteProduits />} />
           <Route path="/avis-clients" element={<AvisClients />} />
           <Route path="/sitemap" element={<SiteMap />} />
-          <Route path="/paiement-methods" element={<PaymentMethods />} />
+       <Route path="/paymentMethods" element={<PaymentMethods />} />
           <Route path="/confirmation" element={<Confirmation />} />
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />

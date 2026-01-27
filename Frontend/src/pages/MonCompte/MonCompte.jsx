@@ -66,7 +66,7 @@ export default function MonCompte() {
           <button onClick={() => setActiveTab("orders")}>Commandes</button>
           <button onClick={() => setActiveTab("favorites")}>Favoris</button>
 
-          <Link to="/paiement-methods">Moyens de paiement</Link>
+          <Link to="/paymentMethods">Moyens de paiement</Link>
           <button onClick={handleLogout}>Déconnexion</button>
         </aside>
 

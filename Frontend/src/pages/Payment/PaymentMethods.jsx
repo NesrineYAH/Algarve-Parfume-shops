@@ -1,13 +1,14 @@
+// Frontend/src/pages/Payment/PaymentMethods.jsx
 import React, { useEffect, useState } from "react";
 
 const PaymentMethods = () => {
   const [methods, setMethods] = useState([]);
   const [loading, setLoading] = useState(true);
 
-useEffect(() => { 
+useEffect(() => {
   const token = localStorage.getItem("token");
 
-  fetch("http://localhost:5001/api/payments", { // <-- nouvelle route
+  fetch("http://localhost:5001/api/payment-methods", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,6 +23,7 @@ useEffect(() => {
 
 
 
+
   if (loading) return <p>Chargement...</p>;
 
   return (
@@ -30,16 +32,12 @@ useEffect(() => {
 
       {methods.length === 0 && <p>Aucun moyen de paiement enregistré.</p>}
 
-      {methods.map((card) => (
-        <div key={card.id} style={{ border: "1px solid #ddd", padding: "10px", marginBottom: "10px" }}>
-          <p>
-            💳 {card.card.brand.toUpperCase()} •••• {card.card.last4}
-          </p>
-          <p>
-            Expire : {card.card.exp_month}/{card.card.exp_year}
-          </p>
-        </div>
-      ))}
+    {methods.map((card) => (
+  <div key={card.id}>
+    <p>💳 {card.brand.toUpperCase()} •••• {card.last4}</p>
+  </div>
+))}
+
     </div>
   );
 };
