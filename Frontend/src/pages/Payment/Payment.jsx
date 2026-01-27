@@ -70,7 +70,7 @@ useEffect(() => {
 
       const orderId =
         location.state?.orderId || localStorage.getItem("preOrderId");
-
+console.log("🟦 orderId détecté dans Payment.jsx :", orderId);
       let stripeUrl = "";
       let itemsToPay = [];
 
@@ -82,6 +82,7 @@ useEffect(() => {
 
         stripeUrl = `http://localhost:5001/api/stripe/checkout-from-cart`;
         itemsToPay = cartItems;
+        
         if (!itemsToPay || itemsToPay.length === 0)
           throw new Error("Panier vide");
       }

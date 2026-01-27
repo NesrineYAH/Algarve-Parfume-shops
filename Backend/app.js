@@ -10,7 +10,6 @@ const cartRoutes = require("./routes/carts");
 const addressRoutes = require("./routes/addresses");
 const orderRoutes = require("./routes/orders");
 const deliveryRoutes = require("./routes/delivery");
-const paymentRoutes = require("./routes/payments");
 const stripeRoute = require("./routes/stripe");
 const contactRoutes = require("./routes/contacts");
 const commentsRoutes = require("./routes/comments");
@@ -59,7 +58,7 @@ app.use("/api/avis", avisRoutes);
 
 // ⚡ Routes Stripe & paiement
 app.use("/api/stripe", stripeRoute);
-app.use("/api/payment", paymentRoutes);
+app.use("/api/payment", paymentsRoute);
 
 // ⚡ Routes protégées avec authMiddleware
 app.use("/api", authMiddleware, paymentMethodsRoutes);

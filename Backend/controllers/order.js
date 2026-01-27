@@ -151,7 +151,6 @@ exports.getMyOrders = async (req, res) => {
     }
 };
 
-
 // ➤ SUPPRIMER UNE COMMANDE
 exports.deleteOrder = async (req, res) => {
     try {
@@ -198,7 +197,6 @@ exports.getAllOrders = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-// ➤ RÉCUPÉRER LES COMMANDES PAR USER ID
 
 // ➤ RÉCUPÉRER LES COMMANDES PAR USER ID (ADMIN OU VENDEUR)
 exports.getOrdersByUserId = async (req, res) => {
@@ -237,24 +235,26 @@ exports.getOrdersByUserId = async (req, res) => {
 //15/01/2026
 exports.getOrderById = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { orderId } = req.params;
 
-        if (!mongoose.Types.ObjectId.isValid(id)) {
+        if (!mongoose.Types.ObjectId.isValid(orderId)) {
             return res.status(400).json({ message: "ID commande invalide" });
         }
 
-        const order = await Order.findById(id);
+        const order = await Order.findById(orderId);
 
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
 
         return res.status(200).json(order);
+
     } catch (error) {
         console.error("Erreur récupération commande:", error);
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+// ➤ EXPÉDIER UNE COMMANDE (ADMIN)
 exports.shipOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);

@@ -105,7 +105,7 @@ export default function Orders() {
                   Supprimer
                 </button>
 
-                <Link to={`/payment/${order._id}`} state={{ order }}>
+                <Link to={`/payment/${order._id}`} state={{ order, orderId: order._id }}>
                   <button className="Button">Payer</button>
                 </Link>
 

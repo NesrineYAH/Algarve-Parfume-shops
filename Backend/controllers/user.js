@@ -209,8 +209,38 @@ exports.getUserById = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+exports.getUserOrders = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+
+    const preOrders = orders.filter(
+      (o) => o.status !== "paid" && o.status !== "cancelled"
+    );
+
+    const paidOrders = orders.filter(
+      (o) => o.status === "paid"
+    );
+
+    const cancelledOrders = orders.filter(
+      (o) => o.status === "cancelled"
+    );
+
+    res.json({
+      preOrders,
+      orders: paidOrders,
+      cancelledOrders,
+    });
+
+  } catch (err) {
+    console.error("Erreur getUserOrders :", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+};
 
 // ✅ Récupérer les commandes d’un utilisateur par ID
+/*
 exports.getUserOrders = async (req, res) => {
   try {
     const { id } = req.params;
@@ -229,6 +259,10 @@ exports.getUserOrders = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+*/
+
+
+
 
 /*
     const token = jwt.sign(

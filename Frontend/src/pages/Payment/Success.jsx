@@ -1,4 +1,4 @@
-//success.jsx
+
 /*
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -53,7 +53,7 @@ export default function Success() {
 }
 */
 
-
+//success.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Payment.scss";
@@ -86,10 +86,11 @@ export default function Success() {
       <h1>🎉 Paiement reçu ✅</h1>
 
       {order && order.totalPrice !== undefined && (
-        <p>
-          Votre commande #{order._id} d’un montant de{" "}
-          {order.totalPrice.toFixed(2)} € a bien été enregistrée.
-        </p>
+        <strong>
+          Votre commande #{order._id} d’un montant de{" "} <br />
+          <strong>{order.totalPrice.toFixed(2)}</strong>
+           € a bien été enregistrée.
+        </strong>
       )}
 
       <button className="btn-home" onClick={() => navigate("/")}>
