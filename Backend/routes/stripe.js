@@ -4,6 +4,7 @@ const User = require("../Model/User");
 const Cart = require("../Model/Cart");
 const Order = require("../Model/Order");
 const { authMiddleware } = require("../middleware/auth");
+
 const router = express.Router();
 require("dotenv").config();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -43,7 +44,10 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
 
     // Créer le client Stripe si nécessaire
     if (!user.stripeCustomerId) {
-      const customer = await stripe.customers.create({ email: user.email });
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: `${user.prenom} ${user.nom}`,
+      });
       user.stripeCustomerId = customer.id;
       await user.save();
     }
@@ -179,29 +183,75 @@ router.post(
   }
 );
 // Webhook Stripe pour confirmer le paiement
+// ⚠️ Route à utiliser uniquement en fallback (pas en production)
+// ⚠️ Route à utiliser uniquement en fallback (pas en production)
 router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
-  const { sessionId } = req.body;
+  try {
+    const { sessionId } = req.body;
 
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (!sessionId) {
+      return res.status(400).json({ message: "sessionId manquant" });
+    }
 
-  if (session.payment_status !== "paid") {
-    return res.status(400).json({ message: "Paiement non confirmé" });
+    // Récupérer la session Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    // Vérifier que Stripe confirme le paiement
+    if (session.payment_status !== "paid") {
+      return res.status(400).json({ message: "Paiement non confirmé par Stripe" });
+    }
+
+    const orderId = session.metadata.orderId;
+
+    // Mettre à jour la commande
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      {
+        status: "confirmed",
+        paymentStatus: "paid",
+        paidAt: new Date(),
+        stripeSessionId: session.id,
+      },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ message: "Commande introuvable" });
+    }
+
+    res.json({ message: "Paiement confirmé", order });
+
+  } catch (err) {
+    console.error("❌ Erreur confirm-payment :", err);
+    res.status(500).json({ message: "Erreur serveur", detail: err.message });
   }
+});
 
-  const orderId = session.metadata.orderId;
 
-  const order = await Order.findByIdAndUpdate(
-    orderId,
-    {
-      paymentStatus: "confirmed",
-      status: "paid",
-      paidAt: new Date(),
-      stripeSessionId: session.id,
-    },
-    { new: true }
-  );
+//stripe enregistrer un moyen de paiement
+router.post("/create-setup-intent", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
 
-  res.json({ order });
+    if (!user.stripeCustomerId) {
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: `${user.prenom} ${user.nom}`,
+      });
+      user.stripeCustomerId = customer.id;
+      await user.save();
+    }
+
+    const setupIntent = await stripe.setupIntents.create({
+      customer: user.stripeCustomerId,
+      payment_method_types: ["card"],
+      setup_future_usage: "off_session",
+    });
+
+    res.json({ clientSecret: setupIntent.client_secret });
+  } catch (err) {
+    res.status(500).json({ message: "Erreur création SetupIntent" });
+  }
 });
 
 

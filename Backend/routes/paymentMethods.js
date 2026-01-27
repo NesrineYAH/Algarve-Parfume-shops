@@ -1,31 +1,33 @@
 // backend/routes/paymentMethods.js
 const express = require("express");
 const Payment = require("../Model/Payment");
+const User = require("../Model/User");
 const router = express.Router();
+const { authMiddleware } = require("../middleware/auth");
 
-router.get("/payment-methods", async (req, res) => {
+router.get("/payment-methods", authMiddleware, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const user = await User.findById(req.user.userId);
 
-    const payments = await Payment.find({ user: userId })
-      .sort({ createdAt: -1 });
+    const paymentMethods = await stripe.paymentMethods.list({
+      customer: user.stripeCustomerId,
+      type: "card",
+    });
 
-    const cards = payments.map((p) => ({
-      id: p._id,
-      brand: p.paymentMethod.brand,
-      last4: p.paymentMethod.last4,
-      exp_month: p.paymentMethod.exp_month,
-      exp_year: p.paymentMethod.exp_year,
-      createdAt: p.createdAt,
+    const cards = paymentMethods.data.map(pm => ({
+      id: pm.id,
+      brand: pm.card.brand,
+      last4: pm.card.last4,
+      exp_month: pm.card.exp_month,
+      exp_year: pm.card.exp_year,
     }));
-
 
     res.json(cards);
   } catch (err) {
-    console.error("❌ Payment methods error :", err);
-    res.status(500).json({ message: "Erreur serveur" });
+    res.status(500).json({ message: "Erreur récupération cartes" });
   }
 });
+
 
 module.exports = router;
 

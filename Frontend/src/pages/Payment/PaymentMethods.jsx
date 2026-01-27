@@ -21,18 +21,15 @@ useEffect(() => {
     .catch(() => setLoading(false));
 }, []);
 
-
-
-
   if (loading) return <p>Chargement...</p>;
 
   return (
     <div>
       <h1>Mes moyens de paiement</h1>
 
-      {methods.length === 0 && <p>Aucun moyen de paiement enregistré.</p>}
+      {Array.isArray(methods) && methods.length === 0 && <p>Aucun moyen de paiement enregistré.</p>}
 
-    {methods.map((card) => (
+    {Array.isArray(methods) && methods.map((card) => (
   <div key={card.id}>
     <p>💳 {card.brand.toUpperCase()} •••• {card.last4}</p>
   </div>
