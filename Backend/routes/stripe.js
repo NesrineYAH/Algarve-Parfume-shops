@@ -193,7 +193,7 @@ router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
   const order = await Order.findByIdAndUpdate(
     orderId,
     {
-      paymentStatus: "paid",
+      paymentStatus: "confirmed",
       status: "paid",
       paidAt: new Date(),
       stripeSessionId: session.id,
