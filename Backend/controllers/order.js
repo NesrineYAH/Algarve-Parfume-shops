@@ -127,17 +127,14 @@ exports.getMyOrders = async (req, res) => {
 
         const allOrders = await Order.find({ userId: req.user.userId })
             .sort({ createdAt: -1 });
-
         // 🔴 Pré-commandes (non payées)
         const preOrders = allOrders.filter(
             o => o.status === "pending" && o.paymentStatus === "unpaid"
         );
-
         // 🟢 Commandes payées et confirmées
         const orders = allOrders.filter(
             o => o.status === "confirmed" && o.paymentStatus === "paid"
         );
-
         // ⚫ Commandes annulées
         const cancelledOrders = allOrders.filter(
             o => o.status === "cancelled"

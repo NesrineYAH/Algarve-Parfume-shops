@@ -20,7 +20,7 @@ const paymentMethodsRoutes = require("./routes/paymentMethods");
 const paymentsRoute = require("./routes/payments");
 const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
-const stripeWebhook = require("./scripts/stripeWebhook");
+const stripeWebhook = require("./scripts/webhook");
 require("./mongoDB/DB");
 
 const app = express();

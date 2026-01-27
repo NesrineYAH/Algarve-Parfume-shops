@@ -89,6 +89,7 @@ export default function Success() {
         <strong>
           Votre commande #{order._id} d’un montant de{" "} <br />
           <strong>{order.totalPrice.toFixed(2)}</strong>
+
            € a bien été enregistrée.
         </strong>
       )}

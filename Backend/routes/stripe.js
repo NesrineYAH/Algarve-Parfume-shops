@@ -166,7 +166,7 @@ router.post(
       const orderId = session.metadata.orderId;
 
       await Order.findByIdAndUpdate(orderId, {
-        status: "paid",
+        status: "confirmed",
         paymentStatus: "paid",
         paidAt: new Date(),
         stripeSessionId: session.id,
