@@ -285,6 +285,21 @@
     }
 }
 
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+
+    img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+}
+
 .moncompte__content {
     flex: 1;
     padding: 1rem;

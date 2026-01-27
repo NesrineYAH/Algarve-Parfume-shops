@@ -65,8 +65,8 @@ export default function MonCompte() {
           <button onClick={() => setActiveTab("addresses")}>Adresses</button>
           <button onClick={() => setActiveTab("orders")}>Commandes</button>
           <button onClick={() => setActiveTab("favorites")}>Favoris</button>
-
-          <Link to="/paymentMethods">Moyens de paiement</Link>
+          {/* <Link to="/paymentMethods">Moyens de paiement</Link> */}
+           <button onClick={() => navigate("/paymentMethods")}>Moyens de paiement</button>
           <button onClick={handleLogout}>Déconnexion</button>
         </aside>
 
@@ -95,9 +95,15 @@ export default function MonCompte() {
             orders.length === 0
               ? <p>Aucune commande</p>
               : orders.map(o => (
-                  <p key={o._id}>
-                    #{o._id} – {o.status} – {o.totalPrice} €
-                  </p>
+                <div key={o._id} className="order-item">  
+                <img   src={`http://localhost:5001${o.items[0].imageUrl}`}
+               alt={o.items[0].nom }/>
+                  <p > Commande n°
+                    #{o._id} – {o.status} 
+                  </p> 
+
+                  <p> prix total de la commande <strong>{o.totalPrice}  €</strong></p>
+               </div>
                 ))
           )}
 
