@@ -79,7 +79,7 @@ const UserProvider = ({ children }) => {
     try {
       const data = await registerUser(credentials);
 
-      if (data?.user && data?.token) {
+      if (data?.success && data?.user) {
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);

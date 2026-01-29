@@ -53,10 +53,6 @@ const handleSubmit = async (e) => {
     setMessage("Erreur serveur, veuillez réessayer.");
   }
 };
-// 24/12/2025 
-// const redirectTo = location.state?.redirectTo || "/";
-// navigate(redirectTo);
-
 
   return (
     <div className="Auth-container">

@@ -4,7 +4,7 @@ const User = require("../Model/User");
 const Order = require("../Model/Order");
 const { body } = require("express-validator");
 require("dotenv").config();
-const sendEmail = require("../utils/mailer"); //const { sendEmail } = require("../utils/mailer");  → ça correspond à module.exports = sendEmail.
+const { sendEmail } = require("../utils/mailer");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 
@@ -187,7 +187,7 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
-//03/12
+
 // ✅ Récupérer tous les utilisateurs (admin seulement)
 exports.getUsers = async (req, res) => {
   try {

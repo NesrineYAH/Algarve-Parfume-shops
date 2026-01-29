@@ -182,8 +182,7 @@ router.post(
     res.json({ received: true });
   }
 );
-// Webhook Stripe pour confirmer le paiement
-// ⚠️ Route à utiliser uniquement en fallback (pas en production)
+
 // ⚠️ Route à utiliser uniquement en fallback (pas en production)
 router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
   try {
@@ -226,7 +225,6 @@ router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", detail: err.message });
   }
 });
-
 
 //stripe enregistrer un moyen de paiement
 router.post("/create-setup-intent", authMiddleware, async (req, res) => {

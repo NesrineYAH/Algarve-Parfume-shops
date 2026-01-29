@@ -1,10 +1,10 @@
-
 // Backend/routes/stripeWebhook.js
-// backend/routes/stripeWebhook.js
 const express = require("express");
 const Stripe = require("stripe");
 const Order = require("../Model/Order");
 const Payment = require("../Model/Payment");
+const { sendEmail } = require("../utils/mailer"); // ✔️ IMPORT AJOUTÉ
+
 require("dotenv").config();
 
 const router = express.Router();
@@ -32,29 +32,39 @@ router.post(
     const session = event.data.object;
     const orderId = session.metadata?.orderId;
     const userId = session.metadata?.userId;
+
     console.log("🧾 orderId envoyé à Stripe :", orderId);
 
-    // Si pas d’orderId → impossible de mettre à jour
     if (!orderId) {
       console.error("❌ orderId manquant dans metadata");
       return res.status(400).json({ error: "orderId manquant" });
     }
 
-    // ----------------------------------------------------------
     // 1️⃣ Paiement réussi
-    // ----------------------------------------------------------
     if (event.type === "checkout.session.completed") {
       try {
-        console.log("🟢 Paiement réussi pour la commande :", orderId);
-
-        // Récupérer les infos du moyen de paiement
         const paymentIntent = await stripe.paymentIntents.retrieve(
           session.payment_intent
         );
 
         const charge = paymentIntent.charges.data[0];
+        const email = paymentIntent.receipt_email;
+        const amount = paymentIntent.amount / 100;
 
-        // Enregistrer le moyen de paiement dans Payment.js
+        // 📧 Envoi de l’email de confirmation
+        await sendEmail({
+          to: email,
+          subject: "Votre paiement est confirmé",
+          html: `
+            <h2>Merci pour votre commande !</h2>
+            <p>Votre paiement de <strong>${amount} €</strong> a été confirmé.</p>
+            <p>Nous préparons votre commande.</p>
+          `,
+        });
+
+        console.log("📧 Email envoyé à :", email);
+
+        // Mise à jour du paiement
         await Payment.findOneAndUpdate(
           { stripePaymentIntentId: paymentIntent.id },
           {
@@ -91,9 +101,7 @@ router.post(
       }
     }
 
-    // ----------------------------------------------------------
-    // 2️⃣ Paiement expiré (l’utilisateur ferme la page)
-    // ----------------------------------------------------------
+    // 2️⃣ Paiement expiré
     if (event.type === "checkout.session.expired") {
       try {
         console.log("⚠️ Paiement expiré pour la commande :", orderId);
@@ -114,9 +122,7 @@ router.post(
       }
     }
 
-    // ----------------------------------------------------------
     // 3️⃣ Paiement échoué
-    // ----------------------------------------------------------
     if (event.type === "checkout.session.async_payment_failed") {
       try {
         console.log("🔴 Paiement échoué pour la commande :", orderId);

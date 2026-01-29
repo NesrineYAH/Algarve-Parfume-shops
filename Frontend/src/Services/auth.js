@@ -38,21 +38,24 @@ export async function registerUser(credentials) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(credentials),
     });
-    console.log(credentials);
-    //   const text = await res.text();
-    //   const data = JSON.parse(text);
+
     const data = await res.json();
+
     if (!res.ok) {
-      // ⛔ Retourne une erreur si le backend a renvoyé 400 ou autre
       return { success: false, message: data.message };
     }
-    //    return data;
-    return { success: true, data };
+
+    return {
+      success: true,
+      user: data.user,
+      message: data.message
+    };
 
   } catch (err) {
-    return { message: "Erreur serveur" };
+    return { success: false, message: "Erreur serveur" };
   }
 }
+
 export async function getCurrentUser() {
   try {
     const token = localStorage.getItem("token");
