@@ -1,3 +1,4 @@
+// Backend/app.js
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -20,7 +21,7 @@ const paymentMethodsRoutes = require("./routes/paymentMethods");
 const paymentsRoute = require("./routes/payments");
 const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
-const stripeWebhook = require("./scripts/webhook");
+const stripeWebhook = require("./routes/stripeWebhook");
 require("./mongoDB/DB");
 
 const app = express();

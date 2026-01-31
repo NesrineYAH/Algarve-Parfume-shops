@@ -43,12 +43,11 @@ router.post(
     // 1️⃣ Paiement réussi
     if (event.type === "checkout.session.completed") {
       try {
-        const paymentIntent = await stripe.paymentIntents.retrieve(
-          session.payment_intent
-        );
-
+        const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
+        const stripeCustomer = await stripe.customers.retrieve(session.customer);
         const charge = paymentIntent.charges.data[0];
-        const email = paymentIntent.receipt_email;
+        const email = session.customer_details?.email || stripeCustomer.email ||
+          paymentIntent.receipt_email || session.metadata?.email;
         const amount = paymentIntent.amount / 100;
 
         // 📧 Envoi de l’email de confirmation
@@ -61,14 +60,17 @@ router.post(
             <p>Nous préparons votre commande.</p>
           `,
         });
-
+        console.log("📩 Email dans paymentIntent :", paymentIntent.receipt_email);
+        console.log("📩 Email dans session :", session.customer_details?.email);
         console.log("📧 Email envoyé à :", email);
 
         // Mise à jour du paiement
+
         await Payment.findOneAndUpdate(
           { stripePaymentIntentId: paymentIntent.id },
           {
             user: userId,
+            email,
             stripeCustomerId: session.customer,
             stripePaymentIntentId: paymentIntent.id,
             stripeCheckoutSessionId: session.id,
@@ -83,6 +85,7 @@ router.post(
           },
           { upsert: true, new: true }
         );
+        console.log("📨 Email à envoyer :", email);
 
         // Mise à jour de la commande
         await Order.findByIdAndUpdate(

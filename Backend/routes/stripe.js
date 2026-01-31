@@ -30,7 +30,6 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
       return sum + price * item.quantite;
     }, 0);
 
-
     const order = await Order.create({
       userId: user._id,
       items: cart.items,
