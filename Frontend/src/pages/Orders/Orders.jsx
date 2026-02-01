@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import OrderService from "../../Services/orderService";
 import "./Orders.scss";
 import { UserContext } from "../../context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Orders() {
   const { user } = useContext(UserContext);
@@ -11,24 +11,33 @@ export default function Orders() {
   const [preOrders, setPreOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [cancelledOrders, setCancelledOrders] = useState([]);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user?._id) return;
+useEffect(() => {
+  // 🔥 1. Si l'utilisateur n'est pas connecté → redirection immédiate
+  if (!user) {
+    navigate("/authentification");
+    return;
+  }
 
-    const fetchOrders = async () => {
-      try {
-        const data = await OrderService.getUserOrders(user._id);
+  // 🔥 2. Si user existe mais pas encore son _id → on attend
+  if (!user._id) return;
 
-        setPreOrders(data.preOrders || []);
-        setOrders(data.orders || []);
-        setCancelledOrders(data.cancelledOrders || []);
-      } catch (err) {
-        console.error("Erreur récupération commandes :", err);
-      }
-    };
+  // 🔥 3. Sinon on peut charger les commandes
+  const fetchOrders = async () => {
+    try {
+      const data = await OrderService.getUserOrders(user._id);
 
-    fetchOrders();
-  }, [user]);
+      setPreOrders(data.preOrders || []);
+      setOrders(data.orders || []);
+      setCancelledOrders(data.cancelledOrders || []);
+    } catch (err) {
+      console.error("Erreur récupération commandes :", err);
+    }
+  };
+
+  fetchOrders();
+}, [user]);
 
   const getImageUrl = (url) => {
     if (!url) return "/uploads/default.jpg";
@@ -155,6 +164,17 @@ export default function Orders() {
                 <Link to={`/tracking/${order._id}`}>
                   <button className="Button">Suivre ma commande</button>
                 </Link>
+
+                <button
+  onClick={() =>
+    navigate("/retour-produit", {
+      state: { orderId: order._id, productId: item.product._id },
+    })
+  }
+>
+  Demander un retour
+</button>
+
               </div>
             </div>
           ))}

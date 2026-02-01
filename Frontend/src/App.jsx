@@ -3,6 +3,7 @@ import Headers from "./components/Header/Header";
 import Home from "./pages/Home/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Product from "./pages/Product/Product";
+import RetourProduit from "./pages/Product/RetourProduit";  
 import Footer from "./components/Footer/Footer";
 import BlogBenefits from "./components/Blog/BlogBenefits";
 import Newsletter from "./components/Newsletter/Newsletter";
@@ -73,7 +74,7 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
-            <Route path="/TrackOrder" element={<TrackOrder />} />
+          <Route path="/tracking/:orderId" element={<TrackOrder />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment" element={<Payment />} />
@@ -91,11 +92,12 @@ function App() {
           <Route path="/securite-produits" element={<SecuriteProduits />} />
           <Route path="/avis-clients" element={<AvisClients />} />
           <Route path="/sitemap" element={<SiteMap />} />
-       <Route path="/paymentMethods" element={<PaymentMethods />} />
+          <Route path="/paymentMethods" element={<PaymentMethods />} />
           <Route path="/confirmation" element={<Confirmation />} />
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
-        
+        <Route path="/retour-produit" element={<RetourProduit />} />
+
         </Routes>
 
         <BlogBenefits />

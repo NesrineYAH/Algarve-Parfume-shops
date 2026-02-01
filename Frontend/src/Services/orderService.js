@@ -3,19 +3,11 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:5001/api",
+  withCredentials: true, // ⭐ indispensable pour envoyer le cookie JWT
 });
 
-// 🔐 Ajout automatique du token JWT
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
 
 const OrderService = {
-  // ➤ Créer une pré-commande
   createPreOrder: async (orderData) => {
     const response = await api.post("/orders/create", orderData);
     const preOrderId = response.data?.order?._id;
@@ -25,29 +17,26 @@ const OrderService = {
     return response.data;
   },
 
-  // ➤ Mettre à jour une commande (⚠️ pas pour le paiement)
   updateOrder: async (orderId, updateData) => {
     if (!orderId) throw new Error("orderId invalide");
     const response = await api.put(`/orders/${orderId}`, updateData);
     return response.data;
   },
 
-  // ➤ Récupérer une commande par ID
+
   getOrderById: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     const response = await api.get(`/orders/${orderId}`);
     return response.data;
   },
 
-  // ➤ Finaliser une commande (APPELÉ APRÈS STRIPE)
+
   finalizeOrder: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     const response = await api.post(`/orders/finalize/${orderId}`);
     localStorage.removeItem("preOrderId");
     return response.data;
   },
-
-
   // ➤ Marquer une commande comme PAYÉE
   markPaid: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
@@ -60,7 +49,6 @@ const OrderService = {
     }
   },
 
-  // ➤ Annuler une commande (user)
   cancelOrder: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     try {
@@ -91,7 +79,6 @@ const OrderService = {
     return response.data;
   },
 
-  // ➤ Récupérer les commandes d’un utilisateur par ID
   getUserOrders: async (userId) => {
     if (!userId) throw new Error("userId manquant");
     const response = await api.get(`/orders/user/${userId}`);

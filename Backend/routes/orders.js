@@ -6,7 +6,6 @@ const orderCtrl = require("../controllers/order");
 
 // ➤ CRÉER UNE COMMANDE
 router.post("/create", authMiddleware, orderCtrl.createOrder);
-
 // ➤ METTRE À JOUR UNE COMMANDE
 router.put("/:orderId", authMiddleware, orderCtrl.updateOrder);
 router.post("/finalize/:orderId", authMiddleware, orderCtrl.finalizeOrder);
@@ -22,8 +21,6 @@ router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
 
 module.exports = router;
 
-// ➤ MARQUER UNE COMMANDE COMME PAYÉE
-// router.post("/:orderId/mark-paid", authMiddleware, orderCtrl.markOrderAsPaid);
 
 
 

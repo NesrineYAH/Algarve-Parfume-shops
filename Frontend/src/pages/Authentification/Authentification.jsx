@@ -1,10 +1,9 @@
+// Frontend/src/pages/Authentification/Authentification.jsx
 import React, { useState, useContext } from "react";
 import { registerUser, loginUser } from "../../Services/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Authentification.scss";
 import { UserContext } from "../../context/UserContext";
-
-
 
 export default function Authentification() {
   const [activeTab, setActiveTab] = useState("login");
@@ -15,7 +14,6 @@ export default function Authentification() {
   const location = useLocation();
 // 🔑 clé magique
 const redirectTo = location.state?.redirectTo || "/MonCompte";
-
 
 const { handleLogin, handleRegister } = useContext(UserContext);
 
@@ -30,7 +28,6 @@ const handleSubmit = async (e) => {
 
       if (response.user) {
         setMessage("Connexion réussie !");
-  //      navigate("/MonCompte");
          navigate(redirectTo);
       } else {
         setMessage(response.message || "Identifiants invalides");

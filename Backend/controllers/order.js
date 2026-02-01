@@ -4,7 +4,7 @@ const Product = require("../Model/product");
 const Cart = require("../Model/Cart");
 const mongoose = require("mongoose");
 
-// ➤ CRÉER UNE COMMANDE
+
 
 exports.createOrder = async (req, res) => {
     try {
@@ -72,7 +72,6 @@ exports.createOrder = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 };
-// ➤ METTRE À JOUR UNE COMMANDE
 exports.updateOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
@@ -101,7 +100,6 @@ exports.updateOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-// ➤ FINALISER UNE COMMANDE
 exports.finalizeOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -117,8 +115,6 @@ exports.finalizeOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-// ➤ RÉCUPÉRER LES COMMANDES DE L’UTILISATEUR CONNECTÉ
-
 exports.getMyOrders = async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -147,8 +143,6 @@ exports.getMyOrders = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
-// ➤ SUPPRIMER UNE COMMANDE
 exports.deleteOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -183,8 +177,6 @@ exports.deleteOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
-// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
 exports.getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find().populate("userId", "email nom prenom");
@@ -194,8 +186,6 @@ exports.getAllOrders = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
-// ➤ RÉCUPÉRER LES COMMANDES PAR USER ID (ADMIN OU VENDEUR)
 exports.getOrdersByUserId = async (req, res) => {
     try {
         const { userId } = req.params;
@@ -228,8 +218,6 @@ exports.getOrdersByUserId = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
-//15/01/2026
 exports.getOrderById = async (req, res) => {
     try {
         const { orderId } = req.params;
@@ -237,13 +225,10 @@ exports.getOrderById = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(orderId)) {
             return res.status(400).json({ message: "ID commande invalide" });
         }
-
         const order = await Order.findById(orderId);
-
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
-
         return res.status(200).json(order);
 
     } catch (error) {
@@ -251,7 +236,6 @@ exports.getOrderById = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-// ➤ EXPÉDIER UNE COMMANDE (ADMIN)
 exports.shipOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.id);
@@ -296,8 +280,6 @@ exports.deliverOrder = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
-// ➤ ANNULER UNE COMMANDE (CLIENT)
 exports.cancelOrder = async (req, res) => {
     try {
         const { orderId } = req.params;

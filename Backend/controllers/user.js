@@ -85,7 +85,13 @@ exports.login = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-
+    // ⭐ AJOUT ESSENTIEL : envoyer le token dans un cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // true en production
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     console.log("Token généré :", token);
     console.log("ROLE UTILISATEUR :", user.role);

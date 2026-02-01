@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+// Frontend/src/pages/Orders/TrackOrder.jsx
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function TrackOrder() {
-  const [orderId, setOrderId] = useState("");
-  const [orderData, setOrderData] = useState(null);
-  const [error, setError] = useState("");
-  const [showDetails, setShowDetails] = useState(false);
+
+ const { orderId: orderIdFromUrl } = useParams(); 
+ const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
+ const [orderData, setOrderData] = useState(null); 
+ const [error, setError] = useState(""); 
+ const [showDetails, setShowDetails] = useState(false);
 
 
   const handleTrackOrder = async () => {
@@ -17,7 +21,13 @@ export default function TrackOrder() {
     setOrderData(null);
 
     try {
-      const response = await fetch(`http://localhost:5001/api/orders/${orderId}`);
+      const response = await fetch(
+        `http://localhost:5001/api/orders/${orderId}`,
+        { 
+          method: "GET",
+          credentials: "include", // 🔥 indispensable
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Commande introuvable");
@@ -29,6 +39,12 @@ export default function TrackOrder() {
       setError("Aucune commande trouvée avec ce numéro.");
     }
   };
+ useEffect(() => {
+   if (orderIdFromUrl) {
+  handleTrackOrder(); 
+} },
+ [orderIdFromUrl]);
+
 
   const markAsDelivered = async () => {
     try {
@@ -237,3 +253,11 @@ const styles = {
     fontSize: 12,
   },
 };
+
+/*
+credentials: "include" force le navigateur à envoyer :
+    les cookies
+    donc ton JWT
+    donc l’utilisateur est authentifié
+    donc la route fonctionne
+*/

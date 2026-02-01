@@ -1,3 +1,5 @@
+// Frontend/src/pages/MonCompte/MonCompte.jsx
+/* Frontend/src/pages/MonCompte/MonCompte.jsx */
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./MonCompte.scss";
@@ -14,36 +16,38 @@ export default function MonCompte() {
   const [activeTab, setActiveTab] = useState("infos");
   const [orders, setOrders] = useState([]);
 
-  /* 🔐 Vérification auth + adresses */
+  /* 🔐 1) Vérification auth + chargement adresses */
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
+    // Si pas connecté → redirection immédiate
+    if (!user) {
       navigate("/Authentification");
       return;
     }
 
+    // Charger les adresses via cookie JWT
     fetch("http://localhost:5001/api/addresses", {
-      headers: { Authorization: `Bearer ${token}` },
+      method: "GET",
+      credentials: "include",   // ⭐ indispensable
     })
       .then(res => res.json())
       .then(setAddresses)
       .catch(console.error);
-  }, [navigate]);
+  }, [user, navigate]);
 
-  /* 📦 Commandes */
+  /* 📦 2) Commandes */
   useEffect(() => {
     if (!user?._id) return;
 
-    const token = localStorage.getItem("token");
     fetch(`http://localhost:5001/api/orders/user/${user._id}`, {
-      headers: { Authorization: `Bearer ${token}` },
+      method: "GET",
+      credentials: "include",   // ⭐ indispensable
     })
       .then(res => res.json())
       .then(data => setOrders(data.orders || []))
       .catch(console.error);
   }, [user]);
 
-  /* 🚀 REDIRECTION ADMIN / VENDEUR */
+  /* 🚀 3) Redirection ADMIN / VENDEUR */
   useEffect(() => {
     if (user && (user.role === "admin" || user.role === "vendeur")) {
       navigate("/admin/AdminDashboard");
@@ -53,6 +57,9 @@ export default function MonCompte() {
   if (!user) {
     return <h2>Chargement du compte...</h2>;
   }
+
+
+
 
   return (
     <section className="moncompte">

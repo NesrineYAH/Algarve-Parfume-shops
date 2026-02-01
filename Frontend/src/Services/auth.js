@@ -4,6 +4,7 @@ export async function loginUser(credentials) {
     const res = await fetch("http://localhost:5001/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include", // ⭐ OBLIGATOIRE pour recevoir le cookie JWT
       body: JSON.stringify(credentials),
     });
     console.log(credentials);
@@ -13,10 +14,8 @@ export async function loginUser(credentials) {
       return { message: data.message || "Erreur serveur" };
     }
 
-    // Stockage du token
-    if (data.token) localStorage.setItem("token", data.token);
-
-    // Stockage des infos utilisateur
+    //  if (data.token) localStorage.setItem("token", data.token);
+    // Le token est maintenant dans un cookie HTTP-only   // ❌ NE PLUS stocker le token dans localStorage
     if (data.user) {
       localStorage.setItem("userId", data.user._id);   // 👈 important pour fetch orders
       localStorage.setItem("nom", data.user.nom);
@@ -108,7 +107,7 @@ export function logoutUser() {
   return true;
 }
 
-// 05/12 ajout forgotPassword & resetPassword
+
 export async function forgotPassword(email) {
   const res = await fetch("http://localhost:5001/api/users/forgot-password", {
     method: "POST",

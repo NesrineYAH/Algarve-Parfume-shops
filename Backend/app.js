@@ -22,6 +22,8 @@ const paymentsRoute = require("./routes/payments");
 const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
 const stripeWebhook = require("./routes/stripeWebhook");
+const cookieParser = require("cookie-parser");
+const returnRoutes = require("./routes/return");
 require("./mongoDB/DB");
 
 const app = express();
@@ -35,9 +37,16 @@ app.post(
 );
 
 // ⚡ Middlewares globaux
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({
+  origin:
+    "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // ⚡ Static files
 app.use("/uploads", express.static("uploads"));
@@ -56,7 +65,7 @@ app.use("/api/products", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
-
+app.use("/api/returns", returnRoutes);
 // ⚡ Routes Stripe & paiement
 app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentsRoute);

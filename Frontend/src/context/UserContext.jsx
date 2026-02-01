@@ -13,38 +13,23 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // 🔄 Vérifier l'utilisateur au chargement
+  // 🔄 Vérifier l'utilisateur via le cookie JWT au chargement
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // 1. Vérifier si un token existe dans localStorage
-        const token = localStorage.getItem("token");
-        
-        if (!token) {
-          console.log("🔍 Aucun token trouvé, user = null");
-          setUser(null);
-          setLoadingUser(false);
-          return;
-        }
-
-        // 2. Appeler l'API pour vérifier le token
-        const currentUser = await getCurrentUser();
+        // 👉 On ne vérifie PLUS localStorage.token
+        const currentUser = await getCurrentUser(); // doit envoyer credentials: "include"
 
         if (currentUser) {
-          console.log("✅ Utilisateur vérifié:", currentUser.email);
+          console.log("✅ Utilisateur vérifié via cookie:", currentUser.email);
           setUser(currentUser);
         } else {
-          // Token invalide ou expiré
-          console.log("❌ Token invalide, nettoyage...");
+          console.log("❌ Aucun utilisateur trouvé via cookie");
           setUser(null);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
         }
       } catch (err) {
         console.error("❌ Erreur fetchUser:", err);
         setUser(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
       } finally {
         setLoadingUser(false);
       }
@@ -58,13 +43,12 @@ const UserProvider = ({ children }) => {
     try {
       const data = await loginUser(credentials);
 
-      // 🔥 IMPORTANT: Vérifier que data contient user ET token
-      if (data?.user && data?.token) {
+      if (data?.user) {
         setUser(data.user);
-        // 🔥 STOCKER LES DEUX
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
-        console.log("✅ Login réussi, token enregistré");
+        console.log("✅ Login réussi, cookie JWT reçu et utilisateur enregistré");
+      } else {
+        console.log("❌ Login échoué : aucune donnée utilisateur reçue");
       }
 
       return data;
@@ -82,7 +66,6 @@ const UserProvider = ({ children }) => {
       if (data?.success && data?.user) {
         setUser(data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
       }
 
       return data;
@@ -100,10 +83,8 @@ const UserProvider = ({ children }) => {
       console.error("❌ Erreur logout API:", error);
     } finally {
       setUser(null);
-      // Supprimer TOUT
       localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      localStorage.removeItem("cart"); // Optionnel
+      localStorage.removeItem("cart");
       console.log("🚪 Déconnexion complète");
     }
   };
