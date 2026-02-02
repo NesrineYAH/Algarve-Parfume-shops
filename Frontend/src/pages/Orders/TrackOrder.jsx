@@ -182,16 +182,12 @@ const handleReturnRequest = (orderId, item) => {
 )}
 
 
-            {orderData.status !== "delivered" && (
-              <button onClick={markAsDelivered} style={styles.button}>
-                J’ai reçu ma commande
-              </button>
-            )}
-            
-          </div>
-        )}
-      </div>
-    </div>
+ {orderData.status !== "delivered" && (
+<button onClick={markAsDelivered} style={styles.button}>J’ai reçu ma commande</button>)}
+</div>
+)}
+ </div>
+ </div>
   );
 }
 
