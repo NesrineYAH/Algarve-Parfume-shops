@@ -51,6 +51,7 @@ app.use(cookieParser());
 // ⚡ Static files
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/etiquettes", express.static(path.join(__dirname, "public/etiquettes")));
 
 // 🚀 Routes publiques
 app.use("/api/users", userRoutes);
