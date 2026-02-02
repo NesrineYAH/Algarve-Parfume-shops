@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReturnService from "../../Services/returnService";
+import "./Product.scss";
 
 export default function RetourProduit() {
   const navigate = useNavigate();

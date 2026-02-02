@@ -1,15 +1,16 @@
 // Frontend/src/pages/Orders/TrackOrder.jsx
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function TrackOrder() {
 
  const { orderId: orderIdFromUrl } = useParams(); 
  const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
  const [orderData, setOrderData] = useState(null); 
+const [orders, setOrders] = useState([]);
  const [error, setError] = useState(""); 
  const [showDetails, setShowDetails] = useState(false);
-
+ const navigate = useNavigate();
 
   const handleTrackOrder = async () => {
     if (!orderId.trim()) {
@@ -71,6 +72,26 @@ export default function TrackOrder() {
     // Ici tu peux appeler ton CartService.addToCart()
   };
 
+    const getImageUrl = (url) => {
+    if (!url) return "/uploads/default.jpg";
+    if (url.startsWith("http")) return url;
+    return `http://localhost:5001${url}`;
+  };
+
+const handleReturnRequest = (orderId, item) => {
+  const productId =
+    item.productId ||
+    item.product?._id ||
+    item._id;
+
+  navigate("/retour-produit", {
+    state: { orderId, productId },
+  });
+};
+
+
+
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Suivre votre commande</h1>
@@ -128,28 +149,35 @@ export default function TrackOrder() {
           {showDetails && (
   <div>
     <h4>Détails des articles</h4>
-    {orderData.items.map((item, i) => (
-      <div key={i} style={styles.item}>
-        <p><strong>{item.nom}</strong></p>
-        <p>Taille : {item.options.size} {item.options.unit}</p>
-        <p>Prix : {item.options.prix} €</p>
-        <p>Quantité : {item.quantite}</p>
+{orderData.items.map((item, i) => (
+  <div key={i} style={styles.item}>
+    <p><strong>{item.nom}</strong></p>
+    <p>Taille : {item.options.size} {item.options.unit}</p>
+    <p>Prix : {item.options.prix} €</p>
+    <p>Quantité : {item.quantite}</p>
 
-        <button
-          onClick={() => handleRebuy(item)}
-          style={styles.smallButton}
-        >
-          Racheter
-        </button>
+    <button
+      onClick={() => handleRebuy(item)}
+      style={styles.smallButton}
+    >
+      Racheter
+    </button>
 
-        <button
-          onClick={() => alert("Formulaire d'avis à implémenter")}
-          style={styles.smallButton}
-        >
-          Laisser un avis
-        </button>
-      </div>
-    ))}
+    <button
+      onClick={() => alert("Formulaire d'avis à implémenter")}
+      style={styles.smallButton}
+    >
+      Laisser un avis
+    </button>
+
+    {/* ⭐ BOUTON RETOUR PRODUIT — version correcte */}
+<button
+  onClick={() => handleReturnRequest(orderData._id, item)}
+  style={styles.smallButton}
+>Demander un retour</button>
+
+  </div>
+))}
   </div>
 )}
 
@@ -159,6 +187,7 @@ export default function TrackOrder() {
                 J’ai reçu ma commande
               </button>
             )}
+            
           </div>
         )}
       </div>
