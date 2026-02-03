@@ -84,6 +84,13 @@ const OrderService = {
     const response = await api.get(`/orders/user/${userId}`);
     return response.data; // { preOrders, orders }
   },
+
+
+  shipOrder: async (orderId) => {
+    return axios.put(`/orders/ship/${orderId}`);
+  },
+
+
 };
 
 export default OrderService;

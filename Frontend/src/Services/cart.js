@@ -1,5 +1,3 @@
-
-// src/services/cart.js
 // src/services/cart.js
 import axios from "axios";
 
@@ -17,13 +15,10 @@ export const getCart = () => {
   return axios.get(API_URL, authHeader());
 };
 
-// 🔹 Ajouter un produit au panier
-// item doit contenir AU MINIMUM : variantId, nom, options, quantite
 export const addToCart = (item) => {
   return axios.post(`${API_URL}/add`, item, authHeader());
 };
 
-// 🔹 Mettre à jour la quantité (+1 ou -1)
 export const updateQuantity = (variantId, delta) => {
   if (!variantId) {
     console.error("❌ updateQuantity: variantId manquant");

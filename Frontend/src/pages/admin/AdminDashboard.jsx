@@ -31,6 +31,8 @@ export default function AdminDashboard() {
   <button className="btn-Add">🔥 Add Promotions</button>
 </Link>
 
+<button onClick={() => shipOrder(order._id)} className="btn-Add"> Marquer comme expédiée </button>
+
       </aside>     
       <main className="admin__content">
         <Outlet />  {/* Ici les pages enfants vont s’afficher */}

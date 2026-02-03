@@ -49,9 +49,9 @@ useEffect(() => {
   fetch("http://localhost:5001/api/carts/sync", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+     "Content-Type": "application/json",
+     },
+     credentials: "include",
     body: JSON.stringify({ cartItems: localCart }),
   })
     .then(() => {
@@ -77,41 +77,6 @@ useEffect(() => {
     });
 }, [user]);
 
-/*
-useEffect(() => {
-  if (!user?._id) return;
-
-  const token = localStorage.getItem("token");
-  if (!token) return;
-
-  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  fetch("http://localhost:5001/api/carts", {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then(res => res.json())
-    .then(data => {
-      const backendCart = data.items || [];
-      const merged = mergeCarts(localCart, backendCart);
-
-      setCartItems(merged);
-
-      fetch("http://localhost:5001/api/carts/sync", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ cartItems: merged }),
-      });
-
-      localStorage.removeItem("cart");
-    })
-    .catch(() => setCartItems(localCart));
-}, [user]);
-*/
-
-
   // ➕ Ajouter
   const addToCartContext = async (item) => {
     if (!user?._id) {
@@ -128,19 +93,18 @@ useEffect(() => {
       return;
     }
 
-    const token = localStorage.getItem("token");
+//    const token = localStorage.getItem("token");
 
     await fetch("http://localhost:5001/api/carts/add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+     headers: { "Content-Type": "application/json", }, 
+      credentials: "include",
       body: JSON.stringify(item),
     });
 
     const res = await fetch("http://localhost:5001/api/carts", {
-      headers: { Authorization: `Bearer ${token}` },
+     headers: { "Content-Type": "application/json", }, 
+     credentials: "include",
     });
 
     const data = await res.json();
@@ -161,14 +125,14 @@ const updateQuantity = async (variantId, delta) => {
     return;
   }
 
-  const token = localStorage.getItem("token");
+//  const token = localStorage.getItem("token");
 
   const res = await fetch("http://localhost:5001/api/carts/updateQuantity", {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({
       variantId,
       delta: Number(delta), // ⭐ CRUCIAL
@@ -193,15 +157,17 @@ const removeFromCart = async (variantId) => {
     return;
   }
 
-  const token = localStorage.getItem("token");
+//  const token = localStorage.getItem("token");
 
   const res = await fetch(
     `http://localhost:5001/api/carts/removeItem/${variantId}`,
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+       "Content-Type": "application/json",
+        },
+      credentials: "include",
+
     }
   );
 
@@ -240,45 +206,3 @@ const removeFromCart = async (variantId) => {
 
 export default CartProvider;
 
-/*
-//22/01/2026
-useEffect(() => {
-  if (!user?._id) return;
-
-  const token = localStorage.getItem("token");
-  if (!token) return;
-
-  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  // 🟢 1. envoyer le panier local au backend
-  fetch("http://localhost:5001/api/carts/sync", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ cartItems: localCart }),
-  })
-    .then(() => {
-      // 🟢 2. supprimer le panier local
-      localStorage.removeItem("cart");
-
-      // 🟢 3. charger le panier backend UNIQUEMENT
-      return fetch("http://localhost:5001/api/carts", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    })
-    .then(res => res.json())
-    .then(data => {
-      setCartItems(
-        (data.items || []).map(item => ({
-          ...item,
-          variantId: item.variantId.toString(),
-        }))
-      );
-    })
-    .catch(err => {
-      console.error("Sync cart error:", err);
-    });
-}, [user]);
-*/

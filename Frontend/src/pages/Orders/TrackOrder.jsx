@@ -1,15 +1,21 @@
 // Frontend/src/pages/Orders/TrackOrder.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
+
 
 export default function TrackOrder() {
-
  const { orderId: orderIdFromUrl } = useParams(); 
  const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
  const [orderData, setOrderData] = useState(null); 
-const [orders, setOrders] = useState([]);
+ const [orders, setOrders] = useState([]);
  const [error, setError] = useState(""); 
  const [showDetails, setShowDetails] = useState(false);
+const [hasSearched, setHasSearched] = useState(false);
+const [showOrderModal, setShowOrderModal] = useState(false);
+
+
+
  const navigate = useNavigate();
 
   const handleTrackOrder = async () => {
@@ -17,37 +23,28 @@ const [orders, setOrders] = useState([]);
       setError("Veuillez entrer un numéro de commande.");
       return;
     }
-
     setError("");
     setOrderData(null);
+    setHasSearched(true); // 🔥 l’utilisateur a cliqué
 
     try {
       const response = await fetch(
         `http://localhost:5001/api/orders/${orderId}`,
-        { 
-          method: "GET",
-          credentials: "include", // 🔥 indispensable
-        }
+        { method: "GET", credentials: "include", }
       );
 
       if (!response.ok) {
         throw new Error("Commande introuvable");
       }
-
       const data = await response.json();
       setOrderData(data);
     } catch (err) {
       setError("Aucune commande trouvée avec ce numéro.");
     }
   };
- useEffect(() => {
-   if (orderIdFromUrl) {
-  handleTrackOrder(); 
-} },
- [orderIdFromUrl]);
 
 
-  const markAsDelivered = async () => {
+const markAsDelivered = async () => {
     try {
       const response = await fetch(
         `http://localhost:5001/api/orders/${orderData._id}/deliver`,
@@ -67,17 +64,6 @@ const [orders, setOrders] = useState([]);
     }
   };
 
-  const handleRebuy = (item) => {
-    alert(`Produit ajouté au panier : ${item.nom}`);
-    // Ici tu peux appeler ton CartService.addToCart()
-  };
-
-    const getImageUrl = (url) => {
-    if (!url) return "/uploads/default.jpg";
-    if (url.startsWith("http")) return url;
-    return `http://localhost:5001${url}`;
-  };
-
 const handleReturnRequest = (orderId, item) => {
   const productId =
     item.productId ||
@@ -89,8 +75,25 @@ const handleReturnRequest = (orderId, item) => {
   });
 };
 
+const handleReview = (item) => { 
+  const productId = item.productId || item.product?._id; 
+  navigate(`/review/${productId}`, {
+     state: { orderId: orderData._id } 
+    }); 
+  };
 
-
+const handleRebuy = async (item) => { 
+  try {
+     await CartContext.addToCartContext({ 
+      productId: item.productId || item.product?._id,
+       quantite: 1, 
+       options: item.options, 
+      }); alert("Produit ajouté au panier !");
+    } 
+   catch (err) {
+         alert("Erreur lors de l’ajout au panier");
+    }
+   };
 
   return (
     <div style={styles.container}>
@@ -111,8 +114,14 @@ const handleReturnRequest = (orderId, item) => {
 
         {error && <p style={styles.error}>{error}</p>}
 
-        {orderData && (
-          <div style={styles.result}>
+  {hasSearched  &&  orderData &&  (
+  <div style={styles.modalOverlay}  > 
+    <button
+  onClick={() => setShowOrderModal(false)}
+  style={styles.closeButton}
+>✕</button>
+
+<div style={styles.result}   onClick={(e) => e.stopPropagation()}>
             <h3>Commande : {orderData._id}</h3>
 
             {/* TIMELINE */}
@@ -130,25 +139,24 @@ const handleReturnRequest = (orderId, item) => {
                 Livrée
               </div>
             </div>
+        
+        
+      <p><strong>Statut :</strong> {orderData.status}</p>
+      <p><strong>Paiement :</strong> {orderData.paymentStatus}</p>
+      <p><strong>Total :</strong> {orderData.totalPrice} €</p> 
+      
+{orderData.status !== "delivered" && (
+<button onClick={markAsDelivered} style={styles.button}>J’ai reçu ma commande</button>)}
 
-            <p><strong>Statut :</strong> {orderData.status}</p>
-            <p><strong>Paiement :</strong> {orderData.paymentStatus}</p>
-            <p><strong>Total :</strong> {orderData.totalPrice} €</p>
-
-
-            <h4>Détails des articles</h4>
-
-<button
-  onClick={() => setShowDetails(!showDetails)}
-  style={styles.button}
->
+   <h4>Détails des articles</h4>
+<button onClick={() => setShowDetails(!showDetails)}
+  style={styles.button}>
   {showDetails ? "Masquer les détails" : "Afficher les détails"}
 </button>
 
-
-          {showDetails && (
+ {showDetails && (
   <div>
-    <h4>Détails des articles</h4>
+
 {orderData.items.map((item, i) => (
   <div key={i} style={styles.item}>
     <p><strong>{item.nom}</strong></p>
@@ -163,29 +171,25 @@ const handleReturnRequest = (orderId, item) => {
       Racheter
     </button>
 
-    <button
-      onClick={() => alert("Formulaire d'avis à implémenter")}
+    <button onClick={() => handleReview(item)} 
       style={styles.smallButton}
     >
       Laisser un avis
     </button>
 
-    {/* ⭐ BOUTON RETOUR PRODUIT — version correcte */}
-<button
-  onClick={() => handleReturnRequest(orderData._id, item)}
-  style={styles.smallButton}
->Demander un retour</button>
+  <button onClick={() => handleReturnRequest(orderData._id, item)}
+ style={styles.smallButton}>Demander un retour
+ </button>
 
   </div>
 ))}
   </div>
 )}
 
-
- {orderData.status !== "delivered" && (
-<button onClick={markAsDelivered} style={styles.button}>J’ai reçu ma commande</button>)}
+</div>
 </div>
 )}
+
  </div>
  </div>
   );
@@ -209,9 +213,13 @@ const styles = {
     padding: 25,
     borderRadius: 10,
     width: "90%",
-    maxWidth: 450,
+    maxWidth: 850,
     boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
   },
+  img: {
+    width: "25%",
+    height: "25%",
+  }, 
   input: {
     width: "100%",
     padding: 12,
@@ -277,6 +285,36 @@ const styles = {
     cursor: "pointer",
     fontSize: 12,
   },
+  //03/02
+  /*
+modalOverlay: {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  background: "rgba(0,0,0,0.5)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 1000,
+},
+*/
+
+closeButton: {
+  position: "absolute",
+  top: 10,
+  right: 10,
+  background: "red",
+  color: "#fff",
+  border: "none",
+  borderRadius: "50%",
+  width: 30,
+  height: 30,
+  cursor: "pointer",
+},
+
+
 };
 
 /*
