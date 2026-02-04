@@ -70,7 +70,7 @@ const addToCart = async () => {
     alert("Veuillez sélectionner une option.");
     return;
   }
-const variantId = `${product._id}-${selectedOption.size}${selectedOption.unit}`;
+const variantId = `${product._id}-${selectedOption.size}${selectedOption.unit}`;       
 
   const item = {
     variantId: variantId, // ✅ LA SEULE BONNE VALEUR

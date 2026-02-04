@@ -1,5 +1,5 @@
 // Frontend/src/pages/Orders/TrackOrder.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 
@@ -8,11 +8,12 @@ export default function TrackOrder() {
  const { orderId: orderIdFromUrl } = useParams(); 
  const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
  const [orderData, setOrderData] = useState(null); 
- const [orders, setOrders] = useState([]);
+// const [orders, setOrders] = useState([]);
  const [error, setError] = useState(""); 
  const [showDetails, setShowDetails] = useState(false);
 const [hasSearched, setHasSearched] = useState(false);
 const [showOrderModal, setShowOrderModal] = useState(false);
+const { addToCartContext } = useContext(CartContext);
 
 
 
@@ -82,18 +83,24 @@ const handleReview = (item) => {
     }); 
   };
 
-const handleRebuy = async (item) => { 
+const handleRebuy = async (item) => {
   try {
-     await CartContext.addToCartContext({ 
+    await addToCartContext({
+      variantId: item.variantId,
       productId: item.productId,
-       quantite: 1, 
-       options: item.options, 
-      }); alert("Produit ajouté au panier !");
-    } 
-   catch (err) {
-         alert("Erreur lors de l’ajout au panier");
-    }
-   };
+      nom: item.nom,
+      imageUrl: item.imageUrl,
+      quantite: 1,
+      options: item.options,
+    });
+
+    alert("Produit ajouté au panier !");
+  } catch (err) {
+    console.error(err);
+    alert("Erreur lors de l’ajout au panier");
+  }
+};
+
 
   return (
     <div style={styles.container}>
@@ -124,7 +131,7 @@ const handleRebuy = async (item) => {
 <div style={styles.result}   onClick={(e) => e.stopPropagation()}>
             <h3>Commande : {orderData._id}</h3>
 
-            {/* TIMELINE */}
+
             <div style={styles.timeline}>
               <div style={orderData.status !== "pending" ? styles.stepActive : styles.step}>
                 Préparée
