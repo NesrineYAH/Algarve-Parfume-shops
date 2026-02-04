@@ -1,7 +1,7 @@
 // success.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../../context/UserContext";
 import "./Payment.scss";
 
 export default function Success() {

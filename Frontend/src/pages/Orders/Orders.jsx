@@ -89,6 +89,7 @@ useEffect(() => {
               <h3>Commande n°{order._id}</h3>
               <p>Paiement : {order.paymentStatus}</p>
               <p>Prix Total : {order.totalPrice} €</p>
+              <p>Date: {order.paidAt}</p>
 
               <div className="order-items">
                 {order.items.map((item, idx) => (
