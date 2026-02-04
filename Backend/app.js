@@ -67,6 +67,8 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
 app.use("/api/returns", returnRoutes);
+
+
 // ⚡ Routes Stripe & paiement
 app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentsRoute);

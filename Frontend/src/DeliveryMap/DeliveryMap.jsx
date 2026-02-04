@@ -18,9 +18,7 @@ const DeliveryMap = ({ latitude, longitude, onSelectRelay }) => {
   useEffect(() => {
     const fetchRelays = async () => {
       try {
-        const res = await fetch(
-          `/api/relays?lat=${latitude}&lng=${longitude}`
-        );
+        const res = await fetch(`/api/delivery/relays?lat=${latitude}&lng=${longitude}`);
         const data = await res.json();
         setRelays(data.relays || []);
       } catch (err) {
