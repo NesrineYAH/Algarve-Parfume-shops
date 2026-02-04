@@ -262,7 +262,7 @@ exports.shipOrder = async (req, res) => {
       <p>Votre commande <strong>${order._id}</strong> vient d'être expédiée.</p>
 
       <p>Vous pourrez suivre votre colis ici :</p>
-      <a href="https://www.laposte.fr/outils/suivre-vos-envois"
+      <a href="https://www.mondialrelay.com"
          style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">
          Suivre mon colis
       </a>
