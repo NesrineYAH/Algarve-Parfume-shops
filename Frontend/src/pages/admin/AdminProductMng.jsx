@@ -83,6 +83,7 @@ if (role !== "admin" && role !== "vendeur") {
                 <button onClick={() => handleDelete(prod._id)} >
                   Supprimer
                 </button>
+
               </td>
             </tr>
           ))}

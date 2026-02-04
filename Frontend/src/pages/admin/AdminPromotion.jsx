@@ -87,7 +87,5 @@ const AdminPromotion = () => {
   );
 };
 
-export default AdminPromotion;
+export default AdminPromotion; 
 
-/**
- */

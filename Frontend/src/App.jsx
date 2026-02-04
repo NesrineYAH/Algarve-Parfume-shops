@@ -11,11 +11,12 @@ import Newsletter from "./components/Newsletter/Newsletter";
 import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
-import AdminAddProduct from "./pages/admin/add-product";
-import AdminProductMng from "./pages/admin/AdminProductMng";
-import AdminPromotion from "./pages/admin/AdminPromotion";
-import EditProduct from "./pages/admin/EditProduct";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminAddProduct from "./pages/admin/add-product";  //1
+import AdminProductMng from "./pages/admin/AdminProductMng";   //2
+import AdminPromotion from "./pages/admin/AdminPromotion";   //3
+import AdminOrders from "./pages/admin/AdminOrders";        //4   
+import EditProduct from "./pages/admin/EditProduct";        //5
+import AdminDashboard from "./pages/admin/AdminDashboard";   //6
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
 import MonCompte from "./pages/MonCompte/MonCompte";
@@ -46,6 +47,7 @@ import QrCodePage from "./pages/App/QrCodePage"
 import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
+
 function App() {
   return (
     <>
@@ -64,6 +66,7 @@ function App() {
          <Route path="AdminProductMng" element={<AdminProductMng />} /> 
          <Route path="EditProduct/:id" element={<EditProduct />} /> 
          <Route path="promotions" element={<AdminPromotion />} /> 
+         <Route path="AdminOrders" element={<AdminOrders />} />
          </Route>         
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />

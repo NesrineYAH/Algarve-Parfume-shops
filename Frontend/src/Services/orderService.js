@@ -6,7 +6,6 @@ const api = axios.create({
   withCredentials: true, // ⭐ indispensable pour envoyer le cookie JWT
 });
 
-
 const OrderService = {
   createPreOrder: async (orderData) => {
     const response = await api.post("/orders/create", orderData);
@@ -36,17 +35,6 @@ const OrderService = {
     const response = await api.post(`/orders/finalize/${orderId}`);
     localStorage.removeItem("preOrderId");
     return response.data;
-  },
-  // ➤ Marquer une commande comme PAYÉE
-  markPaid: async (orderId) => {
-    if (!orderId) throw new Error("orderId manquant");
-    try {
-      const response = await api.post(`/orders/${orderId}/mark-paid`);
-      return response.data;
-    } catch (error) {
-      console.error("❌ Erreur markPaid :", error);
-      throw error;
-    }
   },
 
   cancelOrder: async (orderId) => {
@@ -87,7 +75,7 @@ const OrderService = {
 
 
   shipOrder: async (orderId) => {
-    return axios.put(`/orders/ship/${orderId}`);
+    return axios.put(`/orders/${orderId}/ship`);
   },
 
 

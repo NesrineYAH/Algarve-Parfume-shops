@@ -11,10 +11,9 @@ export default function TrackOrder() {
 // const [orders, setOrders] = useState([]);
  const [error, setError] = useState(""); 
  const [showDetails, setShowDetails] = useState(false);
-const [hasSearched, setHasSearched] = useState(false);
-const [showOrderModal, setShowOrderModal] = useState(false);
-const { addToCartContext } = useContext(CartContext);
-
+ const [hasSearched, setHasSearched] = useState(false);
+ const [showOrderModal, setShowOrderModal] = useState(false);          
+ const { addToCartContext } = useContext(CartContext);
 
 
  const navigate = useNavigate();

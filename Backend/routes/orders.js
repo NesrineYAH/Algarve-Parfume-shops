@@ -15,7 +15,7 @@ router.delete("/:orderId", authMiddleware, orderCtrl.deleteOrder);
 router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
 router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
 router.get("/:orderId", authMiddleware, orderCtrl.getOrderById);
-router.post("/:orderId/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
+router.put("/:orderId/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
 router.post("/:orderId/deliver", authMiddleware, orderCtrl.deliverOrder);
 router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
 

@@ -74,14 +74,17 @@ exports.createOrder = async (req, res) => {
 };
 exports.updateOrder = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.id);
+        const order = await Order.findById(req.params.orderId);
         if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
         if (order.userId.toString() !== req.user.userId && req.user.role !== "admin") {
             return res.status(403).json({ message: "Accès interdit" });
         }
+
         const updateData = req.body;
+
         const updatedOrder = await Order.findByIdAndUpdate(
-            req.params.id,
+            req.params.orderId,
             updateData,
             { new: true }
         );
@@ -89,7 +92,7 @@ exports.updateOrder = async (req, res) => {
         if (!updatedOrder) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
-        // Vérification que l'utilisateur est propriétaire ou admin
+
         if (updatedOrder.userId.toString() !== req.user.userId && req.user.role !== "admin") {
             return res.status(403).json({ message: "Accès interdit" });
         }
@@ -100,10 +103,11 @@ exports.updateOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 exports.finalizeOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
-        //    if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
         order.status = "confirmed";
         order.paymentStatus = "paid";
         order.paidAt = new Date();
@@ -179,7 +183,7 @@ exports.deleteOrder = async (req, res) => {
 };
 exports.getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.find().populate("userId", "email nom prenom");
+        const orders = await Order.find().populate("userId", "email nom prenom pays");
         return res.status(200).json(orders);
     } catch (error) {
         console.error("Erreur récupération commandes:", error.message);
@@ -238,7 +242,6 @@ exports.getOrderById = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 exports.shipOrder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
@@ -247,8 +250,8 @@ exports.shipOrder = async (req, res) => {
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
-
         order.status = "shipped";
+        order.shippedAt = new Date();
         await order.save();
 
         // ⭐ Email d’expédition
@@ -282,7 +285,6 @@ exports.shipOrder = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 exports.deliverOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -342,27 +344,3 @@ exports.cancelOrder = async (req, res) => {
     }
 };
 
-//              const order = await Order.findById(orderId).populate("items.productId").populate("userId");
-
-
-/*
-exports.shipOrder = async (req, res) => {
-    try {
-        const order = await Order.findById(req.params.id);
-
-        if (!order) {
-            return res.status(404).json({ message: "Commande introuvable" });
-        }
-
-        order.status = "shipped";
-        order.deliveryStatus = "shipped";
-
-        await order.save();
-
-        res.json({ message: "Commande expédiée", order });
-    } catch (error) {
-        console.error("Erreur expédition commande :", error);
-        res.status(500).json({ message: "Erreur serveur" });
-    }
-};
-*/
