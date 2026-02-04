@@ -24,7 +24,6 @@ const orderSchema = new mongoose.Schema(
             },
         ],
 
-
         totalPrice: { type: Number, required: true },
 
         status: {
@@ -48,6 +47,7 @@ const orderSchema = new mongoose.Schema(
         },
 
         paidAt: Date,
+        shippedAt:  Date,
         deliveredAt: Date,
     },
     { timestamps: true }

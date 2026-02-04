@@ -302,6 +302,19 @@
         color: #c92a2a;
       }
     }
+
+    .disabled-btn {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .ship-btn {
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
   }
 
   /* 💻 Desktop : tableau normal */

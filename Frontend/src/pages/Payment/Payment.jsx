@@ -17,11 +17,10 @@ export default function Payment() {
 
   // Vérifier si la commande est déjà payée
 useEffect(() => {
-  const token = localStorage.getItem("token");
   const params = new URLSearchParams(location.search);
   const sessionId = params.get("session_id");
 
-  if (!sessionId || !token) return;
+  if (!sessionId) return;
 
   const confirmPayment = async () => {
     try {
@@ -31,8 +30,8 @@ useEffect(() => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
+          credentials: "include",
           body: JSON.stringify({ sessionId }),
         }
       );
@@ -49,6 +48,7 @@ useEffect(() => {
   confirmPayment();
 }, [location.search]);
 
+
   const orderFromState = location.state?.order;
 
   // Calcul du total
@@ -60,57 +60,56 @@ useEffect(() => {
     0
   );
 
-  const handleStripePayment = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+const handleStripePayment = async () => {
+  try {
+    setLoading(true);
+    setError(null);
 
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("Utilisateur non authentifié");
+    const orderId =
+      location.state?.orderId || localStorage.getItem("preOrderId");
 
-      const orderId =
-        location.state?.orderId || localStorage.getItem("preOrderId");
-console.log("🟦 orderId détecté dans Payment.jsx :", orderId);
-      let stripeUrl = "";
-      let itemsToPay = [];
+    let stripeUrl = "";
+    let itemsToPay = [];
 
-      // 🅱️ Paiement depuis une commande existante
-      if (orderId) {
-        stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
-        itemsToPay = orderFromState ? orderFromState.items : cartItems;
-      } else {
+    if (orderId) {
+      stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
+      itemsToPay = orderFromState ? orderFromState.items : cartItems;
+    } else {
+      stripeUrl = `http://localhost:5001/api/stripe/checkout-from-cart`;
+      itemsToPay = cartItems;
 
-        stripeUrl = `http://localhost:5001/api/stripe/checkout-from-cart`;
-        itemsToPay = cartItems;
-        
-        if (!itemsToPay || itemsToPay.length === 0)
-          throw new Error("Panier vide");
-      }
-      const fetchOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ items: itemsToPay }),
-      };
-
-      const response = await fetch(stripeUrl, fetchOptions);
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Stripe session error");
-      }
-      const data = await response.json();
-      if (!data.url) throw new Error("URL Stripe absente");
-
-      window.location.href = data.url;
-    } catch (err) {
-      console.error("❌ Stripe error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+      if (!itemsToPay || itemsToPay.length === 0)
+        throw new Error("Panier vide");
     }
-  };
+
+    const fetchOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ items: itemsToPay }),
+    };
+
+    const response = await fetch(stripeUrl, fetchOptions);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Stripe session error");
+    }
+
+    const data = await response.json();
+    if (!data.url) throw new Error("URL Stripe absente");
+
+    window.location.href = data.url;
+  } catch (err) {
+    console.error("❌ Stripe error:", err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     if (paymentMethod !== "paypal") return;
