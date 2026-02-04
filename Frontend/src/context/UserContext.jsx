@@ -88,6 +88,21 @@ const UserProvider = ({ children }) => {
       console.log("🚪 Déconnexion complète");
     }
   };
+   // refreshUser 
+   const refreshUser = async () => {
+  try {
+    const currentUser = await getCurrentUser(); // appelle /auth/me
+    if (currentUser) {
+      setUser(currentUser);
+    } else {
+      setUser(null);
+    }
+  } catch (err) {
+    console.error("❌ Erreur refreshUser:", err);
+    setUser(null);
+  }
+};
+
 
   return (
     <UserContext.Provider
@@ -98,6 +113,7 @@ const UserProvider = ({ children }) => {
         handleRegister,
         handleLogout,
         setUser,
+         refreshUser, // ← AJOUT ICI
       }}
     >
       {children}
