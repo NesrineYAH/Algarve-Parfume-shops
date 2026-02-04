@@ -70,9 +70,10 @@ const addToCart = async () => {
     alert("Veuillez sélectionner une option.");
     return;
   }
+const variantId = `${product._id}-${selectedOption.size}${selectedOption.unit}`;
 
   const item = {
-    variantId: selectedOption._id, // ✅ LA SEULE BONNE VALEUR
+    variantId: variantId, // ✅ LA SEULE BONNE VALEUR
     productId: product._id,
     nom: product.nom,
     imageUrl: product.imageUrl,
@@ -100,7 +101,6 @@ const addToCart = async () => {
     alert("Erreur ajout au panier");
   }
 };
-
 
 const reportComment = async (commentId) => {
   try {

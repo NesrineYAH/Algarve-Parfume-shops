@@ -79,7 +79,6 @@ export async function getCurrentUser() {
   }
 }
 
-
 // 🚪 LOGOUT (supprime le cookie côté backend)
 export async function logoutUser() {
   try {
@@ -91,7 +90,6 @@ export async function logoutUser() {
     console.error("Erreur logout:", err);
   }
 }
-
 
 export async function forgotPassword(email) {
   const res = await fetch("http://localhost:5001/api/users/forgot-password", {

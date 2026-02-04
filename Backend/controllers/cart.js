@@ -14,17 +14,9 @@ exports.addToCart = async (req, res) => {
       options
     } = req.body;
 
-    if (
-      !variantId ||
-      !productId ||
-      !options ||
-      !options.size ||
-      !options.prix
-    ) {
+    if (!variantId || !productId || !options || !options.size || !options.prix) {
       return res.status(400).json({ message: "Données produit incomplètes" });
     }
-
-    const vid = new mongoose.Types.ObjectId(variantId);
 
     let cart = await Cart.findOne({ userId });
 
@@ -32,7 +24,7 @@ exports.addToCart = async (req, res) => {
       cart = new Cart({
         userId,
         items: [{
-          variantId: vid,
+          variantId,
           productId,
           nom,
           imageUrl,
@@ -46,14 +38,14 @@ exports.addToCart = async (req, res) => {
     }
 
     const existingItem = cart.items.find(
-      i => i.variantId.toString() === vid.toString()
+      i => i.variantId.toString() === variantId.toString()
     );
 
     if (existingItem) {
       existingItem.quantite += quantite;
     } else {
       cart.items.push({
-        variantId: vid,
+        variantId,
         productId,
         nom,
         imageUrl,
@@ -70,6 +62,7 @@ exports.addToCart = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
 
 exports.getCart = async (req, res) => {
   try {
@@ -95,15 +88,13 @@ exports.updateQuantity = async (req, res) => {
       return res.status(400).json({ message: "variantId et delta requis" });
     }
 
-    const vid = new mongoose.Types.ObjectId(variantId);
-
     const cart = await Cart.findOne({ userId });
     if (!cart) {
       return res.status(404).json({ message: "Panier vide" });
     }
 
     const item = cart.items.find(
-      i => i.variantId.toString() === vid.toString()
+      i => i.variantId.toString() === variantId.toString()
     );
 
     if (!item) {
@@ -121,17 +112,12 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
+
 /* removeItem avec $pull */
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { variantId } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(variantId)) {
-      return res.status(400).json({ message: "variantId invalide" });
-    }
-
-    const vid = new mongoose.Types.ObjectId(variantId);
 
     const cart = await Cart.findOne({ userId });
     if (!cart) {
@@ -141,7 +127,7 @@ exports.removeItem = async (req, res) => {
     const before = cart.items.length;
 
     cart.items = cart.items.filter(
-      i => i.variantId.toString() !== vid.toString()
+      i => i.variantId.toString() !== variantId.toString()
     );
 
     if (cart.items.length === before) {
@@ -156,7 +142,6 @@ exports.removeItem = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
 
 /* 🧹 Vider le panier */
 exports.clearCart = async (req, res) => {
@@ -182,23 +167,37 @@ exports.syncCart = async (req, res) => {
     const userId = req.user.userId;
     const { cartItems } = req.body;
 
-    const sanitizedItems = cartItems.map(item => ({
-      ...item,
-      variantId: new mongoose.Types.ObjectId(item.variantId)
-    }));
+    const map = new Map();
+
+    cartItems.forEach(item => {
+      const key = item.variantId.toString();
+
+      if (map.has(key)) {
+        map.get(key).quantite += item.quantite;
+      } else {
+        map.set(key, {
+          ...item,
+          variantId: key
+        });
+      }
+    });
+
+    const mergedItems = Array.from(map.values());
 
     await Cart.findOneAndUpdate(
       { userId },
-      { items: sanitizedItems },
+      { items: mergedItems },
       { upsert: true, new: true }
     );
 
-    res.json({ message: "Cart synced successfully" });
+    res.json({ items: mergedItems });
+
   } catch (err) {
     console.error("❌ syncCart error:", err);
     res.status(500).json({ error: "Sync failed" });
   }
 };
+
 
 
 

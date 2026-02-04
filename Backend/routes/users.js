@@ -6,16 +6,13 @@ const { authMiddleware, isAdmin } = require("../middleware/auth");
 // ➤ REGISTER & LOGIN
 router.post("/register", userCtrl.validate("register"), userCtrl.register);
 router.post("/login", userCtrl.login);
-
-// ➤ Mon compte
 router.get("/moncompte", authMiddleware, (req, res) => {
     res.json({ user: req.user });
 });
-// ➤ Récupérer tous les utilisateurs (admin seulement)
 router.get("/all", authMiddleware, isAdmin, userCtrl.getUsers);
-// 05/12  ajout forgotPassword & resetPassword
 router.post("/forgot-password", userCtrl.forgotPassword);
 router.post("/reset-password/:token", userCtrl.resetPassword);
+router.post("/logout", userCtrl.logout);
 
 
 module.exports = router;

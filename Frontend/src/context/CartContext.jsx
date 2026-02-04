@@ -1,5 +1,9 @@
-import {createContext, useContext, useEffect, useMemo,
-useState,
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 import { UserContext } from "./UserContext";
 
@@ -12,80 +16,82 @@ const CartProvider = ({ children }) => {
   // 🔄 Fusion panier local + backend (clé = variantId)
   const mergeCarts = (localCart, backendCart) => {
     const map = new Map();
+
     [...backendCart, ...localCart].forEach((item) => {
-      if (map.has(item.variantId)) {
-        map.get(item.variantId).quantite += item.quantite;
+      const key = item.variantId.toString();
+
+      if (map.has(key)) {
+        map.get(key).quantite += item.quantite;
       } else {
-        map.set(item.variantId, { ...item });
+        map.set(key, item);
       }
     });
 
     return Array.from(map.values());
   };
 
-
-useEffect(() => { 
+  // 📦 Charger panier local si user NON connecté
+  useEffect(() => {
     if (!user?._id) {
-     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-     setCartItems(localCart);
-     console.log("CartContext cartItems:", cartItems);
+      const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCartItems(localCart);
+    }
+  }, [user]);
 
-     }
-    }, [user]);
+  // 🔐 Sync panier local → backend au login
+  useEffect(() => {
+    if (!user?._id) return;
 
-useEffect(() => {
-  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
-  setCartItems(localCart);
-}, []);
-useEffect(() => {
-  if (!user?._id) return;
+    const syncCarts = async () => {
+      try {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  const token = localStorage.getItem("token");
-  if (!token) return;
+        // 1️⃣ récupérer panier backend (cookie JWT auto)
+        const res = await fetch("http://localhost:5001/api/carts", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        const backendCart = data.items || [];
 
-  const localCart = JSON.parse(localStorage.getItem("cart")) || [];
+        // 2️⃣ fusion
+        const mergedCart = mergeCarts(localCart, backendCart);
 
-  // 🟢 1. envoyer le panier local au backend
-  fetch("http://localhost:5001/api/carts/sync", {
-    method: "POST",
-    headers: {
-     "Content-Type": "application/json",
-     },
-     credentials: "include",
-    body: JSON.stringify({ cartItems: localCart }),
-  })
-    .then(() => {
-      // 🟢 2. supprimer le panier local
-      localStorage.removeItem("cart");
+        // 3️⃣ sync backend
+        await fetch("http://localhost:5001/api/carts/sync", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ cartItems: mergedCart }),
+        });
 
-      // 🟢 3. charger le panier backend UNIQUEMENT
-      return fetch("http://localhost:5001/api/carts", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    })
-    .then(res => res.json())
-    .then(data => {
-      setCartItems(
-        (data.items || []).map(item => ({
-          ...item,
-          variantId: item.variantId.toString(),
-        }))
-      );
-    })
-    .catch(err => {
-      console.error("Sync cart error:", err);
-    });
-}, [user]);
+        // 4️⃣ clean localStorage
+        localStorage.removeItem("cart");
 
-  // ➕ Ajouter
+        // 5️⃣ update state
+        setCartItems(mergedCart);
+      } catch (err) {
+        console.error("❌ cart sync error:", err);
+      }
+    };
+
+    syncCarts();
+  }, [user]);
+
+  // ➕ Ajouter au panier
   const addToCartContext = async (item) => {
+    // 👤 NON connecté → localStorage
     if (!user?._id) {
       setCartItems((prev) => {
         const updated = [...prev];
-        const exist = updated.find((i) => i.variantId === item.variantId);
+        const exist = updated.find(
+          (i) => i.variantId.toString() === item.variantId.toString()
+        );
 
-        if (exist) exist.quantite += item.quantite;
-        else updated.push(item);
+        if (exist) {
+          exist.quantite += item.quantite;
+        } else {
+          updated.push(item);
+        }
 
         localStorage.setItem("cart", JSON.stringify(updated));
         return updated;
@@ -93,95 +99,109 @@ useEffect(() => {
       return;
     }
 
-//    const token = localStorage.getItem("token");
+    // 🔐 CONNECTÉ → backend
+    try {
+      await fetch("http://localhost:5001/api/carts/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(item),
+      });
 
-    await fetch("http://localhost:5001/api/carts/add", {
-      method: "POST",
-     headers: { "Content-Type": "application/json", }, 
-      credentials: "include",
-      body: JSON.stringify(item),
-    });
-
-    const res = await fetch("http://localhost:5001/api/carts", {
-     headers: { "Content-Type": "application/json", }, 
-     credentials: "include",
-    });
-
-    const data = await res.json();
-    setCartItems(data.items || []);
-  };
-  // ➕➖ Modifier quantité
-const updateQuantity = async (variantId, delta) => {
-  if (!user?._id) {
-    setCartItems(prev => {
-      const updated = prev.map(item =>
-        item.variantId === variantId
-          ? { ...item, quantite: Math.max(1, item.quantite + delta) }
-          : item
-      );
-      localStorage.setItem("cart", JSON.stringify(updated));
-      return updated;
-    });
-    return;
-  }
-
-//  const token = localStorage.getItem("token");
-
-  const res = await fetch("http://localhost:5001/api/carts/updateQuantity", {
-    method: "PUT",
-    headers: {
-    "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      variantId,
-      delta: Number(delta), // ⭐ CRUCIAL
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    console.error("UPDATE ERROR :", err);
-    return;
-  }
-
-  const data = await res.json();
-  setCartItems(data.items || []);
-};
-  // ❌ Supprimer
-const removeFromCart = async (variantId) => {
-  if (!user?._id) {
-    const updated = cartItems.filter(i => i.variantId !== variantId);
-    setCartItems(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
-    return;
-  }
-
-//  const token = localStorage.getItem("token");
-
-  const res = await fetch(
-    `http://localhost:5001/api/carts/removeItem/${variantId}`,
-    {
-      method: "DELETE",
-      headers: {
-       "Content-Type": "application/json",
-        },
-      credentials: "include",
-
+      const res = await fetch("http://localhost:5001/api/carts", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setCartItems(data.items || []);
+    } catch (err) {
+      console.error("❌ addToCart error:", err);
     }
-  );
+  };
 
-  if (!res.ok) {
-    const err = await res.json();
-    console.error("REMOVE ERROR :", err);
-    return;
-  }
+  // ➕➖ Modifier quantité
+  const updateQuantity = async (variantId, delta) => {
+    // 👤 NON connecté
+    if (!user?._id) {
+      setCartItems((prev) => {
+        const updated = prev.map((item) =>
+          item.variantId.toString() === variantId.toString()
+            ? {
+                ...item,
+                quantite: Math.max(1, item.quantite + delta),
+              }
+            : item
+        );
 
-  const data = await res.json();
-  setCartItems(data.items || []);
-};
+        localStorage.setItem("cart", JSON.stringify(updated));
+        return updated;
+      });
+      return;
+    }
 
-  // 💰 Total
+    // 🔐 CONNECTÉ
+    try {
+      const res = await fetch(
+        "http://localhost:5001/api/carts/updateQuantity",
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            variantId,
+            delta: Number(delta),
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("❌ UPDATE ERROR:", err);
+        return;
+      }
+
+      const data = await res.json();
+      setCartItems(data.items || []);
+    } catch (err) {
+      console.error("❌ updateQuantity error:", err);
+    }
+  };
+
+  // ❌ Supprimer du panier
+  const removeFromCart = async (variantId) => {
+    // 👤 NON connecté
+    if (!user?._id) {
+      const updated = cartItems.filter(
+        (i) => i.variantId.toString() !== variantId.toString()
+      );
+      setCartItems(updated);
+      localStorage.setItem("cart", JSON.stringify(updated));
+      return;
+    }
+
+    // 🔐 CONNECTÉ
+    try {
+      const res = await fetch(
+        `http://localhost:5001/api/carts/removeItem/${variantId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("❌ REMOVE ERROR:", err);
+        return;
+      }
+
+      const data = await res.json();
+      setCartItems(data.items || []);
+    } catch (err) {
+      console.error("❌ removeFromCart error:", err);
+    }
+  };
+
+  // 💰 Total panier
   const totalPrice = useMemo(() => {
     return cartItems.reduce(
       (acc, item) => acc + (item.options?.prix || 0) * item.quantite,
@@ -205,4 +225,5 @@ const removeFromCart = async (variantId) => {
 };
 
 export default CartProvider;
+
 

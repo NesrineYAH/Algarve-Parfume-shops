@@ -1,5 +1,7 @@
 // controller/product.js
 const Product = require("../Model/product");
+const Cart = require("../Model/Cart");
+
 require("dotenv").config();
 
 // ➤ Ajouter un produit
@@ -166,6 +168,9 @@ exports.addComment = async (req, res) => {
         return res.status(500).json({ error: "Erreur serveur" });
     }
 };
+
+
+
 
 /*
 18/12/2025 

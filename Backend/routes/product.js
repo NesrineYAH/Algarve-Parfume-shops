@@ -7,7 +7,7 @@ const { authMiddleware, isAdmin } = require("../middleware/auth");
 const { product } = require("../controllers/product");
 
 
-const { addProduct, getProducts, getProductById, deleteProduct, updateProduct, addComment, } = require("../controllers/product");
+const { addProduct, getProducts, getProductById, deleteProduct, updateProduct, addComment } = require("../controllers/product");
 
 // ➤ Ajouter un produit
 router.post(
@@ -23,6 +23,7 @@ router.get("/", getProducts);
 
 // ➤ Récupérer un produit par ID
 router.get("/:id", getProductById);
+
 
 // ➤ Ajouter commentaire + note ⭐⭐⭐⭐⭐
 router.post("/:id/comment", authMiddleware, addComment);

@@ -85,7 +85,7 @@ const handleReview = (item) => {
 const handleRebuy = async (item) => { 
   try {
      await CartContext.addToCartContext({ 
-      productId: item.productId || item.product?._id,
+      productId: item.productId,
        quantite: 1, 
        options: item.options, 
       }); alert("Produit ajouté au panier !");
