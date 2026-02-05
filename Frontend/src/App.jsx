@@ -13,15 +13,13 @@ import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 
-import AdminAddProduct from "./pages/admin/add-product";  
+import AdminAddProduct from "./pages/admin/addProduct";  
 import AdminProductMng from "./pages/admin/AdminProductMng";   
 import AdminPromotion from "./pages/admin/AdminPromotion";   
 import AdminOrders from "./pages/admin/AdminOrders";        
 import EditProduct from "./pages/admin/EditProduct";        
 import AdminDashboard from "./pages/admin/AdminDashboard";
-
 import AdminRoute from "./helpers/AdminRoute";
-
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
 import MonCompte from "./pages/MonCompte/MonCompte";
@@ -61,25 +59,26 @@ function App() {
         <Headers />
         
         <Routes>
-    <Route path="/" element={<Navigate to="/Home" />} />  
-       <Route path="/Home" element={<Home />} /> 
-           <Route path="*" element={<ErrorPage />} />
+         <Route path="/" element={<Navigate to="/Home" />} /> 
+          <Route path="*" element={<ErrorPage />} />
+          <Route path="/Home" element={<Home />} /> 
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
 
         {/*Route admin imbriquées*/}
       <Route
-  path="/admin"
+  path="/admin-dashboard"
   element={
     <AdminRoute>
       <AdminDashboard />
     </AdminRoute>
   }
 >
-  <Route path="add-product" element={<AdminAddProduct />} />
+  <Route path="addProduct" element={<AdminAddProduct />} />
   <Route path="products" element={<AdminProductMng />} />
   <Route path="promotions" element={<AdminPromotion />} />
   <Route path="orders" element={<AdminOrders />} />
+  <Route path="EditProduct/:id" element={<EditProduct />}/>
 </Route>
 
        

@@ -10,16 +10,16 @@ import { FavoritesProvider } from "./context/FavoritesContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
-    <BrowserRouter>
-      <UserProvider>
-        <AvisProvider>
-          <FavoritesProvider>
+ <BrowserRouter>
+    <UserProvider>
+      <AvisProvider>
+        <FavoritesProvider>
           <CartProvider>
             <App />
           </CartProvider>
-          </FavoritesProvider>
-        </AvisProvider>
-      </UserProvider>
-    </BrowserRouter>
+        </FavoritesProvider>
+      </AvisProvider>
+    </UserProvider>
+  </BrowserRouter>
   </>
 );

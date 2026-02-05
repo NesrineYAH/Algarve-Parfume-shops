@@ -46,18 +46,6 @@ export default function MonCompte() {
       .catch(console.error);
   }, [user]);
 
-  /* MonCompte.jsx  Redirection ADMIN / VENDEUR */ 
-  /*
- useEffect(() => {
-  if (
-    user &&
-    (user.role === "admin" || user.role === "vendeur") &&
-    location.pathname === "/MonCompte"
-  ) {
-    navigate("/admin");
-  }
-}, [user, location.pathname, navigate]);
-*/
   if (!user) {
     return <h2>Chargement du compte...</h2>;
   }

@@ -122,17 +122,33 @@ const Header = () => {
 
               <span className="user-name">Bonjour {user.prenom}</span>
 
-              {dropdownVisible && (
-                <div className="dropdown-menu">
-                  <Link to="/MonCompte">{t("user.account")}</Link>
-                  <Link to="/Orders">{t("user.orders")}</Link>
-                  <Link to="/history">{t("user.history")}</Link>
+            {dropdownVisible && (
+  <div className="dropdown-menu">
 
-                  <button  onClick={() => { handleLogout(); navigate("/Home"); }} >
-                    <LogOut size={16} /> {t("user.logout")}
-                  </button>
-                </div>
-              )}
+    <button
+      onClick={() => {
+        if (user.role === "admin" || user.role === "vendeur") {
+          navigate("/admin-dashboard");
+        } else {
+          navigate("/MonCompte");
+        }
+      }}
+      className="dropdown-btn"
+    >
+      {t("user.account")}
+    </button>
+
+    <Link to="/Orders">{t("user.orders")}</Link>
+    <Link to="/history">{t("user.history")}</Link>
+
+{/*navigate("/Home"); */}
+
+    <button onClick={() => { handleLogout();  }}>
+      <LogOut size={16} /> {t("user.logout")}
+    </button>
+  </div>
+)}
+
             </div>
           ) : (
             <div className="user-dropdown">

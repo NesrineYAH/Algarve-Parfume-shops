@@ -1,18 +1,15 @@
 // UserContext.jsx
 import { createContext, useState, useEffect } from "react";
-import {
-  loginUser,
-  registerUser,
-  getCurrentUser,
-  logoutUser,
-} from "../Services/auth";
+import { loginUser, registerUser, getCurrentUser,logoutUser } from "../Services/auth";
+import { useNavigate } from "react-router-dom";
+
 
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
-
+   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,23 +34,31 @@ const UserProvider = ({ children }) => {
 
     fetchUser();
   }, []);
-  const handleLogin = async (credentials) => {
-    try {
-      const data = await loginUser(credentials);
 
-      if (data?.user) {
-        setUser(data.user);
-        console.log("✅ Login réussi, cookie JWT reçu et utilisateur enregistré");
+const handleLogin = async (credentials, navigate) => {
+  try {
+    const data = await loginUser(credentials);
+
+    if (data.success && data.user) {
+      setUser(data.user);
+      console.log("✅ Login réussi");
+
+      // Redirection selon le rôle
+      if (data.user.role === "admin" || data.user.role === "vendeur") {
+        navigate("/admin-dashboard"); 
       } else {
-        console.log("❌ Login échoué : aucune donnée utilisateur reçue");
+        navigate("/MonCompte"); 
       }
-
-      return data;
-    } catch (error) {
-      console.error("❌ Erreur login:", error);
-      return null;
     }
-  };
+
+    return data;
+
+  } catch (err) {
+    console.error("❌ Erreur login:", err);
+    return { success: false, message: "Erreur serveur" };
+  }
+};
+
   const handleRegister = async (credentials) => {
     try {
       const data = await registerUser(credentials);
@@ -75,6 +80,8 @@ const UserProvider = ({ children }) => {
       console.error("❌ Erreur logout API:", error);
     } finally {
       setUser(null);
+   
+    navigate("/Home");
       localStorage.removeItem("cart");
       console.log("🚪 Déconnexion complète");
     }

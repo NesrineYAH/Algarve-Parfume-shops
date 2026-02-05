@@ -7,12 +7,9 @@ const AdminRoute = ({ children }) => {
 
   if (loading) return <p>Chargement...</p>;
   if (!user) return <Navigate to="/login" />;
-
-  if (user.role !== "admin" && user.role !== "vendeur") {
+  
+  if (!user || (user.role !== "admin" && user.role !== "vendeur")) {
     return <Navigate to="/Home" replace />;
-  }
-    if (user.role === "admin" && user.role === "vendeur") {
-    return <Navigate to="/admin" replace />;
   }
 
   return children;

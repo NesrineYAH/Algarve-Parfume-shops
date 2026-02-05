@@ -1,6 +1,5 @@
 // Frontend/src/pages/Authentification/Authentification.jsx
 import React, { useState, useContext } from "react";
-import { registerUser, loginUser } from "../../Services/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Authentification.scss";
 import { UserContext } from "../../context/UserContext";
@@ -12,7 +11,7 @@ export default function Authentification() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-// 🔑 clé magique
+
 const redirectTo = location.state?.redirectTo || "/MonCompte";
 
 const { handleLogin, handleRegister } = useContext(UserContext);
@@ -23,26 +22,25 @@ const handleSubmit = async (e) => {
 
   try {
     if (activeTab === "login") {
-      // 🔵 Connexion via UserContext
-      const response = await handleLogin(form);
+      const response = await handleLogin(form, navigate);
 
-      if (response.user) {
-        setMessage("Connexion réussie !");
-         navigate(redirectTo);
-      } else {
-        setMessage(response.message || "Identifiants invalides");
+      if (!response.success) {
+        setMessage(response.message || "Identifiants incorrects");
+        return;
       }
 
+      // La redirection est déjà gérée dans handleLogin → pas besoin ici
+      return;
+    }
+
+    // --- INSCRIPTION ---
+    const response = await handleRegister(form);
+
+    if (response.user) {
+      setMessage("Inscription réussie !");
+      navigate("/MonCompte");
     } else {
-      // 🔵 Inscription via UserContext
-      const response = await handleRegister(form);
-
-      if (response.user) {
-        setMessage("Inscription réussie !");
-        navigate("/MonCompte");
-      } else {
-        setMessage(response.message || "Erreur lors de l'inscription");
-      }
+      setMessage(response.message || "Erreur lors de l'inscription");
     }
 
   } catch (err) {
@@ -50,6 +48,7 @@ const handleSubmit = async (e) => {
     setMessage("Erreur serveur, veuillez réessayer.");
   }
 };
+
 
   return (
     <div className="Auth-container">

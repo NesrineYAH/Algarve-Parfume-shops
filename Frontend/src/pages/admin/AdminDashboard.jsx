@@ -1,3 +1,5 @@
+//Frontend/AdminDashBoard 
+
 import React, { useState, useContext} from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./admin.scss";
@@ -20,18 +22,19 @@ export default function AdminDashboard() {
              <h3>{user.email}</h3>
               <h4>Vous êtes le {user.role}</h4>
 
-<Link to="/admin/add-product">
+<Link to="addProduct">
   <button className="btn-Add">➕ Ajouter un produit</button>
 </Link>
-<Link to="/admin/products">
+<Link to="products">
   <button className="btn-Add">📦 Gérer les produits</button>
 </Link>
-<Link to="/admin/promotions">
+<Link to="promotions">
   <button className="btn-Add">🔥 Add Promotions</button>
 </Link>
-<Link to="/admin/orders">
+<Link to="orders">
   <button className="btn-Add">🚚 Gérer les commandes</button>
 </Link>
+
 
 
       </aside>     
