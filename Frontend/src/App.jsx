@@ -19,7 +19,8 @@ import AdminPromotion from "./pages/admin/AdminPromotion";
 import AdminOrders from "./pages/admin/AdminOrders";        
 import EditProduct from "./pages/admin/EditProduct";        
 import AdminDashboard from "./pages/admin/AdminDashboard";
- 
+
+import AdminRoute from "./helpers/AdminRoute";
 
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
@@ -67,14 +68,21 @@ function App() {
           <Route path="/product/:id" element={<Product />} />{" "}
 
         {/*Route admin imbriquées*/}
-     <Route path="/admin" element={<AdminDashboard />}>
-           <Route path="add-product" element={<AdminAddProduct />} /> 
-           <Route path="products" element={<AdminProductMng />} /> 
-           <Route path="edit-product/:id" element={<EditProduct />} /> 
-           <Route path="promotions" element={<AdminPromotion />} /> 
-           <Route path="orders" element={<AdminOrders />} />
-      </Route>
-                  
+      <Route
+  path="/admin"
+  element={
+    <AdminRoute>
+      <AdminDashboard />
+    </AdminRoute>
+  }
+>
+  <Route path="add-product" element={<AdminAddProduct />} />
+  <Route path="products" element={<AdminProductMng />} />
+  <Route path="promotions" element={<AdminPromotion />} />
+  <Route path="orders" element={<AdminOrders />} />
+</Route>
+
+       
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />

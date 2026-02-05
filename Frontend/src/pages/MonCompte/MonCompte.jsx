@@ -1,4 +1,3 @@
-// Frontend/src/pages/MonCompte/MonCompte.jsx
 /* Frontend/src/pages/MonCompte/MonCompte.jsx */
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +5,7 @@ import "./MonCompte.scss";
 import { UserContext } from "../../context/UserContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import { Heart, Trash2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 export default function MonCompte() {
   const navigate = useNavigate();
@@ -14,10 +14,10 @@ export default function MonCompte() {
   const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState("infos");
   const [orders, setOrders] = useState([]);
+  const location = useLocation();
 
   /* 🔐 1) Vérification auth + chargement adresses */
   useEffect(() => {
-    // Si pas connecté → redirection immédiate
     if (!user) {
       navigate("/Authentification");
       return;
@@ -46,14 +46,18 @@ export default function MonCompte() {
       .catch(console.error);
   }, [user]);
 
-  /* 🚀 3) Redirection ADMIN / VENDEUR */
-  useEffect(() => {
-    if (user && (user.role === "admin" || user.role === "vendeur")) {
-  navigate("/admin");
-
-    }
-  }, [user, navigate]);
-
+  /* MonCompte.jsx  Redirection ADMIN / VENDEUR */ 
+  /*
+ useEffect(() => {
+  if (
+    user &&
+    (user.role === "admin" || user.role === "vendeur") &&
+    location.pathname === "/MonCompte"
+  ) {
+    navigate("/admin");
+  }
+}, [user, location.pathname, navigate]);
+*/
   if (!user) {
     return <h2>Chargement du compte...</h2>;
   }

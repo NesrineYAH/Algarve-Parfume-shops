@@ -37,8 +37,6 @@ const UserProvider = ({ children }) => {
 
     fetchUser();
   }, []);
-
- 
   const handleLogin = async (credentials) => {
     try {
       const data = await loginUser(credentials);
@@ -56,8 +54,6 @@ const UserProvider = ({ children }) => {
       return null;
     }
   };
-
-
   const handleRegister = async (credentials) => {
     try {
       const data = await registerUser(credentials);
@@ -72,8 +68,6 @@ const UserProvider = ({ children }) => {
       return null;
     }
   };
-
-  // 🚪 LOGOUT
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -85,7 +79,6 @@ const UserProvider = ({ children }) => {
       console.log("🚪 Déconnexion complète");
     }
   };
-   // refreshUser 
    const refreshUser = async () => {
   try {
     const currentUser = await getCurrentUser(); // appelle /auth/me
@@ -120,6 +113,28 @@ const UserProvider = ({ children }) => {
 
 export default UserProvider;
 
+
+/*
+const handleLogin = async () => {
+  try {
+    const response = await axios.post("/api/users/login", credentials);
+    const { role } = response.data.user;
+
+    if (role === "admin" || role === "vendeur") {
+      navigate("/admin-dashboard"); // redirection spéciale pour admin/vendeur
+    } else {
+      navigate("/moncompte"); // tous les autres clients
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Login échoué !");
+  }
+};
+
+
+
+
+*/
 
 
 
