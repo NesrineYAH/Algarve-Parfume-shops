@@ -45,7 +45,6 @@ const UserProvider = ({ children }) => {
 
       if (data?.user) {
         setUser(data.user);
-//        localStorage.setItem("user", JSON.stringify(data.user));
         console.log("✅ Login réussi, cookie JWT reçu et utilisateur enregistré");
       } else {
         console.log("❌ Login échoué : aucune donnée utilisateur reçue");
@@ -65,7 +64,6 @@ const UserProvider = ({ children }) => {
 
       if (data?.success && data?.user) {
         setUser(data.user);
-//        localStorage.setItem("user", JSON.stringify(data.user));
       }
 
       return data;
@@ -83,7 +81,6 @@ const UserProvider = ({ children }) => {
       console.error("❌ Erreur logout API:", error);
     } finally {
       setUser(null);
-//      localStorage.removeItem("user");
       localStorage.removeItem("cart");
       console.log("🚪 Déconnexion complète");
     }

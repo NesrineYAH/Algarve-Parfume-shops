@@ -1,3 +1,4 @@
+//  controllers/users.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
@@ -8,12 +9,10 @@ const { sendEmail } = require("../utils/mailer");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 
-
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
 const signatureToken = process.env.JWT_SECRET;
 
-// ✅ REGISTER
 exports.register = async (req, res) => {
   try {
     const { nom, prenom, email, password } = req.body;
@@ -53,8 +52,6 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
-
-// ✅ LOGIN
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -112,8 +109,6 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
-
-// ✅ VALIDATION EXPRESS-VALIDATOR
 exports.validate = (method) => {
   switch (method) {
     case "register":
@@ -131,8 +126,6 @@ exports.validate = (method) => {
       ];
   }
 };
-
-// 05/12 ajout forgotPassword & resetPassword
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -167,7 +160,6 @@ exports.forgotPassword = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
 exports.resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
@@ -192,7 +184,6 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password"); // exclure le mot de passe
@@ -249,6 +240,20 @@ exports.logout = (req, res) => {
   });
 
   res.status(200).json({ message: "Déconnexion réussie" });
+};
+// 🔍 Récupérer l'utilisateur connecté via le cookie JWT
+exports.getCurrentUser = async (req, res) => {
+  try {
+    // req.user est déjà rempli par authMiddleware
+    if (!req.user) {
+      return res.status(401).json({ error: "Utilisateur non authentifié" });
+    }
+
+    res.status(200).json({ user: req.user });
+  } catch (error) {
+    console.error("Erreur getCurrentUser :", error);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
 };
 
 
