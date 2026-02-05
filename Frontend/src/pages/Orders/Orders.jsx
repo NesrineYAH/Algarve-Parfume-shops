@@ -13,21 +13,18 @@ export default function Orders() {
     const navigate = useNavigate();
 
 useEffect(() => {
-   // ⏳ 1. Tant que le user n'est pas chargé → on attend 
-   if (loadingUser) return;
+  
+   if (loadingUser) return;  // ⏳ On attend que le user soit chargé 
   if (!user) {
     navigate("/authentification");
     return;
   }
 
-  // 🔥 2. Si user existe mais pas encore son _id → on attend
   if (!user._id) return;
 
-  // 🔥 3. Sinon on peut charger les commandes
   const fetchOrders = async () => {
     try {
       const data = await OrderService.getUserOrders(user._id);
-
       setPreOrders(data.preOrders || []);
       setOrders(data.orders || []);
       setCancelledOrders(data.cancelledOrders || []);
