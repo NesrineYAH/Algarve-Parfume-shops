@@ -18,21 +18,18 @@ export default function AdminDashboard() {
         <h1> AdminOps Dashboard</h1>
              <h2>Bienvenue, {user.prenom} {user.nom} </h2>
              <h3>{user.email}</h3>
+              <h4>Vous êtes le {user.role}</h4>
 
 <Link to="add-product">
   <button className="btn-Add">➕ Ajouter un produit</button>
 </Link>
-
-<Link to="AdminProductMng">
+<Link to="products">
   <button className="btn-Add">📦 Gérer les produits</button>
 </Link>
-
 <Link to="promotions">
   <button className="btn-Add">🔥 Add Promotions</button>
 </Link>
-
-
-<Link to="AdminOrders">
+<Link to="orders">
   <button className="btn-Add">🚚 Gérer les commandes</button>
 </Link>
 

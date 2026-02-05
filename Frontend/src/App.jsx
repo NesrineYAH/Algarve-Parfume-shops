@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.scss";
 import Headers from "./components/Header/Header";
 import Home from "./pages/Home/Home";
@@ -11,12 +12,15 @@ import Newsletter from "./components/Newsletter/Newsletter";
 import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
-import AdminAddProduct from "./pages/admin/add-product";  //1
-import AdminProductMng from "./pages/admin/AdminProductMng";   //2
-import AdminPromotion from "./pages/admin/AdminPromotion";   //3
-import AdminOrders from "./pages/admin/AdminOrders";        //4   
-import EditProduct from "./pages/admin/EditProduct";        //5
-import AdminDashboard from "./pages/admin/AdminDashboard";   //6
+
+import AdminAddProduct from "./pages/admin/add-product";  
+import AdminProductMng from "./pages/admin/AdminProductMng";   
+import AdminPromotion from "./pages/admin/AdminPromotion";   
+import AdminOrders from "./pages/admin/AdminOrders";        
+import EditProduct from "./pages/admin/EditProduct";        
+import AdminDashboard from "./pages/admin/AdminDashboard";
+ 
+
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
 import MonCompte from "./pages/MonCompte/MonCompte";
@@ -49,26 +53,28 @@ import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
 function App() {
-
+  
   return (
     <>
       <div className="App">
         <Headers />
         
         <Routes>
-       <Route path="/" element={<Navigate to="/Home" />} /> 
+    <Route path="/" element={<Navigate to="/Home" />} />  
        <Route path="/Home" element={<Home />} /> 
            <Route path="*" element={<ErrorPage />} />
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
+
         {/*Route admin imbriquées*/}
-         <Route path="/admin/AdminDashboard" element={<AdminDashboard />}> 
-         <Route path="add-product" element={<AdminAddProduct />} /> 
-         <Route path="AdminProductMng" element={<AdminProductMng />} /> 
-         <Route path="EditProduct/:id" element={<EditProduct />} /> 
-         <Route path="promotions" element={<AdminPromotion />} /> 
-         <Route path="AdminOrders" element={<AdminOrders />} />
-         </Route>         
+     <Route path="/admin" element={<AdminDashboard />}>
+           <Route path="add-product" element={<AdminAddProduct />} /> 
+           <Route path="products" element={<AdminProductMng />} /> 
+           <Route path="edit-product/:id" element={<EditProduct />} /> 
+           <Route path="promotions" element={<AdminPromotion />} /> 
+           <Route path="orders" element={<AdminOrders />} />
+      </Route>
+                  
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />

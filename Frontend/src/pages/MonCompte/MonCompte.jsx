@@ -11,7 +11,6 @@ export default function MonCompte() {
   const navigate = useNavigate();
   const { user, handleLogout } = useContext(UserContext);
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
-
   const [addresses, setAddresses] = useState([]);
   const [activeTab, setActiveTab] = useState("infos");
   const [orders, setOrders] = useState([]);
@@ -50,7 +49,8 @@ export default function MonCompte() {
   /* 🚀 3) Redirection ADMIN / VENDEUR */
   useEffect(() => {
     if (user && (user.role === "admin" || user.role === "vendeur")) {
-      navigate("/admin/AdminDashboard");
+  navigate("/admin");
+
     }
   }, [user, navigate]);
 
