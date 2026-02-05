@@ -6,15 +6,15 @@ import { UserContext } from "../../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Orders() {
-  const { user } = useContext(UserContext);
-
+  const { user, loadingUser } = useContext(UserContext);
   const [preOrders, setPreOrders] = useState([]);
   const [orders, setOrders] = useState([]);
   const [cancelledOrders, setCancelledOrders] = useState([]);
     const navigate = useNavigate();
 
 useEffect(() => {
-  
+   // ⏳ 1. Tant que le user n'est pas chargé → on attend 
+   if (loadingUser) return;
   if (!user) {
     navigate("/authentification");
     return;
