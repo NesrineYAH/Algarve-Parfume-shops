@@ -49,13 +49,14 @@ import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 
 
 function App() {
+
   return (
     <>
       <div className="App">
         <Headers />
         
         <Routes>
-      <Route path="/" element={<Navigate to="/Home" />} /> 
+       <Route path="/" element={<Navigate to="/Home" />} /> 
        <Route path="/Home" element={<Home />} /> 
            <Route path="*" element={<ErrorPage />} />
            <Route path="/product" element={<Product />} />

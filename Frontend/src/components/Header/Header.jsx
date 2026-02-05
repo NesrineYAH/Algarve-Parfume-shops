@@ -128,7 +128,7 @@ const Header = () => {
                   <Link to="/Orders">{t("user.orders")}</Link>
                   <Link to="/history">{t("user.history")}</Link>
 
-                  <button onClick={handleLogout}>
+                  <button  onClick={() => { handleLogout(); navigate("/Home"); }} >
                     <LogOut size={16} /> {t("user.logout")}
                   </button>
                 </div>
