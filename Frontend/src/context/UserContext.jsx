@@ -13,7 +13,7 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // 🔄 Vérifier l'utilisateur via le cookie JWT au chargement
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -38,14 +38,14 @@ const UserProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  // 🔐 LOGIN
+ 
   const handleLogin = async (credentials) => {
     try {
       const data = await loginUser(credentials);
 
       if (data?.user) {
         setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
+//        localStorage.setItem("user", JSON.stringify(data.user));
         console.log("✅ Login réussi, cookie JWT reçu et utilisateur enregistré");
       } else {
         console.log("❌ Login échoué : aucune donnée utilisateur reçue");
@@ -58,14 +58,14 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  // 📝 REGISTER
+
   const handleRegister = async (credentials) => {
     try {
       const data = await registerUser(credentials);
 
       if (data?.success && data?.user) {
         setUser(data.user);
-        localStorage.setItem("user", JSON.stringify(data.user));
+//        localStorage.setItem("user", JSON.stringify(data.user));
       }
 
       return data;
@@ -83,7 +83,7 @@ const UserProvider = ({ children }) => {
       console.error("❌ Erreur logout API:", error);
     } finally {
       setUser(null);
-      localStorage.removeItem("user");
+//      localStorage.removeItem("user");
       localStorage.removeItem("cart");
       console.log("🚪 Déconnexion complète");
     }
