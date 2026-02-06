@@ -241,7 +241,7 @@ exports.logout = (req, res) => {
 
   res.status(200).json({ message: "Déconnexion réussie" });
 };
-// 🔍 Récupérer l'utilisateur connecté via le cookie JWT
+// user.js de controllers getCurrentUser Récupérer l'utilisateur connecté via le cookie JWT
 exports.getCurrentUser = async (req, res) => {
   try {
     // req.user est déjà rempli par authMiddleware

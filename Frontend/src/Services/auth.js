@@ -52,6 +52,7 @@ export async function registerUser(credentials) {
 
 
 // 🔄 GET CURRENT USER (via cookie JWT)
+// service/auth.js
 export async function getCurrentUser() {
   try {
     const res = await fetch("http://localhost:5001/api/users/moncompte", {

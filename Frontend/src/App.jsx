@@ -13,12 +13,14 @@ import InfoSite from "./components/InfoSite/InfoSite";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 
-import AdminAddProduct from "./pages/admin/addProduct";  
+import AdminAddProduct from "./pages/admin/addproduct";  
 import AdminProductMng from "./pages/admin/AdminProductMng";   
 import AdminPromotion from "./pages/admin/AdminPromotion";   
 import AdminOrders from "./pages/admin/AdminOrders";        
 import EditProduct from "./pages/admin/EditProduct";        
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AjoutProduct from "./pages/admin/ajoutproduit"
+
 import AdminRoute from "./helpers/AdminRoute";
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
@@ -65,7 +67,7 @@ function App() {
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
 
-        {/*Route admin imbriquées*/}
+        {/* 
       <Route
   path="/admin-dashboard"
   element={
@@ -74,12 +76,27 @@ function App() {
     </AdminRoute>
   }
 >
-  <Route path="addProduct" element={<AdminAddProduct />} />
+  <Route path="addproduct" element={<AdminAddProduct />} />
   <Route path="products" element={<AdminProductMng />} />
   <Route path="promotions" element={<AdminPromotion />} />
   <Route path="orders" element={<AdminOrders />} />
   <Route path="EditProduct/:id" element={<EditProduct />}/>
+  <Route path="ajout" element={<AjoutProduct />} />
+  
 </Route>
+ */}
+
+ <Route element={<AdminRoute />}>
+  <Route path="/admin-dashboard" element={<AdminDashboard />} />
+  <Route path="/admin-dashboard/addproduct" element={<AdminAddProduct />} />
+  <Route path="/admin-dashboard/products" element={<AdminProductMng />} />
+  <Route path="/admin-dashboard/promotions" element={<AdminPromotion />} />
+  <Route path="/admin-dashboard/orders" element={<AdminOrders />} />
+  <Route path="/admin-dashboard/EditProduct/:id" element={<EditProduct />} />
+  <Route path="/admin-dashboard/ajout" element={<AjoutProduct />} />
+</Route>
+
+
 
        
           <Route path="/Favorites" element={<Favorites />} />

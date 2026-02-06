@@ -1,18 +1,23 @@
-import { Navigate } from "react-router-dom";
+// Frontend/helpers/AdminRoute.jsx
+import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
-const AdminRoute = ({ children }) => {
+const AdminRoute = () => {
   const { user, loading } = useContext(UserContext);
 
   if (loading) return <p>Chargement...</p>;
-  if (!user) return <Navigate to="/login" />;
-  
-  if (!user || (user.role !== "admin" && user.role !== "vendeur")) {
+
+  if (!user) {
+    return <Navigate to="/Authentification" replace />;
+  }
+
+  if (user.role !== "admin" && user.role !== "vendeur") {
     return <Navigate to="/Home" replace />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default AdminRoute;
+

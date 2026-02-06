@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios"; // si tu utilises axios
 import "./admin.scss";
 
-const AdminAddProduct = () => {
+const AjoutProduct = () => {
   const [nom, setNom] = useState("");
   const [genre, setGenre] = useState("");
  // const [prix, setPrix] = useState("");
@@ -21,17 +21,35 @@ const AdminAddProduct = () => {
   const [optionStock, setOptionStock] = useState("");
 
 useEffect(() => {
-  const loadCategories = async () => {
-    const response = await axios.get(
-      "http://localhost:5001/api/categories",
-      { withCredentials: true }
-    );
-    setCategories(response.data);
+  const checkAccessAndLoad = async () => {
+    try {
+      // 1️⃣ Vérifier le rôle via le backend me = reponse
+      const me = await axios.get("http://localhost:5001/api/users/moncompte", {
+        withCredentials: true,
+      });
+
+      const user = me.data;
+
+      if (user.role !== "admin" && user.role !== "vendeur") {
+        return navigate("/");
+      }
+
+      // 2️⃣ Charger les catégories
+      const response = await axios.get(
+        "http://localhost:5001/api/categories",
+        { withCredentials: true }
+      );
+
+      setCategories(response.data);
+
+    } catch (error) {
+      console.error("Erreur d'accès ou de chargement :", error);
+      navigate("/"); // pas authentifié ou erreur
+    }
   };
 
-  loadCategories();
-}, []);
-
+  checkAccessAndLoad();
+}, [navigate]);
 
 
 const handleSubmit = async (e) => {
@@ -137,5 +155,4 @@ const handleSubmit = async (e) => {
   );
 };
 
-export default AdminAddProduct;
-
+export default AjoutProduct;

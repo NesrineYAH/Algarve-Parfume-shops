@@ -1,7 +1,8 @@
+//pages/admin/AdminProductMng.jsx
+// pages/admin/AdminProductMng.jsx
 import React, { useState, useEffect } from "react";
 import { getAllProducts, deleteProduct } from "../../Services/productService";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import "./admin.scss";
 
 const AdminProductMng = () => {
@@ -10,14 +11,8 @@ const AdminProductMng = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
-if (role !== "admin" && role !== "vendeur") {
-  navigate("/");
-}
-
-
     fetchProducts();
-  }, [navigate]);
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -33,8 +28,7 @@ if (role !== "admin" && role !== "vendeur") {
     try {
       await deleteProduct(id);
       setMessage("Produit supprimé avec succès");
-      fetchProducts(); // actualiser la liste
-      navigate("/admin/AdminProductManagement");
+      fetchProducts();
     } catch (err) {
       console.error(err);
       setMessage("Erreur lors de la suppression");
@@ -77,13 +71,12 @@ if (role !== "admin" && role !== "vendeur") {
                 )}
               </td>
               <td>
-                <Link to="/admin/EditProduct" >
-                  <button onClick={() => handleEdit(prod._id)}>Modifier</button>
-                </Link>
-                <button onClick={() => handleDelete(prod._id)} >
+                <button onClick={() => handleEdit(prod._id)}>
+                  Modifier
+                </button>
+                <button onClick={() => handleDelete(prod._id)}>
                   Supprimer
                 </button>
-
               </td>
             </tr>
           ))}
@@ -94,3 +87,4 @@ if (role !== "admin" && role !== "vendeur") {
 };
 
 export default AdminProductMng;
+

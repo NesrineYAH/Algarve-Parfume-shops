@@ -22,7 +22,7 @@ export default function AdminDashboard() {
              <h3>{user.email}</h3>
               <h4>Vous êtes le {user.role}</h4>
 
-<Link to="addProduct">
+<Link to="addproduct">
   <button className="btn-Add">➕ Ajouter un produit</button>
 </Link>
 <Link to="products">
@@ -34,7 +34,9 @@ export default function AdminDashboard() {
 <Link to="orders">
   <button className="btn-Add">🚚 Gérer les commandes</button>
 </Link>
-
+<Link to="ajout">
+  <button className="btn-Add">🚚 Add new product  </button>
+</Link>
 
 
       </aside>     

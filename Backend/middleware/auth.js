@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
 require("dotenv").config();
 
-async function authMiddleware(req, res, next) {   // ⭐ async ajouté ici
+async function authMiddleware(req, res, next) {
   try {
     // 1️⃣ Lire le cookie JWT
     const tokenFromCookie = req.cookies?.token || req.cookies?.jwt;
