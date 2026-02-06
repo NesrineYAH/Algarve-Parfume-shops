@@ -33,6 +33,7 @@ export default function AdminOrders() {
         <thead>
           <tr>
             <th>ID Commande</th>
+            <th>email_Client</th>
             <th>Client</th>
             <th>Date commande</th>
             <th>Pays</th>
@@ -47,7 +48,7 @@ export default function AdminOrders() {
           {orders.map(order => (
             <tr key={order._id}>
               <td>{order._id}</td>
-
+             <td>{order.userId?.email}</td>
               <td>
                 {order.userId?.prenom} {order.userId?.nom}
               </td>

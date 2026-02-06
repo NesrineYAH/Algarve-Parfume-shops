@@ -6,7 +6,8 @@ const cartSchema = new mongoose.Schema({
   items: [
     {
       variantId: {
-        type: mongoose.Schema.Types.ObjectId,
+        //      type: mongoose.Schema.Types.ObjectId, Mongoose essaie de convertir variantId en ObjectId,
+        type: String,
         required: true
       },
       productId: {
