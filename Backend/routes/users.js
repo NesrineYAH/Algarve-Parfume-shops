@@ -13,6 +13,5 @@ router.post("/forgot-password", userCtrl.forgotPassword);
 router.post("/reset-password/:token", userCtrl.resetPassword);
 router.post("/logout", userCtrl.logout);
 
-
 module.exports = router;
 //  *Neshadil

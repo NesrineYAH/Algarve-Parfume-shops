@@ -19,8 +19,7 @@ import AdminPromotion from "./pages/admin/AdminPromotion";
 import AdminOrders from "./pages/admin/AdminOrders";        
 import EditProduct from "./pages/admin/EditProduct";        
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AjoutProduct from "./pages/admin/ajoutproduit"
-
+import AdminSales from "./pages/admin/AdminSales"
 import AdminRoute from "./helpers/AdminRoute";
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
@@ -93,7 +92,7 @@ function App() {
   <Route path="/admin-dashboard/promotions" element={<AdminPromotion />} />
   <Route path="/admin-dashboard/orders" element={<AdminOrders />} />
   <Route path="/admin-dashboard/EditProduct/:id" element={<EditProduct />} />
-  <Route path="/admin-dashboard/ajout" element={<AjoutProduct />} />
+<Route path="/admin-dashboard/sales" element={<AdminSales />} />
 </Route>
 
 

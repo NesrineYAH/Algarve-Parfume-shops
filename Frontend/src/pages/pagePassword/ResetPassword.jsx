@@ -21,7 +21,7 @@ export default function ResetPassword() {
     setMessage(res.message);
 
     if (res.message.includes("succès")) {
-      setTimeout(() => navigate("/login"), 1500);
+      setTimeout(() => navigate("/Authentification"), 1500);
     }
   };
 

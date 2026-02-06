@@ -1,3 +1,4 @@
+// pages/admin/EditProduct.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,31 +15,29 @@ const EditProduct = () => {
       .get(`http://localhost:5001/api/products/${id}`)
       .then((res) => {
         console.log("Produit récupéré :", res.data);
-        //   setProduct(res.data.product || res.data);
         setProduct(res.data);
       })
       .catch((err) => console.error(err));
   }, [id]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("nom", product.nom);
-    formData.append("prix", product.prix);
-    formData.append("description", product.description);
-    formData.append("stock", product.stock);
-    formData.append("categorie_id", product.categorie_id);
-    if (imageFile) formData.append("image", imageFile);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append("nom", product.nom);
+  formData.append("description", product.description);
+  formData.append("categorie_id", product.categorie_id);
+  if (imageFile) formData.append("image", imageFile);
 
-    try {
-      await axios.put(`http://localhost:5001/api/products/${id}`, formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      navigate("/admin/products");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  try {
+    await axios.put(`http://localhost:5001/api/products/${id}`, formData, {
+      withCredentials: true, // cookie HTTP-only
+    });
+    navigate(`/admin-dashboard/products`); // par exemple revenir à la liste
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   return (
     <div className="edit-product">
@@ -51,13 +50,6 @@ const EditProduct = () => {
           onChange={(e) => setProduct({ ...product, nom: e.target.value })}
         />
 
-        <input
-          type="number"
-          placeholder="Prix"
-          value={product.prix || ""}
-          onChange={(e) => setProduct({ ...product, prix: e.target.value })}
-        />
-
         <textarea
           placeholder="Description"
           value={product.description || ""}
@@ -66,12 +58,7 @@ const EditProduct = () => {
           }
         />
 
-        <input
-          type="number"
-          placeholder="Stock"
-          value={product.stock || ""}
-          onChange={(e) => setProduct({ ...product, stock: e.target.value })}
-        />
+  
 
         {/* <-- Affiche l’image actuelle du produit */}
         {product.imageUrl && (
@@ -96,6 +83,22 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
+
+{/*
+   <input
+          type="number"
+          placeholder="Prix"
+          value={product.prix || ""}
+          onChange={(e) => setProduct({ ...product, prix: e.target.value })}
+        />
+
+              <input
+          type="number"
+          placeholder="Stock"
+          value={product.stock || ""}
+          onChange={(e) => setProduct({ ...product, stock: e.target.value })}
+        />
+  */}
 
 /*
 Cette ligne res.data.product || res.data fonctionne dans les deux cas : que le backend renvoie { product: {...} } ou directement le produit.

@@ -344,3 +344,25 @@ exports.cancelOrder = async (req, res) => {
     }
 };
 
+// ➤ Récupérer toutes les commandes pour admin / vendeur
+exports.getAllOrdersAdmin = async (req, res) => {
+    try {
+        const orders = await Order.find()
+            .populate("user", "nom email") // infos client
+            .populate("products.product", "nom prix"); // infos produits
+
+        // Calcul du chiffre d'affaires total
+        const totalRevenue = orders.reduce((sum, order) => {
+            return sum + order.products.reduce((s, p) => s + p.quantity * p.product.prix, 0);
+        }, 0);
+
+        res.json({
+            totalRevenue,
+            totalOrders: orders.length,
+            orders
+        });
+    } catch (err) {
+        console.error("Erreur récupération commandes admin :", err);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
