@@ -27,8 +27,12 @@ async function authMiddleware(req, res, next) {
       return res.status(401).json({ error: "Utilisateur introuvable" });
     }
 
-    // 6️⃣ Attacher l'utilisateur complet à req.user
-    req.user = user;
+    // req.user = user
+    // ⭐ Ajout de userId pour garder le code existant Attacher l'utilisateur complet à req.user
+    req.user = {
+      ...user.toObject(),
+      userId: user._id,
+    };
 
     next();
   } catch (error) {

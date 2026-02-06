@@ -80,32 +80,12 @@ const handleSubmit = async (e) => {
   <option value="femme">Femme</option>
   <option value="mixte">Mixte</option>
 </select>
-
-        <input
-         type="number"
-         placeholder="Taille (ex: 50)"
-         value={size}
-         onChange={(e) => setSize(e.target.value)}
-         required />
-        <input
-          type="number"
-          placeholder="Prix"
-          value={optionPrix}
-          onChange={(e) => setOptionPrix(e.target.value)}
-          required
-        />
         <textarea
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-         <input
-       type="number"
-         placeholder="Stock"
-         value={optionStock}
-         onChange={(e) => setOptionStock(e.target.value)}
-          required
-         />
+    
 
         {/* Upload image depuis PC */}
         <input
@@ -139,3 +119,19 @@ const handleSubmit = async (e) => {
 
 export default AdminAddProduct;
 
+
+
+{/*
+  <input type="number" placeholder="Taille (ex: 50)" value={size}
+         onChange={(e) => setSize(e.target.value)} required />
+        <input type="number"  placeholder="Prix" value={optionPrix}
+          onChange={(e) => setOptionPrix(e.target.value)}  required />
+
+               <input
+       type="number"
+         placeholder="Stock"
+         value={optionStock}
+         onChange={(e) => setOptionStock(e.target.value)}
+          required
+         />
+  */}

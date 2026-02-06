@@ -72,8 +72,6 @@ exports.getProducts = async (req, res) => {
         res.json(produits);
     } catch (err) { res.status(500).json({ message: err.message }); }
 };
-
-
 // ➤ Récupérer un produit par ID
 exports.getProductById = async (req, res) => {
     try {

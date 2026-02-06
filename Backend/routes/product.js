@@ -4,7 +4,7 @@ const router = express.Router();
 const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
-const { product } = require("../controllers/product");
+// const { product } = require("../controllers/product");
 
 
 const { addProduct, getProducts, getProductById, deleteProduct, updateProduct, addComment } = require("../controllers/product");
