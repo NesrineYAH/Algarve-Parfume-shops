@@ -23,7 +23,7 @@ const AdminSales = () => {
   }, []);
 
   return (
-    <div>
+    <div className="admin-table">
       <h2>Tableau des ventes</h2>
       <p>Chiffre d'affaires total : {totalRevenue} €</p>
       <p>Total commandes : {orders.length}</p>
@@ -63,6 +63,7 @@ const AdminSales = () => {
         </tbody>
       </table>
     </div>
+    
   );
 };
 

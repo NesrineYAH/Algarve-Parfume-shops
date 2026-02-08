@@ -28,7 +28,7 @@ export default function AdminOrders() {
   };
 
   return (
-    <div className="admin-orders-table">
+    <div className="admin-table">
       <table>
         <thead>
           <tr>

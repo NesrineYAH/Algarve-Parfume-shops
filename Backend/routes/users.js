@@ -9,6 +9,8 @@ router.post("/register", userCtrl.validate("register"), userCtrl.register);
 router.post("/login", userCtrl.login);
 router.get("/moncompte", authMiddleware, userCtrl.getCurrentUser);
 router.get("/all", authMiddleware, isAdmin, userCtrl.getUsers);
+//router.get("/vendeurs", authMiddleware, isAdmin, userCtrl.getSellers);
+router.get("/role/:role", authMiddleware, isAdmin, userCtrl.getUsersByRole);
 router.post("/forgot-password", userCtrl.forgotPassword);
 router.post("/reset-password/:token", userCtrl.resetPassword);
 router.post("/logout", userCtrl.logout);

@@ -255,6 +255,19 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
+//sellers
+// controllers/userCtrl.js
+
+exports.getUsersByRole = async (req, res) => {
+  try {
+    const role = req.params.role;
+    const users = await User.find({ role });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 
 

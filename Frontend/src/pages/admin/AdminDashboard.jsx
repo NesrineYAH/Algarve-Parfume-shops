@@ -37,7 +37,9 @@ export default function AdminDashboard() {
 <Link to="sales">
   <button className="btn-Add">🚚 Admin sales  </button>
 </Link>
-
+<Link to="users">
+  <button className="btn-Add">🚚 Admin users  </button>
+</Link>
 
       </aside>     
       <main className="admin__content">

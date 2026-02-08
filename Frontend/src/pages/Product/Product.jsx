@@ -397,24 +397,27 @@ useEffect(() => {
         </div>
 
         {/* 🔹 Admin */}
-        {(role === "admin" || role === "vendeur") && (
-          <div className="admin-action">
-      
-            <Link
-              to={`/EditProduct/${product._id}`}
-              className="btn-Add"
-            >
-              {t("product.edit")}
-            </Link>
-            <Link
-              to="/admin/AdminProductManagement"
-              className="btn-Add"
-            >
-               {t("product.delete")}
-            </Link>
+        {user && (user.role === "admin" || user.role === "vendeur") && (
+  <div className="admin-action">
+    <Link
+      to={`/admin-dashboard/EditProduct/${product._id}`}
+      className="btn-Add"
+    >
+      {t("product.edit")}
+    </Link>
+
+    <Link
+      to={`/admin-dashboard/DeleteProduct/${product._id}`}
+      className="btn-Add"
+    >
+      {t("product.delete")}
+    </Link>
+
+  
+  </div>
+)}
+
         
-          </div>
-        )}
       </div>
     </section>
   );
