@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
       <p>Votre compte est maintenant actif.</p>
       <p>Connectez-vous dès maintenant pour découvrir nos parfums :</p>
       
-      <a href="http://localhost:5173/login"
+      <a href="http://localhost:5173/Authentification"
          style="background:#c278ff;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">Se connecter</a>
       <br><br>
       <p>À bientôt 💐</p>

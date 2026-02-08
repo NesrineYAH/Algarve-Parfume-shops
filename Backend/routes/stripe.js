@@ -1,9 +1,14 @@
+//Backend/routes/stripe.js
 const express = require("express");
 const Stripe = require("stripe");
 const User = require("../Model/User");
 const Cart = require("../Model/Cart");
 const Order = require("../Model/Order");
 const { authMiddleware } = require("../middleware/auth");
+const { sendEmail } = require("../utils/mailer");
+const generateInvoice = require("../utils/generateInvoice");
+const Address = require("../Model/Address");
+
 
 const router = express.Router();
 require("dotenv").config();
@@ -11,6 +16,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
+
+
 
 // 🅰️ Checkout depuis le panier
 router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
@@ -158,7 +165,11 @@ router.post(
     let event;
 
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+      event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
     } catch (err) {
       console.error("❌ Webhook signature invalide", err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -167,15 +178,118 @@ router.post(
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       const orderId = session.metadata.orderId;
+      const userId = session.metadata.userId;
 
-      await Order.findByIdAndUpdate(orderId, {
-        status: "confirmed",
-        paymentStatus: "paid",
-        paidAt: new Date(),
-        stripeSessionId: session.id,
+      // 1️⃣ Récupérer la commande
+      const order = await Order.findById(orderId);
+      if (!order) {
+        console.error("❌ Order introuvable dans webhook");
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      // 2️⃣ Récupérer l'utilisateur
+      const user = await User.findById(userId);
+
+      // 3️⃣ Récupérer l'adresse de livraison
+      const shippingAddress = await Address.findOne({
+        userId,
+        type: "shipping"
       });
 
+      const addressHtml = shippingAddress
+        ? `
+        <p style="font-size:15px; color:#555;">
+          ${shippingAddress.street}<br/>
+          ${shippingAddress.postalCode} ${shippingAddress.city}<br/>
+          ${shippingAddress.country}
+        </p>`
+        : `<p style="color:#999;">Aucune adresse de livraison enregistrée.</p>`;
+
+      // 4️⃣ Construire le tableau HTML des articles
+      const itemsHtml = order.items
+        .map(item => {
+          const total = parseFloat(item.options.prix) * item.quantite;
+          return `
+            <tr>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                <img src="${BACK_URL}${item.imageUrl}" width="80" style="border-radius:5px;" />
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee;">
+                <strong>${item.nom}</strong><br/>
+                Option : ${item.options.size}${item.options.unit}<br/>
+                Quantité : ${item.quantite}
+              </td>
+              <td style="padding:10px; border-bottom:1px solid #eee; text-align:right;">
+                ${total.toFixed(2)} €
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      // 5️⃣ Générer la facture PDF
+      const invoicePath = generateInvoice(order, user, shippingAddress);
+
+      // 6️⃣ Mettre à jour la commande
+      await Order.findByIdAndUpdate(
+        orderId,
+        {
+          status: "confirmed",
+          paymentStatus: "paid",
+          paidAt: new Date(),
+          stripeSessionId: session.id,
+        },
+        { new: true }
+      );
+
       console.log("✅ Paiement confirmé pour order:", orderId);
+
+      // 7️⃣ ENVOYER L’EMAIL
+      await sendEmail({
+        to: user.email,
+        subject: "Votre commande a été confirmée",
+        html: `
+          <div style="font-family:Arial, sans-serif; padding:20px; background:#f7f7f7;">
+            <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:8px;">
+
+              <h1 style="text-align:center; color:#333;">Merci pour votre achat !</h1>
+
+              <p style="font-size:16px; color:#555;">
+                Bonjour ${user.prenom},<br/>
+                Votre commande <strong>#${orderId}</strong> du 
+                <strong>${order.createdAt.toLocaleDateString()}</strong> a bien été payée.
+              </p>
+
+              <h3 style="margin-top:20px; color:#333;">Adresse de livraison</h3>
+              ${addressHtml}
+
+              <h3 style="margin-top:20px; color:#333;">Détails de la commande</h3>
+
+              <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+                ${itemsHtml}
+              </table>
+
+              <p style="font-size:18px; font-weight:bold; text-align:right; margin-top:20px;">
+                Total : ${order.totalPrice} €
+              </p>
+
+              <p style="margin-top:30px; font-size:12px; color:#999; text-align:center;">
+                Algarve Parfume — Merci pour votre confiance.
+              </p>
+
+            </div>
+          </div>
+        `,
+        attachments: [
+          {
+            filename: `facture-${orderId}.pdf`,
+            path: invoicePath,
+            contentType: "application/pdf"
+          }
+        ]
+      });
+
+      console.log("📧 Email envoyé à :", user.email);
     }
 
     res.json({ received: true });

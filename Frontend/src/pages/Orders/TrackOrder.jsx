@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 
 
+
 export default function TrackOrder() {
  const { orderId: orderIdFromUrl } = useParams(); 
  const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
@@ -100,6 +101,13 @@ const handleRebuy = async (item) => {
   }
 };
 
+  function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
 
   return (
     <div style={styles.container}>
@@ -150,6 +158,7 @@ const handleRebuy = async (item) => {
       <p><strong>Statut :</strong> {orderData.status}</p>
       <p><strong>Paiement :</strong> {orderData.paymentStatus}</p>
       <p><strong>Total :</strong> {orderData.totalPrice} €</p> 
+      <p>Date: {formatDate(order.paidAt)}</p>
       
 {orderData.status !== "delivered" && (
 <button onClick={markAsDelivered} style={styles.button}>J’ai reçu ma commande</button>)}

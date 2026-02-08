@@ -21,7 +21,6 @@ const paymentMethodsRoutes = require("./routes/paymentMethods");
 const paymentsRoute = require("./routes/payments");
 const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
-const stripeWebhook = require("./routes/stripeWebhook");
 const cookieParser = require("cookie-parser");
 const returnRoutes = require("./routes/return");
 require("./mongoDB/DB");
@@ -29,12 +28,11 @@ require("./mongoDB/DB");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// app.js ⚠️ STRIPE WEBHOOK (RAW BODY) — DOIT ÊTRE AU DÉBUT
-app.post(
+app.use(
   "/api/stripe/webhook",
-  bodyParser.raw({ type: "application/json" }),
-  stripeWebhook
+  bodyParser.raw({ type: "application/json" })
 );
+
 
 // ⚡ Middlewares globaux
 app.use(cors({
@@ -47,11 +45,15 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+// ⚡ Routes Stripe & paiement
+app.use("/api/stripe", stripeRoute);
+app.use("/api/payment", paymentsRoute);
 
 // ⚡ Static files
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/etiquettes", express.static(path.join(__dirname, "public/etiquettes")));
+
 
 // 🚀 Routes publiques
 app.use("/api/users", userRoutes);
@@ -69,10 +71,6 @@ app.use("/api/avis", avisRoutes);
 app.use("/api/returns", returnRoutes);
 
 
-// ⚡ Routes Stripe & paiement
-app.use("/api/stripe", stripeRoute);
-app.use("/api/payment", paymentsRoute);
-
 // ⚡ Routes protégées avec authMiddleware
 app.use("/api", authMiddleware, paymentMethodsRoutes);
 app.use("/api/users/favorites", favoritesRoutes);
@@ -87,3 +85,12 @@ module.exports = app;
 
 
 //                                       stripe listen --forward-to localhost:5001/api/stripe/webhook
+
+
+/* app.js ⚠️ STRIPE WEBHOOK (RAW BODY) — DOIT ÊTRE AU DÉBUT
+const stripeWebhook = require("./routes/stripeWebhook");
+app.use(
+  "/api/stripe/webhook",
+  bodyParser.raw({ type: "application/json" })
+);
+*/
