@@ -8,6 +8,7 @@ const { authMiddleware } = require("../middleware/auth");
 const { sendEmail } = require("../utils/mailer");
 const generateInvoice = require("../utils/generateInvoice");
 const Address = require("../Model/Address");
+const fs = require("fs");
 
 
 const router = express.Router();
@@ -156,6 +157,7 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   }
 });
 
+
 // Webhook Stripe pour confirmer le paiement
 router.post(
   "/webhook",
@@ -182,10 +184,7 @@ router.post(
 
       // 1️⃣ Récupérer la commande
       const order = await Order.findById(orderId);
-      if (!order) {
-        console.error("❌ Order introuvable dans webhook");
-        return res.status(404).json({ message: "Order not found" });
-      }
+      if (!order) return res.status(404).json({ message: "Order not found" });
 
       // 2️⃣ Récupérer l'utilisateur
       const user = await User.findById(userId);
@@ -212,7 +211,8 @@ router.post(
           return `
             <tr>
               <td style="padding:10px; border-bottom:1px solid #eee;">
-                <img src="${BACK_URL}${item.imageUrl}" width="80" style="border-radius:5px;" />
+                <img src="http://localhost:5001/uploads/${item.imageUrl}" style="border-radius:5px, width="80" />
+
               </td>
               <td style="padding:10px; border-bottom:1px solid #eee;">
                 <strong>${item.nom}</strong><br/>
@@ -227,22 +227,16 @@ router.post(
         })
         .join("");
 
-      // 5️⃣ Générer la facture PDF
+      // 5️⃣ Générer la facture PDF dans public/invoices
       const invoicePath = generateInvoice(order, user, shippingAddress);
 
       // 6️⃣ Mettre à jour la commande
-      await Order.findByIdAndUpdate(
-        orderId,
-        {
-          status: "confirmed",
-          paymentStatus: "paid",
-          paidAt: new Date(),
-          stripeSessionId: session.id,
-        },
-        { new: true }
-      );
-
-      console.log("✅ Paiement confirmé pour order:", orderId);
+      await Order.findByIdAndUpdate(orderId, {
+        status: "confirmed",
+        paymentStatus: "paid",
+        paidAt: new Date(),
+        stripeSessionId: session.id,
+      });
 
       // 7️⃣ ENVOYER L’EMAIL
       await sendEmail({
@@ -273,10 +267,6 @@ router.post(
                 Total : ${order.totalPrice} €
               </p>
 
-              <p style="margin-top:30px; font-size:12px; color:#999; text-align:center;">
-                Algarve Parfume — Merci pour votre confiance.
-              </p>
-
             </div>
           </div>
         `,
@@ -288,13 +278,19 @@ router.post(
           }
         ]
       });
-
       console.log("📧 Email envoyé à :", user.email);
+      // 8️⃣ SUPPRIMER LE PDF APRÈS ENVOI
+      fs.unlink(invoicePath, (err) => {
+        if (err) console.error("⚠️ Impossible de supprimer la facture :", err);
+        else console.log("🗑️ Facture supprimée :", invoicePath);
+      });
     }
 
     res.json({ received: true });
   }
 );
+
+
 
 // ⚠️ Route à utiliser uniquement en fallback (pas en production)
 router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
@@ -371,4 +367,4 @@ module.exports = router;
 
 
 
-
+/* <img src="${BACK_URL}${item.imageUrl}" width="80" style="border-radius:5px;" />  */

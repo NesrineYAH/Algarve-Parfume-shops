@@ -4,25 +4,33 @@ const Address = require("../Model/Address");
 exports.addAddress = async (req, res) => {
     try {
         const { street, city, postalCode, country, type } = req.body;
-        const userId = req.user.userId;  // Assure-toi que l'utilisateur est authentifié c'est fautconst userId = req.user.id; // ❌ FAUX
 
-        const newAddress = new Address({ userId, street, city, postalCode, country, type });
+        // ✔️ Le bon userId
+        const userId = req.user.userId;
+
+        const newAddress = new Address({
+            userId,
+            street,
+            city,
+            postalCode,
+            country,
+            type
+        });
+
         await newAddress.save();
 
-        res.status(201).json({ message: "Adresse ajoutée avec succès", address: newAddress });
+        res.status(201).json({
+            message: "Adresse ajoutée avec succès",
+            address: newAddress
+        });
+
     } catch (error) {
-        res.status(500).json({ message: "Erreur serveur", error: error.message });
+        res.status(500).json({
+            message: "Erreur serveur",
+            error: error.message
+        });
     }
-
-
 };
-
-
-
-
-
-
-
 
 
 // Récupérer toutes les adresses d'un utilisateur

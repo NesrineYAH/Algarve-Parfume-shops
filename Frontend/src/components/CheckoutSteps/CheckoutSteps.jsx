@@ -13,14 +13,14 @@ function CheckoutSteps({ step }) {
 
       <div className={`step ${step >= 2 ? "active" : ""}`}>
         <div className="circle">2</div>
-        <span>Livraison</span>
+        <span>CheckOut</span>
       </div>
 
       <div className="line"></div>
 
       <div className={`step ${step >= 3 ? "active" : ""}`}>
         <div className="circle">3</div>
-        <span>Options</span>
+        <span>Livraison</span>
       </div>
 
       <div className="line"></div>
