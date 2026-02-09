@@ -116,10 +116,11 @@ useEffect(() => {
               </div>
 
               <div className="order_AllButtons">
+                {/*
                 <button onClick={() => handleDelete(order._id)} className="Button">
                   Supprimer
                 </button>
-
+                */ }
                 <Link to={`/payment/${order._id}`} state={{ order, orderId: order._id }}>
                   <button className="Button">Payer</button>
                 </Link>
@@ -164,13 +165,27 @@ useEffect(() => {
               </div>
 
               <div className="order_AllButtons">
+               {/*
                 <button onClick={() => handleDelete(order._id)} className="Button">
                   Supprimer
                 </button>
+                */ }
+
+
+               
+
 
                 <Link to={`/tracking/${order._id}`}>
                   <button className="Button">Suivre ma commande</button>
                 </Link>
+
+ {order.invoiceUrl && (
+  <Link to={`http://localhost:5001${order.invoiceUrl}`} 
+    target="_blank"
+    rel="noopener noreferrer"
+  >  <button className="Button"> Télécharger la facture</button>
+ </Link>
+)}
 
                 {/* <button onClick={() =>
                  navigate("/retour-produit", {

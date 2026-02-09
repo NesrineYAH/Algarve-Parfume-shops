@@ -23,6 +23,13 @@ exports.generateReturnLabel = async (requestId, user, order) => {
     // --- INFOS CLIENT ---
     let y = 150;
     doc.fontSize(14).text(`Client : ${user.prenom} ${user.nom}`, 40, y);
+    if (address) {
+        doc.text(address.street)
+            .text(`${address.postalCode} ${address.city}`)
+            .text(address.country);
+    } else {
+        doc.text("Aucune adresse enregistrée");
+    }
     doc.text(`Email : ${user.email}`, 40, y + 20);
     doc.text(`Commande : ${order._id}`, 40, y + 40);
     doc.text(`Retour : ${requestId}`, 40, y + 60);
@@ -40,7 +47,7 @@ exports.generateReturnLabel = async (requestId, user, order) => {
     doc.moveDown(2);
 
     // --- QR CODE ---
-    const qrData = `https://algarve-parfume.com/retour/${requestId}`;
+    const qrData = `https://parfumealgarve.com/retour/${requestId}`;
     const qrImage = await QRCode.toDataURL(qrData);
     const qrBuffer = Buffer.from(qrImage.split(",")[1], "base64");
 

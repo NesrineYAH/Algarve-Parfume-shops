@@ -60,4 +60,62 @@ const generateInvoice = (order, user, address) => {
 module.exports = generateInvoice;
 
 
+/*
 
+const PDFDocument = require("pdfkit");
+const getStream = require("get-stream");
+
+const generateInvoiceBuffer = async (order, user, address) => {
+    const doc = new PDFDocument({ margin: 50 });
+
+    // getStream v6 → retourne directement un buffer
+    const bufferPromise = getStream(doc);
+
+    // --- LOGO ---
+    const logoPath = path.join(__dirname, "..", "public", "logo.png");
+    if (fs.existsSync(logoPath)) {
+        doc.image(logoPath, 40, 40, { width: 100 });
+    }
+
+    // --- HEADER ---
+    doc.fontSize(20).text("FACTURE", { align: "center" }).moveDown();
+
+    doc.fontSize(12)
+        .text(`Commande : ${order._id}`)
+        .text(`Date : ${order.createdAt.toLocaleDateString()}`)
+        .moveDown();
+
+    // --- CLIENT ---
+    doc.fontSize(14).text("Client", { underline: true }).moveDown(0.5);
+    doc.fontSize(12).text(`${user.prenom} ${user.nom}`);
+
+    if (address) {
+        doc.text(address.street)
+            .text(`${address.postalCode} ${address.city}`)
+            .text(address.country);
+    } else {
+        doc.text("Aucune adresse enregistrée");
+    }
+
+    doc.moveDown();
+
+    // --- ARTICLES ---
+    doc.fontSize(14).text("Articles", { underline: true }).moveDown(0.5);
+
+    order.items.forEach(item => {
+        const total = parseFloat(item.options.prix) * item.quantite;
+        doc.fontSize(12).text(
+            `${item.nom} - ${item.options.size}${item.options.unit} x${item.quantite} : ${total.toFixed(2)} €`
+        );
+    });
+
+    doc.moveDown();
+    doc.fontSize(16).text(`Total : ${order.totalPrice} €`, { align: "right" });
+
+    doc.end();
+
+    return bufferPromise;
+};
+
+module.exports = generateInvoiceBuffer; 
+*/

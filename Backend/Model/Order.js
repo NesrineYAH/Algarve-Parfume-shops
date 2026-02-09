@@ -1,5 +1,5 @@
 // Model Product Schéma Order commande
-const mongoose = require("mongoose");
+const mongoose = require("mongoose");             
 
 const orderSchema = new mongoose.Schema(
     {
@@ -45,6 +45,7 @@ const orderSchema = new mongoose.Schema(
             enum: ["processing", "shipped", "in_transit", "out_for_delivery", "delivered"],
             default: "processing",
         },
+        invoiceUrl: { type: String },
 
         paidAt: Date,
         shippedAt: Date,

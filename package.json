@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "get-stream": "^9.0.1"
+  }
+}

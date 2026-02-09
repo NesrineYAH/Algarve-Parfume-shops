@@ -6,7 +6,7 @@ const Cart = require("../Model/Cart");
 const Order = require("../Model/Order");
 const { authMiddleware } = require("../middleware/auth");
 const { sendEmail } = require("../utils/mailer");
-const generateInvoice = require("../utils/generateInvoice");
+const generateInvoice = require("../utils/generateInvoiceBuffer");
 const Address = require("../Model/Address");
 const fs = require("fs");
 
@@ -17,8 +17,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
-
-
 
 // 🅰️ Checkout depuis le panier
 router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
@@ -220,7 +218,7 @@ router.post(
                 Quantité : ${item.quantite}
               </td>
               <td style="padding:10px; border-bottom:1px solid #eee; text-align:right;">
-                ${total.toFixed(2)} €
+                ${total.toFixed(2)} € 
               </td>
             </tr>
           `;
@@ -229,6 +227,8 @@ router.post(
 
       // 5️⃣ Générer la facture PDF dans public/invoices
       const invoicePath = await generateInvoice(order, user, shippingAddress);
+      order.invoiceUrl = `/invoices/invoice-${order._id}.pdf`;
+      await order.save();
 
 
       // 6️⃣ Mettre à jour la commande
@@ -281,17 +281,17 @@ router.post(
       });
       console.log("📧 Email envoyé à :", user.email);
       // 8️⃣ SUPPRIMER LE PDF APRÈS ENVOI
-      fs.unlink(invoicePath, (err) => {
-        if (err) console.error("⚠️ Impossible de supprimer la facture :", err);
-        else console.log("🗑️ Facture supprimée :", invoicePath);
-      });
+      /*
+    fs.unlink(invoicePath, (err) => {
+      if (err) console.error("⚠️ Impossible de supprimer la facture :", err);
+      else console.log("🗑️ Facture supprimée :", invoicePath);
+    });
+    */
     }
 
     res.json({ received: true });
   }
 );
-
-
 
 // ⚠️ Route à utiliser uniquement en fallback (pas en production)
 router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
