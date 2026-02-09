@@ -158,7 +158,7 @@ const handleRebuy = async (item) => {
       <p><strong>Statut :</strong> {orderData.status}</p>
       <p><strong>Paiement :</strong> {orderData.paymentStatus}</p>
       <p><strong>Total :</strong> {orderData.totalPrice} €</p> 
-      <p>Date: {formatDate(order.paidAt)}</p>
+      <p>Date: {formatDate(orderData.paidAt)}</p>
       
 {orderData.status !== "delivered" && (
 <button onClick={markAsDelivered} style={styles.button}>J’ai reçu ma commande</button>)}

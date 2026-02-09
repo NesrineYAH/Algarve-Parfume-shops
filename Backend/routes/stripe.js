@@ -228,7 +228,8 @@ router.post(
         .join("");
 
       // 5️⃣ Générer la facture PDF dans public/invoices
-      const invoicePath = generateInvoice(order, user, shippingAddress);
+      const invoicePath = await generateInvoice(order, user, shippingAddress);
+
 
       // 6️⃣ Mettre à jour la commande
       await Order.findByIdAndUpdate(orderId, {
