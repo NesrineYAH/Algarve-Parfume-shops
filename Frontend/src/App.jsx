@@ -69,40 +69,17 @@ function App() {
            <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<Product />} />{" "}
 
-        {/* 
-      <Route
-  path="/admin-dashboard"
-  element={
-    <AdminRoute>
-      <AdminDashboard />
-    </AdminRoute>
-  }
->
-  <Route path="addproduct" element={<AdminAddProduct />} />
-  <Route path="products" element={<AdminProductMng />} />
-  <Route path="promotions" element={<AdminPromotion />} />
-  <Route path="orders" element={<AdminOrders />} />
-  <Route path="EditProduct/:id" element={<EditProduct />}/>
-  <Route path="ajout" element={<AjoutProduct />} />
+     <Route element={<AdminRoute />}>
+     <Route path="/admin-dashboard" element={<AdminDashboard />} />
+     <Route path="/admin-dashboard/addproduct" element={<AdminAddProduct />} />
+     <Route path="/admin-dashboard/products" element={<AdminProductMng />} />
+     <Route path="/admin-dashboard/promotions" element={<AdminPromotion />} />
+     <Route path="/admin-dashboard/orders" element={<AdminOrders />} />
+     <Route path="/admin-dashboard/EditProduct/:id" element={<EditProduct />} />
+     <Route path="/admin-dashboard/sales" element={<AdminSales />} />
+     <Route path="/admin-dashboard/users" element={<UsersManagement />} />
+     </Route>
   
-</Route>
- */}
-
- <Route element={<AdminRoute />}>
-  <Route path="/admin-dashboard" element={<AdminDashboard />} />
-  <Route path="/admin-dashboard/addproduct" element={<AdminAddProduct />} />
-  <Route path="/admin-dashboard/products" element={<AdminProductMng />} />
-  <Route path="/admin-dashboard/promotions" element={<AdminPromotion />} />
-  <Route path="/admin-dashboard/orders" element={<AdminOrders />} />
-  <Route path="/admin-dashboard/EditProduct/:id" element={<EditProduct />} />
-<Route path="/admin-dashboard/sales" element={<AdminSales />} />
-<Route path="/admin-dashboard/users" element={<UsersManagement />} />
-
-</Route>
-
-
-
-       
           <Route path="/Favorites" element={<Favorites />} />
           <Route path="/PolitiqueCookies" element={<PolitiqueCookies />} />
           <Route path="/FAQ" element={<FAQ />} />

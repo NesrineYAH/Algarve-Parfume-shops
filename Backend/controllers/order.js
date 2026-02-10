@@ -103,7 +103,6 @@ exports.updateOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 exports.finalizeOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -127,26 +126,36 @@ exports.getMyOrders = async (req, res) => {
 
         const allOrders = await Order.find({ userId: req.user.userId })
             .sort({ createdAt: -1 });
-        // 🔴 Pré-commandes (non payées)
+
         const preOrders = allOrders.filter(
             o => o.status === "pending" && o.paymentStatus === "unpaid"
         );
-        // 🟢 Commandes payées et confirmées
+
         const orders = allOrders.filter(
             o => o.status === "confirmed" && o.paymentStatus === "paid"
         );
-        // ⚫ Commandes annulées
+
         const cancelledOrders = allOrders.filter(
             o => o.status === "cancelled"
         );
 
-        return res.status(200).json({ preOrders, orders, cancelledOrders });
+        const refundedOrders = allOrders.filter(
+            o => o.status === "refunded"
+        );
+
+        return res.status(200).json({
+            preOrders,
+            orders,
+            cancelledOrders,
+            refundedOrders
+        });
 
     } catch (error) {
         console.error("Erreur récupération commandes:", error);
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 exports.deleteOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -366,3 +375,30 @@ exports.getAllOrdersAdmin = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
+exports.refundOrder = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.orderId);
+
+        if (!order) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        if (order.paymentStatus !== "paid") {
+            return res.status(400).json({ message: "Impossible de rembourser une commande non payée" });
+        }
+
+        order.status = "refunded";
+        order.paymentStatus = "refunded";
+        order.refundedAt = new Date();
+
+        await order.save();
+
+        return res.status(200).json({ message: "Commande remboursée", order });
+
+    } catch (error) {
+        console.error("Erreur remboursement :", error);
+        return res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+

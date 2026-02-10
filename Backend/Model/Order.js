@@ -1,5 +1,5 @@
 // Model Product Schéma Order commande
-const mongoose = require("mongoose");             
+const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
     {
@@ -28,7 +28,7 @@ const orderSchema = new mongoose.Schema(
 
         status: {
             type: String,
-            enum: ["pending", "confirmed", "shipped", "delivered", "cancelled"],
+            enum: ["pending", "confirmed", "shipped", "delivered", "cancelled", "refunded"],
             default: "pending",
         },
 
@@ -50,6 +50,8 @@ const orderSchema = new mongoose.Schema(
         paidAt: Date,
         shippedAt: Date,
         deliveredAt: Date,
+        refundedAt: Date,
+
     },
     { timestamps: true }
 );

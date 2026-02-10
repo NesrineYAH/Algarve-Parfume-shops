@@ -23,7 +23,7 @@ exports.createReturnRequest = async (req, res) => {
         if (alreadyRequested) {
             return res.status(400).json({ message: "Retour déjà demandé pour ce produit" });
         }
-
+        // 1️⃣ Créer la demande de retour
         const request = await ReturnRequest.create({
             userId: req.user.userId,
             orderId,
@@ -32,9 +32,16 @@ exports.createReturnRequest = async (req, res) => {
             description,
         });
 
+        // 2️⃣ Mettre la commande en refunded automatiquement
+        order.status = "refunded";
+        order.paymentStatus = "refunded";
+        order.refundedAt = new Date();
+        await order.save();
+
+        // 3️⃣ Générer l’étiquette PDF
         const filePath = generateReturnLabel(request._id, req.user, order);
 
-        // ⭐ EMAIL DE CONFIRMATION AU CLIENT
+        // 4️⃣ Envoyer l’email
         const html = `
       <h2>Votre demande de retour est bien enregistrée</h2>
       <p>Bonjour ${req.user.prenom},</p>

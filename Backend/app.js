@@ -52,7 +52,10 @@ app.use("/api/payment", paymentsRoute);
 // ⚡ Static files
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use("/etiquettes", express.static(path.join(__dirname, "public/etiquettes")));
+app.use("/invoices", express.static(path.join(__dirname, "public/invoices")));
+
 
 
 // 🚀 Routes publiques

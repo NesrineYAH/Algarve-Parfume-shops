@@ -227,8 +227,8 @@ router.post(
 
       // 5️⃣ Générer la facture PDF dans public/invoices
       const invoicePath = await generateInvoice(order, user, shippingAddress);
-      order.invoiceUrl = `/invoices/invoice-${order._id}.pdf`;
-      await order.save();
+      //      order.invoiceUrl = `/invoices/invoice-${order._id}.pdf`;
+      //          await order.save();
 
 
       // 6️⃣ Mettre à jour la commande
@@ -237,6 +237,7 @@ router.post(
         paymentStatus: "paid",
         paidAt: new Date(),
         stripeSessionId: session.id,
+        invoiceUrl: `/invoices/invoice-${order._id}.pdf`
       });
 
       // 7️⃣ ENVOYER L’EMAIL
@@ -280,13 +281,7 @@ router.post(
         ]
       });
       console.log("📧 Email envoyé à :", user.email);
-      // 8️⃣ SUPPRIMER LE PDF APRÈS ENVOI
-      /*
-    fs.unlink(invoicePath, (err) => {
-      if (err) console.error("⚠️ Impossible de supprimer la facture :", err);
-      else console.log("🗑️ Facture supprimée :", invoicePath);
-    });
-    */
+
     }
 
     res.json({ received: true });

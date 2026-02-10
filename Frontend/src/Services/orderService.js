@@ -78,6 +78,11 @@ const OrderService = {
     return axios.put(`/orders/${orderId}/ship`);
   },
 
+  refundOrder(orderId) {
+    return api.post(`/orders/${orderId}/refund`);
+  }
+
+
 
 };
 

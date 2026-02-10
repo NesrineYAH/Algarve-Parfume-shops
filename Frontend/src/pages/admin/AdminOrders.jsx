@@ -75,19 +75,30 @@ export default function AdminOrders() {
 
         <td>
 <td>
-  {order.status === "confirmed" ? (
-    <button onClick={() => shipOrder(order._id)}>
-      Expédier
-    </button>
+  {order.status === "confirmed" || order.status === "delivered" ? (
+    <>
+      <button onClick={() => shipOrder(order._id)}>Expédier</button>
+
+      <button 
+        onClick={() => refundOrder(order._id)} 
+        style={{ background: "orange", marginLeft: "10px" }}
+      >
+        Rembourser
+      </button>
+    </>
+  ) : order.status === "refunded" ? (
+    <button className="disabled" disabled>Déjà remboursée ✔</button>
   ) : (
     <button className="disabled" disabled>
-      {order.status === "pending" && "En attente de confirmation"}
-      {order.status === "cancelled" && "Commande annulée"}
-      {order.status === "shipped" && "Déjà expédiée ✔"}
-      {order.status === "delivered" && "Déjà livrée ✔"}
+      {order.status === "pending" && "En attente"}
+      {order.status === "cancelled" && "Annulée"}
+      {order.status === "shipped" && "Déjà expédiée"}
     </button>
   )}
 </td>
+
+
+
 
 </td>
 
@@ -96,18 +107,8 @@ export default function AdminOrders() {
           ))}
         </tbody>
       </table>
+      
     </div>
   );
 }
 
-{/*
-        <td>
-          {order.status !== "shipped" ? (
-            <button onClick={() => shipOrder(order._id)}>
-              Expédier
-            </button>
-          ) : (
-            <span className="done">✔</span>
-          )}
-        </td>
-    */}

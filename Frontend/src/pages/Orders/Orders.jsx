@@ -9,8 +9,11 @@ export default function Orders() {
   const { user, loadingUser } = useContext(UserContext);
   const [preOrders, setPreOrders] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [refundedOrders, setRefundedOrders]  = useState([]); 
   const [cancelledOrders, setCancelledOrders] = useState([]);
     const navigate = useNavigate();
+
+    
 
 useEffect(() => {
   
@@ -28,6 +31,7 @@ useEffect(() => {
       setPreOrders(data.preOrders || []);
       setOrders(data.orders || []);
       setCancelledOrders(data.cancelledOrders || []);
+      setRefundedOrders(data.refundedOrders || []);
     } catch (err) {
       console.error("Erreur récupération commandes :", err);
     }
@@ -50,6 +54,7 @@ useEffect(() => {
       setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
       setOrders((prev) => prev.filter((o) => o._id !== orderId));
 
+
       // Ajouter dans les annulées
       setCancelledOrders((prev) => [
         ...prev,
@@ -61,18 +66,6 @@ useEffect(() => {
     }
   };
 
-  const handleDelete = async (orderId) => {
-    try {
-      await OrderService.deleteOrder(orderId);
-
-      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
-      setOrders((prev) => prev.filter((o) => o._id !== orderId));
-      setCancelledOrders((prev) => prev.filter((o) => o._id !== orderId));
-    } catch (err) {
-      console.error("Erreur suppression commande :", err);
-    }
-  };
-
   function formatDate(dateString) {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, "0");
@@ -80,7 +73,6 @@ useEffect(() => {
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 }
-
 
   return (
     <div className="orders-container">
@@ -116,11 +108,7 @@ useEffect(() => {
               </div>
 
               <div className="order_AllButtons">
-                {/*
-                <button onClick={() => handleDelete(order._id)} className="Button">
-                  Supprimer
-                </button>
-                */ }
+             
                 <Link to={`/payment/${order._id}`} state={{ order, orderId: order._id }}>
                   <button className="Button">Payer</button>
                 </Link>
@@ -143,6 +131,8 @@ useEffect(() => {
             <div className="order-card" key={order._id}>
               <h3>Commande n°{order._id}</h3>
               <p>Paiement : {order.paymentStatus}</p>
+              <p>Status : {order.status}</p> 
+
               <p>Prix Total : {order.totalPrice} €</p>
                  <p>Date: {formatDate(order.paidAt)}</p>
 
@@ -165,32 +155,19 @@ useEffect(() => {
               </div>
 
               <div className="order_AllButtons">
-               {/*
-                <button onClick={() => handleDelete(order._id)} className="Button">
-                  Supprimer
-                </button>
-                */ }
-
-
-               
-
-
-                <Link to={`/tracking/${order._id}`}>
+              
+          <Link to={`/tracking/${order._id}`}>
                   <button className="Button">Suivre ma commande</button>
                 </Link>
 
- {order.invoiceUrl && (
-  <Link to={`http://localhost:5001${order.invoiceUrl}`} 
-    target="_blank"
-    rel="noopener noreferrer"
-  >  <button className="Button"> Télécharger la facture</button>
- </Link>
-)}
 
-                {/* <button onClick={() =>
-                 navigate("/retour-produit", {
-                  state: { orderId: order._id, productId: item.product._id },
-                   }) }> Demander un retour </button> */}
+  {/* Optionnel : afficher la facture même remboursée */}
+   
+        {order.invoiceUrl && (
+        <a href={`http://localhost:5001${order.invoiceUrl}`} 
+            target="_blank"
+          rel="noopener noreferrer">  <button className="Button"> Télécharger la facture</button></a>
+)}
 
               </div>
             </div>
@@ -213,17 +190,55 @@ useEffect(() => {
           ))}
         </>
       )}
-
+ 
       {/* SI AUCUNE COMMANDE */}
       {preOrders.length === 0 && orders.length === 0 && cancelledOrders.length === 0 && (
         <p>Aucune commande pour le moment.</p>
       )}
+
+            {/*SECTION COMMANDES ANNULÉES REMBOURS*/}
+      {refundedOrders.length > 0 && (
+  <>
+    <h2>Commandes Remboursées</h2>
+
+    {refundedOrders.map((order) => (
+      <div className="order-card refunded" key={order._id}>
+        <h3>Commande n°{order._id}</h3>
+        <p>Status : Remboursée</p>
+        <p>Montant : {order.totalPrice} €</p>
+        <p>Date du remboursement : {formatDate(order.refundedAt)}</p>
+
+      
+      </div>
+    ))}
+  </>
+)}
+
+
+      
     </div>
   );
 }
 
 
+   {/*
+  const handleDelete = async (orderId) => {
+    try {
+      await OrderService.deleteOrder(orderId);
 
+      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+      setCancelledOrders((prev) => prev.filter((o) => o._id !== orderId));
+    } catch (err) {
+      console.error("Erreur suppression commande :", err);
+    }
+  };
+
+
+                <button onClick={() => handleDelete(order._id)} className="Button">
+                  Supprimer
+                </button>
+                */ }
 
 
 //   const getImageUrl = (imageUrl) =>  imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";

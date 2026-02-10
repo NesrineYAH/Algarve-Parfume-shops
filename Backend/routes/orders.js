@@ -18,6 +18,7 @@ router.get("/:orderId", authMiddleware, orderCtrl.getOrderById);
 router.put("/:orderId/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
 router.post("/:orderId/deliver", authMiddleware, orderCtrl.deliverOrder);
 router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
+router.post("/:orderId/refund", authMiddleware, isAdmin, orderCtrl.refundOrder);
 router.get("/admin", authMiddleware, isAdmin, orderCtrl.getAllOrdersAdmin);
 
 

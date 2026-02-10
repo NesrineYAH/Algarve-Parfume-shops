@@ -317,6 +317,14 @@
 
   }
 
+  .status.refunded {
+    background: #ffb3b3;
+    color: #a10000;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
   /* 💻 Desktop : tableau normal */
   @media (min-width: 800px) {
     table {
