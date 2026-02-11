@@ -131,26 +131,29 @@ const deleteAddress = async (id) => {
 
           {activeTab === "addresses" && (
             <>
-              {addresses.map(addr => (
-                <li key={addr._id}>
-                  {addr.street}, {addr.city}
-                </li>
-              ))}
-              <button onClick={() => navigate("/add-adresse")}>
-                ➕ Ajouter une adresse
-              </button>
+        
               {addresses.map(addr => (
   <div key={addr._id} className="address-item">
     <p>{addr.street}, {addr.city}, {addr.postalCode}, {addr.country}</p>
-    <button onClick={() => updateAddress(addr._id, { street: "Nouvelle rue" })}>
-      Modifier
-    </button>
-    <button onClick={() => deleteAddress(addr._id)}>
-      Supprimer
-    </button>
+
+ <br />
+
+     <button onClick={() => navigate("/add-adresse")}> ➕ Ajouter une adresse</button>
+    <button onClick={() => updateAddress(addr._id, { street: "Nouvelle rue" })}>Modifier</button>
+<button
+  onClick={() => {
+    if (window.confirm("Voulez-vous vraiment supprimer cette adresse ?")) {
+      deleteAddress(addr._id);
+    }
+  }}
+>
+  Supprimer
+</button>
+
+
+
   </div>
 ))}
-
             </>
           )}
 
