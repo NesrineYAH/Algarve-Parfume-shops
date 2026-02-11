@@ -16,7 +16,6 @@ const Product = () => {
   const { t } = useTranslation();
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
-  const role = localStorage.getItem("role");
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [hoverRating, setHoverRating] = useState(0);

@@ -404,7 +404,7 @@ exports.getAllOrdersAdmin = async (req, res) => {
 
 exports.refundOrder = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.orderId);
+        const order = await Order.findById(req.params.orderId).populate("userId");
 
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
@@ -414,11 +414,45 @@ exports.refundOrder = async (req, res) => {
             return res.status(400).json({ message: "Impossible de rembourser une commande non payée" });
         }
 
+        // 🔄 Mise à jour du statut
         order.status = "refunded";
         order.paymentStatus = "refunded";
         order.refundedAt = new Date();
 
         await order.save();
+
+        // 📧 Email de confirmation au client
+        const html = `
+            <h2>Votre remboursement est confirmé</h2>
+            <p>Bonjour ${order.userId.prenom},</p>
+
+            <p>Nous vous informons que votre commande <strong>${order._id}</strong> a bien été remboursée.</p>
+
+            <p>Le montant remboursé : <strong>${order.totalPrice} €</strong></p>
+
+            <br/>
+
+            <a href="http://localhost:5173/MonCompte"
+               style="display:inline-block;
+                      background:#4c6ef5;
+                      color:white;
+                      padding:12px 18px;
+                      border-radius:8px;
+                      text-decoration:none;
+                      font-weight:bold;">
+                Consulter mes commandes
+            </a>
+
+            <br/><br/>
+            <p>Merci pour votre confiance.</p>
+        `;
+
+        await sendEmail({
+            to: order.userId.email,
+            subject: "Votre remboursement a été effectué",
+            html,
+            text: "Votre commande a été remboursée."
+        });
 
         return res.status(200).json({ message: "Commande remboursée", order });
 
@@ -428,30 +462,3 @@ exports.refundOrder = async (req, res) => {
     }
 };
 
-/*
-exports.deliverOrder = async (req, res) => {
-    try {
-        const order = await Order.findById(req.params.orderId);
-
-        if (!order) {
-            return res.status(404).json({ message: "Commande introuvable" });
-        }
-
-        // Vérification correcte de l'utilisateur
-        if (order.userId.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: "Accès interdit" });
-        }
-
-        order.status = "delivered";
-        order.deliveryStatus = "delivered";
-        order.deliveredAt = new Date();
-
-        await order.save();
-
-        res.json({ message: "Commande marquée comme reçue", order });
-    } catch (error) {
-        console.error("Erreur livraison commande :", error);
-        res.status(500).json({ message: "Erreur serveur" });
-    }
-};
-*/

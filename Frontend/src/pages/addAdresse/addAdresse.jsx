@@ -16,15 +16,14 @@ export default function AddAdresse() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const token = localStorage.getItem("token");
-
     try {
       const response = await fetch("/api/addresses", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      
         },
+     credentials: "include",
         body: JSON.stringify(form), // userId sera normalement ajouté côté backend
       });
 

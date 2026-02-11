@@ -1,5 +1,8 @@
 //AdminOrders.jsx 
 import React, { useEffect, useState } from "react";
+import OrderService from "../../Services/orderService";
+
+
 import axios from "axios";
 import "./admin.scss";
 
@@ -26,6 +29,15 @@ export default function AdminOrders() {
 
     await fetchOrders(); // recharge les commandes
   };
+  const refundOrder = async (orderId) => {
+  try {
+    await OrderService.refundOrder(orderId);
+    await fetchOrders(); // recharge la liste
+  } catch (error) {
+    console.error("Erreur remboursement :", error);
+  }
+};
+
 
   return (
     <div className="admin-table">
@@ -73,7 +85,6 @@ export default function AdminOrders() {
 
               <td>{order.totalPrice} €</td>
 
-     
 <td>
   {order.status === "confirmed" && (
     <button onClick={() => shipOrder(order._id)}>
@@ -82,24 +93,18 @@ export default function AdminOrders() {
   )}
 
   {order.status === "shipped" && (
-    <button className="disabled" disabled>
-      En cours de livraison
-    </button>
+    <button disabled>En cours de livraison</button>
   )}
 
   {order.status === "delivered" && (
-    <button className="disabled" disabled>
-      Commande terminée
-    </button>
+    <button disabled>Commande terminée</button>
   )}
 
   {order.status === "return_requested" && (
-    <button className="disabled" disabled>
-      Retour demandé
-    </button>
+    <button disabled>Retour demandé</button>
   )}
 
-  {order.status === "returned" && (
+  {order.status === "refunded" && (
     <button
       onClick={() => refundOrder(order._id)}
       style={{ background: "orange" }}
@@ -109,11 +114,10 @@ export default function AdminOrders() {
   )}
 
   {order.status === "refunded" && (
-    <button className="disabled" disabled>
-      Remboursée ✔
-    </button>
+    <button disabled>Remboursée ✔</button>
   )}
 </td>
+
 
             </tr>
           ))}
