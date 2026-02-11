@@ -8,6 +8,8 @@ async function authMiddleware(req, res, next) {
     // 1️⃣ Lire le cookie JWT
     const tokenFromCookie = req.cookies?.token || req.cookies?.jwt;
     const authHeader = req.headers.authorization;
+    console.log("Cookies :", req.cookies);
+    console.log("➡️ Authorization :", req.headers.authorization);
 
     // 2️⃣ Lire le header Authorization (optionnel)
     const tokenFromHeader = authHeader?.startsWith("Bearer ")
@@ -31,7 +33,7 @@ async function authMiddleware(req, res, next) {
     // ⭐ Ajout de userId pour garder le code existant Attacher l'utilisateur complet à req.user
     req.user = {
       ...user.toObject(),
-      userId: user._id,
+      userId: user._id.toString(), // ⭐ Comme ça tu évites tous les bugs de comparaison.
     };
 
     next();

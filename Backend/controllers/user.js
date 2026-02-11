@@ -87,15 +87,15 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: false, // true en production
       sameSite: "lax",
+      // sameSite: "none",   // ⭐ IMPORTANT
       maxAge: 24 * 60 * 60 * 1000,
     });
 
     console.log("Token généré :", token);
     console.log("ROLE UTILISATEUR :", user.role);
     console.log("Nom UTILISATEUR :", user.nom);
-
+    //      token,
     res.status(200).json({
-      token,
       user: {
         _id: user._id,
         nom: user.nom,
@@ -205,8 +205,8 @@ exports.getUserById = async (req, res) => {
 };
 exports.getUserOrders = async (req, res) => {
   try {
-    const userId = req.params.userId;
-
+    // const userId = req.params.userId;
+    const userId = req.user.userId; // ⭐ ID du token, fiable
     const orders = await Order.find({ userId }).sort({ createdAt: -1 });
 
     const preOrders = orders.filter(

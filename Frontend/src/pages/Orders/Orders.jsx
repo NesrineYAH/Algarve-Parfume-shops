@@ -27,7 +27,8 @@ useEffect(() => {
 
   const fetchOrders = async () => {
     try {
-      const data = await OrderService.getUserOrders(user._id);
+  //    const data = await OrderService.getUserOrders(user._id);
+  const data = await OrderService.getUserOrders();
       setPreOrders(data.preOrders || []);
       setOrders(data.orders || []);
       setCancelledOrders(data.cancelledOrders || []);
@@ -49,8 +50,6 @@ useEffect(() => {
   const handleCancel = async (orderId) => {
     try {
       await OrderService.cancelOrder(orderId);
-
-      // Retirer la commande des listes actives
       setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
       setOrders((prev) => prev.filter((o) => o._id !== orderId));
 
@@ -64,6 +63,8 @@ useEffect(() => {
     } catch (err) {
       console.error("Erreur lors de l'annulation :", err);
     }
+ 
+
   };
 
   function formatDate(dateString) {
@@ -113,9 +114,15 @@ useEffect(() => {
                   <button className="Button">Payer</button>
                 </Link>
 
-                <button className="Button" onClick={() => handleCancel(order._id)}>
-                  Annuler
-                </button>
+            <button
+         className="Button"
+          onClick={() => {if (window.confirm("Êtes-vous sûr de vouloir annuler cette commande ?")) {
+      handleCancel(order._id); }
+  }}
+>
+  Annuler
+</button>
+
               </div>
             </div>
           ))}
@@ -159,7 +166,9 @@ useEffect(() => {
           <Link to={`/tracking/${order._id}`}>
                   <button className="Button">Suivre ma commande</button>
                 </Link>
-
+   <button className="Button" onClick={() => handleCancel(order._id)}>
+                  Annuler
+                </button>
 
   {/* Optionnel : afficher la facture même remboursée */}
    

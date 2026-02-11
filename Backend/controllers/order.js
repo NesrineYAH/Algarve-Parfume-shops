@@ -343,12 +343,20 @@ exports.deliverOrder = async (req, res) => {
     }
 };
 
-
 exports.cancelOrder = async (req, res) => {
+
+    console.log("➡️ Requête reçue sur :", req.method, req.url); console.log("➡️ Cookies :", req.cookies); console.log("➡️ Authorization header :", req.headers.authorization);
     try {
         const { orderId } = req.params;
         const order = await Order.findById(orderId);
-        if (!order) return res.status(404).json({ message: "Commande introuvable" });
+        
+        console.log("Order userId :", order.userId.toString());
+        console.log("Token userId :", req.user.userId.toString());
+
+
+        if (!order) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
 
         // Vérifier que l'utilisateur est propriétaire
         if (order.userId.toString() !== req.user.userId) {
@@ -356,14 +364,22 @@ exports.cancelOrder = async (req, res) => {
         }
 
         // Vérifier que la commande n'est pas déjà expédiée
-        const nonCancellableDelivery = ["shipped", "in_transit", "out_for_delivery", "delivered"];
+        const nonCancellableDelivery = [
+            "shipped",
+            "in_transit",
+            "out_for_delivery",
+            "delivered"
+        ];
+
         if (nonCancellableDelivery.includes(order.delivery)) {
             return res.status(400).json({ message: "Commande non annulable" });
         }
 
         // Restaurer les articles dans le panier
         let cart = await Cart.findOne({ userId: req.user.userId });
-        if (!cart) cart = new Cart({ userId: req.user.userId, items: [] });
+        if (!cart) {
+            cart = new Cart({ userId: req.user.userId, items: [] });
+        }
 
         order.items.forEach(item => cart.items.push(item));
         await cart.save();
@@ -371,8 +387,16 @@ exports.cancelOrder = async (req, res) => {
         // Annuler la commande
         order.status = "cancelled";
         await order.save();
+        console.log("Order userId :", order.userId.toString());
+        console.log("Token userId :", req.user.userId);
 
-        return res.json({ message: "Commande annulée et panier restauré", order });
+        return res.json({
+            message: "Commande annulée et panier restauré",
+            order
+        });
+
+
+
     } catch (err) {
         console.error("Erreur annulation commande :", err);
         return res.status(500).json({ message: "Erreur serveur" });

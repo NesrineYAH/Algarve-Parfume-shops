@@ -5,7 +5,6 @@ const api = axios.create({
   baseURL: "http://localhost:5001/api",
   withCredentials: true, // ⭐ indispensable pour envoyer le cookie JWT
 });
-
 const OrderService = {
   createPreOrder: async (orderData) => {
     const response = await api.post("/orders/create", orderData);
@@ -15,39 +14,30 @@ const OrderService = {
     }
     return response.data;
   },
-
   updateOrder: async (orderId, updateData) => {
     if (!orderId) throw new Error("orderId invalide");
     const response = await api.put(`/orders/${orderId}`, updateData);
     return response.data;
   },
-
-
   getOrderById: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     const response = await api.get(`/orders/${orderId}`);
     return response.data;
   },
-
-
   finalizeOrder: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     const response = await api.post(`/orders/finalize/${orderId}`);
     localStorage.removeItem("preOrderId");
     return response.data;
   },
-
   cancelOrder: async (orderId) => {
-    if (!orderId) throw new Error("orderId manquant");
-    try {
-      const response = await api.post(`/orders/${orderId}/cancel`);
-      return response.data;
-    } catch (error) {
-      console.error("❌ Erreur annulation commande :", error);
-      throw error;
-    }
+    const response = await api.post(
+      `/orders/${orderId}/cancel`,
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
   },
-
   // ➤ Récupérer toutes les commandes (admin)
   getAllOrders: async () => {
     const response = await api.get("/orders/all");
@@ -67,23 +57,16 @@ const OrderService = {
     return response.data;
   },
 
-  getUserOrders: async (userId) => {
-    if (!userId) throw new Error("userId manquant");
-    const response = await api.get(`/orders/user/${userId}`);
-    return response.data; // { preOrders, orders }
+  getUserOrders: async () => {
+    const response = await api.get(`/orders/my-orders`);
+    return response.data;
   },
-
-
   shipOrder: async (orderId) => {
     return axios.put(`/orders/${orderId}/ship`);
   },
-
   refundOrder(orderId) {
     return api.post(`/orders/${orderId}/refund`);
   }
-
-
-
 };
 
 export default OrderService;

@@ -136,16 +136,16 @@ const deleteAddress = async (id) => {
   <div key={addr._id} className="address-item">
     <p>{addr.street}, {addr.city}, {addr.postalCode}, {addr.country}</p>
 
- <br />
 
-     <button onClick={() => navigate("/add-adresse")}> ➕ Ajouter une adresse</button>
-    <button onClick={() => updateAddress(addr._id, { street: "Nouvelle rue" })}>Modifier</button>
+
+     <button onClick={() => navigate("/add-adresse")} className="btn-Add "> ➕ Ajouter une adresse</button>
+    <button onClick={() => updateAddress(addr._id, { street: "Nouvelle rue" })} className="btn-Add ">Modifier</button>
 <button
   onClick={() => {
     if (window.confirm("Voulez-vous vraiment supprimer cette adresse ?")) {
       deleteAddress(addr._id);
     }
-  }}
+  }} className="btn-Add "
 >
   Supprimer
 </button>

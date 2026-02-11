@@ -36,12 +36,14 @@ app.use(
 
 // ⚡ Middlewares globaux
 app.use(cors({
-  origin:
-    "http://localhost:5173",
+  //  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -57,7 +59,6 @@ app.use("/etiquettes", express.static(path.join(__dirname, "public/etiquettes"))
 app.use("/invoices", express.static(path.join(__dirname, "public/invoices")));
 
 
-
 // 🚀 Routes publiques
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
@@ -67,7 +68,8 @@ app.use("/api/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/contacts", contactRoutes);
-app.use("/api/products", commentsRoutes);
+// app.use("/api/products", commentsRoutes);
+app.use("/api/products/:productId/comments", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
