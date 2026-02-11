@@ -50,7 +50,59 @@ export default function MonCompte() {
     return <h2>Chargement du compte...</h2>;
   }
 
+const updateAddress = async (id, updatedData) => {
+  try {
+    const res = await fetch(`http://localhost:5001/api/addresses/${id}`, {
+      method: "PUT",
+      credentials: "include", // envoie le cookie JWT
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    });
 
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("Erreur updateAddress :", data.message);
+      return;
+    }
+
+    // Mise à jour locale de l'adresse
+    setAddresses(prev =>
+      prev.map(addr => (addr._id === id ? data.address : addr))
+    );
+
+    console.log("Adresse mise à jour avec succès");
+
+  } catch (error) {
+    console.error("Erreur updateAddress :", error);
+  }
+};
+
+const deleteAddress = async (id) => {
+  try {
+    const res = await fetch(`http://localhost:5001/api/addresses/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("Erreur deleteAddress :", data.message);
+      return;
+    }
+
+    // Retirer l'adresse du state pour mise à jour immédiate
+    setAddresses(prev => prev.filter(addr => addr._id !== id));
+
+    console.log("Adresse supprimée avec succès");
+
+  } catch (error) {
+    console.error("Erreur deleteAddress :", error);
+  }
+};
 
 
   return (
@@ -87,6 +139,18 @@ export default function MonCompte() {
               <button onClick={() => navigate("/add-adresse")}>
                 ➕ Ajouter une adresse
               </button>
+              {addresses.map(addr => (
+  <div key={addr._id} className="address-item">
+    <p>{addr.street}, {addr.city}, {addr.postalCode}, {addr.country}</p>
+    <button onClick={() => updateAddress(addr._id, { street: "Nouvelle rue" })}>
+      Modifier
+    </button>
+    <button onClick={() => deleteAddress(addr._id)}>
+      Supprimer
+    </button>
+  </div>
+))}
+
             </>
           )}
 

@@ -1,12 +1,7 @@
 // routes/addresse
 const express = require("express");
 const router = express.Router();
-const {
-    addAddress,
-    getAddresses,
-    deleteAddress,
-    updateAddress // ← ajout
-} = require("../controllers/address");
+const { addAddress, getAddresses, deleteAddress, updateAddress } = require("../controllers/address");
 const { authMiddleware } = require("../middleware/auth"); // vérifie que l'utilisateur est connecté
 
 // 🔹 Ajouter une adresse
