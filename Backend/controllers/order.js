@@ -302,7 +302,8 @@ exports.deliverOrder = async (req, res) => {
             return res.status(404).json({ message: "Commande introuvable" });
         }
 
-        if (order.userId.toString() !== req.user.userId) {
+        // Vérification correcte de l'utilisateur
+        if (order.userId.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: "Accès interdit" });
         }
 
@@ -318,6 +319,7 @@ exports.deliverOrder = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 exports.cancelOrder = async (req, res) => {
     try {
         const { orderId } = req.params;
