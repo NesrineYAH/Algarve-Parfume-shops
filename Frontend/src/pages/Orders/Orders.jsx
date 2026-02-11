@@ -162,9 +162,10 @@ useEffect(() => {
           <Link to={`/tracking/${order._id}`}>
                   <button className="Button">Suivre ma commande</button>
                 </Link>
-   <button className="Button" onClick={() => handleCancel(order._id)}>
-                  Annuler
-                </button>
+         <button
+         className="Button"
+          onClick={() => {if (window.confirm("Êtes-vous sûr de vouloir annuler cette commande ?")) {
+      handleCancel(order._id); } }} >Annuler </button>
 
   {/* Optionnel : afficher la facture même remboursée */}
    

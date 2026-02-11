@@ -6,43 +6,46 @@ const { generateReturnLabel } = require("../utils/generateReturnLabel.js");
 
 
 exports.createReturnRequest = async (req, res) => {
-    try {
-        const { orderId, productId, reason, description } = req.body;
+  try {
+    const { orderId, productId, reason, description } = req.body;
 
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return res.status(404).json({ message: "Commande introuvable" });
-        }
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Commande introuvable" });
+    }
 
-        const alreadyRequested = await ReturnRequest.findOne({
-            userId: req.user.userId,
-            orderId,
-            productId,
-        });
+    const productInOrder = order.items.find(p => p._id.toString() === productId);
+    if (!productInOrder) return res.status(400).json({ message: "Produit non trouvé dans la commande" });
 
-        if (alreadyRequested) {
-            return res.status(400).json({ message: "Retour déjà demandé pour ce produit" });
-        }
-        // 1️⃣ Créer la demande de retour
-        const request = await ReturnRequest.create({
-            userId: req.user.userId,
-            orderId,
-            productId,
-            reason,
-            description,
-        });
+    const alreadyRequested = await ReturnRequest.findOne({
+      userId: req.user.userId,
+      orderId,
+      productId,
+    });
 
-        // 2️⃣ Mettre la commande en refunded automatiquement
-        order.status = "refunded";
-        order.paymentStatus = "refunded";
-        order.refundedAt = new Date();
-        await order.save();
+    if (alreadyRequested) {
+      return res.status(400).json({ message: "Retour déjà demandé pour ce produit" });
+    }
+    // 1️⃣ Créer la demande de retour
+    const request = await ReturnRequest.create({
+      userId: req.user.userId,
+      orderId,
+      productId,
+      reason,
+      description
+    });
 
-        // 3️⃣ Générer l’étiquette PDF
-        const filePath = generateReturnLabel(request._id, req.user, order);
 
-        // 4️⃣ Envoyer l’email
-        const html = `
+    // Mettre à jours la commande en retour demandé
+    order.status = "return_requested";
+    await order.save();
+
+    // 3️⃣ Générer l’étiquette PDF
+    const filePath = generateReturnLabel(request._id, req.user, order);
+
+
+    // 4️⃣ Envoyer l’email
+    const html = `
       <h2>Votre demande de retour est bien enregistrée</h2>
       <p>Bonjour ${req.user.prenom},</p>
 
@@ -67,20 +70,47 @@ exports.createReturnRequest = async (req, res) => {
       <p>Merci pour votre confiance.</p>
     `;
 
-        await sendEmail({
-            to: req.user.email,
-            subject: "Confirmation de votre demande de retour",
-            html,
-            text: "Votre demande de retour est enregistrée.",
-        });
+    await sendEmail({
+      to: req.user.email,
+      subject: "Confirmation de votre demande de retour",
+      html,
+      text: "Votre demande de retour est enregistrée.",
+    });
 
-        res.json({ success: true, request });
+    res.json({ success: true, request });
 
-    } catch (err) {
-        console.error("Erreur createReturnRequest :", err);
-        res.status(500).json({ message: "Erreur serveur" });
-    }
+  } catch (err) {
+    console.error("Erreur createReturnRequest :", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 };
+
+// Admin approuve retour et marque "returned"
+exports.approveReturn = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId);
+    if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
+    if (order.status !== "return_requested") {
+      return res.status(400).json({ message: "Aucun retour en attente" });
+    }
+
+    order.status = "returned";
+    await order.save();
+
+    res.status(200).json({ success: true, order });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+
+
+
+
+
+
 
 
 /*

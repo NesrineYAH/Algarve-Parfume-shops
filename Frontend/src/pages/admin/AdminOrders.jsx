@@ -104,7 +104,7 @@ export default function AdminOrders() {
     <button disabled>Retour demandé</button>
   )}
 
-  {order.status === "refunded" && (
+  {order.status === "returned" && (
     <button
       onClick={() => refundOrder(order._id)}
       style={{ background: "orange" }}

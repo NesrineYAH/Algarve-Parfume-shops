@@ -1,4 +1,4 @@
-// Model Product Schéma Order commande
+// models/Order.js
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
@@ -28,7 +28,16 @@ const orderSchema = new mongoose.Schema(
 
         status: {
             type: String,
-            enum: ["pending", "confirmed", "shipped", "delivered", "cancelled", "refunded"],
+            enum: [
+                "pending",          // commande créée mais pas encore payée
+                "confirmed",        // paiement effectué, pas encore expédiée
+                "shipped",          // expédiée
+                "delivered",        // livrée
+                "return_requested", // client demande un retour
+                "returned",         // produit retourné au vendeur
+                "cancelled",        // annulée
+                "refunded"          // remboursée
+            ],
             default: "pending",
         },
 
@@ -45,18 +54,19 @@ const orderSchema = new mongoose.Schema(
             enum: ["processing", "shipped", "in_transit", "out_for_delivery", "delivered"],
             default: "processing",
         },
+
         invoiceUrl: { type: String },
 
         paidAt: Date,
         shippedAt: Date,
         deliveredAt: Date,
         refundedAt: Date,
-
     },
     { timestamps: true }
 );
 
 module.exports = mongoose.model("Order", orderSchema);
+
 
 
 

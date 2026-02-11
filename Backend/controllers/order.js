@@ -155,7 +155,6 @@ exports.getMyOrders = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 exports.deleteOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -258,6 +257,10 @@ exports.shipOrder = async (req, res) => {
         const order = await Order.findById(orderId).populate("userId");
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        if (order.status !== "confirmed") {
+            return res.status(400).json({ message: "Commande non confirmée" });
         }
         order.status = "shipped";
         order.shippedAt = new Date();
@@ -381,8 +384,31 @@ exports.cancelOrder = async (req, res) => {
         // Annuler la commande
         order.status = "cancelled";
         await order.save();
-        console.log("Order userId :", order.userId.toString());
-        console.log("Token userId :", req.user.userId);
+
+        const html = `
+      <h2>Votre commande est Annulée </h2>
+      <p>Bonjour ${order.userId.prenom},</p>
+
+      <p>Votre commande <strong>${order._id}</strong> vient est annulée .</p>
+
+      <p>Si vous voulez toujours passer cette commande, voici un raccourci : Rendez-vous dans </p>
+<a href="http://localhost:5173/panier">Voir mon panier  
+         style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">
+         Suivre mon colis
+      </a>
+       trouvez la commande annulée et cliquez sur "racheter".  Tous les articles seront ajoutés à votre panier, vous pourrez alors repasser la commande !
+
+      <br><br>
+      <p>Merci pour votre confiance 💐</p>
+    `;
+
+        await sendEmail({
+            to: order.userId.email,
+            subject: "Votre commande est expédiée",
+            html,
+            text: "Votre commande a été annulée. Les articles ont été restaurés dans votre panier."
+        });
+
 
         return res.json({
             message: "Commande annulée et panier restauré",
@@ -420,56 +446,54 @@ exports.getAllOrdersAdmin = async (req, res) => {
 exports.refundOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId).populate("userId");
+        if (!order) return res.status(404).json({ message: "Commande introuvable" });
 
-        if (!order) {
-            return res.status(404).json({ message: "Commande introuvable" });
+        if (order.status !== "returned") {
+            return res.status(400).json({ message: "Remboursement non autorisé pour ce statut" });
         }
 
+        // Cas 2 : commande non payée ou en attente
         if (order.paymentStatus !== "paid") {
-            return res.status(400).json({ message: "Impossible de rembourser une commande non payée" });
+            // Si statut pending : annulation possible
+            if (order.status === "pending") {
+                order.status = "cancelled";
+                await order.save();
+                return res.status(200).json({ message: "Commande annulée avec succès", order });
+            } else {
+                return res.status(400).json({ message: "Impossible de rembourser une commande non payée" });
+            }
         }
 
-        // 🔄 Mise à jour du statut
-        order.status = "refunded";
-        order.paymentStatus = "refunded";
-        order.refundedAt = new Date();
+        // Cas 1 : commande confirmée (payée mais pas livrée)
+        if (order.status === "confirmed") {
+            order.status = "refunded";
+            order.paymentStatus = "refunded";
+            order.refundedAt = new Date();
+            await order.save();
+            await sendRefundEmail(order);
+            return res.status(200).json({ message: "Commande remboursée", order });
+        }
 
-        await order.save();
+        // Cas 4 : commande expédiée mais pas livrée
+        if (order.status === "shipped") {
+            // Vérifier que livraison n'a pas eu lieu
+            order.status = "refunded";
+            order.paymentStatus = "refunded";
+            order.refundedAt = new Date();
+            await order.save();
+            await sendRefundEmail(order);
+            return res.status(200).json({ message: "Commande remboursée (livraison échouée)", order });
+        }
 
-        // 📧 Email de confirmation au client
-        const html = `
-            <h2>Votre remboursement est confirmé</h2>
-            <p>Bonjour ${order.userId.prenom},</p>
+        // Cas 3 : produit livré, retour nécessaire
+        if (order.status === "delivered") {
+            return res.status(400).json({
+                message: "Produit livré : le remboursement nécessite un retour. Veuillez créer une demande de retour."
+            });
+        }
 
-            <p>Nous vous informons que votre commande <strong>${order._id}</strong> a bien été remboursée.</p>
-
-            <p>Le montant remboursé : <strong>${order.totalPrice} €</strong></p>
-
-            <br/>
-
-            <a href="http://localhost:5173/MonCompte"
-               style="display:inline-block;
-                      background:#4c6ef5;
-                      color:white;
-                      padding:12px 18px;
-                      border-radius:8px;
-                      text-decoration:none;
-                      font-weight:bold;">
-                Consulter mes commandes
-            </a>
-
-            <br/><br/>
-            <p>Merci pour votre confiance.</p>
-        `;
-
-        await sendEmail({
-            to: order.userId.email,
-            subject: "Votre remboursement a été effectué",
-            html,
-            text: "Votre commande a été remboursée."
-        });
-
-        return res.status(200).json({ message: "Commande remboursée", order });
+        // Cas par défaut
+        return res.status(400).json({ message: "Remboursement non autorisé pour ce statut" });
 
     } catch (error) {
         console.error("Erreur remboursement :", error);
@@ -477,3 +501,33 @@ exports.refundOrder = async (req, res) => {
     }
 };
 
+// Fonction séparée pour envoyer l'email
+async function sendRefundEmail(order) {
+    const html = `
+      <h2>Votre remboursement est confirmé</h2>
+      <p>Bonjour ${order.userId.prenom},</p>
+      <p>Votre commande <strong>${order._id}</strong> a été remboursée.</p>
+      <p>Montant remboursé : <strong>${order.totalPrice} €</strong></p>
+      <a href="http://localhost:5173/MonCompte"
+         style="display:inline-block;background:#4c6ef5;color:white;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">
+         Consulter mes commandes
+      </a>
+  `;
+    await sendEmail({
+        to: order.userId.email,
+        subject: "Votre remboursement a été effectué",
+        html,
+        text: "Votre commande a été remboursée."
+    });
+}
+
+/*
+
+
+
+
+
+
+
+
+*/
