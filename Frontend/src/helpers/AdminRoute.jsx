@@ -4,9 +4,9 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
 const AdminRoute = () => {
-  const { user, loading } = useContext(UserContext);
+  const { user, loadingUser } = useContext(UserContext);
 
-  if (loading) return <p>Chargement...</p>;
+  if (loadingUser) return <p>Chargement...</p>;
 
   if (!user) {
     return <Navigate to="/Authentification" replace />;
