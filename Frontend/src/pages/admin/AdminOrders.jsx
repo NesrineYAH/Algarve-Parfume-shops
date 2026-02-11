@@ -73,26 +73,38 @@ export default function AdminOrders() {
 
               <td>{order.totalPrice} €</td>
 
-        <td>
+     
 <td>
-  {order.status === "confirmed" || order.status === "delivered" ? (
-    <>
-      <button onClick={() => shipOrder(order._id)}>Expédier</button>
+  {order.status === "confirmed" && (
+    <button onClick={() => shipOrder(order._id)}>
+      Expédier
+    </button>
+  )}
 
-      <button 
-        onClick={() => refundOrder(order._id)} 
-        style={{ background: "orange", marginLeft: "10px" }}
-      >
-        Rembourser
-      </button>
-    </>
-  ) : order.status === "refunded" ? (
-    <button className="disabled" disabled>Déjà remboursée ✔</button>
-  ) : (
+  {order.status === "delivered" && (
+    <button
+      onClick={() => refundOrder(order._id)}
+      style={{ background: "orange", marginLeft: "10px" }}
+    >
+      Rembourser
+    </button>
+  )}
+
+  {order.status === "shipped" && (
     <button className="disabled" disabled>
-      {order.status === "pending" && "En attente"}
-      {order.status === "cancelled" && "Annulée"}
-      {order.status === "shipped" && "Déjà expédiée"}
+      Déjà expédiée
+    </button>
+  )}
+
+  {order.status === "pending" && (
+    <button className="disabled" disabled>
+      En attente paiement
+    </button>
+  )}
+
+  {order.status === "refunded" && (
+    <button className="disabled" disabled>
+      Déjà remboursée ✔
     </button>
   )}
 </td>
@@ -100,7 +112,8 @@ export default function AdminOrders() {
 
 
 
-</td>
+
+
 
 
             </tr>
