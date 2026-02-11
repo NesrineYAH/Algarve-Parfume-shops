@@ -296,14 +296,13 @@ exports.shipOrder = async (req, res) => {
 };
 exports.deliverOrder = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.orderId);
+        const order = await Order.findById(req.params.orderId).populate("userId");
 
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
 
-        // Vérification correcte de l'utilisateur
-        if (order.userId.toString() !== req.user._id.toString()) {
+        if (order.userId._id.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: "Accès interdit" });
         }
 
@@ -313,12 +312,37 @@ exports.deliverOrder = async (req, res) => {
 
         await order.save();
 
+        // 📧 Email de confirmation au client
+        await sendEmail({
+            to: order.userId.email,
+            subject: "Votre commande est livrée",
+            html: `
+        <h2>Commande livrée</h2>
+        <p>Bonjour ${order.userId.prenom},</p>
+        <p>Merci d'avoir confirmé la réception de votre commande <strong>${order._id}</strong>.</p>
+        <p>Nous espérons que vous êtes satisfait(e) de votre achat.</p>
+        <a href="http://localhost:5173/authentification"
+   style="display:inline-block;
+          background:#4c6ef5;
+          color:white;
+          padding:12px 18px;
+          border-radius:8px;
+          text-decoration:none;
+          font-weight:bold;">
+  Se connecter à mon compte
+</a>
+
+      `
+        });
+
         res.json({ message: "Commande marquée comme reçue", order });
+
     } catch (error) {
         console.error("Erreur livraison commande :", error);
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
+
 
 exports.cancelOrder = async (req, res) => {
     try {
@@ -404,3 +428,30 @@ exports.refundOrder = async (req, res) => {
     }
 };
 
+/*
+exports.deliverOrder = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.orderId);
+
+        if (!order) {
+            return res.status(404).json({ message: "Commande introuvable" });
+        }
+
+        // Vérification correcte de l'utilisateur
+        if (order.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: "Accès interdit" });
+        }
+
+        order.status = "delivered";
+        order.deliveryStatus = "delivered";
+        order.deliveredAt = new Date();
+
+        await order.save();
+
+        res.json({ message: "Commande marquée comme reçue", order });
+    } catch (error) {
+        console.error("Erreur livraison commande :", error);
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+*/

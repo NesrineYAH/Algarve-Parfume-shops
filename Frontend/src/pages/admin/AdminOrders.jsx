@@ -81,40 +81,39 @@ export default function AdminOrders() {
     </button>
   )}
 
+  {order.status === "shipped" && (
+    <button className="disabled" disabled>
+      En cours de livraison
+    </button>
+  )}
+
   {order.status === "delivered" && (
+    <button className="disabled" disabled>
+      Commande terminée
+    </button>
+  )}
+
+  {order.status === "return_requested" && (
+    <button className="disabled" disabled>
+      Retour demandé
+    </button>
+  )}
+
+  {order.status === "returned" && (
     <button
       onClick={() => refundOrder(order._id)}
-      style={{ background: "orange", marginLeft: "10px" }}
+      style={{ background: "orange" }}
     >
       Rembourser
     </button>
   )}
 
-  {order.status === "shipped" && (
-    <button className="disabled" disabled>
-      Déjà expédiée
-    </button>
-  )}
-
-  {order.status === "pending" && (
-    <button className="disabled" disabled>
-      En attente paiement
-    </button>
-  )}
-
   {order.status === "refunded" && (
     <button className="disabled" disabled>
-      Déjà remboursée ✔
+      Remboursée ✔
     </button>
   )}
 </td>
-
-
-
-
-
-
-
 
             </tr>
           ))}
