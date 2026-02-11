@@ -342,17 +342,11 @@ exports.deliverOrder = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 exports.cancelOrder = async (req, res) => {
 
-    console.log("➡️ Requête reçue sur :", req.method, req.url); console.log("➡️ Cookies :", req.cookies); console.log("➡️ Authorization header :", req.headers.authorization);
     try {
         const { orderId } = req.params;
         const order = await Order.findById(orderId);
-        
-        console.log("Order userId :", order.userId.toString());
-        console.log("Token userId :", req.user.userId.toString());
-
 
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
@@ -395,14 +389,11 @@ exports.cancelOrder = async (req, res) => {
             order
         });
 
-
-
     } catch (err) {
         console.error("Erreur annulation commande :", err);
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 // ➤ Récupérer toutes les commandes pour admin / vendeur
 exports.getAllOrdersAdmin = async (req, res) => {
     try {

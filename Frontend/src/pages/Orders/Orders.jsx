@@ -117,11 +117,7 @@ useEffect(() => {
             <button
          className="Button"
           onClick={() => {if (window.confirm("Êtes-vous sûr de vouloir annuler cette commande ?")) {
-      handleCancel(order._id); }
-  }}
->
-  Annuler
-</button>
+      handleCancel(order._id); } }} >Annuler </button>
 
               </div>
             </div>

@@ -83,3 +83,68 @@ exports.createReturnRequest = async (req, res) => {
 };
 
 
+/*
+
+exports.createReturnRequest = async (req, res) => {
+  try {
+    const { orderId, productId, reason, description } = req.body;
+
+    if (!orderId || !productId || !reason) {
+      return res.status(400).json({ message: "Champs obligatoires manquants" });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) return res.status(404).json({ message: "Commande introuvable" });
+
+    const productInOrder = order.products.find(p => p._id.toString() === productId);
+    if (!productInOrder) return res.status(400).json({ message: "Produit non trouvé dans la commande" });
+
+    const existingRequest = await ReturnRequest.findOne({
+      userId: req.user.userId,
+      orderId,
+      productId
+    });
+    if (existingRequest) return res.status(400).json({ message: "Retour déjà demandé" });
+
+    const request = await ReturnRequest.create({
+      userId: req.user.userId,
+      orderId,
+      productId,
+      reason,
+      description
+    });
+
+    // Optionnel : ne pas passer automatiquement à refunded
+    order.status = "return_requested";
+    await order.save();
+
+    const filePath = generateReturnLabel(request._id, req.user, order);
+
+
+    const emailHtml = "";
+
+    await sendEmail({
+      to: req.user.email,
+      subject: "Demande de retour reçue",
+      html: emailHtml,
+      text: "Votre demande de retour est enregistrée."
+    });
+
+    res.status(201).json({ success: true, request });
+  } catch (err) {
+    console.error("Erreur createReturnRequest :", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+*/
+
+/*
+
+
+
+
+
+est ce que la route de retour d'un produit ou une commande est recommandé d'être parmis les routes d'orders ou bien comme j'ai fais moi dans un fichier séparé return.js 
+
+
+*/
