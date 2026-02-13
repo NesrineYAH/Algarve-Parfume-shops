@@ -61,6 +61,7 @@ const orderSchema = new mongoose.Schema(
         shippedAt: Date,
         deliveredAt: Date,
         refundedAt: Date,
+        cancelledAt: Date,
     },
     { timestamps: true }
 );

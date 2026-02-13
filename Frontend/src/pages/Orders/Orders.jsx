@@ -11,6 +11,8 @@ export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [refundedOrders, setRefundedOrders]  = useState([]); 
   const [cancelledOrders, setCancelledOrders] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+
     const navigate = useNavigate();
 
     
@@ -52,17 +54,12 @@ useEffect(() => {
       await OrderService.cancelOrder(orderId);
       setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
       setOrders((prev) => prev.filter((o) => o._id !== orderId));
-
-
-      // Ajouter dans les annulées
-      setCancelledOrders((prev) => [
-        ...prev,
-        { _id: orderId, status: "cancelled" }
-      ]);
-
+      setCancelledOrders((prev) => [...prev,{ _id: orderId, status: "cancelled" } ]);
     } catch (err) {
-      console.error("Erreur lors de l'annulation :", err);
-    }
+    const errorMessage = err.response?.data?.message || "Erreur lors de l'annulation.";
+ setErrorMessage(errorMessage);  
+  setTimeout(() => setErrorMessage(""), 4000);
+  }
  
 
   };
@@ -78,6 +75,12 @@ useEffect(() => {
   return (
     <div className="orders-container">
       {user && <h1>Bonjour {user.prenom}</h1>}
+
+              {errorMessage && (
+      <div className="error-banner">
+        {errorMessage}
+      </div>
+    )}
 
       {preOrders.length > 0 && (
         <>
@@ -181,6 +184,8 @@ useEffect(() => {
         </>
       )}
 
+
+
       {/* SECTION COMMANDES ANNULÉES */}
       {cancelledOrders.length > 0 && (
         <>
@@ -226,25 +231,6 @@ useEffect(() => {
   );
 }
 
-
-   {/*
-  const handleDelete = async (orderId) => {
-    try {
-      await OrderService.deleteOrder(orderId);
-
-      setPreOrders((prev) => prev.filter((o) => o._id !== orderId));
-      setOrders((prev) => prev.filter((o) => o._id !== orderId));
-      setCancelledOrders((prev) => prev.filter((o) => o._id !== orderId));
-    } catch (err) {
-      console.error("Erreur suppression commande :", err);
-    }
-  };
-
-
-                <button onClick={() => handleDelete(order._id)} className="Button">
-                  Supprimer
-                </button>
-                */ }
 
 
 //   const getImageUrl = (imageUrl) =>  imageUrl ? `http://localhost:5001${imageUrl}` : "/uploads/default.jpg";

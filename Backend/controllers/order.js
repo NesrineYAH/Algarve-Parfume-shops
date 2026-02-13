@@ -132,7 +132,9 @@ exports.getMyOrders = async (req, res) => {
         );
 
         const orders = allOrders.filter(
-            o => o.status === "confirmed" && o.paymentStatus === "paid"
+            o =>
+                ["confirmed", "shipped", "delivered"].includes(o.status) &&
+                o.paymentStatus === "paid"
         );
 
         const cancelledOrders = allOrders.filter(
@@ -143,11 +145,16 @@ exports.getMyOrders = async (req, res) => {
             o => o.status === "refunded"
         );
 
+        const returnRequestedOrders = allOrders.filter(
+            o => o.status === "return_requested"
+        );
+
         return res.status(200).json({
             preOrders,
             orders,
             cancelledOrders,
-            refundedOrders
+            refundedOrders,
+            returnRequestedOrders
         });
 
     } catch (error) {
@@ -361,16 +368,21 @@ exports.cancelOrder = async (req, res) => {
         }
 
         // Vérifier que la commande n'est pas déjà expédiée
-        const nonCancellableDelivery = [
+        const nonCancellableStatus = [
             "shipped",
             "in_transit",
             "out_for_delivery",
-            "delivered"
+            "delivered",
+            "return_requested",
+            "returned",
+            "refunded"
         ];
 
-        if (nonCancellableDelivery.includes(order.delivery)) {
+
+        if (nonCancellableStatus.includes(order.status)) {
             return res.status(400).json({ message: "Commande non annulable" });
         }
+
 
         // Restaurer les articles dans le panier
         let cart = await Cart.findOne({ userId: req.user.userId });

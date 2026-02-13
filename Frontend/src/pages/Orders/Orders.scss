@@ -5,6 +5,49 @@
     font-family: "Roboto", sans-serif;
 }
 
+.error-banner {
+    position: fixed;
+    top: 45%;
+    left: 45%;
+    // transform: translate(-50%, -50%);
+    color: #e70c0c;
+    padding: 20px 28px;
+    border-radius: 10px;
+    border: 2px solid #ffb3b3;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    font-size: 1.1rem;
+    font-weight: 600;
+    z-index: 9999;
+    animation: fadeInScale 0.25s ease-out;
+    max-width: 15%;
+    text-align: center;
+}
+
+/* Fond assombri derrière le modal */
+.error-banner::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    //  background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+/* Animation d’apparition */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
 .orders-title {
     font-size: 28px;
     font-weight: 700;
@@ -103,6 +146,9 @@
         color: red;
         font-weight: bold;
     }
+
+
+
 
 
 }

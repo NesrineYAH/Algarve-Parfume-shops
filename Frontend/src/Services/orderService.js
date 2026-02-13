@@ -38,19 +38,17 @@ const OrderService = {
     );
     return response.data;
   },
-  // ➤ Récupérer toutes les commandes (admin)
+
   getAllOrders: async () => {
     const response = await api.get("/orders/all");
     return response.data;
   },
 
-  // ➤ Récupérer les commandes de l’utilisateur connecté
   getMyOrders: async () => {
     const response = await api.get("/orders/my-orders");
     return response.data;
   },
 
-  // ➤ Supprimer une commande
   deleteOrder: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     const response = await api.delete(`/orders/${orderId}`);
