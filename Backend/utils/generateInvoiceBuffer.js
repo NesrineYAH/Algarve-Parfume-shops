@@ -13,6 +13,12 @@ const generateInvoice = (order, user, address) => {
         const invoicePath = path.join(invoicesDir, `invoice-${order._id}.pdf`);
         console.log("PDF généré :", invoicePath);
 
+        // --- LOGO ---
+        const logoPath = path.join(__dirname, "..", "public", "logo.jpg");
+        if (fs.existsSync(logoPath)) {
+            doc.image(logoPath, 40, 40, { width: 100 });
+        }
+
         const doc = new PDFDocument({ margin: 50 });
         const stream = fs.createWriteStream(invoicePath);
 
