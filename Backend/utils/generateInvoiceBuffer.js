@@ -1,3 +1,4 @@
+//generateInvoiceBuffer.js
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -12,14 +13,14 @@ const generateInvoice = (order, user, address) => {
 
         const invoicePath = path.join(invoicesDir, `invoice-${order._id}.pdf`);
         console.log("PDF généré :", invoicePath);
-
+        const doc = new PDFDocument({ margin: 50 }); // <-- declare doc first
         // --- LOGO ---
         const logoPath = path.join(__dirname, "..", "public", "logo.jpg");
         if (fs.existsSync(logoPath)) {
             doc.image(logoPath, 40, 40, { width: 100 });
         }
 
-        const doc = new PDFDocument({ margin: 50 });
+
         const stream = fs.createWriteStream(invoicePath);
 
         stream.on("finish", () => resolve(invoicePath));

@@ -24,6 +24,13 @@ const ReturnService = {
         const res = await api.put(`/${orderId}/refund`, { productId });
         return res.data;
     },
+
+    markAsReturned(orderId, productId) {
+        return axios.put("/mark-returned", { orderId, productId },
+            { withCredentials: true }
+        );
+    }
+
 };
 
 export default ReturnService;

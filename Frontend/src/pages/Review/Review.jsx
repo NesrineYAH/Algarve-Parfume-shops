@@ -1,3 +1,4 @@
+//pages/review.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -21,16 +22,15 @@ const Review = () => {
 
     try {
       setError("");
-      const token = localStorage.getItem("token");
-      await axios.post(
-        `http://localhost:5001/api/products/${id}/comments`,
-        { rating, text },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+await axios.post(
+  `http://localhost:5001/api/products/${id}/comments`,
+  { rating, text },
+  {
+    headers: { "Content-Type": "application/json" },
+    withCredentials: true, // ✅ pour envoyer les cookies HttpOnly
+  }
+);
+
       setSuccess("Votre avis a été envoyé avec succès !");
       setRating(0);
       setText("");

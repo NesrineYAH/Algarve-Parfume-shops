@@ -1,3 +1,4 @@
+//Frontend/pages/AdminOrders.jsx 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReturnService from "../../Services/returnService";
@@ -32,7 +33,7 @@ export default function AdminOrders() {
   };
 
   const refundOrder = async (orderId) => {
-    await axios.post(
+    await axios.put(
       `http://localhost:5001/api/orders/${orderId}/refund`,
       {},
       { withCredentials: true }
@@ -42,11 +43,6 @@ export default function AdminOrders() {
 
   const approveProductReturn = async (orderId, productId) => {
     await ReturnService.approveProductReturn(orderId, productId);
-    await fetchOrders();
-  };
-
-  const markAsReturned = async (orderId, productId) => {
-    await ReturnService.markAsReturned(orderId, productId);
     await fetchOrders();
   };
 
@@ -75,6 +71,7 @@ export default function AdminOrders() {
         <tbody>
           {orders.map(order => (
             <React.Fragment key={order._id}>
+              {/* Ligne principale */}
               <tr>
                 <td>{order._id}</td>
                 <td>{order.userId?.email}</td>
@@ -122,6 +119,7 @@ export default function AdminOrders() {
                 </td>
               </tr>
 
+              {/* Sous-table des produits */}
               {openOrder === order._id && (
                 <tr className="order-details">
                   <td colSpan="9">
@@ -160,15 +158,12 @@ export default function AdminOrders() {
                               )}
 
                               {item.returnStatus === "approved" && (
-                                <button
-                                  onClick={() =>
-                                    markAsReturned(order._id, item.productId)
-                                  }
-                                  style={{ background: "blue", color: "white" }}
-                                >
-                                  Colis reçu
-                                </button>
+                                <button disabled>En attente du colis</button>
                               )}
+                              {item.returnStatus === "approved" && (
+                        <button onClick={() => ReturnService.markAsReturned(order._id, item.productId)} style={{ background: "blue", color: "white" }}>
+                      Colis reçu </button>)}
+
 
                               {item.returnStatus === "returned" && (
                                 <button

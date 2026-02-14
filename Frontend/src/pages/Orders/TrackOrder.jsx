@@ -16,7 +16,6 @@ export default function TrackOrder() {
  const [showOrderModal, setShowOrderModal] = useState(false);          
  const { addToCartContext } = useContext(CartContext);
 
-
  const navigate = useNavigate();
 
   const handleTrackOrder = async () => {
@@ -39,11 +38,12 @@ export default function TrackOrder() {
       }
       const data = await response.json();
       setOrderData(data);
+      console.log("ORDER DATA:", orderData);
+
     } catch (err) {
       setError("Aucune commande trouvée avec ce numéro.");
     }
   };
-
 
 const markAsDelivered = async () => {
     try {
@@ -64,42 +64,7 @@ const markAsDelivered = async () => {
       alert("Erreur lors de la confirmation de réception.");
     }
   };
-/*
-const handleReturnRequest = (orderId, item) => {
-  const productId =
-    item.productId ||
-    item.product?._id ||
-    item._id;
 
-  navigate("/retour-produit", {
-    state: { orderId, productId },
-  });
-};
-*/
-/*
-const handleReturnRequest = (orderId, item) => {
-  let productId = null;
-
-  // Cas le plus courant (order.items)
-  if (item.productId) {
-    productId = typeof item.productId === "object"
-      ? item.productId._id
-      : item.productId;
-  }
-
-  if (!productId) {
-    console.error("❌ Product ID introuvable", item);
-    return;
-  }
-
-  navigate("/retour-produit", {
-    state: {
-      orderId,
-      products: [{ _id: productId }]
-    }
-  });
-};
-*/
 const handleReturnRequest = (orderId, item) => {
   let productId = null;
 
@@ -110,6 +75,7 @@ const handleReturnRequest = (orderId, item) => {
   } else if (item.product && item.product._id) {
     productId = item.product._id;
   }
+console.log("ITEM PRODUCT ID:", item.productId);
 
   if (!productId) {
     console.error("❌ ID PRODUIT INTROUVABLE — STRUCTURE ITEM :", item);
@@ -124,8 +90,6 @@ const handleReturnRequest = (orderId, item) => {
     }
   });
 };
-
-
 
 const handleReview = (item) => { 
   const productId = item.productId || item.product?._id; 
@@ -230,6 +194,16 @@ const handleRebuy = async (item) => {
     <p>Prix : {item.options.prix} €</p>
     <p>Quantité : {item.quantite}</p>
 
+    {/* ⭐️ AFFICHAGE DU STATUT DE RETOUR */}
+    <p>
+      <strong>Retour :</strong>{" "}
+      {item.returnStatus === "none" && "Aucun retour demandé"}
+      {item.returnStatus === "requested" && "Demande envoyée"}
+      {item.returnStatus === "approved" && "Retour approuvé — envoyez le colis"}
+      {item.returnStatus === "returned" && "Colis reçu par le vendeur"}
+      {item.returnStatus === "refunded" && "Produit remboursé ✔"}
+    </p>
+
     <button
       onClick={() => handleRebuy(item)}
       style={styles.smallButton}
@@ -243,12 +217,15 @@ const handleRebuy = async (item) => {
       Laisser un avis
     </button>
 
-  <button onClick={() => handleReturnRequest(orderData._id, item)}
- style={styles.smallButton}>Demander un retour
- </button>
-
+    <button
+      onClick={() => handleReturnRequest(orderData._id, item)}
+      style={styles.smallButton}
+    >
+      Demander un retour
+    </button>
   </div>
 ))}
+
   </div>
 )}
 

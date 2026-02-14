@@ -14,7 +14,7 @@ const notificationSchema = new mongoose.Schema({
     imageUrl: String,      // nouveau champ pour l'image
     type: {
         type: String,
-        enum: ["promo", "sale", "offer", "new", "order", "system"],
+        enum: ["promo", "sale", "offer", "new", "order", "system", "comment"],
         default: "system",
     },
     isRead: {

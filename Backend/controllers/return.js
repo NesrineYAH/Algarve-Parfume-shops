@@ -26,6 +26,22 @@ exports.createReturnRequest = async (req, res) => {
     });
 
     await newReturn.save();
+    // 🟢 Mettre à jour la commande pour afficher le retour côté admin
+    const order = await Order.findById(orderId);
+
+    for (const item of products) {
+      const product = order.items.find(
+        p => p.productId.toString() === String(item.productId)
+      );
+      //    p => p.productId.toString() === item.productId
+
+      if (product) {
+        product.returnStatus = "requested"; // ⭐ très important
+      }
+    }
+
+    await order.save();
+
 
     // 🟢 2. Génération des étiquettes de retour
     // 👉 une étiquette par produit
@@ -152,9 +168,6 @@ exports.createReturnRequest = async (req, res) => {
   }
 };
 
-
-
-
 // 🟠 Admin : approuver le retour d’un produit
 exports.approveReturn = async (req, res) => {
   try {
@@ -191,7 +204,6 @@ exports.approveReturn = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
 
 // 🟣 Admin : marquer le produit comme retourné + rembourser
 exports.refundProduct = async (req, res) => {
@@ -237,6 +249,40 @@ exports.refundProduct = async (req, res) => {
     });
 
     res.json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+// 🟡 Admin : marquer le colis comme reçu
+exports.markAsReturned = async (req, res) => {
+  try {
+    const { orderId, productId } = req.body;
+
+    const returnRequest = await Return.findOne({
+      orderId,
+      productId,
+      status: "approved"
+    });
+
+    if (!returnRequest) {
+      return res.status(404).json({ message: "Retour non trouvé ou non approuvé" });
+    }
+
+    returnRequest.status = "returned";
+    await returnRequest.save();
+
+    const order = await Order.findById(orderId);
+    const item = order.items.find(
+      p => p.productId.toString() === productId
+    );
+
+    item.returnStatus = "returned";
+    await order.save();
+
+    res.json({ success: true, message: "Colis marqué comme retourné" });
 
   } catch (err) {
     console.error(err);

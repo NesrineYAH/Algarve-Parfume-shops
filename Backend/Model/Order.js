@@ -30,7 +30,8 @@ const orderSchema = new mongoose.Schema(
                 },
             },
         ],
-
+        // ⭐ AJOUT ESSENTIEL
+        returnStatus: { type: String, enum: ["none", "requested", "approved", "returned", "refunded"], default: "none" },
         totalPrice: { type: Number, required: true },
         status: {
             type: String,
