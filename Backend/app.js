@@ -22,7 +22,7 @@ const paymentsRoute = require("./routes/payments");
 const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
 const cookieParser = require("cookie-parser");
-const returnRoutes = require("./routes/return");
+const returnRoutes = require("./routes/returns");
 require("./mongoDB/DB");
 
 const app = express();
@@ -32,7 +32,6 @@ app.use(
   "/api/stripe/webhook",
   bodyParser.raw({ type: "application/json" })
 );
-
 
 // ⚡ Middlewares globaux
 app.use(cors({
@@ -46,6 +45,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 // ⚡ Routes Stripe & paiement
 app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentsRoute);
@@ -56,7 +56,6 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/etiquettes", express.static(path.join(__dirname, "public/etiquettes")));
 app.use("/invoices", express.static(path.join(__dirname, "public/invoices")));
-
 
 // 🚀 Routes publiques
 app.use("/api/users", userRoutes);
@@ -83,6 +82,7 @@ app.use("/api/users/favorites", favoritesRoutes);
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
+
 
 module.exports = app;
 

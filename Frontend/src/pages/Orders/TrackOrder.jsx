@@ -64,7 +64,7 @@ const markAsDelivered = async () => {
       alert("Erreur lors de la confirmation de réception.");
     }
   };
-
+/*
 const handleReturnRequest = (orderId, item) => {
   const productId =
     item.productId ||
@@ -75,6 +75,57 @@ const handleReturnRequest = (orderId, item) => {
     state: { orderId, productId },
   });
 };
+*/
+/*
+const handleReturnRequest = (orderId, item) => {
+  let productId = null;
+
+  // Cas le plus courant (order.items)
+  if (item.productId) {
+    productId = typeof item.productId === "object"
+      ? item.productId._id
+      : item.productId;
+  }
+
+  if (!productId) {
+    console.error("❌ Product ID introuvable", item);
+    return;
+  }
+
+  navigate("/retour-produit", {
+    state: {
+      orderId,
+      products: [{ _id: productId }]
+    }
+  });
+};
+*/
+const handleReturnRequest = (orderId, item) => {
+  let productId = null;
+
+  if (item.productId && typeof item.productId === "object") {
+    productId = item.productId._id;
+  } else if (typeof item.productId === "string") {
+    productId = item.productId;
+  } else if (item.product && item.product._id) {
+    productId = item.product._id;
+  }
+
+  if (!productId) {
+    console.error("❌ ID PRODUIT INTROUVABLE — STRUCTURE ITEM :", item);
+    alert("Impossible d’identifier le produit pour le retour.");
+    return;
+  }
+
+  navigate("/retour-produit", {
+    state: {
+      orderId,
+      products: [{ _id: productId }]
+    }
+  });
+};
+
+
 
 const handleReview = (item) => { 
   const productId = item.productId || item.product?._id; 

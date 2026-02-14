@@ -9,6 +9,7 @@ export default defineConfig({
       },
     }),
   ],
+
   server: {
     proxy: {
       "/api": {
@@ -17,14 +18,15 @@ export default defineConfig({
         secure: false,
       },
     },
-     fs: {
-      strict: false
+    fs: {
+      strict: false,
     },
-    // pour SPA fallback
+  },
+
   build: {
     rollupOptions: {
-      input: '/index.html'
-    }
-  }
+      input: "/index.html",
+    },
   },
 });
+

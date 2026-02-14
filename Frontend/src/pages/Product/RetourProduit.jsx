@@ -1,4 +1,4 @@
-//Frontend/pages/retour 
+//Frontend/pages/RetourProdtuit.jsx 
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReturnService from "../../Services/returnService";
@@ -7,25 +7,44 @@ import "./Product.scss";
 export default function RetourProduit() {
   const navigate = useNavigate();
   const { state } = useLocation(); // orderId + productId
-  const { orderId, productId } = state;
-
+//  const { orderId, productId } = state;
   const [reason, setReason] = useState("");
   const [description, setDescription] = useState("");
+const { orderId, products } = state;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const location = useLocation();
 
-    const res = await ReturnService.createReturn({
-      orderId,
-      productId,
-      reason,
-      description,
-    });
+if (!location.state || !location.state.orderId || !location.state.products) {
+  return (
+    <div className="return-container">
+      <h2>Erreur</h2>
+      <p>Impossible de créer une demande de retour.</p>
+      <button onClick={() => navigate("/MonCompte")}>
+        Retour
+      </button>
+    </div>
+  );
+}
 
-    if (res.success) {
-      navigate("/MonCompte");
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const res = await ReturnService.createReturn({
+    orderId,
+    products: products.map(p => ({
+      productId: p._id,
+      quantity: 1,
+    })),
+    reason,
+    description,
+  });
+
+  if (res.success) {
+    navigate("/MonCompte");
+  }
+};
+
+
 
   return (
     <div className="return-container">

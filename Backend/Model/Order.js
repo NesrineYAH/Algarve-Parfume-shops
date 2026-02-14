@@ -1,6 +1,13 @@
 // models/Order.js
 const mongoose = require("mongoose");
 
+
+const orderItemSchema = new mongoose.Schema({
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+    variantId: { type: mongoose.Schema.Types.ObjectId, ref: "Variant" }, nom: String, quantite: Number, imageUrl: String, // ⭐ statut de retour par produit
+    returnStatus: { type: String, enum: ["none", "requested", "approved", "returned", "refunded"], default: "none" }
+});
+
 const orderSchema = new mongoose.Schema(
     {
         userId: {
@@ -25,7 +32,6 @@ const orderSchema = new mongoose.Schema(
         ],
 
         totalPrice: { type: Number, required: true },
-
         status: {
             type: String,
             enum: [
@@ -48,7 +54,6 @@ const orderSchema = new mongoose.Schema(
         },
 
         stripeSessionId: String,
-
         delivery: {
             type: String,
             enum: ["processing", "shipped", "in_transit", "out_for_delivery", "delivered"],
@@ -62,6 +67,7 @@ const orderSchema = new mongoose.Schema(
         deliveredAt: Date,
         refundedAt: Date,
         cancelledAt: Date,
+
     },
     { timestamps: true }
 );

@@ -378,7 +378,6 @@ exports.cancelOrder = async (req, res) => {
             "refunded"
         ];
 
-
         if (nonCancellableStatus.includes(order.status)) {
             return res.status(400).json({ message: "Commande non annulable" });
         }
@@ -454,7 +453,6 @@ exports.getAllOrdersAdmin = async (req, res) => {
         res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 exports.refundOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId).populate("userId");
@@ -512,7 +510,6 @@ exports.refundOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-
 // Fonction séparée pour envoyer l'email
 async function sendRefundEmail(order) {
     const html = `
@@ -532,14 +529,3 @@ async function sendRefundEmail(order) {
         text: "Votre commande a été remboursée."
     });
 }
-
-/*
-
-
-
-
-
-
-
-
-*/

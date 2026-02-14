@@ -87,7 +87,6 @@ exports.login = async (req, res) => {
       httpOnly: true,
       secure: false, // true en production
       sameSite: "lax",
-      // sameSite: "none",   // ⭐ IMPORTANT
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -270,7 +269,13 @@ exports.getUsersByRole = async (req, res) => {
 
 
 
+/*
+ Conclusion
 
+👉 Oui, tu dois utiliser user._id quand tu signes le token  
+👉 Et userId dans le payload du JWT est parfait  
+👉 Tu n’as rien à changer ici
+*/
 
 
 
