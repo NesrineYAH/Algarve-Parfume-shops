@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const orderCtrl = require("../controllers/order");
+const returnCtrl = require("../controllers/return");
 
 
 router.post("/create", authMiddleware, orderCtrl.createOrder);
@@ -20,6 +21,19 @@ router.put("/:orderId/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
 router.post("/:orderId/deliver", authMiddleware, orderCtrl.deliverOrder);
 router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
 router.post("/:orderId/refund", authMiddleware, isAdmin, orderCtrl.refundOrder);
+router.put(
+    "/:orderId/:productId/received",
+    authMiddleware,
+    isAdmin,
+    returnCtrl.markAsReturned
+);
+router.put(
+    "/:orderId/:productId/refund",
+    authMiddleware,
+    isAdmin,
+    returnCtrl.refundProduct
+);
+
 
 router.delete("/:orderId", authMiddleware, orderCtrl.deleteOrder);
 

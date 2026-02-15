@@ -23,6 +23,7 @@ const orderSchema = new mongoose.Schema(
                     unit: { type: String, default: "ml" },
                     prix: { type: Number, required: true },
                 },
+                returnId: { type: mongoose.Schema.Types.ObjectId, ref: "Return" },
 
                 // ⭐ AJOUT ESSENTIEL ICI
                 returnStatus: {

@@ -1,5 +1,3 @@
-//Frontend /services/returnService.js
-
 // Frontend/src/services/returnService.js
 import axios from "axios";
 
@@ -8,7 +6,7 @@ const api = axios.create({
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
-    }
+    },
 });
 
 const ReturnService = {
@@ -37,15 +35,17 @@ const ReturnService = {
     },
 
     // 🟠 ADMIN : Approuver un retour (attention: utilise orderId dans l'URL)
-    approveReturn: async (orderId, productId) => {
-        try {
-            const res = await api.put(`/${orderId}/approve`, { productId });
-            return res.data;
-        } catch (error) {
-            console.error("❌ Erreur approveReturn:", error.response?.data || error.message);
-            throw error;
-        }
+    /*
+    approveProductReturn: async (returnId) => {
+        const res = await api.put(`/${returnId}/approve`);
+        return res.data;
     },
+*/
+    approveProductReturn: async (returnId) => {
+        return api.put(`/${returnId}/approve`);
+
+    },
+
 
     // 🟣 ADMIN : Rembourser un produit
     refundProduct: async (orderId, productId) => {
@@ -73,7 +73,7 @@ const ReturnService = {
     }
 }
 
-    export default ReturnService;
+export default ReturnService;
 
 
 

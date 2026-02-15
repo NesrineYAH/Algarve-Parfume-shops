@@ -1,3 +1,4 @@
+//Frontend/src/pages/admin/AdminOrders.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReturnService from "../../Services/returnService";
@@ -40,8 +41,8 @@ export default function AdminOrders() {
     await fetchOrders();
   };
 
-  const approveProductReturn = async (orderId, productId) => {
-    await ReturnService.approveProductReturn(orderId, productId);
+  const approveProductReturn = async (returnId) => {
+    await ReturnService.approveProductReturn(returnId);
     await fetchOrders();
   };
 
@@ -149,14 +150,14 @@ export default function AdminOrders() {
 
                             <td>
                               {item.returnStatus === "requested" && (
-                                <button
-                                  onClick={() =>
-                                    approveProductReturn(order._id, item.productId)
-                                  }
-                                  style={{ background: "green", color: "white" }}
-                                >
-                                  Approuver retour
-                                </button>
+                           <button
+ onClick={() => approveProductReturn(item.options.returnId)}
+ // onClick={() => approveProductReturn(item.returnId)}
+  style={{ background: "green", color: "white" }}
+>
+  Approuver retour
+</button>
+
                               )}
 
                               {item.returnStatus === "approved" && (

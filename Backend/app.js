@@ -74,6 +74,7 @@ app.use("/api/avis", avisRoutes);
 app.use("/api/returns", returnRoutes);
 
 
+
 // ⚡ Routes protégées avec authMiddleware
 app.use("/api", authMiddleware, paymentMethodsRoutes);
 app.use("/api/users/favorites", favoritesRoutes);

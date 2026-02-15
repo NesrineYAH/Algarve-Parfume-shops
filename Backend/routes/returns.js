@@ -6,7 +6,9 @@ const returnCtrl = require("../controllers/return");
 
 router.post("/create", authMiddleware, returnCtrl.createReturnRequest);
 // Admin
-router.put("/:orderId/approve", authMiddleware, isAdmin, returnCtrl.approveReturn);
-router.put("/:orderId/refund", authMiddleware, isAdmin, returnCtrl.refundProduct);
+router.put("/:returnId/approve", authMiddleware, isAdmin, returnCtrl.approveReturn);
+// router.put("/:orderId/approve", authMiddleware, isAdmin, returnCtrl.approveReturn);
+router.put("/:returnId/refund", authMiddleware, isAdmin, returnCtrl.refundProduct);
+
 
 module.exports = router;
