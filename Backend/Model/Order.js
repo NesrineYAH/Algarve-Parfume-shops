@@ -2,12 +2,6 @@
 const mongoose = require("mongoose");
 
 
-const orderItemSchema = new mongoose.Schema({
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
-    variantId: { type: mongoose.Schema.Types.ObjectId, ref: "Variant" }, nom: String, quantite: Number, imageUrl: String, // ⭐ statut de retour par produit
-    returnStatus: { type: String, enum: ["none", "requested", "approved", "returned", "refunded"], default: "none" }
-});
-
 const orderSchema = new mongoose.Schema(
     {
         userId: {
@@ -23,27 +17,38 @@ const orderSchema = new mongoose.Schema(
                 nom: { type: String, required: true },
                 quantite: { type: Number, required: true },
                 imageUrl: String,
+
                 options: {
                     size: { type: Number, required: true },
                     unit: { type: String, default: "ml" },
                     prix: { type: Number, required: true },
                 },
+
+                // ⭐ AJOUT ESSENTIEL ICI
+                returnStatus: {
+                    type: String,
+                    enum: ["none", "requested", "approved", "returned", "refunded"],
+                    default: "none",
+                },
             },
         ],
-        // ⭐ AJOUT ESSENTIEL
-        returnStatus: { type: String, enum: ["none", "requested", "approved", "returned", "refunded"], default: "none" },
+
+        // ❌ À SUPPRIMER : returnStatus global
+        // returnStatus: { ... }
+
         totalPrice: { type: Number, required: true },
+
         status: {
             type: String,
             enum: [
-                "pending",          // commande créée mais pas encore payée
-                "confirmed",        // paiement effectué, pas encore expédiée
-                "shipped",          // expédiée
-                "delivered",        // livrée
-                "return_requested", // client demande un retour
-                "returned",         // produit retourné au vendeur
-                "cancelled",        // annulée
-                "refunded"          // remboursée
+                "pending",
+                "confirmed",
+                "shipped",
+                "delivered",
+                "return_requested",
+                "returned",
+                "cancelled",
+                "refunded",
             ],
             default: "pending",
         },
@@ -55,25 +60,26 @@ const orderSchema = new mongoose.Schema(
         },
 
         stripeSessionId: String,
+
         delivery: {
             type: String,
             enum: ["processing", "shipped", "in_transit", "out_for_delivery", "delivered"],
             default: "processing",
         },
 
-        invoiceUrl: { type: String },
-
+        invoiceUrl: String,
         paidAt: Date,
         shippedAt: Date,
         deliveredAt: Date,
         refundedAt: Date,
         cancelledAt: Date,
-
     },
     { timestamps: true }
 );
 
 module.exports = mongoose.model("Order", orderSchema);
+
+
 
 
 

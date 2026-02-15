@@ -15,6 +15,8 @@ export default function TrackOrder() {
  const [hasSearched, setHasSearched] = useState(false);
  const [showOrderModal, setShowOrderModal] = useState(false);          
  const { addToCartContext } = useContext(CartContext);
+ const [selectedItems, setSelectedItems] = useState([]);
+
 
  const navigate = useNavigate();
 
@@ -124,6 +126,19 @@ const handleRebuy = async (item) => {
   return `${day}-${month}-${year}`;
 }
 
+const toggleItemSelection = (item) => {
+  const productId =
+    typeof item.productId === "object"
+      ? item.productId._id
+      : item.productId;
+
+  setSelectedItems((prev) =>
+    prev.includes(productId)
+      ? prev.filter((id) => id !== productId)
+      : [...prev, productId]
+  );
+};
+
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Suivre votre commande</h1>
@@ -184,48 +199,83 @@ const handleRebuy = async (item) => {
   {showDetails ? "Masquer les détails" : "Afficher les détails"}
 </button>
 
+    {/* ⭐️ section  de détails commande  */}
  {showDetails && (
   <div>
 
-{orderData.items.map((item, i) => (
-  <div key={i} style={styles.item}>
-    <p><strong>{item.nom}</strong></p>
-    <p>Taille : {item.options.size} {item.options.unit}</p>
-    <p>Prix : {item.options.prix} €</p>
-    <p>Quantité : {item.quantite}</p>
+{orderData.items.map((item, i) => {
+  const productId =
+    typeof item.productId === "object"
+      ? item.productId._id
+      : item.productId;
 
-    {/* ⭐️ AFFICHAGE DU STATUT DE RETOUR */}
-    <p>
-      <strong>Retour :</strong>{" "}
-      {item.returnStatus === "none" && "Aucun retour demandé"}
-      {item.returnStatus === "requested" && "Demande envoyée"}
-      {item.returnStatus === "approved" && "Retour approuvé — envoyez le colis"}
-      {item.returnStatus === "returned" && "Colis reçu par le vendeur"}
-      {item.returnStatus === "refunded" && "Produit remboursé ✔"}
-    </p>
+  return (
+    <div key={i} style={styles.item}>
+      
+      {/* ✅ CHECKBOX */}
+      <input
+        type="checkbox"
+        checked={selectedItems.includes(productId)}
+        onChange={() => toggleItemSelection(item)}
+      />
 
-    <button
-      onClick={() => handleRebuy(item)}
-      style={styles.smallButton}
-    >
-      Racheter
-    </button>
+      {/* ✅ IMAGE */}
+      {item.imageUrl && (
+        <img
+          src={item.imageUrl}
+          alt={item.nom}
+          style={{ width: 80, height: 80, objectFit: "cover", marginLeft: 10 }}
+        />
+      )}
 
-    <button onClick={() => handleReview(item)} 
-      style={styles.smallButton}
-    >
-      Laisser un avis
-    </button>
+      <p><strong>{item.nom}</strong></p>
+      <p>Taille : {item.options.size} {item.options.unit}</p>
+      <p>Prix : {item.options.prix} €</p>
+      <p>Quantité : {item.quantite}</p>
 
-    <button
-      onClick={() => handleReturnRequest(orderData._id, item)}
+      {/* STATUT RETOUR */}
+      <p>
+        <strong>Retour :</strong>{" "}
+        {item.returnStatus === "none" && "Aucun retour demandé"}
+        {item.returnStatus === "requested" && "Demande envoyée"}
+        {item.returnStatus === "approved" && "Retour approuvé"}
+        {item.returnStatus === "returned" && "Colis reçu"}
+        {item.returnStatus === "refunded" && "Remboursé ✔"}
+      </p>
+
+      <button onClick={() => handleRebuy(item)} style={styles.smallButton}>
+        Racheter
+      </button>
+
+      <button onClick={() => handleReview(item)} style={styles.smallButton}>
+        Laisser un avis
+      </button>
+    </div>
+  );
+})}
+
+<button
+  style={styles.button}
+  disabled={selectedItems.length === 0}
+  onClick={() => {
+    navigate("/retour-produit", {
+      state: {
+        orderId: orderData._id,
+        products: selectedItems, // ✅ plusieurs produits
+      },
+    });
+  }}
+>
+  Demander un retour ({selectedItems.length})
+</button>
+{/*
+ <button
+      onClick={() => handleReturnRequest(orderData._id, selectedItems[0])}
       style={styles.smallButton}
     >
       Demander un retour
     </button>
-  </div>
-))}
-
+    */}
   </div>
 )}
 
@@ -367,3 +417,45 @@ credentials: "include" force le navigateur à envoyer :
     donc l’utilisateur est authentifié
     donc la route fonctionne
 */
+
+    
+    {/* ⭐️ section avant  
+
+{orderData.items.map((item, i) => (
+  <div key={i} style={styles.item}>
+    <p><strong>{item.nom}</strong></p>
+    <p>Taille : {item.options.size} {item.options.unit}</p>
+    <p>Prix : {item.options.prix} €</p>
+    <p>Quantité : {item.quantite}</p>
+
+    <p>
+      <strong>Retour :</strong>{" "}
+      {item.returnStatus === "none" && "Aucun retour demandé"}
+      {item.returnStatus === "requested" && "Demande envoyée"}
+      {item.returnStatus === "approved" && "Retour approuvé — envoyez le colis"}
+      {item.returnStatus === "returned" && "Colis reçu par le vendeur"}
+      {item.returnStatus === "refunded" && "Produit remboursé ✔"}
+    </p>
+
+    <button
+      onClick={() => handleRebuy(item)}
+      style={styles.smallButton}
+    >
+      Racheter
+    </button>
+
+    <button onClick={() => handleReview(item)} 
+      style={styles.smallButton}
+    >
+      Laisser un avis
+    </button>
+
+    <button
+      onClick={() => handleReturnRequest(orderData._id, item)}
+      style={styles.smallButton}
+    >
+      Demander un retour
+    </button>
+  </div>
+))}
+*/}

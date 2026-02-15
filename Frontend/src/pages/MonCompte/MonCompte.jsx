@@ -130,8 +130,10 @@ const deleteAddress = async (id) => {
           )}
 
           {activeTab === "addresses" && (
+            
             <>
-        
+             <button onClick={() => navigate("/add-adresse")} className="btn-Add "> ➕ Ajouter une adresse</button>
+
               {addresses.map(addr => (
   <div key={addr._id} className="address-item">
     <p>{addr.street}, {addr.city}, {addr.postalCode}, {addr.country}</p>
