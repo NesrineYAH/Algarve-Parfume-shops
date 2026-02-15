@@ -1,24 +1,27 @@
-// Frontend/src/pages/Orders/TrackOrder.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react"; // ← AJOUTER useEffect
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 
-
-
 export default function TrackOrder() {
- const { orderId: orderIdFromUrl } = useParams(); 
- const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
- const [orderData, setOrderData] = useState(null); 
-// const [orders, setOrders] = useState([]);
- const [error, setError] = useState(""); 
- const [showDetails, setShowDetails] = useState(false);
- const [hasSearched, setHasSearched] = useState(false);
- const [showOrderModal, setShowOrderModal] = useState(false);          
- const { addToCartContext } = useContext(CartContext);
- const [selectedItems, setSelectedItems] = useState([]);
+  const { orderId: orderIdFromUrl } = useParams(); 
+  const [orderId, setOrderId] = useState(orderIdFromUrl || ""); 
+  const [orderData, setOrderData] = useState(null); 
+  const [error, setError] = useState(""); 
+  const [showDetails, setShowDetails] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);          
+  const { addToCartContext } = useContext(CartContext);
+  const [selectedItems, setSelectedItems] = useState([]);
 
+  const navigate = useNavigate();
 
- const navigate = useNavigate();
+  // ✅ SOLUTION : useEffect pour logger quand orderData change
+  useEffect(() => {
+    if (orderData) {
+      console.log("🔄 ORDER DATA DANS LE STATE:", orderData);
+      console.log("📦 ITEMS:", orderData.items);
+    }
+  }, [orderData]);
 
   const handleTrackOrder = async () => {
     if (!orderId.trim()) {
@@ -27,25 +30,41 @@ export default function TrackOrder() {
     }
     setError("");
     setOrderData(null);
-    setHasSearched(true); // 🔥 l’utilisateur a cliqué
+    setHasSearched(true);
 
     try {
       const response = await fetch(
         `http://localhost:5001/api/orders/${orderId}`,
-        { method: "GET", credentials: "include", }
+        { 
+          method: "GET", 
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
 
       if (!response.ok) {
         throw new Error("Commande introuvable");
       }
+      
       const data = await response.json();
+      
+      // ✅ LOG AVANT DE SETTER
+      console.log("✅ DONNÉES REÇUES DU SERVEUR:", data);
+      
       setOrderData(data);
-      console.log("ORDER DATA:", orderData);
+      
+      // ✅ Vérification supplémentaire
+      console.log("✅ orderId dans la réponse:", data._id);
+      console.log("✅ nombre d'items:", data.items?.length);
 
     } catch (err) {
+      console.error("❌ Erreur:", err);
       setError("Aucune commande trouvée avec ce numéro.");
     }
   };
+
 
 const markAsDelivered = async () => {
     try {
@@ -67,31 +86,7 @@ const markAsDelivered = async () => {
     }
   };
 
-const handleReturnRequest = (orderId, item) => {
-  let productId = null;
 
-  if (item.productId && typeof item.productId === "object") {
-    productId = item.productId._id;
-  } else if (typeof item.productId === "string") {
-    productId = item.productId;
-  } else if (item.product && item.product._id) {
-    productId = item.product._id;
-  }
-console.log("ITEM PRODUCT ID:", item.productId);
-
-  if (!productId) {
-    console.error("❌ ID PRODUIT INTROUVABLE — STRUCTURE ITEM :", item);
-    alert("Impossible d’identifier le produit pour le retour.");
-    return;
-  }
-
-  navigate("/retour-produit", {
-    state: {
-      orderId,
-      products: [{ _id: productId }]
-    }
-  });
-};
 
 const handleReview = (item) => { 
   const productId = item.productId || item.product?._id; 
@@ -126,19 +121,62 @@ const handleRebuy = async (item) => {
   return `${day}-${month}-${year}`;
 }
 
-const toggleItemSelection = (item) => {
-  const productId =
-    typeof item.productId === "object"
-      ? item.productId._id
-      : item.productId;
+const handleReturnRequest = (orderId, item) => {
+  let productId = null;
 
-  setSelectedItems((prev) =>
-    prev.includes(productId)
-      ? prev.filter((id) => id !== productId)
-      : [...prev, productId]
-  );
+  if (item.productId && typeof item.productId === "object") {
+    productId = item.productId._id;
+  } else if (typeof item.productId === "string") {
+    productId = item.productId;
+  } else if (item.product && item.product._id) {
+    productId = item.product._id;
+  }
+console.log("ITEM PRODUCT ID:", item.productId);
+
+  if (!productId) {
+    console.error("❌ ID PRODUIT INTROUVABLE — STRUCTURE ITEM :", item);
+    alert("Impossible d’identifier le produit pour le retour.");
+    return;
+  }
+
+  navigate("/retour-produit", {
+    state: {
+      orderId,
+      products: [{ _id: productId }]
+    }
+  });
 };
 
+// Dans votre composant TrackOrder, modifiez la fonction toggleItemSelection
+const toggleItemSelection = (item) => {
+  // Créer un identifiant unique combinant productId ET variantId
+  const itemKey = `${item.productId}-${item.variantId}`;
+  
+  setSelectedItems((prev) => {
+    // Vérifier si cet item est déjà sélectionné
+    const exists = prev.some(
+      selected => 
+        selected.productId === item.productId && 
+        selected.variantId === item.variantId
+    );
+    
+    if (exists) {
+      // Retirer l'item
+      return prev.filter(
+        selected => 
+          !(selected.productId === item.productId && 
+            selected.variantId === item.variantId)
+      );
+    } else {
+      // Ajouter l'item avec productId ET variantId
+      return [...prev, {
+        productId: item.productId,
+        variantId: item.variantId,
+        quantity: 1 // quantité par défaut
+      }];
+    }
+  });
+};
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Suivre votre commande</h1>
@@ -203,19 +241,19 @@ const toggleItemSelection = (item) => {
  {showDetails && (
   <div>
 
-{orderData.items.map((item, i) => {
-  const productId =
-    typeof item.productId === "object"
-      ? item.productId._id
-      : item.productId;
 
+{orderData.items.map((item, i) => {
   return (
     <div key={i} style={styles.item}>
       
-      {/* ✅ CHECKBOX */}
+      {/* ✅ CHECKBOX avec identification unique */}
       <input
         type="checkbox"
-        checked={selectedItems.includes(productId)}
+        checked={selectedItems.some(
+          selected => 
+            selected.productId === item.productId && 
+            selected.variantId === item.variantId
+        )}
         onChange={() => toggleItemSelection(item)}
       />
 
@@ -228,54 +266,65 @@ const toggleItemSelection = (item) => {
         />
       )}
 
-      <p><strong>{item.nom}</strong></p>
-      <p>Taille : {item.options.size} {item.options.unit}</p>
-      <p>Prix : {item.options.prix} €</p>
-      <p>Quantité : {item.quantite}</p>
+      <div style={{ marginLeft: 10 }}>
+        <p><strong>{item.nom}</strong></p>
+        <p>Taille : {item.options.size} {item.options.unit}</p>
+        <p>Prix : {item.options.prix} €</p>
+        <p>Quantité : {item.quantite}</p>
 
-      {/* STATUT RETOUR */}
-      <p>
-        <strong>Retour :</strong>{" "}
-        {item.returnStatus === "none" && "Aucun retour demandé"}
-        {item.returnStatus === "requested" && "Demande envoyée"}
-        {item.returnStatus === "approved" && "Retour approuvé"}
-        {item.returnStatus === "returned" && "Colis reçu"}
-        {item.returnStatus === "refunded" && "Remboursé ✔"}
-      </p>
+        {/* STATUT RETOUR */}
+        <p>
+          <strong>Retour :</strong>{" "}
+          {item.returnStatus === "none" && "Aucun retour demandé"}
+          {item.returnStatus === "requested" && "Demande envoyée"}
+          {item.returnStatus === "approved" && "Retour approuvé"}
+          {item.returnStatus === "returned" && "Colis reçu"}
+          {item.returnStatus === "refunded" && "Remboursé ✔"}
+        </p>
 
-      <button onClick={() => handleRebuy(item)} style={styles.smallButton}>
-        Racheter
-      </button>
+        <button onClick={() => handleRebuy(item)} style={styles.smallButton}>
+          Racheter
+        </button>
 
-      <button onClick={() => handleReview(item)} style={styles.smallButton}>
-        Laisser un avis
-      </button>
+        <button onClick={() => handleReview(item)} style={styles.smallButton}>
+          Laisser un avis
+        </button>
+      </div>
     </div>
   );
 })}
 
+{/* BOUTON DE RETOUR AVEC LE BON FORMAT */}
 <button
-  style={styles.button}
+  style={{
+    ...styles.button,
+    opacity: selectedItems.length === 0 ? 0.5 : 1,
+    cursor: selectedItems.length === 0 ? "not-allowed" : "pointer"
+  }}
   disabled={selectedItems.length === 0}
   onClick={() => {
     navigate("/retour-produit", {
       state: {
         orderId: orderData._id,
-        products: selectedItems, // ✅ plusieurs produits
+        products: selectedItems, // ✅ Maintenant chaque item a productId et variantId
       },
     });
   }}
 >
-  Demander un retour ({selectedItems.length})
+  Demander un retour ({selectedItems.length} produit{selectedItems.length > 1 ? 's' : ''})
 </button>
-{/*
- <button
-      onClick={() => handleReturnRequest(orderData._id, selectedItems[0])}
-      style={styles.smallButton}
-    >
-      Demander un retour
-    </button>
-    */}
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
 )}
 
@@ -408,6 +457,7 @@ closeButton: {
 },
 
 
+
 };
 
 /*
@@ -417,7 +467,44 @@ credentials: "include" force le navigateur à envoyer :
     donc l’utilisateur est authentifié
     donc la route fonctionne
 */
+//15/02
+{/*
+<button
+  style={styles.button}
+  disabled={selectedItems.length === 0}
+  onClick={() => {
+    const formattedProducts = selectedItems.map(id => {
+      if (typeof id === 'object' && (id._id || id.productId)) {
+        return {
+          productId: id._id || id.productId
+        };
+      }
+      return { productId: id };
+    });
 
+    console.log("Produits formatés envoyés:", formattedProducts); 
+
+    navigate("/retour-produit", {
+      state: {
+        orderId: orderData._id,
+        products: formattedProducts,
+      },
+    });
+  }}
+>
+  Demander un retour ({selectedItems.length})
+</button>
+ */}
+ //15/02
+
+{/*
+ <button
+      onClick={() => handleReturnRequest(orderData._id, selectedItems[0])}
+      style={styles.smallButton}
+    >
+      Demander un retour
+    </button>
+    */}
     
     {/* ⭐️ section avant  
 
