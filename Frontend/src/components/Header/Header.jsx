@@ -139,7 +139,7 @@ const Header = () => {
     </button>
 
     <Link to="/Orders">{t("user.orders")}</Link>
-    <Link to="/history">{t("user.history")}</Link>
+    <Link to="/commande">{t("user.history")}</Link>
 
 {/*navigate("/Home"); */}
 

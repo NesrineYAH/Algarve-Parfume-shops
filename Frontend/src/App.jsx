@@ -89,6 +89,7 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
+          
           <Route path="/tracking/:orderId" element={<TrackOrder />} />
           <Route path="/delivery" element={<Delivery />} />
           <Route path="/checkout" element={<Checkout />} />
