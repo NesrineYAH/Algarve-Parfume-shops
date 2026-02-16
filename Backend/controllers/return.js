@@ -24,10 +24,17 @@ exports.createReturnRequest = async (req, res) => {
       }
     }
 
-    // 🟢 1. Récupérer la commande
+    // 1️⃣ Vérifier que la commande existe
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: "Commande non trouvée" });
+    }
+    // 2️⃣ Vérifier qu’un retour identique n’existe pas déjà
+    const existing = await Return.findOne({
+      orderId, "products.productId":
+        products[0].productId
+    }); if (existing) {
+      return res.json(existing);
     }
 
     // Vérifier que l'utilisateur est bien le propriétaire

@@ -46,6 +46,7 @@ export default function AdminOrders() {
     await fetchOrders();
   };
 
+
   const markAsReturned = async (orderId, productId) => {
     await ReturnService.markAsReturned(orderId, productId);
     await fetchOrders();
@@ -136,59 +137,34 @@ export default function AdminOrders() {
                         </tr>
                       </thead>
 
-                      <tbody>
-                        {order.items.map(item => (
-                          <tr key={item.productId}>
-                            <td>{item.nom}</td>
-                            <td>{item.quantite}</td>
+               <tbody>
+  {order.items.map(item => {
+    console.log("ITEM:", item); // ✅ ICI ça fonctionne
 
-                            <td>
-                              <span className={`status ${item.returnStatus}`}>
-                                {item.returnStatus}
-                              </span>
-                            </td>
+    return (
+      <tr key={item.productId}>
+        <td>{item.nom}</td>
+        <td>{item.quantite}</td>
+        <td>
+          <span className={`status ${item.returnStatus}`}>
+            {item.returnStatus}
+          </span>
+        </td>
+        <td>
+          {item.returnStatus === "requested" && (
+            <button
+              onClick={() => approveProductReturn(item.returnId)}
+              style={{ background: "green", color: "white" }}
+            >
+              Approuver retour
+            </button>
+          )}
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
 
-                            <td>
-                              {item.returnStatus === "requested" && (
-                           <button
- onClick={() => approveProductReturn(item.options.returnId)}
- // onClick={() => approveProductReturn(item.returnId)}
-  style={{ background: "green", color: "white" }}
->
-  Approuver retour
-</button>
-
-                              )}
-
-                              {item.returnStatus === "approved" && (
-                                <button
-                                  onClick={() =>
-                                    markAsReturned(order._id, item.productId)
-                                  }
-                                  style={{ background: "blue", color: "white" }}
-                                >
-                                  Colis reçu
-                                </button>
-                              )}
-
-                              {item.returnStatus === "returned" && (
-                                <button
-                                  onClick={() =>
-                                    refundProduct(order._id, item.productId)
-                                  }
-                                  style={{ background: "orange" }}
-                                >
-                                  Rembourser
-                                </button>
-                              )}
-
-                              {item.returnStatus === "refunded" && (
-                                <button disabled>Remboursé ✔</button>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
                     </table>
                   </td>
                 </tr>

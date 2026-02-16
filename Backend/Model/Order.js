@@ -24,8 +24,6 @@ const orderSchema = new mongoose.Schema(
                     prix: { type: Number, required: true },
                 },
                 returnId: { type: mongoose.Schema.Types.ObjectId, ref: "Return" },
-
-                // ⭐ AJOUT ESSENTIEL ICI
                 returnStatus: {
                     type: String,
                     enum: ["none", "requested", "approved", "returned", "refunded"],

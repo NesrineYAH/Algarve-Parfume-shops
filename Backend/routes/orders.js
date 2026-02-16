@@ -21,11 +21,7 @@ router.put("/:orderId/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
 router.post("/:orderId/deliver", authMiddleware, orderCtrl.deliverOrder);
 router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
 router.post("/:orderId/refund", authMiddleware, isAdmin, orderCtrl.refundOrder);
-router.put(
-    "/:orderId/:productId/received",
-    authMiddleware,
-    isAdmin,
-    returnCtrl.markAsReturned
+router.put("/:orderId/:productId/received", authMiddleware, isAdmin,returnCtrl.markAsReturned
 );
 router.put(
     "/:orderId/:productId/refund",
