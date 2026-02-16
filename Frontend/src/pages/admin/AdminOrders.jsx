@@ -139,7 +139,7 @@ export default function AdminOrders() {
 
                <tbody>
   {order.items.map(item => {
-    console.log("ITEM:", item); // ✅ ICI ça fonctionne
+  //  console.log("ITEM:", item); // ✅ ICI ça fonctionne
 
     return (
       <tr key={item.productId}>
@@ -150,16 +150,45 @@ export default function AdminOrders() {
             {item.returnStatus}
           </span>
         </td>
-        <td>
-          {item.returnStatus === "requested" && (
-            <button
-              onClick={() => approveProductReturn(item.returnId)}
-              style={{ background: "green", color: "white" }}
-            >
-              Approuver retour
-            </button>
-          )}
-        </td>
+      <td>
+  {/* Étape 1 : Approuver le retour */}
+  {item.returnStatus === "requested" && (
+    <button
+      onClick={() => approveProductReturn(item.returnId)}
+      style={{ background: "green", color: "white" }}
+    >
+      Approuver retour
+    </button>
+  )}
+
+  {/* Étape 2 : Colis reçu */}
+  {item.returnStatus === "approved" && (
+    <button
+      onClick={() => markAsReturned(order._id, item.productId)}
+      style={{ background: "blue", color: "white", marginLeft: "10px" }}
+    >
+      Colis reçu
+    </button>
+  )}
+
+  {/* Étape 3 : Rembourser */}
+  {item.returnStatus === "returned" && (
+    <button
+      onClick={() => refundProduct(order._id, item.productId)}
+      style={{ background: "orange", color: "white", marginLeft: "10px" }}
+    >
+      Rembourser
+    </button>
+  )}
+
+  {/* Étape finale : Remboursé */}
+  {item.returnStatus === "refunded" && (
+    <span style={{ color: "green", fontWeight: "bold" }}>
+      ✔ Remboursé
+    </span>
+  )}
+</td>
+
       </tr>
     );
   })}
