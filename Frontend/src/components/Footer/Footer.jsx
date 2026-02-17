@@ -135,14 +135,16 @@ const averageRating =
        </div>
   
                     {/* <LanguageSwitcher /> */}
-      <div>
-        <h3> NOS RÉCOMPENSES</h3> 
+     
+  
+      <div className="footer__ul">
+            <h3> NOS RÉCOMPENSES</h3>
            <Link to="/avis-clients" className="footer__logo"> 
           <RatingStars rating={4.5} totalReviews={128} /> 
            {/*    <RatingStars rating={averageRating.toFixed(1)} totalReviews={comments.length} />*/}
         </Link>
-
        </div> 
+       
       </div>
         <a className="fa" title={t("footer.goTop")} href="/home">
         <FaChevronUp id="toTop" />

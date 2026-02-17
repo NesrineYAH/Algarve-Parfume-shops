@@ -5,6 +5,7 @@
      position: relative;
      bottom: 0%;
      left: 0%;
+     min-height: 100vh;
 
      h3 {
          font-size: 18px;
@@ -16,8 +17,7 @@
          display: flex;
          flex-direction: row;
          justify-content: space-around;
-         gap: 2px;
-         height: 340px;
+         gap: 20px;
          width: 100%;
          margin: auto;
          background-color: #5e0372;
@@ -42,11 +42,12 @@
          }
 
          h3 {
-             font-size: 18px;
+             font-size: 14px;
              color: #fff;
              font-weight: 600;
              text-decoration: underline;
              margin-bottom: 15px;
+             text-align: start;
          }
 
          &__ul {
@@ -58,6 +59,9 @@
              text-decoration: none;
              line-height: 165%;
              text-align: start;
+             width: 250px;
+
+
 
          }
 
@@ -102,51 +106,31 @@
              }
          }
 
-         /*
-     @media screen and (min-width: $breakpoint-desktop) and (max-width:$Mmax) {
-         position: absolute;
-         bottom: 0;
-         left: 0;
-         right: 0;
-         height: 190px;
-         margin-top: auto;
 
-         &__text-copyright {
-             display: flex;
-             align-items: flex-end;
-             justify-content: center;
-             color: $tertiary-color;
-             width: 100%;
-             margin: 4% 0 3% 0;
-             font-size: 18px;
-             background-color: transparent;
+     }
+
+     @media (max-width: 768px) {
+         h3 {
+             font-size: 12px;
+             color: #fff;
+             font-weight: 500;
          }
 
-         .fa {
-             font-size: 28px;
-             width: 40px;
-             position: fixed;
-             bottom: 0;
-             right: -31%;
-             border-radius: 5px;
-             padding-right: 6px;
-             background-color: rgba(56, 79, 79, 0.12);
+         .footer {
+             flex-direction: column;
+             align-items: center;
+             padding: 20px;
+             gap: 40px;
 
-             #toTop {
-                 display: block;
-                 align-self: center;
-                 position: fixed;
-                 bottom: 0;
-                 right: 15%;
-                 margin-right: 0;
-                 z-index: 100;
-                 background-color: #695da1;
-                 border: 0 none;
-                 transition: all 0.6s;
-                 text-decoration: none;
-                 font-size: 1.5em;
+             &__text-copyright {
+                 font-size: 12px;
+             }
+
+             .fa {
+                 font-size: 24px;
+                 width: 30px;
+                 right: 5%;
              }
          }
-     }*/
      }
  }
