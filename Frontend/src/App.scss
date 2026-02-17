@@ -36,10 +36,26 @@ body {
 }
 
 .logo {
-    height: 6em;
-    padding: 1.5em;
+    width: 70px;
+    position: fixed;
+    top: 3%;
+    left: .2%;
     will-change: filter;
     transition: filter 300ms;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: -6px -6px 25px 0 #ceb1ff, 6px 6px 25px 0 #ceb1ff;
+
+    img {
+
+        object-fit: cover;
+    }
+
+    @media (max-width: 768px) {
+        width: 50px;
+        top: 3%;
+        left: 0%;
+    }
 }
 
 .logo:hover {

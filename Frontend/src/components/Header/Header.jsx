@@ -1,8 +1,16 @@
 // Header.jsx
-// Header.jsx
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
-import { User, ShoppingCart, Heart, Home, Bell, LogOut, X, Menu } from "lucide-react";
+import {
+  User,
+  ShoppingCart,
+  Heart,
+  Home,
+  Bell,
+  LogOut,
+  X,
+  Menu
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import LanguageSwitcher from "../Language/Language";
@@ -10,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import { UserContext } from "../../context/UserContext";
 
+/* -------------------- Typing Animation -------------------- */
 const TypingAnimation = () => {
   const [text] = useTypewriter({
     words: ["parfum", "Luxe", "inspiration"],
@@ -26,19 +35,24 @@ const TypingAnimation = () => {
   );
 };
 
+/* -------------------- Header -------------------- */
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user, handleLogout } = useContext(UserContext);
   const [bannerVisible, setBannerVisible] = useState(true);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const { user, handleLogout } = useContext(UserContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const [notifications] = useState([]);
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = notifications.filter(n => !n.isRead).length;
 
-  // 🔥 Détection mobile
-  const [isMobile, setIsMobile] = useState(window.matchMedia("(max-width: 768px)").matches);
+  /* -------- Mobile detection -------- */
+  const [isMobile, setIsMobile] = useState(
+    window.matchMedia("(max-width: 768px)").matches
+  );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 768px)");
     const handleResize = () => setIsMobile(mediaQuery.matches);
 
@@ -46,41 +60,48 @@ const Header = () => {
     return () => mediaQuery.removeEventListener("change", handleResize);
   }, []);
 
-  // 🔥 Menu mobile
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  /* -------- Lock scroll when menu open -------- */
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
+  }, [isMenuOpen]);
+
+const handleToggleMenu = (e) => {
+  e.preventDefault();
+  setIsMenuOpen(prev => !prev);
+};
+
+
 
   return (
     <header className="header">
 
+      {/* ---------------- Banner ---------------- */}
       {bannerVisible && (
         <section className="header__Banner">
           <p>
             Nouvelle offre : Livraison à domicile offerte dès 25 euros.{" "}
             <TypingAnimation />
           </p>
-          <button className="banner-close" onClick={() => setBannerVisible(false)}>
+          <button
+            className="banner-close"
+            onClick={() => setBannerVisible(false)}
+          >
             <X size={20} />
           </button>
         </section>
       )}
 
+      {/* ---------------- Header main ---------------- */}
       <section className="header__section">
 
         {/* Logo */}
         <div className="logo-container">
-          <img src={Logo} className="logo" alt="Logo Parfume Algarve" />
+          <img src={Logo} className="logo" alt="Logo Parfumerie Algarve" />
         </div>
 
-        {/* 🔥 BOUTON BURGER UNIQUEMENT EN MOBILE */}
-        {isMobile && (
-          <button className="burger" onClick={() => setIsMenuOpen(true)}>
-            <Menu size={26} />
-          </button>
-        )}
-
-        {/* 🔥 MENU DESKTOP UNIQUEMENT SI NON MOBILE */}
+        {/* ---------------- Desktop Menu ---------------- */}
         {!isMobile && (
-          <div className="menu">
+          <nav className="desktop-menu">
             <ul>
               <li><Link to="/Home">{t("header.titleI")}</Link></li>
               <li><Link to="/home?genre=femme">{t("header.titleII")}</Link></li>
@@ -88,12 +109,22 @@ const Header = () => {
               <li>{t("header.titleVI")}</li>
               <li><Link to="/QrCodePage">Notre App</Link></li>
             </ul>
-          </div>
+          </nav>
         )}
 
-        <h1>MyPerfume</h1>
+        {/* ---------------- Burger (Mobile) ---------------- */}
+        {isMobile && (
+          <button className="burger" onClick={() => setIsMenuOpen(true)}>
+            <Menu size={20} />
+          </button>
+        )}
 
-        {/* Icônes (toujours affichées sauf si tu veux les conditionner aussi) */}
+
+
+
+   
+
+        {/* ---------------- Icons ---------------- */}
         <div className="icons">
           <Link to="/Home"><Home className="icone" /></Link>
           <Link to="/Favorites"><Heart className="icone" /></Link>
@@ -110,7 +141,7 @@ const Header = () => {
               onMouseEnter={() => setDropdownVisible(true)}
               onMouseLeave={() => setDropdownVisible(false)}
             >
-              <User className="icone" onClick={() => setDropdownVisible(!dropdownVisible)} />
+              <User className="icone" />
               <span className="user-name">Bonjour {user.prenom}</span>
 
               {dropdownVisible && (
@@ -123,7 +154,6 @@ const Header = () => {
                         navigate("/MonCompte");
                       }
                     }}
-                    className="dropdown-btn"
                   >
                     {t("user.account")}
                   </button>
@@ -139,7 +169,10 @@ const Header = () => {
             </div>
           ) : (
             <div className="user-dropdown">
-              <User className="icone" style={{ cursor: "pointer" }} onClick={() => navigate("/Authentification")} />
+              <User
+                className="icone"
+                onClick={() => navigate("/Authentification")}
+              />
               <span className="user-name">Mon compte</span>
             </div>
           )}
@@ -148,12 +181,18 @@ const Header = () => {
         <LanguageSwitcher />
       </section>
 
-      {/* 🔥 MENU MOBILE UNIQUEMENT EN MOBILE */}
+           <h1>MyPerfume</h1>
+
+      {/* ---------------- Mobile Menu Rideau ---------------- */}
       {isMobile && (
         <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
-          <button className="close-btn" onClick={() => setIsMenuOpen(false)}>
-            <X size={26} />
-          </button>
+   {/*  <button className="burger" onClick={handleToggleMenu}>
+  <Menu size={20} />
+</button>
+*/}
+<button className="close-btn" onClick={handleToggleMenu}>
+  <X size={20} />
+</button>
 
           <ul>
             <li><Link to="/Home" onClick={() => setIsMenuOpen(false)}>{t("header.titleI")}</Link></li>
@@ -170,6 +209,7 @@ const Header = () => {
 };
 
 export default Header;
+
 
 
 

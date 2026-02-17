@@ -17,19 +17,6 @@ export default function BlogBenefits() {
   ];
 
   return (
-    // <section className="blog-benefits">
-    //   <div className="benefits-container">
-    //     {benefits.map((item, index) => (
-    //       <div key={index} className="benefit-card">
-    //         <div className="icon">{item.icon}</div>
-    //         <div className="text">
-    //           <h3>{item.title}</h3>
-    //           {item.description && <p>{item.description}</p>}
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </section>
 
         <section className="blog-benefits">
       <div className="benefits-container">

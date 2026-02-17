@@ -83,7 +83,7 @@ const fetchRatings = async (list) => {
 
   return (
     <div className="home">
-      <SearchBar onSearch={handleSearch} className="searchBar" />
+      <SearchBar onSearch={handleSearch} />
       <div className="grid">
         {filtered.map((product) => (
           <div key={product._id} className="card">

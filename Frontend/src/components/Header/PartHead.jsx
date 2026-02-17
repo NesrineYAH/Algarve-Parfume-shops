@@ -1,16 +1,7 @@
-
+// Header.jsx
 import React, { useState, useContext } from "react";
 import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
-import {
-  User,
-  ShoppingCart,
-  Heart,
-  Home,
-  Bell,
-  LogOut,
-  X,
-  Menu,
-} from "lucide-react";
+import { User, ShoppingCart, Heart, Home, Bell, LogOut, X, Menu } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import LanguageSwitcher from "../Language/Language";
@@ -37,50 +28,77 @@ const TypingAnimation = () => {
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, handleLogout } = useContext(UserContext);
-
   const [bannerVisible, setBannerVisible] = useState(true);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, handleLogout } = useContext(UserContext);
   const [notifications] = useState([]);
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
+  // 🔥 Détection mobile
+  const [isMobile, setIsMobile] = useState(window.matchMedia("(max-width: 768px)").matches);
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleResize = () => setIsMobile(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleResize);
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
+  // 🔥 Menu mobile
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <header className="header">
+
       {bannerVisible && (
         <section className="header__Banner">
           <p>
-            Nouvelle offre : Livraison offerte dès 25€ <TypingAnimation />
+            Nouvelle offre : Livraison à domicile offerte dès 25 euros.{" "}
+            <TypingAnimation />
           </p>
-          <button onClick={() => setBannerVisible(false)}>
-            <X size={18} />
+          <button className="banner-close" onClick={() => setBannerVisible(false)}>
+            <X size={20} />
           </button>
         </section>
       )}
 
       <section className="header__section">
-        {/* Burger mobile */}
-        <button
-          className="burger"
-          onClick={() => setIsMenuOpen(true)}
-        >
-          <Menu size={26} />
-        </button>
 
         {/* Logo */}
         <div className="logo-container">
-          <img src={Logo} alt="Logo" />
+          <img src={Logo} className="logo" alt="Logo Parfume Algarve" />
         </div>
 
-        <h1 className="title">MyPerfume</h1>
+        {/* 🔥 BOUTON BURGER UNIQUEMENT EN MOBILE */}
+        {isMobile &&   (
+          <button className="burger" onClick={() => setIsMenuOpen(true)}>
+            <Menu size={26} />
+          </button>
+        )}
 
-        {/* Icons */}
+        {/* 🔥 MENU DESKTOP UNIQUEMENT SI NON MOBILE */}
+        {!isMobile && isMenuOpen && (
+          <div className="menu">
+            <ul>
+              <li><Link to="/Home">{t("header.titleI")}</Link></li>
+              <li><Link to="/home?genre=femme">{t("header.titleII")}</Link></li>
+              <li><Link to="/home?genre=homme">{t("header.titleIII")}</Link></li>
+              <li>{t("header.titleVI")}</li>
+              <li><Link to="/QrCodePage">Notre App</Link></li>
+            </ul>
+          </div>
+        )}
+
+        <h1>MyPerfume</h1>
+        {/* Icônes (toujours affichées sauf si tu veux les conditionner aussi) */}
         <div className="icons">
-          <Link to="/Favorites"><Heart /></Link>
-          <Link to="/Cart"><ShoppingCart /></Link>
+          <Link to="/Home"><Home className="icone" /></Link>
+          <Link to="/Favorites"><Heart className="icone" /></Link>
+          <Link to="/Cart"><ShoppingCart className="icone" /></Link>
 
           <Link to="/notifications" className="notification-icon">
-            <Bell />
+            <Bell className="icone" />
             {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
           </Link>
 
@@ -90,44 +108,61 @@ const Header = () => {
               onMouseEnter={() => setDropdownVisible(true)}
               onMouseLeave={() => setDropdownVisible(false)}
             >
-              <User />
+              <User className="icone" onClick={() => setDropdownVisible(!dropdownVisible)} />
+              <span className="user-name">Bonjour {user.prenom}</span>
+
               {dropdownVisible && (
                 <div className="dropdown-menu">
-                  <button onClick={() => navigate("/MonCompte")}>
+                  <button
+                    onClick={() => {
+                      if (user.role === "admin" || user.role === "vendeur") {
+                        navigate("/admin-dashboard");
+                      } else {
+                        navigate("/MonCompte");
+                      }
+                    }}
+                    className="dropdown-btn"
+                  >
                     {t("user.account")}
                   </button>
+
+                  <Link to="/Orders">{t("user.orders")}</Link>
+                  <Link to="/commande">{t("user.history")}</Link>
+
                   <button onClick={handleLogout}>
-                    <LogOut size={14} /> {t("user.logout")}
+                    <LogOut size={16} /> {t("user.logout")}
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <User onClick={() => navigate("/Authentification")} />
+            <div className="user-dropdown">
+              <User className="icone" style={{ cursor: "pointer" }} onClick={() => navigate("/Authentification")} />
+              <span className="user-name">Mon compte</span>
+            </div>
           )}
         </div>
 
         <LanguageSwitcher />
       </section>
 
-      {/* MENU RIDEAU MOBILE */}
-      {isMenuOpen && (
-        <nav className="mobile-menu">
-          <button
-            className="close"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <X size={28} />
+      {/* 🔥 MENU MOBILE UNIQUEMENT EN MOBILE */}
+      {isMobile && (
+        <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
+          <button className="close-btn" onClick={() => setIsMenuOpen(false)}>
+            <X size={26} />
           </button>
 
           <ul>
-            <li><Link to="/Home">Accueil</Link></li>
-            <li><Link to="/home?genre=femme">Femme</Link></li>
-            <li><Link to="/home?genre=homme">Homme</Link></li>
-            <li><Link to="/QrCodePage">Notre App</Link></li>
+            <li><Link to="/Home" onClick={() => setIsMenuOpen(false)}>{t("header.titleI")}</Link></li>
+            <li><Link to="/home?genre=femme" onClick={() => setIsMenuOpen(false)}>{t("header.titleII")}</Link></li>
+            <li><Link to="/home?genre=homme" onClick={() => setIsMenuOpen(false)}>{t("header.titleIII")}</Link></li>
+            <li>{t("header.titleVI")}</li>
+            <li><Link to="/QrCodePage" onClick={() => setIsMenuOpen(false)}>Notre App</Link></li>
           </ul>
-        </nav>
+        </div>
       )}
+
     </header>
   );
 };

@@ -36,7 +36,7 @@ export default function Cart() {
   return (
     <div className="cart-container">
       <CheckoutSteps step={1} />
-      <h1>🛒 Votre Panier</h1>
+      <h2>🛒 Votre Panier</h2>
 
       {cartItems.length === 0 ? (
         <p className="empty-message">Votre panier est vide.</p>
@@ -52,7 +52,7 @@ export default function Cart() {
     />
 
     <div className="item-details">
-      <h3>{item.nom}</h3>
+      <h4>{item.nom}</h4>
       <p>{Number(item.options?.prix || 0).toFixed(2)} €</p>
       <p>
         Option : {item.options?.size} {item.options?.unit}
@@ -75,7 +75,7 @@ onClick={() => removeFromCart(item.variantId)} />
 
           <div className="cart-summary">
             {/* <h2>Total : {totalPrice.toFixed(2)} €</h2> */}
-            <h2>Total : {Number(totalPrice || 0).toFixed(2)} €</h2>
+            <h3>Total : {Number(totalPrice || 0).toFixed(2)} €</h3>
 
             <button className="checkout-btn" onClick={handleNextStep}>
               Étape suivante

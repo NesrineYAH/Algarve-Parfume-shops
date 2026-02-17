@@ -1,5 +1,5 @@
 .searchBar {
-    max-width: 700px;
+    max-width: 600px;
     padding: 1px;
     background-color: #f0eeee;
     border: 1px solid #ddd;
@@ -10,7 +10,9 @@
     background-position: 50% 50%;
     margin-bottom: 100px;
     position: relative;
-    left: 22%;
+    left: 28%;
+    border-radius: 8px;
+
 
     .bar {
         color: #888;
@@ -19,9 +21,31 @@
     }
 
     .searchInput {
-        width: 450px;
+        width: 70%;
+        height: 40px;
         border: none;
         background-color: #f0eeee;
 
+    }
+
+    @media (max-width: 768px) {
+
+        max-width: 700px;
+        width: 80%;
+        left: 0;
+        margin: 20px auto;
+        padding: 2px 2px;
+        border-radius: 8px;
+
+        .bar {
+            margin: 0 8px;
+            font-size: 18px;
+        }
+
+        .searchInput {
+            width: 100%;
+            font-size: 16px;
+            padding: 8px 0;
+        }
     }
 }
