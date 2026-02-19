@@ -202,13 +202,11 @@ useEffect(() => {
             alt={product.nom}
             className="product-image"
           />
-       {/* <div className="card__favorite" onClick={addToFavorites}>*/}
-    <div className="card__favorite" onClick={() => toggleFavorite(product)}>
-  <Heart className={`icone ${isFavorite ? "active" : ""}`} />
-</div>
 
-        
+    <div className="card__favorite" onClick={() => toggleFavorite(product)}>
+          <Heart className={`icone ${isFavorite ? "active" : ""}`} /></div>
           </div>
+
          <div className="product__part">  
    
           <h2>{product.nom}</h2>
@@ -272,10 +270,10 @@ useEffect(() => {
   <br />
   <br />
 
-      
 
          
         </div>
+
         </div>
         {showModal && (
           <div className="modal-overlay">
@@ -303,7 +301,7 @@ useEffect(() => {
           </div>
         )}
 
-  <br />
+  
         <div className="review-button">
           <button
             className="btn-Add"
