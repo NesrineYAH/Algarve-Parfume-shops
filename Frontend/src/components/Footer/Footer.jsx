@@ -58,23 +58,19 @@ const averageRating =
   </div>
 </li>
 
-
+      {/*
         <li>
           <a href="" className="TitreH3">
             {t("footer.beautyGuide")}       
           </a>
         </li>
-      
+      */}
       </ul>
       </div>
 
        <div>
   <h3>{t("footer.conditions")}</h3>
       <ul className="footer__ul">
-
-     
-
-       
         <li>
            <Link to="/PolitiqueCookies" rel="noopener noreferrer">{t("footer.cookiesPolicy")}
            </Link>
@@ -95,15 +91,15 @@ const averageRating =
         <div>
        <h3>{t("footer.help")}</h3>
       <ul className="footer__ul">
-        <a href="../FAQ" target="_blank" rel="noreferrer noopener">
+        <a href="../FAQ" rel="noreferrer noopener">
           <li>{t("footer.faq")}</li>
         </a>
       
-          <a href="/QuiSommesNous" target="_blank" rel="noreferrer noopener">
+          <a href="/QuiSommesNous" rel="noreferrer noopener">
             <li>{t("footer.whoWeAre")}</li>
           </a>
        
-        <a href="../Contact" target="_blank" rel="noopener noreferrer">
+        <a href="../Contact" rel="noopener noreferrer">
           <li>{t("footer.contact")}</li>
         </a>
       </ul>

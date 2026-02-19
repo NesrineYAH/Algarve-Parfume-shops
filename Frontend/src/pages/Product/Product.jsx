@@ -130,11 +130,14 @@ const reportComment = async (commentId) => {
 const likeComment = async (commentId) => {
   //  `http://localhost:5001/api/products/${commentId}/like`,
   try {
-    const token = localStorage.getItem("token");
     const res = await axios.post(
      `http://localhost:5001/api/products/${id}/comments/${commentId}/like`,
       {},
-      { headers: { Authorization: `Bearer ${token}` } }
+      { 
+     
+     headers: { "Content-Type": "application/json" },
+    withCredentials: true, // ✅ pour envoyer les cookies HttpOnly
+    }
     );
     setComments((prev) =>
       prev.map((c) => (c._id === commentId ? res.data : c))
@@ -146,11 +149,13 @@ const likeComment = async (commentId) => {
 
 const dislikeComment = async (commentId) => {
   try {
-    const token = localStorage.getItem("token");
     const res = await axios.post(
     `http://localhost:5001/api/products/${id}/comments/${commentId}/dislike`,
       {},
-      { headers: { Authorization: `Bearer ${token}` } }
+      { 
+      headers: { "Content-Type": "application/json" },
+    withCredentials: true, // ✅ pour envoyer les cookies HttpOnly
+     }
     );
     setComments((prev) =>
       prev.map((c) => (c._id === commentId ? res.data : c))

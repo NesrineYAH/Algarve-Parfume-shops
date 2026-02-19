@@ -5,64 +5,64 @@ const { sendEmail } = require("../utils/mailer.js");
 const { generateReturnLabel } = require("../utils/generateReturnLabel");
 
 exports.createReturnRequest = async (req, res) => {
-    try {
-        const dbUser = req.user;
-        const { orderId, products, reason, description } = req.body;
+  try {
+    const dbUser = req.user;
+    const { orderId, products, reason, description } = req.body;
 
-        const formattedProducts = products.map(p => {
-            if (typeof p === "string") {
-                return { productId: p };
-            }
-            if (p._id) { return { productId: p._id }; }
-            if (p.productId) { return { productId: p.productId }; }
-            throw new Error("Format produit invalide dans la demande de retour");
-        });
-
-
-        if (!orderId || !formattedProducts || formattedProducts.length === 0 || !reason) {
-            return res.status(400).json({ message: "Données invalides" });
-        }
+    const formattedProducts = products.map(p => {
+      if (typeof p === "string") {
+        return { productId: p };
+      }
+      if (p._id) { return { productId: p._id }; }
+      if (p.productId) { return { productId: p.productId }; }
+      throw new Error("Format produit invalide dans la demande de retour");
+    });
 
 
+    if (!orderId || !formattedProducts || formattedProducts.length === 0 || !reason) {
+      return res.status(400).json({ message: "Données invalides" });
+    }
 
-        const newReturn = new Return({
-            userId: dbUser._id,
-            orderId,
-            products: formattedProducts,
-            reason,
-            description,
-        });
 
-        await newReturn.save();
 
-        const order = await Order.findById(orderId);
+    const newReturn = new Return({
+      userId: dbUser._id,
+      orderId,
+      products: formattedProducts,
+      reason,
+      description,
+    });
 
-        for (const item of formattedProducts) {
-            const product = order.items.find(
-                p => p.productId.toString() === String(item.productId)
-            );
+    await newReturn.save();
 
-            if (product) {
-                product.returnStatus = "requested";
-            }
-        }
+    const order = await Order.findById(orderId);
 
-        await order.save();
+    for (const item of formattedProducts) {
+      const product = order.items.find(
+        p => p.productId.toString() === String(item.productId)
+      );
 
-        const labelLinks = [];
-        for (const item of formattedProducts) {
-            const labelPath = await generateReturnLabel({
-                returnId: newReturn._id,
-                orderId,
-                productId: item.productId,
-                user: dbUser,
+      if (product) {
+        product.returnStatus = "requested";
+      }
+    }
 
-            });
+    await order.save();
 
-            labelLinks.push(labelPath);
-        }
+    const labelLinks = [];
+    for (const item of formattedProducts) {
+      const labelPath = await generateReturnLabel({
+        returnId: newReturn._id,
+        orderId,
+        productId: item.productId,
+        user: dbUser,
 
-        const html = `
+      });
+
+      labelLinks.push(labelPath);
+    }
+
+    const html = `
 <html>
   <head>
     <style>
@@ -133,15 +133,15 @@ exports.createReturnRequest = async (req, res) => {
 
       <div class="labels">
         ${labelLinks
-                .map(
-                    (link) => `
+        .map(
+          (link) => `
               <a class="btn" href="${link}" target="_blank">
                 📄 Télécharger l’étiquette
               </a>
             `
-                )
-                .join("<br>")
-            }
+        )
+        .join("<br>")
+      }
       </div>
 
       <p style="margin-top: 25px;">Merci pour votre confiance.</p>
@@ -150,21 +150,21 @@ exports.createReturnRequest = async (req, res) => {
 </html>
 `;
 
-        await sendEmail({
-            // to: req.user.email,
-            to: dbUser.email,
-            subject: "Confirmation de votre retour",
-            html,
-            text: "Votre demande de retour a bien été enregistrée.",
-        });
+    await sendEmail({
+      // to: req.user.email,
+      to: dbUser.email,
+      subject: "Confirmation de votre retour",
+      html,
+      text: "Votre demande de retour a bien été enregistrée.",
+    });
 
 
-        res.status(201).json({
-            success: true,
-            message: "Demande de retour créée avec succès",
-        });
-    } catch (error) {
-        console.error("❌ Create return error:", error);
-        res.status(500).json({ message: "Erreur serveur" });
-    }
+    res.status(201).json({
+      success: true,
+      message: "Demande de retour créée avec succès",
+    });
+  } catch (error) {
+    console.error("❌ Create return error:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 };
