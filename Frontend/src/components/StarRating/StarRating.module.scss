@@ -1,0 +1,19 @@
+.starRating {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.star {
+    font-size: 22px;
+    color: #ccc; // gris clair par défaut
+    transition: color 0.2s ease;
+}
+
+.star:hover {
+    color: #f5c518;
+    cursor: pointer;
+}
+
+.filled {
+    color: #f5c518; // doré si active
+}

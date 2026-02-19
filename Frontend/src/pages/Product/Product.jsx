@@ -8,7 +8,7 @@ import { Heart } from "lucide-react";
 import { UserContext } from "../../context/UserContext";
 import { CartContext } from "../../context/CartContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
-
+import StarRating from "../../components/StarRating/StarRating"; 
 
 const Product = () => {
   const { id } = useParams();
@@ -18,8 +18,6 @@ const Product = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [userRating, setUserRating] = useState(0);
   const [commentText, setCommentText] = useState("");
   const [commentLoading, setCommentLoading] = useState(false);
   const [commentError, setCommentError] = useState("");
@@ -29,6 +27,10 @@ const { user } = useContext(UserContext);
 const { addToCartContext } = useContext(CartContext);
 const { favorites, toggleFavorite } = useContext(FavoritesContext);
 const safeFavorites = Array.isArray(favorites) ? favorites : [];
+
+// À SUPPRIMER (ils ne servent plus dans Product.jsx)
+const [hoverRating, setHoverRating] = useState(0);
+const [userRating, setUserRating] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -103,21 +105,14 @@ const variantId = `${product._id}-${selectedOption.size}${selectedOption.unit}`;
 
 const reportComment = async (commentId) => {
   try {
-    const token = localStorage.getItem("token"); // 🔥 Manquait !
-
-    if (!token) {
-      alert("Vous devez être connecté pour signaler un commentaire.");
-      return;
-    }
-
     await axios.post(
       `http://localhost:5001/api/products/${id}/comments/${commentId}/report`,
       {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      { 
+     
+     headers: { "Content-Type": "application/json" },
+    withCredentials: true, // ✅ pour envoyer les cookies HttpOnly
+    }
     );
 
     alert("Commentaire signalé !");
@@ -128,13 +123,11 @@ const reportComment = async (commentId) => {
 };
 
 const likeComment = async (commentId) => {
-  //  `http://localhost:5001/api/products/${commentId}/like`,
   try {
     const res = await axios.post(
      `http://localhost:5001/api/products/${id}/comments/${commentId}/like`,
       {},
       { 
-     
      headers: { "Content-Type": "application/json" },
     withCredentials: true, // ✅ pour envoyer les cookies HttpOnly
     }
@@ -164,10 +157,10 @@ const dislikeComment = async (commentId) => {
     console.error(err);
   }
 };
-  const refresh = () => {
+const refresh = () => {
     axios.get(`http://localhost:5001/api/products/${id}/comments`)
       .then(res => setComments(res.data));
-  };
+};
 
 const increaseQuantity = () => {
   setQuantity((prev) => prev + 1);
@@ -191,14 +184,19 @@ useEffect(() => {
   const isFavorite = safeFavorites.some(
   (fav) => fav._id === product?._id
 );
-  
+  //19/02 // ✅ CALCUL DE LA MOYENNE
+  const averageRating =
+    comments.length > 0
+      ? comments.reduce((sum, c) => sum + c.rating, 0) / comments.length
+      : 0;
+
 
   return (
     <section id="page">
       <div className="product-container">
-        <div className="pr">
+        <div className="product">
           
-          <div className="pr__img">
+          <div className="product__img">
           <img
             src={`http://localhost:5001${product.imageUrl}`}
             alt={product.nom}
@@ -211,7 +209,8 @@ useEffect(() => {
 
         
           </div>
-         <div className="pr__part">  
+         <div className="product__part">  
+   
           <h2>{product.nom}</h2>
           <p>{product.description}</p>
         <p className="price">
@@ -274,40 +273,8 @@ useEffect(() => {
   <br />
 
       
-      <div className="AutreSection">
-          <h2>Alma</h2>
-          <strong>Payez en 3X ou 4X avec Alma</strong>
-          <span>Payez en plusieurs fois grâce à notre partenaire <strong>ALMA</strong> ALMA, réponse immédiate. Plus d'informations </span>
-        </div>
 
-  {/* Rating 
-          <div className="rating">
-          {Array.from({ length: 5 }).map((_, i) => {
-            const starValue = i + 1;
-            return (
-              <span
-                key={i}
-                className={
-                  starValue <= (hoverRating || userRating)
-                    ? "star filled"
-                    : "star"
-                }
-                onMouseEnter={() => setHoverRating(starValue)}
-                onMouseLeave={() => setHoverRating(0)}
-                onClick={() => setUserRating(starValue)}
-                style={{ cursor: "pointer" }}
-              >
-                ★
-              </span>
-            );
-          })}
-          <span className="rating-value">
-            {product.rating > 0
-              ? `${product.rating.toFixed(1)}/5`
-              : t("product.noRating")}
-          </span>
-        </div>
-        */}
+         
         </div>
         </div>
         {showModal && (
@@ -337,9 +304,6 @@ useEffect(() => {
         )}
 
   <br />
-  <br />
-    <br />
-  <br />
         <div className="review-button">
           <button
             className="btn-Add"
@@ -349,31 +313,108 @@ useEffect(() => {
           </button>
         </div>
 
+ <div className="review-summary">
+   <h3>Note et avis</h3>
 
-        <div className="review-summary">
-          <h3>Note et avis</h3>
-          {/* <p className="average-rating">
-            {product.rating.toFixed(1)} / 5 ⭐ ({comments.length})
-          </p> */}
+  {/* Étoiles basées sur la note moyenne */}
+  <StarRating rating={Math.round(averageRating)} />
 
-          <p className="average-rating">
-  {product?.rating?.toFixed ? product.rating.toFixed(1) : "—"} / 5 ⭐ ({comments.length})
-</p>
+  <p className="average-rating">
+    <strong>Note moyenne :</strong>{" "}
+    {averageRating.toFixed(1)} / 5 ⭐ ({comments?.length || 0} avis)
+  </p>
 
-
-          <div className="rating-breakdown">
-            {[5, 4, 3, 2, 1].map((star) => {
-              const count = comments.filter((c) => c.rating === star).length;
-              return (
-                <div key={star} className="rating-row">
-                  <span>{star} ★</span>
-                  <progress value={count} max={comments.length}></progress>
-                  <span>{count}</span>
-                </div>
-              );
-            })}
-          </div>
+  
+  <div className="rating-breakdown">
+    {[5, 4, 3, 2, 1].map((star) => {
+      const count = comments?.filter((c) => c.rating === star).length || 0;
+      const percentage = comments?.length > 0 ? (count / comments.length) * 100 : 0;
+      
+      return (
+        <div key={star} className="rating-row" style={{ marginBottom: "8px" }}>
+          <span style={{ width: "50px", display: "inline-block" }}>{star} ★</span>
+          <progress 
+            value={count} 
+            max={comments?.length || 1} 
+            style={{ width: "200px", margin: "0 10px" }}
+          ></progress>
+          <span>{count} avis</span>
+          <span style={{ marginLeft: "10px", color: "#666" }}>
+            ({percentage.toFixed(0)}%)
+          </span>
         </div>
+      );
+    })}
+  </div>
+ </div>
+
+
+      {/* 
+       <div>
+   <h3>Note et avis</h3>
+  <div className="rating-input">
+
+    <div>
+      {Array.from({ length: 5 }).map((_, i) => {
+        const starValue = i + 1;
+        return (
+          <span
+            key={i}
+            className={
+              starValue <= (hoverRating || userRating)
+                ? "star filled"
+                : "star"
+            }
+            onMouseEnter={() => setHoverRating(starValue)}
+            onMouseLeave={() => setHoverRating(0)}
+            onClick={() => setUserRating(starValue)}
+            style={{ cursor: "pointer", fontSize: "24px" }}
+          >
+            ★
+          </span>
+        );
+      })}
+      <span style={{ marginLeft: "10px" }}>
+        {userRating > 0 ? `Note: ${userRating}/5` : ""}
+      </span>
+    </div>
+  </div>
+
+
+  <p className="average-rating">
+    <strong>Note moyenne :</strong>{" "}
+    {product?.rating ? product.rating.toFixed(1) : "0.0"} / 5 ⭐ 
+    ({comments?.length || 0} avis)
+  </p>
+
+
+  <div className="rating-breakdown">
+    {[5, 4, 3, 2, 1].map((star) => {
+      const count = comments?.filter((c) => c.rating === star).length || 0;
+      const percentage = comments?.length > 0 ? (count / comments.length) * 100 : 0;
+      
+      return (
+        <div key={star} className="rating-row" style={{ marginBottom: "8px" }}>
+          <span style={{ width: "50px", display: "inline-block" }}>{star} ★</span>
+          <progress 
+            value={count} 
+            max={comments?.length || 1} 
+            style={{ width: "200px", margin: "0 10px" }}
+          ></progress>
+          <span>{count} avis</span>
+          <span style={{ marginLeft: "10px", color: "#666" }}>
+            ({percentage.toFixed(0)}%)
+          </span>
+        </div>
+      );
+    })}
+  </div>
+      </div>
+
+*/}
+
+
+
 
         {/* 🗨️ Bloc affichage des commentaires */}
         <div className="comments-section">
@@ -431,386 +472,3 @@ export default Product;
 
 
 
-/*
-const favoriteItem = {
-  productId: product._id,
- variantId: `${product._id}-${selectedOption.size}`,
-  nom: product.nom,
-  imageUrl: product.imageUrl,
-  size: selectedOption.size,
- prix: selectedOption.prix,
-
-};
-*/
-
-
-/*
-  const addToCart = () => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (!selectedOption) {
-      alert("Veuillez sélectionner une option.");
-      return;
-    }
-
-    const variantId = `${product._id}-${selectedOption.size}`;
-    const existing = cart.find((item) => item.variantId === variantId);
-
-    if (existing) {
-      existing.quantite += quantity;
-
-    } else {
-      cart.push({
-        productId: product._id,
-        variantId,
-        nom: product.nom,
-        imageUrl: product.imageUrl,
-        quantite: quantity,
-        options: selectedOption,
-      });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    setShowModal(true);
-  };
-*/
-
-   {/* <strong>{t("product.selectedPrice")} :</strong>{" "} */}
-          {/* Options
-          {product.options && product.options.length > 0 && (
-            <div className="product-options">
-              <label>{t("product.chooseOption")}</label>
-              <select
-                value={selectedOption ? selectedOption.size : ""}
-                onChange={(e) => {
-                  const selected = product.options.find(
-                    (opt) => opt.size.toString() === e.target.value
-                  );
-                  setSelectedOption(selected);
-                }}
-              >
-                <option value="">{t("product.selectSize")}</option>
-
-                {product.options.map((opt, index) => (
-                  <option key={index} value={opt.size}>
-                    {opt.size} {opt.unit} - {opt.prix} €
-                  </option>
-                ))}
-              </select>
-
-              <p>
-                <strong>{t("product.selectedPrice")} :</strong>{" "}
-                {selectedOption ? selectedOption.prix : 0} €
-              </p>
-            </div>
-          )}
- */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-const Product = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [error, setError] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
-  const role = localStorage.getItem("role");
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  const [showModal, setShowModal] = useState(false);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [userRating, setUserRating] = useState(0);
-
-  const [commentText, setCommentText] = useState("");
-  const [commentLoading, setCommentLoading] = useState(false);
-  const [commentError, setCommentError] = useState("");
- const [comments, setComments] = useState([]);
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5001/api/products/${id}`
-        );
-        setProduct(response.data);
-
-      setSelectedOption(null);
-        if (response.data.rating) {
-          setUserRating(Number(response.data.rating));
-        }
-
-      } catch (err) {
-        setError("Produit introuvable ou erreur serveur.");
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  const addToCart = () => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    if (!selectedOption) {
-      alert("Veuillez sélectionner une option.");
-      return;
-    }
-
-    const variantId = `${product._id}-${selectedOption.size}`;
-    const existing = cart.find((item) => item.variantId === variantId);
-
-    if (existing) {
-      existing.quantite += 1;
-    } else {
-      cart.push({
-        productId: product._id,
-        variantId,
-        nom: product.nom,
-        imageUrl: product.imageUrl,
-        quantite: 1,
-        options: selectedOption,
-      });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    setShowModal(true);
-  };
-
-useEffect(() => {
-  const fetchComments = async () => {
-    try {
-      const res = await axios.get(`http://localhost:5001/api/products/${id}/comments`);
-      setComments(res.data);
-    } catch (err) {
-      console.error("Erreur récupération commentaires", err);
-    }
-  };
-
-  fetchComments();
-}, [id]);
-
-  const submitComment = async () => {
-    if (!userRating) {
-      setCommentError(t("product.selectRating"));
-      return;
-    }
-    if (!commentText.trim()) {
-      setCommentError(t("product.writeComment"));
-      return;
-    }
-
-    try {
-      setCommentLoading(true);
-      setCommentError("");
-      const token = localStorage.getItem("token");
-
-      const response = await axios.post(
-        `http://localhost:5001/api/products/${id}/comment`,
-        { rating: userRating, text: commentText },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setProduct(response.data.product);
-      setHoverRating(0);
-      setCommentText("");
-      // userRating reste pour afficher les étoiles
-    } catch (err) {
-      setCommentError(t("product.commentError"));
-      console.error(err);
-    } finally {
-      setCommentLoading(false);
-    }
-  };
-  if (error) return <p>{t("product.error")}</p>;
-  if (!product) return <p>{t("product.loading")}</p>;
-  
-  return (
-    <section id="page">
-      <div className="product-container">
-        <div className="pr">
-          <img
-            src={`http://localhost:5001${product.imageUrl}`}
-            alt={product.nom}
-            className="product-image"
-          />
-          <h2>{product.nom}</h2>
-          <p>
-            <strong>{t("product.stock")} :</strong> {product.stock} {t("product.inStock")}
-          </p>
-          <p>{product.description}</p>
-
-          {product.options && product.options.length > 0 && (
-
-              <div className="product-options">
-  <label>{t("product.chooseOption")}</label>
-  <select
-    value={selectedOption ? selectedOption.size : ""}
-    onChange={(e) => {
-      const selected = product.options.find(
-        (opt) => opt.size.toString() === e.target.value
-      );
-      setSelectedOption(selected);
-    }}
-  >
-
-    <option value="">
-      {t("product.selectSize")}
-    </option>
-
-
-    {product.options.map((opt, index) => (
-      <option key={index} value={opt.size}>
-        {opt.size} {opt.unit} - {opt.prix} €
-      </option>
-    ))} 
-  </select>
-
-  <p>
-    <strong>{t("product.selectedPrice")} :</strong>{" "}
-    {selectedOption ? selectedOption.prix : 0} €
-  </p>
-              </div>
-
-          )}
-        </div>
-
-    
-        <div className="rating">
-          {Array.from({ length: 5 }).map((_, i) => {
-            const starValue = i + 1;
-            return (
-              <span
-                key={i}
-                className={starValue <= (hoverRating || userRating) ? "star filled" : "star"}
-                onMouseEnter={() => setHoverRating(starValue)}
-                onMouseLeave={() => setHoverRating(0)}
-                onClick={() => setUserRating(starValue)}
-                style={{ cursor: "pointer" }}
-              >
-                ★
-              </span>
-            );
-          })}
-          <span className="rating-value">
-            {product.rating > 0 ? `${product.rating.toFixed(1)}/5` : t("product.noRating")}
-          </span>
-        </div>
-
-        <button className="btn-Add" onClick={addToCart}>
-          {t("product.addToCart")}
-        </button>
-       
-        {showModal && (
-          <div className="modal-overlay">
-            <div className="modal">
-              <h3>{t("product.addedTitle")}🎉</h3>
-              <p>{t("product.addedMessage")}</p>
-              <div className="modal-actions">
-                <button onClick={() => navigate("/cart")} className="btn-Add">
-                  {t("product.viewCart")}
-                </button>
-                <button onClick={() => navigate("/home")} className="btn-Add">
-                  {t("product.continueShopping")}
-                </button>
-              </div>
-              <button className="modal-close" onClick={() => setShowModal(false)}>✖</button>
-            </div>
-          </div>
-        )}
-
-       <div className="review-button">
-  <button 
-    className="btn-Add" 
-    onClick={() => navigate(`/review/${product._id}`)}
-  >
-    ✍️ Ajouter un avis
-  </button>
-</div>
-
-       <div className="review-summary">
-    
-          <h3>Note et avis</h3>
-           <p className="average-rating">
-           {product.rating.toFixed(1)} / 5 ⭐ ({product.comments.length})
-        
-            </p>
-
-  <div className="rating-breakdown">
-    {[5, 4, 3, 2, 1].map((star) => {
-      const count = product.comments.filter(c => c.rating === star).length;
-      return (
-        <div key={star} className="rating-row">
-          <span>{star} ★</span>
-          <progress value={count} max={product.comments.length}></progress>
-          <span>{count}</span>
-        </div>
-      );
-    })}
-  </div>
-        </div>   
-        {(role === "admin" || role === "vendeur") && (
-          <div className="admin-action">
-            <Link to="/admin/add-product" className="btn-Add">➕ {t("product.addProduct")}</Link>
-            <Link to={`/admin/EditProduct/${product._id}`} className="btn-Add">{t("product.edit")}</Link>
-            <Link to="/admin/AdminProductManagement" className="btn-Add">➕ {t("product.delete")}</Link>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-};
-
-export default Product;
-*/
-
-
-
-
-/*
-Uncaught Error: Rendered more hooks than during the previous render
-vient souvent de l’usage de hooks de manière conditionnelle, ou de modifications qui provoquent un rendu différent côté React.
-*/
-{/* ⭐ Notation 
-<div className="rating">
-  {Array.from({ length: 5 }).map((_, i) => (
-    
-    <span
-      key={i}
-      className={i < Math.round(ratingValue) ? "star filled" : "star"}
-    >
-      ★
-    </span>
-  ))}
-
-  <span className="rating-value">
-    {ratingValue > 0
-      ? `${ratingValue.toFixed(1)}/5`
-      : t("product.noRating")}
-  </span>
-</div>
-*/}
-
-  

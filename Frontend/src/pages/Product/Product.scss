@@ -14,7 +14,7 @@
         padding: 20px;
         border-radius: 10px;
 
-        .pr {
+        .product {
             display: flex;
             flex-direction: row;
             justify-content: space-around;
@@ -84,33 +84,6 @@
                     opacity: 0.8;
                 }
 
-                /*
-                .product-options {
-                    margin: 15px 0;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-
-                    label {
-                        font-weight: bold;
-                        margin-bottom: 5px;
-                    }
-
-                    select {
-                        padding: 8px 10px;
-                        border-radius: 5px;
-                        border: 1px solid #ccc;
-                        margin-bottom: 8px;
-                        font-size: 16px;
-                        cursor: pointer;
-                    }
-
-                    p {
-                        font-weight: bold;
-                        font-size: 16px;
-                    }
-                }
-*/
                 .product-options {
                     padding: 30px;
                 }
@@ -271,15 +244,6 @@
 
             }
         }
-
-        .AutreSection {
-            background-color: #f7eff4;
-            width: 600px;
-            border: 1px solid #767474;
-            display: block;
-            text-align: start;
-        }
-
         .btn-Add {
             background-color: #da4cbb;
             color: #fff;
@@ -389,45 +353,6 @@
             }
         }
 
-        /*
-.comment-card {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 6px;
-    background: #f9f9f9;
-
-    .comment-header {
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-    }
-
-    .comment-meta {
-        font-size: 0.9rem;
-        color: #666;
-        margin: 0.5rem 0;
-        display: flex;
-        gap: 1rem;
-    }
-
-    .comment-rating {
-        color: gold;
-    }
-
-    .comment-actions {
-        margin-top: 0.5rem;
-
-
-        button {
-            margin-right: 0.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-    }
-}
-*/
         .comments-section {
             margin-top: 40px;
             padding: 20px;
@@ -487,6 +412,23 @@
             }
         }
 
+        .star {
+            color: #ccc;
+            font-size: 24px;
+            transition: color 0.2s;
+        }
+
+        .star.filled {
+            color: #ffc107;
+        }
+
+        .star:hover {
+            color: #ffb300;
+        }
+
+        .rating-row progress {
+            accent-color: #ffc107;
+        }
 
         /* Boutons admin / vendeur */
         .admin-action {
