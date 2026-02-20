@@ -118,68 +118,68 @@
     }
 
     @media (max-width: 768px) {
-   
 
-            .title {
-                font-size: 1.8rem;
-                margin-bottom: 1.5rem;
-                padding: 0 1rem;
+
+        .title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .grid {
+            padding: 1.5rem;
+            gap: 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-items: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 320px;
+            padding: 0.8rem;
+
+
+
+
+            &:hover {
+                transform: none;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             }
 
-            .grid {
-                padding: 1.5rem;
-                gap: 1rem;
-                display: grid;
-                grid-template-columns: 1fr;
-                justify-items: center;
+            &__favorite {
+                top: 8px;
+                right: 8px;
+
+                .icone {
+                    width: 22px;
+                    height: 22px;
+                }
             }
 
-            .card {
+            &_img {
+                height: 160px;
+            }
+
+            h2 {
+                font-size: 1.1rem;
+            }
+
+            .description {
+                font-size: 0.9rem;
+            }
+
+            .price {
+                font-size: 1.1rem;
+            }
+
+            button {
                 width: 100%;
-                max-width: 320px;
-                padding: 0.8rem;
-
-
-
-
-                &:hover {
-                    transform: none;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-                }
-
-                &__favorite {
-                    top: 8px;
-                    right: 8px;
-
-                    .icone {
-                        width: 22px;
-                        height: 22px;
-                    }
-                }
-
-                &_img {
-                    height: 160px;
-                }
-
-                h2 {
-                    font-size: 1.1rem;
-                }
-
-                .description {
-                    font-size: 0.9rem;
-                }
-
-                .price {
-                    font-size: 1.1rem;
-                }
-
-                button {
-                    width: 100%;
-                    padding: 0.7rem;
-                    font-size: 1rem;
-                }
+                padding: 0.7rem;
+                font-size: 1rem;
             }
         }
-    
+    }
+
 
 }

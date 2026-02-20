@@ -90,9 +90,9 @@ const paymentFaq = t("faq.payment", { returnObjects: true });
             <article className="option" key={index}>
               <div className="option__div" onClick={() => togglePref(index)}>
                 {openIndex === index ? (
-                  <ChevronUp size={22} />
+                  <ChevronUp size={20} />
                 ) : (
-                  <ChevronDown size={22} />
+                  <ChevronDown size={20} />
                 )}
                 <h3>{item.question}</h3>
               </div>

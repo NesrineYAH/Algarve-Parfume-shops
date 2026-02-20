@@ -5,7 +5,7 @@ import "./PageSite.scss";
 const MentionsLegales = () => {
   const { t } = useTranslation();
     return (
-        <div id='mentionsLegales legal-page'>
+        <div id='legal-page'>
           <h1 className='H1'>{t('TextInfo.info')}</h1> 
           <br />
         

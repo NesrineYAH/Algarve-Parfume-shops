@@ -1,19 +1,24 @@
 .contact-container {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 3rem 1rem;
-    width: 100%;
-    background: #f7f7f7;
+    width: 80%;
+    margin: 0 auto;
+    padding: 1.2rem;
+    background: #f7f1f4;
+    row-gap: 4rem;
 
 
     .contact-card {
         background: #fff;
         width: 100%;
-        max-width: 550px;
         padding: 2rem 2.5rem;
-        border-radius: 20px;
+        border-radius: 10px;
         box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        width: 520px;
+
+
     }
 
     .contact-title {
@@ -26,7 +31,8 @@
     .contact-form {
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
+        row-gap: 1.5rem;
+
 
         .contact-label,
         select {
@@ -96,11 +102,13 @@
 
     .service-client {
         padding: .8rem;
-        max-width: 600px;
         margin: 0 auto;
         font-family: "Arial", sans-serif;
         color: #333;
         overflow: hidden;
+        width: 500px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
 
         h1 {
             font-size: 1rem;
@@ -110,9 +118,7 @@
         }
 
         .intro {
-
             font-size: 0.9rem;
-
             margin-bottom: 2rem;
             text-align: center;
             line-height: 1.5;
@@ -142,13 +148,8 @@
         }
 
         .contact-options {
-            background: #fafafa;
-            border: 1px solid #eee;
             border-radius: 8px;
             padding: 1.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-
-
 
             h2 {
                 font-size: 1.2rem;
@@ -169,6 +170,7 @@
                     text-align: center;
                     list-style-type: none;
                     line-height: 110%;
+                    cursor: pointer;
 
                     &:last-child {
                         border-bottom: none;
@@ -178,4 +180,50 @@
         }
     }
 
+
+    @media (max-width: 768px) {
+        padding: 2rem 1rem;
+
+
+        .contact-card {
+            padding: 1.5rem;
+        }
+
+        .contact-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form {
+            gap: 0.8rem;
+
+            .contact-label,
+            select {
+                font-size: 0.9rem;
+            }
+
+            .contact-input,
+            .contact-textarea {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+        }
+
+        .contact-button {
+            font-size: 1rem;
+            padding: 0.8rem;
+        }
+
+        .service-client {
+
+            .contact-options {
+
+                li,
+                a {
+                    font-size: 12px;
+                }
+            }
+        }
+
+    }
 }

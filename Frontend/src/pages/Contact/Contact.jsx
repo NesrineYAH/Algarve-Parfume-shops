@@ -141,13 +141,15 @@ const handleSubmit = async (e) => {
         <h2>{t("service.contact")}</h2>
         <ul>
           <li>{t("service.hours")}</li>
-          <li>  <IoMail /> {t("service.email")}</li>
-          <li><FaPhoneFlip /> {t("service.phone")}</li>
+          <a itemProp="email" href="mailto:contact@parfume.algarve.com" style={{ textDecoration: "none", color: "inherit" }}>   
+              <li>  <IoMail /> {t("service.email")}</li> </a>
+           <a itemProp="telephone" href="tel: +351 920 733 799"  style={{ textDecoration: "none", color: "inherit" }}>
+           <li><FaPhoneFlip /> {t("service.phone")}</li></a>
              <li> <FontAwesomeIcon icon={faLocationDot}  /> Av. Francisco Sá Carneiro, 8125-507 Quarteira, Portugal </li>
         </ul>
         <div className="chat-service">
         <FontAwesomeIcon icon={faComments} size="2x" />
-        <span>Chatter avec notre service client</span>
+        <span>{t("service.chat")}</span>
       </div>
       </div>
         
