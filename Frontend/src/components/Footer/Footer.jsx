@@ -57,14 +57,6 @@ const averageRating =
     </a>
   </div>
 </li>
-
-      {/*
-        <li>
-          <a href="" className="TitreH3">
-            {t("footer.beautyGuide")}       
-          </a>
-        </li>
-      */}
       </ul>
       </div>
 
@@ -74,7 +66,6 @@ const averageRating =
         <li>
            <Link to="/PolitiqueCookies" rel="noopener noreferrer">{t("footer.cookiesPolicy")}
            </Link>
-  
           </li>
     
           <li>
@@ -83,7 +74,7 @@ const averageRating =
      
     
         <li><Link to="/CGV">{t("footer.terms")} Conditions Générales de Vente</Link></li>
-        <li><Link to="/PolitiqueConfidentialite"> </Link></li>
+        <li><Link to="/PolitiqueConfidentialite"> Politique de Confidentialite</Link></li>
                 <li><Link to="/securite-produits">Sécurité des Produits</Link></li>
       </ul>
        </div>

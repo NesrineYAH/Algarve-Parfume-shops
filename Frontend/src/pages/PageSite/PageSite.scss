@@ -4,11 +4,17 @@
     line-height: 155%;
     padding: 3rem;
 
-    .H1 {
+    h1 {
         font-weight: 600;
-        font-size: 20px;
+        font-size: 24px;
         text-align: center;
         line-height: 185%;
+    }
+
+    h2 {
+        margin: 25px;
+        font-size: 18px;
+
     }
 
     h4 {
@@ -19,10 +25,16 @@
 
     span,
     strong,
-    p {
+    p,
+    li {
         overflow: hidden;
-        font-size: 12.5px;
+        font-size: 14px;
         line-height: 155%;
+        font-weight: 500;
+    }
+
+    li {
+        list-style-type: none;
     }
 
     a {
@@ -52,8 +64,6 @@
 
     /*  @media screen and (min-width: $breakpoint-desktop) and (max-width:$Mmax) */
     @media screen and (min-width: 768px) and (max-width: 1600px) {
-        background-color: var(--body_background);
-        color: var(--link_color);
         margin: 0;
         cursor: pointer;
         padding: 15vh;
@@ -142,7 +152,7 @@
         padding: 20px;
 
         h2 {
-            font-size: 18px;
+            font-size: 14px;
             margin-bottom: 10px;
             color: #333;
             border-bottom: 1px solid #eee;
@@ -172,23 +182,8 @@
 }
 
 /************ page Qui somme nous ***********************/
-.qui-sommes-nous {
-    padding: 60px 20px;
-    background-color: #fafafa;
-}
 
 .qui-sommes-nous .container {
     max-width: 800px;
     margin: 0 auto;
-}
-
-.qui-sommes-nous h1 {
-    margin-bottom: 20px;
-    font-size: 32px;
-}
-
-.qui-sommes-nous p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-    color: #333;
 }

@@ -2,14 +2,14 @@ import React from "react";
 
 const CGV = () => {
   return (
-    <div className="legal-page">
+    <div id="legal-page">
       <h1>Conditions Générales de Vente</h1>
 
       <section>
         <h2>Article 1 – Objet</h2>
         <p>
           Les présentes Conditions Générales de Vente régissent les ventes de parfums
-          effectuées sur le site [Nom du site].
+          effectuées sur le site https://perfumealgarve.com  .
         </p>
       </section>
 

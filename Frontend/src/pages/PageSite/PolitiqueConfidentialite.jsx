@@ -3,7 +3,7 @@ import "./PageSite.scss";
 
 const PolitiqueConfidentialite = () => {
   return (
-    <div className="legal-page">
+    <div id="legal-page">
       <h1>Politique de confidentialité</h1>
 
       <section>
@@ -22,9 +22,9 @@ const PolitiqueConfidentialite = () => {
           Le responsable du traitement des données est :
         </p>
         <ul>
-          <li><strong>Perfume Algarv :</strong></li>
-          <li><strong>Adresse :</strong> 3VCW+33 Quarteira, Portugal</li>
-          <li><strong>Email :</strong> contact@perfumealgarve.com</li>
+          <li><strong>Perfume Algarve :</strong></li>
+          <li><strong>Adresse : 3VCW+33 Quarteira, Portugal</strong> </li>
+          <li><strong>Email : contact@perfumealgarve.com</strong> </li>
         </ul>
       </section>
 
@@ -39,7 +39,7 @@ const PolitiqueConfidentialite = () => {
           <li>Adresse postale</li>
           <li>Numéro de téléphone</li>
           <li>Données de commande et de paiement</li>
-          <li>Adresse IP et données de navigation</li>
+          <li>Adresse de livraison</li>
         </ul>
       </section>
 
@@ -108,7 +108,7 @@ const PolitiqueConfidentialite = () => {
         </ul>
         <p>
           Pour exercer ces droits, l’utilisateur peut contacter :
-          <strong> [Email de contact]</strong>
+          <strong> contact@perfumealgarve.com </strong>
         </p>
       </section>
 
@@ -126,7 +126,7 @@ const PolitiqueConfidentialite = () => {
         <h2>10. Modification de la politique</h2>
         <p>
           La présente politique de confidentialité peut être modifiée à tout moment.
-          La version en vigueur est celle publiée sur le site.
+          La version en vigueur est celle publiée sur le site https://perfumealgarve.com.
         </p>
       </section>
     </div>

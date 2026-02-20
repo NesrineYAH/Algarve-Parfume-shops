@@ -5,7 +5,7 @@ const QuiSommesNous = () => {
   const { t } = useTranslation();
 
   return (
-    <section className="qui-sommes-nous">
+    <section id='legal-page'>
       <div className="container">
         <h1>{t("about.title")}</h1>
 

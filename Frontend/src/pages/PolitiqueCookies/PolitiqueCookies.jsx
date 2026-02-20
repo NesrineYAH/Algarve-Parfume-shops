@@ -53,14 +53,14 @@ export default function Confientilaite() {
 
   return (
     <div className="cookie-page">
-      <h1 id="H11">Politique de cookies</h1>
+      <h1>Politique de cookies</h1>
       <p>
         Cette page explique comment notre site utilise les cookies pour améliorer votre expérience
         et assurer le bon fonctionnement du service.
       </p>
 
-      <div className="highlight">
-              <h2>Catégories de cookies</h2>
+
+        <h2>Catégories de cookies</h2>
         <p>Vous pouvez à tout moment modifier vos préférences via le bouton “Gérer mes cookies” en bas de page.</p>
   
       <div className="consent-section">
@@ -188,7 +188,7 @@ export default function Confientilaite() {
 
         {message && <p className="feedback">{message}</p>}
       </div>
-   </div>
+
     </div>
   );
 }

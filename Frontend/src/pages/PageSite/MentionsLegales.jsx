@@ -6,7 +6,7 @@ const MentionsLegales = () => {
   const { t } = useTranslation();
     return (
         <div id='legal-page'>
-          <h1 className='H1'>{t('TextInfo.info')}</h1> 
+          <h1>{t('TextInfo.info')}</h1> 
           <br />
         
 <p>{t('TextInfo.p')}</p>
