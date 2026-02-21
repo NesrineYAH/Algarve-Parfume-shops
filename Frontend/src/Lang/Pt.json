@@ -171,6 +171,50 @@
     "paragraph5": "Acreditamos que o perfume revela uma identidade, acompanha momentos importantes da vida e deixa uma marca duradoura.",
     "paragraph6": "Hoje, nossa marca reflete nossa amizade, complementaridade e ambição compartilhada."
   }, 
+  "cookie":  {
+  "title": "Política de cookies",
+  "intro": "Esta página explica como o nosso site utiliza cookies para melhorar a sua experiência e garantir o bom funcionamento do serviço.",
+  "categories": "Categorias de cookies",
+  "modify": "Você pode alterar suas preferências a qualquer momento usando o botão “Gerir meus cookies” no final da página.",
+  
+  "pref_title": "Cookies de preferência: memorizam as suas escolhas.",
+  "pref_desc": "Esses cookies guardam as suas escolhas (idioma, tema, preferências de navegação). Eles melhoram a sua experiência de usuário.",
+
+  "analytics_title": "Cookies de análise: compreender o uso do site.",
+  "analytics_desc": "Esses cookies nos ajudam a entender como os visitantes utilizam o site para melhorar o desempenho.",
+
+  "necessary_title": "Cookies necessários.",
+  "necessary_desc": "Esses cookies são essenciais para o funcionamento adequado do site e não podem ser desativados.",
+
+  "audience_title": "Cookies de medição de audiência.",
+  "audience_desc": "Esses cookies permitem medir o tráfego e melhorar nossos serviços.",
+
+  "develop_title": "Cookies de desenvolvimento.",
+  "develop_desc": "Esses cookies são usados para depuração, testes e melhorias durante o desenvolvimento do site.",
+
+  "reject_all": "Recusar tudo",
+  "save": "Guardar"
+},
+"reviews": {
+  "title": "Avaliações dos clientes",
+  "titleComment": "Deixe sua avaliação",
+  "intro": "Veja o que nossos clientes estão dizendo sobre nossos perfumes e compartilhe sua própria experiência.",
+  "noReviews": "Ainda não há avaliações para este produto.",
+  "addReview": "Adicionar uma avaliação",
+  "total": " Total de reseñas",
+  "let": "Deja una reseña",
+  "write": "Escreva sua avaliação",
+  "note": "Sua nota",
+  "name": "Nome",
+  "rating": "Avaliação",
+  "comment": "Comentário",
+  "submit": "Enviar avaliação",
+  "submitting": "Enviando avaliação...",
+  "editReview": "Editar sua avaliação",
+  "disclaimer": "Avaliação reservada para clientes que fizeram um pedido.",
+  "deleteReview": "Excluir sua avaliação"
+},
+
   "footer": {
     "about": "Sobre nós",
     "ourStory": "Nossa história",

@@ -168,7 +168,51 @@
     "paragraph5": "We believe perfume reveals identity, accompanies life’s important moments, and leaves a lasting impression.",
     "paragraph6": "Today, our brand reflects our friendship, our complementarity, and our shared ambition."
   },
+    "cookies":{
+  "title": "Cookie Policy",
+  "intro": "This page explains how our website uses cookies to improve your experience and ensure the proper functioning of the service.",
+  "categories": "Cookie categories",
+  "modify": "You can change your preferences at any time using the “Manage my cookies” button at the bottom of the page.",
+  
+  "pref_title": "Preference cookies: remember your choices.",
+      "pI": "These cookies allow you to save your choices (language, theme, browsing preferences). They improve your user experience.",
 
+  "pref_desc": "These cookies store your choices (language, theme, browsing preferences). They enhance your user experience.",
+"pII":"These cookies allow you to save your choices (language, theme, browsing preferences). They improve your user experience.",
+  "analytics_title": "Analytics cookies: understand how the site is used.",
+  "analytics_desc": "These cookies help us understand how visitors interact with the website to improve its performance.",
+
+  "necessary_title": "Necessary cookies.",
+  "necessary_desc": "These cookies are essential for the website to function properly and cannot be disabled.",
+
+  "audience_title": "Audience measurement cookies.",
+  "audience_desc": "These cookies help us measure traffic and performance to improve our services.",
+
+  "develop_title": "Development cookies.",
+  "develop_desc": "These cookies are used for debugging, testing, and improving the website during development.",
+
+  "reject_all": "Reject all",
+  "save": "Save"
+},
+"reviews": {
+  "title": "Customer Reviews",
+  "titleComment": "Give your review",
+  "note": "Your note",
+  "intro": "Discover what our customers think about our perfumes and share your own experience.",
+  "noReviews": "No reviews yet. Be the first to share your experience!",
+  "total": " reviews ",
+  "let": "Leave a review",
+  "write": "Write a review",
+  "addReview": "Add a review",
+  "editReview": "Edit your review",
+  "deleteReview": "Delete your review",
+  "ratingLabel": "Your rating:",
+  "comment": "Your comment:",
+  "submit": "Submit my review",
+  "update": "Update",
+   "disclaimer": "Reviews are reserved for customers who have made a purchase.",
+  "cancel": "Cancel"
+},
   "footer": {
     "about": "About us",
     "ourStory": "Our story",

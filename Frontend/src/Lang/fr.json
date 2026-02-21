@@ -223,6 +223,41 @@
     "paragraph5": "Nous croyons que le parfum révèle une identité, accompagne les moments importants de la vie et laisse une trace mémorable.",
     "paragraph6": "Aujourd’hui, notre marque est le reflet de notre amitié, de notre complémentarité et de notre ambition commune."
   }, 
+"cookie": { "title": "Politique de cookies",
+ "intro": "Cette page explique comment notre site utilise les cookies pour améliorer votre expérience et assurer le bon fonctionnement du service.",
+  "categories": "Catégories de cookies",
+   "modify": "Vous pouvez à tout moment modifier vos préférences via le bouton “Gérer mes cookies” en bas de page.",
+    "pref_title": "Cookies de préférences : mémorisent vos choix.",
+  "pref_desc": "Ces cookies permettent de sauvegarder vos choix (langue, thème, préférences de navigation). Ils améliorent votre expérience utilisateur.",
+  "analytics_title": "Cookies analytics : comprendre l'utilisation du site.",
+ "analytics_desc": "Ces cookies permettent d'analyser la manière dont les visiteurs utilisent le site afin d'améliorer ses performances.",
+    "necessary_title": "Cookies nécessaires.",
+   "necessary_desc": "Ces cookies sont essentiels au bon fonctionnement du site et ne peuvent pas être désactivés.",
+    "audience_title": "Cookies de mesure d'audience.",
+   "audience_desc": "Ces cookies permettent de mesurer le trafic et d'améliorer nos services.",
+    "develop_title": "Cookies de développement.",
+     "develop_desc": "Ces cookies sont utilisés pour le débogage, les tests et l'amélioration du site durant son développement.",
+     "reject_all": "Refuser tout", "save": "Enregistrer"
+     },
+
+     "reviews": {
+      "title": "Avis clients",
+      "titleComment": "Donner votre avis",
+      "intro": "Avis sur la marque et l’expérience d’achat.",
+       "noReviews": "Pas encore d'avis pour ce produit.",
+      "average": "Note moyenne",
+      "total": "Total des avis",
+      "let": "Laisser un avis",
+      "write": "Écrire un avis",
+      "note": "Votre note",
+      "name": "Votre nom",
+      "email": "Votre email",
+      "rating": "Votre note",
+      "comment": "Votre commentaire",
+      "disclaimer": "Avis réservé aux clients ayant effectué une commande.",
+      "submit": "Envoyer mon avis"
+     },
+
   "footer": {
     "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",

@@ -67,15 +67,11 @@ const averageRating =
            <Link to="/PolitiqueCookies" rel="noopener noreferrer">{t("footer.cookiesPolicy")}
            </Link>
           </li>
-    
           <li>
           <Link to="/mentions-legales"> {t("footer.legalNotice")}</Link>
         </li>
-     
-    
         <li><Link to="/CGV">{t("footer.terms")} Conditions Générales de Vente</Link></li>
         <li><Link to="/PolitiqueConfidentialite"> Politique de Confidentialite</Link></li>
-                <li><Link to="/securite-produits">Sécurité des Produits</Link></li>
       </ul>
        </div>
 

@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Review.scss"; 
+import { useTranslation } from "react-i18next";
 
 
 const Review = () => {
+  const {t} = useTranslation();
+  
   const { id } = useParams(); // ← ID du produit
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
@@ -43,11 +46,11 @@ await axios.post(
   return (
 
     <div className="Reviewpage">
-      <h2>Donner votre avis</h2>
+      <h2>{t("reviews.titleComment")}</h2>
 
       <form onSubmit={handleSubmit} className="review-form">
         <div className="rating-input">
-          <label>Votre note :</label>
+          <label>   {t("reviews.note")} :</label>
           {Array.from({ length: 5 }).map((_, i) => (
             <span
               key={i}
@@ -60,8 +63,9 @@ await axios.post(
           ))}
         </div>
 
-        <div className="text-input">
-          <label>Votre commentaire :</label>
+       
+      <div className="rating-input">
+           <label>{t("reviews.comment")}</label>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -72,8 +76,8 @@ await axios.post(
         {error && <p className="error">{error}</p>}
         {success && <p className="success">{success}</p>}
 
-        <button type="submit" className="btn-submit">
-          Envoyer mon avis
+        <button type="submit" className="btn-submit"> {t("reviews.submit")}
+
         </button>
       </form>
     </div> 

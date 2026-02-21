@@ -43,8 +43,6 @@
   "Customer_Service": "servicio al cliente",
       "Customer_ServiceP": "6j/7"
   },
-
-
   "service": {
     "title": "Servicio al Cliente",
     "intro": "Nuestro equipo está disponible para responder sus preguntas y ayudarle.",
@@ -135,13 +133,13 @@
       }
     ]
   },
-     "newsletter": {
+   "newsletter": {
   "title": "Suscríbase al boletín de MyPerfume",
   "prg": "Obtenga una vista previa de las buenas ofertas y noticias.", 
   "mail":"Su dirección de correo electrónico",
   "subscribe": "Registro"
  },
-    "infoSide": {
+   "infoSide": {
   "Paymenttool": "Nuestros métodos de pago",
   "App": "Nos Aplicaciones móviles",
    "JoinUs": "Únete a nosotros en"
@@ -175,7 +173,48 @@
     "paragraph5": "Creemos que el perfume revela una identidad, acompaña los momentos importantes de la vida y deja una huella memorable.",
     "paragraph6": "Hoy, nuestra marca es el reflejo de nuestra amistad, complementariedad y ambición compartida."
   },
+  "cookie": {
+  "title": "Política de cookies",
+  "intro": "Esta página explica cómo nuestro sitio utiliza cookies para mejorar su experiencia y garantizar el buen funcionamiento del servicio.",
+  "categories": "Categorías de cookies",
+  "modify": "Puede modificar sus preferencias en cualquier momento mediante el botón “Gestionar mis cookies” al final de la página.",
+  
+  "pref_title": "Cookies de preferencias: recuerdan sus elecciones.",
+  "pI": "Estas cookies permiten guardar sus elecciones (idioma, tema, preferencias de navegación). Mejoran su experiencia de usuario.",
+  "pref_desc": "Estas cookies guardan sus elecciones (idioma, tema, preferencias de navegación). Mejoran su experiencia de usuario.",
+  "pII": "Estas cookies permiten guardar sus elecciones (idioma, tema, preferencias de navegación). Mejoran su experiencia de usuario.",
+  "analytics_title": "Cookies de análisis: comprender el uso del sitio.",
+  "analytics_desc": "Estas cookies nos ayudan a entender cómo los visitantes utilizan el sitio para mejorar su rendimiento.",
 
+  "necessary_title": "Cookies necesarias.",
+  "necessary_desc": "Estas cookies son esenciales para el correcto funcionamiento del sitio y no se pueden desactivar.",
+
+  "audience_title": "Cookies de medición de audiencia.",
+  "audience_desc": "Estas cookies nos permiten medir el tráfico y mejorar nuestros servicios.",
+
+  "develop_title": "Cookies de desarrollo.",
+  "develop_desc": "Estas cookies se utilizan para depuración, pruebas y mejoras durante el desarrollo del sitio.",
+
+  "reject_all": "Rechazar todo",
+  "save": "Guardar"
+},
+"reviews": {
+  "title": "Reseñas de clientes",
+    "titleComment": "Deja tu reseña",
+  "intro": "Descubra lo que nuestros clientes piensan de nuestros perfumes y comparta su experiencia.",
+  "average": "Valoración media",
+   "noReviews": "No hay reseñas aún para este producto.",
+   "total": " Total de reseñas",
+   "let": "Deja una reseña",
+  "note": "Tu nota",
+  "write": " Escribe una reseña",
+  "name": " Nombre",
+  "email": " Email",
+  "rating": " Valoración",
+  "comment": " Comentario",
+  "disclaimer": "Las reseñas están reservadas para clientes que han realizado una compra.",
+  "submit": " Enviar reseña"
+},
   "footer": {
     "about": "Sobre nosotros",
     "ourStory": "Nuestra historia",

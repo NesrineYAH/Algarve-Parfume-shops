@@ -1,47 +1,38 @@
 .Reviewpage {
-    width: 96%;
-    padding: 5rem;
-    background-position: 50%;
+    width: 100%;
+    padding: 4rem;
+
+    p {
+        font-size: 0.85rem;
+        margin: 25px 0 25px 0;
+    }
 
     .review-page {
-        width: 96%;
-        margin: 2rem auto;
-        padding: 1.5rem;
+        width: 80%;
+        margin: 0 auto;
         background: #f9f9f9;
         border-radius: 8px;
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        flex-wrap: nowrap;
+
         gap: 50px;
 
         h2 {
             text-align: center;
             margin-bottom: 1rem;
         }
-
-        .ReviewCard {
-            width: 600px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-
-
     }
 
     .review-form {
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        width: 600px;
-        position: relative;
-        background-position: 50% 50%;
-
+        align-items: center;
 
         .rating-input {
             font-size: 1.5rem;
+            width: 800px;
 
             .star {
                 color: #ccc;
@@ -79,6 +70,34 @@
 
         .success {
             color: green;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        padding: 2rem;
+
+        h1 {
+            font-size: 1.6rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+
+        .review-page {
+            width: 100%;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-form {
+            width: 100%;
+
+            .rating-input {
+                width: 100%;
+                font-size: 1.2rem;
+            }
         }
     }
 }

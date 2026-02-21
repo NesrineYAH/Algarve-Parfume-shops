@@ -37,8 +37,9 @@ body {
     }
 
     h3 {
-        font-size: 1rem;
+        font-size: 0.9rem;
         text-align: start;
+        font-weight: 600;
     }
 
     .consent-section {
@@ -50,11 +51,12 @@ body {
 
         .option {
             padding: 15px 10px;
-            margin: 0.25rem;
+            margin: 0.5rem;
             border: 1px solid #e9cefc;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 18px;
+
 
             &:last-child {
                 border-bottom: none;
@@ -75,7 +77,6 @@ body {
 
             /* Chevron + titre cliquable */
             .option__div {
-
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
@@ -93,8 +94,8 @@ body {
             /* Contenu de l'accordéon */
             .option__contenu {
                 margin-top: 10px;
-                margin-left: -10.75px;
-                margin-bottom: -20px;
+                margin-left: -9.75px;
+                margin-bottom: -14px;
                 width: 102.8%;
                 padding: 12px;
                 font-size: 0.88rem;
@@ -160,7 +161,5 @@ body {
         padding: 1rem;
     }
 
-    h3 {
-        font-size: 0.85rem;
-    }
+
 }
