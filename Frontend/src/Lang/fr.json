@@ -296,6 +296,11 @@
        "text3": "Trouvez la commande annulée et cliquez sur \"racheter\". Tous les articles seront ajoutés à votre panier et vous pourrez repasser la commande.",
       "thanks": "Merci pour votre confiance 💐" 
   },
+   "refund_confirmed": {
+     "subject": "Votre remboursement a été effectué", "title": "Votre remboursement est confirmé", "hello": "Bonjour {{name}},", 
+     "text1": "Votre commande {{orderId}} a été remboursée.", "amount": "Montant remboursé : {{amount}} €", "button": "Consulter mes commandes", 
+     "thanks": "Merci pour votre confiance 💐"
+     },
   "footer": {
     "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",

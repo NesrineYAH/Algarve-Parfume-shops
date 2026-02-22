@@ -250,7 +250,13 @@
          "button": "Ver mi carrito", 
          "text3": "Busque el pedido cancelado y haga clic en \"volver a comprar\". Todos los artículos se añadirán a su carrito para que pueda realizar el pedido nuevamente.", 
        "thanks": "Gracias por su confianza 💐"
-       }
+       },
+       "refund_confirmed": {
+         "subject": "Su reembolso ha sido procesado", 
+       "title": "Su reembolso está confirmado", "hello": "Hola {{name}},", 
+       "text1": "Su pedido {{orderId}} ha sido reembolsado.", "amount": "Importe reembolsado: {{amount}} €", 
+       "button": "Ver mis pedidos", "thanks": "Gracias por su confianza 💐" 
+      }
   },
 
   "footer": {

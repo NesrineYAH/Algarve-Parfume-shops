@@ -248,6 +248,12 @@
          "title": "Pedido cancelado", 
          "hello": "Olá {{name}},", "text1": "O seu pedido {{orderId}} foi cancelado.", "text2": "Se ainda deseja fazer este pedido, aqui está um atalho: acesse o seu carrinho.", "button": "Ver meu carrinho", "text3": "Encontre o pedido cancelado e clique em \"comprar novamente\". Todos os itens serão adicionados ao seu carrinho para que você possa refazer o pedido.", 
        "thanks": "Obrigado pela confiança 💐"
+       },
+       "refund_confirmed": { 
+        "subject": "O seu reembolso foi processado", "title": "O seu reembolso está confirmado", 
+       "hello": "Olá {{name}},", "text1": "O seu pedido {{orderId}} foi reembolsado.", "amount": "Valor reembolsado: {{amount}} €", 
+       "button": "Consultar meus pedidos", 
+       "thanks": "Obrigado pela confiança 💐"
        }
   },
     "footer": {

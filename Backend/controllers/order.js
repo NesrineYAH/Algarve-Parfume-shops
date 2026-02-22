@@ -508,19 +508,28 @@ exports.refundOrder = async (req, res) => {
 // Fonction séparée pour envoyer l'email
 async function sendRefundEmail(order) {
     const html = `
-      <h2>Votre remboursement est confirmé</h2>
-      <p>Bonjour ${order.userId.prenom},</p>
-      <p>Votre commande <strong>${order._id}</strong> a été remboursée.</p>
-      <p>Montant remboursé : <strong>${order.totalPrice} €</strong></p>
-      <a href="http://localhost:5173/MonCompte"
-         style="display:inline-block;background:#4c6ef5;color:white;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">
-         Consulter mes commandes
-      </a>
-  `;
+  <h2>${t("email.refund_confirmed.title")}</h2>
+
+  <p>${t("email.refund_confirmed.hello", { name: order.userId.prenom })}</p>
+
+  <p>${t("email.refund_confirmed.text1", { orderId: order._id })}</p>
+
+  <p>${t("email.refund_confirmed.amount", { amount: order.totalPrice })}</p>
+
+  <a href="http://localhost:5173/MonCompte"
+     style="display:inline-block;background:#4c6ef5;color:white;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">
+     ${t("email.refund_confirmed.button")}
+  </a>
+
+  <br><br>
+  <p>${t("email.refund_confirmed.thanks")}</p>
+`;
+
     await sendEmail({
         to: order.userId.email,
-        subject: "Votre remboursement a été effectué",
+        subject: t("email.refund_confirmed.subject"),
         html,
-        text: "Votre commande a été remboursée."
+        text: t("email.refund_confirmed.text1", { orderId: order._id })
     });
+
 }

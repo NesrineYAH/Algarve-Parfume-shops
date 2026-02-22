@@ -249,6 +249,13 @@
        "button": "View my cart", 
        "text3": "Find the canceled order and click \"repurchase\". All items will be added back to your cart so you can place the order again.", 
      "thanks": "Thank you for your trust 💐"
+     },
+      "refund_confirmed": { 
+      "subject": "Your refund has been processed", "title": "Your refund is confirmed", 
+      "hello": "Hello {{name}},", 
+      "text1": "Your order {{orderId}} has been refunded.", "amount": "Refunded amount: {{amount}} €", 
+      "button": "View my orders", 
+      "thanks": "Thank you for your trust 💐"
      }
   },
   "footer": {
