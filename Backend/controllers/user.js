@@ -144,13 +144,13 @@ exports.forgotPassword = async (req, res) => {
 
     await sendEmail({
       to: email,
-      subject: "Réinitialisation du mot de passe",
+      subject: t("email.reset.subject"),
       html: `
-        <p>Bonjour,</p>
-        <p>Cliquez sur ce lien pour réinitialiser votre mot de passe :</p>
-        <a href="${resetLink}">Réinitialiser mon mot de passe</a>
-        <p>Le lien expire dans 15 minutes.</p>
-      `,
+    <p>${t("email.reset.line1")}</p>
+    <p>${t("email.reset.line2")}</p>
+    <a href="${resetLink}">${t("email.reset.button")}</a>
+    <p>${t("email.reset.expire")}</p>
+  `
     });
 
     res.json({ message: "Email envoyé !" });
@@ -161,18 +161,32 @@ exports.forgotPassword = async (req, res) => {
 };
 exports.resetPassword = async (req, res) => {
   try {
-    const { token } = req.params;
-    const { password } = req.body;
+    const userId = req.user.userId; // ✅ depuis le JWT (cookie HTTP-only)
+    const { currentPassword, newPassword } = req.body;
 
-    const user = await User.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() }, // token non expiré
-    });
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Mot de passe actuel et nouveau mot de passe requis",
+      });
+    }
 
-    if (!user)
-      return res.status(400).json({ message: "Token invalide ou expiré" });
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+    }
 
-    user.password = await bcrypt.hash(password, 10);
+    // 🔐 Vérifier l'ancien mot de passe
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ message: "Mot de passe actuel incorrect" });
+    }
+
+    // 🔁 Mettre à jour le mot de passe
+    user.password = await bcrypt.hash(newPassword, 10);
+
+    // (optionnel) Nettoyage ancien reset token si existant
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
@@ -180,6 +194,7 @@ exports.resetPassword = async (req, res) => {
 
     res.json({ message: "Mot de passe modifié avec succès !" });
   } catch (err) {
+    console.error("resetPassword error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };

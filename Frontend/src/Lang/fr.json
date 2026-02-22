@@ -262,7 +262,40 @@
       "titre": "Notes et avis",
       "avis": "Avis"
  },
-
+ 
+  "email": {
+    "reset": {
+      "subject": "Réinitialisation du mot de passe",
+      "line1": "Bonjour,",
+      "line2": "Cliquez sur ce lien pour réinitialiser votre mot de passe :",
+      "button": "Réinitialiser mon mot de passe",
+      "expire": "Le lien expire dans 15 minutes."
+    },
+    "order_shipped": { 
+      "title": "Votre commande est expédiée 🚚", 
+      "text": "Votre commande a été expédiée. Les articles ont été restaurés dans votre panier.",
+    "hello": "Bonjour {{name}},", 
+    "text1": "Votre commande {{orderId}} vient d'être expédiée.", 
+    "text2": "Vous pourrez suivre votre colis ici :",
+     "button": "Suivre mon colis", 
+     "thanks": "Merci pour votre confiance 💐"
+     },
+      "order_delivered": { 
+        "subject": "Votre commande est livrée", "title": "Commande livrée", 
+      "hello": "Bonjour {{name}},", 
+      "text1": "Merci d'avoir confirmé la réception de votre commande {{orderId}}.", "text2": "Nous espérons que vous êtes satisfait(e) de votre achat.", 
+      "button": "Se connecter à mon compte" 
+    },
+     "order_canceled": { 
+      "subject": "Votre commande est annulée",
+       "title": "Votre commande est annulée", 
+       "hello": "Bonjour {{name}},", 
+       "text1": "Votre commande {{orderId}} a été annulée.", 
+       "text2": "Si vous souhaitez toujours passer cette commande, voici un raccourci : rendez-vous dans votre panier.", 
+       "button": "Voir mon panier", 
+       "text3": "Trouvez la commande annulée et cliquez sur \"racheter\". Tous les articles seront ajoutés à votre panier et vous pourrez repasser la commande.",
+      "thanks": "Merci pour votre confiance 💐" 
+  },
   "footer": {
     "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",
@@ -303,5 +336,5 @@
 
 }
 
-  
+}
 

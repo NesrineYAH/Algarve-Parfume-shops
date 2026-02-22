@@ -216,6 +216,41 @@
   "cancel": "Cancel",
   "avis": "reviews"
 },
+  "email": {
+    "reset": {
+      "subject": "Password Reset",
+      "line1": "Hello,",
+      "line2": "Click the link below to reset your password:",
+      "button": "Reset my password",
+      "expire": "The link expires in 15 minutes."
+    },
+    "order_shipped": { 
+      "title": "Your order has been shipped 🚚", 
+      "text": "Your order has been cancelled. The items have been restored to your shopping cart.",
+    "hello": "Hello {{name}},", 
+    "text1": "Your order {{orderId}} has just been shipped.",
+     "text2": "You can track your package here:", 
+     "button": "Track my package", 
+     "thanks": "Thank you for your trust 💐"
+     },
+      "order_delivered": { 
+        "subject": "Your order has been delivered",
+       "title": "Order delivered",
+        "hello": "Hello {{name}},", 
+      "text1": "Thank you for confirming the delivery of your order {{orderId}}.", 
+      "text2": "We hope you are satisfied with your purchase.", 
+      "button": "Log in to my account" 
+    },
+     "order_canceled": { 
+      "subject": "Your order has been canceled",
+       "title": "Order canceled", "hello": "Hello {{name}},", 
+       "text1": "Your order {{orderId}} has been canceled.",
+       "text2": "If you still want to place this order, here is a shortcut: go to your cart.", 
+       "button": "View my cart", 
+       "text3": "Find the canceled order and click \"repurchase\". All items will be added back to your cart so you can place the order again.", 
+     "thanks": "Thank you for your trust 💐"
+     }
+  },
   "footer": {
     "about": "About us",
     "ourStory": "Our story",

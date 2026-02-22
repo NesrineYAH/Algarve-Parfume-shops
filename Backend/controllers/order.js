@@ -260,12 +260,10 @@ exports.getOrderById = async (req, res) => {
 exports.shipOrder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
-
         const order = await Order.findById(orderId).populate("userId");
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
-
         if (order.status !== "confirmed") {
             return res.status(400).json({ message: "Commande non confirmée" });
         }
@@ -275,20 +273,16 @@ exports.shipOrder = async (req, res) => {
 
         // ⭐ Email d’expédition
         const html = `
-      <h2>Votre commande est expédiée 🚚</h2>
-      <p>Bonjour ${order.userId.prenom},</p>
-
-      <p>Votre commande <strong>${order._id}</strong> vient d'être expédiée.</p>
-
-      <p>Vous pourrez suivre votre colis ici :</p>
-      <a href="https://www.mondialrelay.com"
-         style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">
-         Suivre mon colis
+      <h2>${t("email.order_shipped.title")}</h2>
+      <p>${t("email.order_shipped.hello", { name: order.userId.prenom })}</p>
+      <p>${t("email.order_shipped.text1", { orderId: order._id })}</p>
+      <p>${t("email.order_shipped.text2")}</p>
+     <a href="https://www.mondialrelay.com"
+     style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">
+     ${t("email.order_shipped.button")}
       </a>
-
-      <br><br>
-      <p>Merci pour votre confiance 💐</p>
-    `;
+     <br><br>
+     <p>${t("email.order_shipped.thanks")}</p>`;
 
         await sendEmail({
             to: order.userId.email,
@@ -325,25 +319,25 @@ exports.deliverOrder = async (req, res) => {
         // 📧 Email de confirmation au client
         await sendEmail({
             to: order.userId.email,
-            subject: "Votre commande est livrée",
+            subject: t("email.order_delivered.subject"),
             html: `
-        <h2>Commande livrée</h2>
-        <p>Bonjour ${order.userId.prenom},</p>
-        <p>Merci d'avoir confirmé la réception de votre commande <strong>${order._id}</strong>.</p>
-        <p>Nous espérons que vous êtes satisfait(e) de votre achat.</p>
-        <a href="http://localhost:5173/authentification"
-   style="display:inline-block;
-          background:#4c6ef5;
-          color:white;
-          padding:12px 18px;
-          border-radius:8px;
-          text-decoration:none;
-          font-weight:bold;">
-  Se connecter à mon compte
-</a>
+       <h2>${t("email.order_delivered.title")}</h2>
+        <p>${t("email.order_delivered.hello", { name: order.userId.prenom })}</p>
+       <p>${t("email.order_delivered.text1", { orderId: order._id })}</p>
+       <p>${t("email.order_delivered.text2")}</p>
 
-      `
+       <a href="http://localhost:5173/authentification"
+          style="display:inline-block;
+              background:#4c6ef5;
+              color:white;
+              padding:12px 18px;
+              border-radius:8px;
+              text-decoration:none;
+              font-weight:bold;">
+         ${t("email.order_delivered.button")}
+       </a> `
         });
+
 
         res.json({ message: "Commande marquée comme reçue", order });
 
@@ -395,31 +389,32 @@ exports.cancelOrder = async (req, res) => {
         // Annuler la commande
         order.status = "cancelled";
         await order.save();
-
         const html = `
-      <h2>Votre commande est Annulée </h2>
-      <p>Bonjour ${order.userId.prenom},</p>
+  <h2>${t("email.order_canceled.title")}</h2>
 
-      <p>Votre commande <strong>${order._id}</strong> vient est annulée .</p>
+  <p>${t("email.order_canceled.hello", { name: order.userId.prenom })}</p>
 
-      <p>Si vous voulez toujours passer cette commande, voici un raccourci : Rendez-vous dans </p>
-<a href="http://localhost:5173/panier">Voir mon panier  
-         style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">
-         Suivre mon colis
-      </a>
-       trouvez la commande annulée et cliquez sur "racheter".  Tous les articles seront ajoutés à votre panier, vous pourrez alors repasser la commande !
+  <p>${t("email.order_canceled.text1", { orderId: order._id })}</p>
 
-      <br><br>
-      <p>Merci pour votre confiance 💐</p>
-    `;
+  <p>${t("email.order_canceled.text2")}</p>
+
+  <a href="http://localhost:5173/panier"
+     style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;display:inline-block;">
+     ${t("email.order_canceled.button")}
+  </a>
+
+  <p>${t("email.order_canceled.text3")}</p>
+
+  <br><br>
+  <p>${t("email.order_canceled.thanks")}</p>
+`;
 
         await sendEmail({
             to: order.userId.email,
-            subject: "Votre commande est expédiée",
+            subject: t("email.order_canceled.subject"),
             html,
-            text: "Votre commande a été annulée. Les articles ont été restaurés dans votre panier."
+            text: t("email.order_canceled.text1", { orderId: order._id })
         });
-
 
         return res.json({
             message: "Commande annulée et panier restauré",

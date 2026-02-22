@@ -217,6 +217,42 @@
   "submit": " Enviar reseña",
    "avis": " reseñas"
 },
+  "email": {
+    "reset": {
+      "subject": "Restablecimiento de contraseña",
+      "line1": "Hola,",
+      "line2": "Haz clic en el siguiente enlace para restablecer tu contraseña:",
+      "button": "Restablecer mi contraseña",
+      "expire": "El enlace expira en 15 minutos."
+    },
+     "order_shipped": {
+       "title": "Su pedido ha sido enviado 🚚", 
+      "text": "Su pedido ha sido cancelado. Los artículos han sido restaurados a su carrito de compras.",
+       "hello": "Hola {{name}},", 
+       "text1": "Su pedido {{orderId}} acaba de ser enviado.", 
+     "text2": "Puede seguir su paquete aquí:",
+      "button": "Seguir mi paquete", 
+      "thanks": "Gracias por su confianza 💐"
+     },
+      "order_delivered": { 
+        "subject": "Su pedido ha sido entregado", 
+        "title": "Pedido entregado", "hello": "Hola {{name}},", 
+        "text1": "Gracias por confirmar la recepción de su pedido {{orderId}}.",
+        "text2": "Esperamos que esté satisfecho(a) con su compra.", 
+        "button": "Iniciar sesión en mi cuenta" 
+      },
+       "order_canceled": {
+         "subject": "Su pedido ha sido cancelado", 
+         "title": "Pedido cancelado", 
+         "hello": "Hola {{name}},", 
+         "text1": "Su pedido {{orderId}} ha sido cancelado.", 
+         "text2": "Si aún desea realizar este pedido, aquí tiene un acceso directo: vaya a su carrito.", 
+         "button": "Ver mi carrito", 
+         "text3": "Busque el pedido cancelado y haga clic en \"volver a comprar\". Todos los artículos se añadirán a su carrito para que pueda realizar el pedido nuevamente.", 
+       "thanks": "Gracias por su confianza 💐"
+       }
+  },
+
   "footer": {
     "about": "Sobre nosotros",
     "ourStory": "Nuestra historia",

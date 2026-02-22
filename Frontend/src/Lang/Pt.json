@@ -218,7 +218,39 @@
    "avis": "Avaliações"
 },
 
-  "footer": {
+  "email": {
+    "reset": {
+      "subject": "Redefinição de senha",
+      "line1": "Olá,",
+      "line2": "Clique no link abaixo para redefinir sua senha:",
+      "button": "Redefinir minha senha",
+      "expire": "O link expira em 15 minutos."
+    },
+     "order_shipped": { 
+      "title": "O seu pedido foi enviado 🚚", 
+      "text": "A sua encomenda foi cancelada. Os itens foram restaurados no seu carrinho de compras., ", 
+      "hello": "Olá {{name}},", 
+      "text1": "O seu pedido {{orderId}} acaba de ser enviado.",
+      "text2": "Você pode acompanhar o seu pacote aqui:",
+       "button": "Acompanhar meu pacote", 
+       "thanks": "Obrigado pela confiança 💐"
+     },
+      "order_delivered": { 
+        "subject": "O seu pedido foi entregue",
+       "title": "Pedido entregue", 
+      "hello": "Olá {{name}},",
+      "text1": "Obrigado por confirmar a recepção do seu pedido {{orderId}}.",
+       "text2": "Esperamos que esteja satisfeito(a) com a sua compra.",
+        "button": "Entrar na minha conta" 
+      },
+       "order_canceled": {
+         "subject": "O seu pedido foi cancelado", 
+         "title": "Pedido cancelado", 
+         "hello": "Olá {{name}},", "text1": "O seu pedido {{orderId}} foi cancelado.", "text2": "Se ainda deseja fazer este pedido, aqui está um atalho: acesse o seu carrinho.", "button": "Ver meu carrinho", "text3": "Encontre o pedido cancelado e clique em \"comprar novamente\". Todos os itens serão adicionados ao seu carrinho para que você possa refazer o pedido.", 
+       "thanks": "Obrigado pela confiança 💐"
+       }
+  },
+    "footer": {
     "about": "Sobre nós",
     "ourStory": "Nossa história",
     "careers": "Carreiras",
