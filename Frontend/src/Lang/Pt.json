@@ -160,7 +160,8 @@
     "continueShopping": "Continuar a comprar",
     "addProduct": "Adicionar produto",
     "edit": "Editar",
-    "delete": "Eliminar produto"
+    "delete": "Eliminar produto",
+    "titre": "Notas e avaliações"
   },
   "about": {
     "title": "Quem somos?",
@@ -201,8 +202,9 @@
   "intro": "Veja o que nossos clientes estão dizendo sobre nossos perfumes e compartilhe sua própria experiência.",
   "noReviews": "Ainda não há avaliações para este produto.",
   "addReview": "Adicionar uma avaliação",
-  "total": " Total de reseñas",
-  "let": "Deja una reseña",
+  "average": "Avaliação média",
+  "total": " Total de avaliações",
+  "let": "Deixe uma avaliação",
   "write": "Escreva sua avaliação",
   "note": "Sua nota",
   "name": "Nome",
@@ -212,7 +214,8 @@
   "submitting": "Enviando avaliação...",
   "editReview": "Editar sua avaliação",
   "disclaimer": "Avaliação reservada para clientes que fizeram um pedido.",
-  "deleteReview": "Excluir sua avaliação"
+  "deleteReview": "Excluir sua avaliação",
+   "avis": "Avaliações"
 },
 
   "footer": {

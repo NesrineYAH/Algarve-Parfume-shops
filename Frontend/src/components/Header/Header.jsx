@@ -142,7 +142,7 @@ const handleToggleMenu = (e) => {
               onMouseLeave={() => setDropdownVisible(false)}
             >
               <User className="icone" />
-              <span className="user-name">Bonjour {user.prenom}</span>
+              <span className="user-name">{t("user.greeting")} {user.prenom}</span>
 
               {dropdownVisible && (
                 <div className="dropdown-menu">

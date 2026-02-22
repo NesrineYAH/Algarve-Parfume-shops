@@ -157,7 +157,8 @@
     "continueShopping": "Continue shopping",
     "addProduct": "Add product",
     "edit": "Edit",
-    "delete": "Delete product"
+    "delete": "Delete product",
+    "titre": "Notes and reviews"
   },
    "about": {
     "title": "Who are we?",
@@ -199,6 +200,7 @@
   "titleComment": "Give your review",
   "note": "Your note",
   "intro": "Discover what our customers think about our perfumes and share your own experience.",
+  "average": "Average rating",
   "noReviews": "No reviews yet. Be the first to share your experience!",
   "total": " reviews ",
   "let": "Leave a review",
@@ -211,7 +213,8 @@
   "submit": "Submit my review",
   "update": "Update",
    "disclaimer": "Reviews are reserved for customers who have made a purchase.",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "avis": "reviews"
 },
   "footer": {
     "about": "About us",

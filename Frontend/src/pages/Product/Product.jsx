@@ -312,14 +312,14 @@ useEffect(() => {
         </div>
 
  <div className="review-summary">
-   <h3>Note et avis</h3>
+   <h3>{t("product.titre")}</h3>
 
   {/* Étoiles basées sur la note moyenne */}
   <StarRating rating={Math.round(averageRating)} />
 
   <p className="average-rating">
-    <strong>Note moyenne :</strong>{" "}
-    {averageRating.toFixed(1)} / 5 ⭐ ({comments?.length || 0} avis)
+    <strong>{t("reviews.average")}:</strong> {" "}
+    {averageRating.toFixed(1)} / 5 ⭐ ({comments?.length || 0} {t("reviews.avis")})
   </p>
 
   
@@ -336,7 +336,7 @@ useEffect(() => {
             max={comments?.length || 1} 
             style={{ width: "200px", margin: "0 10px" }}
           ></progress>
-          <span>{count} avis</span>
+          <span>{count} {t("reviews.avis")}</span>
           <span style={{ marginLeft: "10px", color: "#666" }}>
             ({percentage.toFixed(0)}%)
           </span>
@@ -408,17 +408,13 @@ useEffect(() => {
     })}
   </div>
       </div>
-
 */}
-
-
-
 
         {/* 🗨️ Bloc affichage des commentaires */}
         <div className="comments-section">
-          <h3>Commentaires</h3>
+          <h3>{t("product.comments")}</h3>
 
-          {comments.length === 0 && <p>Aucun commentaire pour le moment.</p>}
+          {comments.length === 0 && <p>{t("product.noComments")}</p>}
 
           {comments.map((comment) => (
             <div key={comment._id} className="comment-card">
