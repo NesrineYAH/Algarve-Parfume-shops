@@ -21,8 +21,8 @@ i18n
             es: { translation: translationsES },
             pt: { translation: translationsPT },
         },
-        lng: Lang,
-        fallbackLng: "en", // langue par défaut si non trouvée
+        lng: Lang, // ✅ langue persistée                 // lng: Lang,
+        fallbackLng: "fr", // langue par défaut si non trouvée
         debug: true,
         interpolation: {
             escapeValue: false, // React gère déjà la sécurité XSS

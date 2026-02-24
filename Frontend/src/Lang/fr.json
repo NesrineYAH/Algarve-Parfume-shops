@@ -158,11 +158,8 @@
     "addProduct": "Ajouter un produit",
     "edit": "Modifier",
     "delete": "Supprimer un produit",
-    "skinType": "Type de peau",
-    "usageTime" : "Moment d'utilisation",
      "report": "signaler",
       "titre": "Notes et avis"
-
   },
   "TextInfo": {
   "info": "Informations légales",
@@ -300,7 +297,51 @@
      "subject": "Votre remboursement a été effectué", "title": "Votre remboursement est confirmé", "hello": "Bonjour {{name}},", 
      "text1": "Votre commande {{orderId}} a été remboursée.", "amount": "Montant remboursé : {{amount}} €", "button": "Consulter mes commandes", 
      "thanks": "Merci pour votre confiance 💐"
-     },
+     }
+    },    
+"delivery": {
+    "title": "📦 Adresse de livraison",
+    "loading": "Chargement…",
+    "shippingMethod": "Mode de livraison",
+    "storePickup": "Retrait en magasin (gratuit)",
+    "storeTitle": "📍 Retrait en magasin",
+    "storeAddressLabel": "Adresse",
+    "storeAddress": "Av. Francisco Sá Carneiro, 8125-507 Quarteira, Portugal",
+    "storeHoursLabel": "Horaires",
+    "storeHours": "10h – 19h (Lun–Sam)",
+    "storeInfo": "Vous recevrez un email dès que votre commande sera prête.",
+    "cttDelivery": "Livraison par CTT (Portugal)",
+    "civility": "Civilité",
+    "mr": "Monsieur",
+    "mrs": "Madame",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "country": "Pays",
+    "address": "Adresse",
+    "address2": "Complément d’adresse",
+    "address2Placeholder": "Appartement, étage, bâtiment…",
+    "postalCode": "Code postal",
+    "city": "Ville",
+    "phone": "Téléphone",
+
+    "submit": "Continuer vers le paiement",
+    "formError": "Veuillez remplir correctement tous les champs obligatoires."
+  },
+    "cart": {
+    "title": "🛒 Votre Panier",
+    "empty": "Votre panier est vide.",
+    "option": "Option",
+    "total": "Total",
+    "nextStep": "Étape suivante"
+  },
+  "error": {
+  "h1": "404",
+  "h2": "Oups… Page introuvable ",
+  "p": "La page que vous recherchez n’existe pas ou a été déplacée.",
+  "Retour": "Retour",
+  "Acceuil" : "Accueil",
+  "Boutique" : "Boutique"
+  },
   "footer": {
     "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",
@@ -337,9 +378,7 @@
     "tiktok": "TikTok",
     "goTop": "Retour en haut"
   }
-
-
 }
 
-}
+
 

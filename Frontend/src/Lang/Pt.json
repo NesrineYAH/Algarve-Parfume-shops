@@ -163,6 +163,58 @@
     "delete": "Eliminar produto",
     "titre": "Notas e avaliações"
   },
+  "TextInfo": {
+    "info": "Informações legais",
+    "infoI": "Apresentação e finalidade",
+    "infoII": "Acessibilidade",
+    "infoIII": "Direitos de propriedade intelectual",
+    "infoVI": "Proteção de bens e pessoas – Utilização de dados pessoais",
+    "infoVII": "Ligações hipertexto",
+    "nom": "Perfume Algarve Shops",
+
+    "p": "Em conformidade com os artigos 6.º-III e 19.º da Lei n.º 2004-575 de 21 de junho de 2004 relativa à Confiança na Economia Digital (L.C.E.N.), informamos os visitantes do site: https://nesrinebekkar.com das seguintes informações:",
+    "pI": "Informações do proprietário",
+    "pS": "Endereço do titular:",
+    "pS1": "Algarve, Portugal",
+    "pS2": "",
+    "pII": "O fundador do site e diretor da publicação é:",
+    "pII1": "Forma de contacto com o responsável pela publicação:",
+    "pIII": "Fornecedor de alojamento:",
+    "pIII1": "HOSTINGER INTERNATIONAL LTD",
+    "pr": "Sede social: 61 Lordou Vironos Street, 6023 Larnaca, Chipre",
+    "pr2": "Contactável através do seguinte link: https://www.hostinger.fr/contact.",
+
+    "prI": "Qualquer utilizador da Internet que aceda e utilize o site",
+    "prII": "é considerado utilizador do site",
+    "prIII": "O site",
+    "prIIII": "disponibiliza vários serviços tal como se encontram, sendo exigido aos utilizadores um comportamento honesto e de boa-fé.",
+    "prIIII1": "O site é atualizado regularmente por",
+
+    "pIIII": "A Perfume Algarve Shops esforça-se por fornecer informações o mais precisas possível no site nesrinebekkar.com, mas não garante a exatidão, integridade ou atualidade das mesmas. O utilizador reconhece que utiliza estas informações sob sua exclusiva responsabilidade.",
+    "pIIIII": "O site está geralmente acessível 24 horas por dia, 7 dias por semana, exceto em caso de manutenção ou força maior.",
+
+    "pT1": "envidará todos os esforços para restabelecer o acesso ao site e informar previamente os utilizadores. Estando sujeito apenas a uma obrigação de meios,",
+    "pT2": "não poderá ser responsabilizado por quaisquer danos resultantes da indisponibilidade do serviço.",
+    "pT3": "é o titular exclusivo dos direitos de propriedade intelectual ou detém os direitos de utilização de todos os elementos do site.",
+    "pT4": "Qualquer reprodução total ou parcial do site",
+    "pT5": "exibição, edição ou adaptação é proibida sem autorização prévia por escrito de",
+    "pTT5": "o proprietário do site",
+    "pT6": "Caso contrário, será considerada infração e passível de ação judicial.",
+    "pT7": "Os dados pessoais são protegidos pela legislação portuguesa e europeia em vigor.",
+    "pT8": "",
+    "pT9": "pode conter ligações para sites de terceiros, pelos quais o editor não se responsabiliza.",
+    "pT10": "não recolhe dados pessoais do utilizador exceto quando necessário para determinados serviços.",
+    "pT11": "O utilizador fornece os seus dados de forma consciente.",
+    "pT12": "Nos termos da legislação em vigor, o utilizador dispõe de direitos de acesso, retificação e eliminação dos seus dados pessoais.",
+    "pT13": "por correio eletrónico",
+    "pTT14": "ou por carta manuscrita assinada.",
+    "pT14": "Nenhuma informação pessoal do utilizador",
+    "pT15": "será divulgada sem o seu consentimento.",
+    "pT16": "Apenas no caso de aquisição do site",
+    "pT17": "os dados poderão ser transferidos ao adquirente sob as mesmas obrigações legais.",
+    "pT18": "está em conformidade com o RGPD.",
+    "pT19": "As bases de dados estão protegidas nos termos da Diretiva 96/9/CE."
+  },
   "about": {
     "title": "Quem somos?",
     "paragraph1": "Nossa história começa com uma amizade. Amigos há mais de dez anos, compartilhamos uma paixão comum pelo mundo do perfume e pela elegância que ele representa.",
@@ -217,7 +269,6 @@
   "deleteReview": "Excluir sua avaliação",
    "avis": "Avaliações"
 },
-
   "email": {
     "reset": {
       "subject": "Redefinição de senha",
@@ -255,6 +306,49 @@
        "button": "Consultar meus pedidos", 
        "thanks": "Obrigado pela confiança 💐"
        }
+  },
+  "delivery": {
+    "title": "📦 Endereço de entrega",
+    "loading": "A carregar…",
+    "shippingMethod": "Método de entrega",
+    "storePickup": "Levantamento em loja (gratuito)",
+    "storeTitle": "📍 Levantamento em loja",
+    "storeAddressLabel": "Endereço",
+    "storeAddress": "Av. Francisco Sá Carneiro, 8125-507 Quarteira, Portugal",
+    "storeHoursLabel": "Horário",
+    "storeHours": "10h – 19h (Seg–Sáb)",
+    "storeInfo": "Receberá um email quando a sua encomenda estiver pronta.",
+    "cttDelivery": "Entrega por CTT (Portugal)",
+
+    "civility": "Tratamento",
+    "mr": "Senhor",
+    "mrs": "Senhora",
+    "firstName": "Nome",
+    "lastName": "Apelido",
+    "country": "País",
+    "address": "Endereço",
+    "address2": "Complemento de endereço",
+    "address2Placeholder": "Apartamento, andar, edifício…",
+    "postalCode": "Código postal",
+    "city": "Cidade",
+    "phone": "Telefone",
+    "continue": "Continuar para pagamento",
+    "formError": "Por favor preencha corretamente todos os campos obrigatórios."
+  },
+    "cart": {
+    "title": "🛒 O seu carrinho",
+    "empty": "O seu carrinho está vazio.",
+    "option": "Opção",
+    "total": "Total",
+    "nextStep": "Próximo passo"
+  },
+  "error": {
+  "h1":"404",
+  "h2": "Ops... Página não encontrada",
+  "p": "a página que procura não existe ou foi movida.",
+  "Voltar":"Voltar",
+  "Casa":"Casa",
+  "Loja":"Loja"
   },
     "footer": {
     "about": "Sobre nós",

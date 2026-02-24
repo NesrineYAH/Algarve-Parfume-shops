@@ -15,20 +15,20 @@ export default function AddressAutocomplete({ value, onChange, onSelect }) {
       setResults([]);
       return;
     }
-
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?` +
-          new URLSearchParams({
-            q: query,
-            format: "json",
-            countrycodes: "pt",
-            addressdetails: "1",
-            limit: "5",
-          })
-      );
+   const response = await fetch(
+  `https://nominatim.openstreetmap.org/search?` +
+    new URLSearchParams({
+      q: query,
+      format: "json",
+      countrycodes: "pt,es,fr", // 🇵🇹 🇪🇸 🇫🇷
+      addressdetails: "1",
+      limit: "5",
+    })
+    );
+
 
       const data = await response.json();
       setResults(data);

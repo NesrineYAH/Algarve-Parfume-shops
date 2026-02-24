@@ -2,6 +2,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./ErrorPage.scss";
+import { useTranslation } from "react-i18next";
+
 
 export default function ErrorPage() {
   const navigate = useNavigate();
@@ -9,28 +11,22 @@ export default function ErrorPage() {
   return (
     <div className="error-page">
       <div className="error-card">
-        <h1>404</h1>
-        <h2>Oups… Page introuvable</h2>
-
+        <h1> {t("error.h1")}</h1>
+        <h2>{t("error.h2")}</h2>
         <p>
-          La page que vous recherchez n’existe pas ou a été déplacée.
+          {t("error.p")}
         </p>
 
         <div className="error-actions">
-          <button onClick={() => navigate(-1)}>
-            ← Retour
-          </button>
+          <button onClick={() => navigate(-1)}> ← {t("error.Retour")}</button>
 
           <Link to="/Home">
-            <button className="primary">
-              🏠 Accueil
+            <button className="primary">🏠 {t("error.Accueil")}  
             </button>
           </Link>
 
           <Link to="/Home">
-            <button>
-              🛍️ Boutique
-            </button>
+            <button>  🛍️  {t("error.Boutique")} </button>
           </Link>
         </div>
       </div>

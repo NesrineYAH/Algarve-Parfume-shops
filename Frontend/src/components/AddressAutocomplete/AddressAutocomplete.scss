@@ -7,15 +7,12 @@
     margin-bottom: 16px;
     display: flex;
     flex-direction: column;
-
 }
-
 .form-group label {
 
     font-weight: 600;
     margin-bottom: 6px;
 }
-
 .form-group input,
 .form-group select {
     width: 100%;
@@ -52,4 +49,11 @@
 
 .phone-group input {
     width: 60%;
+}
+
+.autocomplete {
+    li {
+        list-style-type: none;
+
+    }
 }
