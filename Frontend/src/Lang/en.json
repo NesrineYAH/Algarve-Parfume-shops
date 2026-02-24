@@ -355,6 +355,14 @@
   "Home" : "Home",
   "Shop" : "Shop"
   },
+  "checkOut": {
+ "h1":"Summary of your order",
+ "Quantity": "Quantity",
+ "Confirm": "Confirm the order",
+ "Total": "Total",
+ "Modify": "Modify the cart"
+  },
+
   "footer": {
     "about": "About us",
     "ourStory": "Our story",

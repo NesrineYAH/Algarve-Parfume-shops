@@ -342,6 +342,13 @@
   "Acceuil" : "Accueil",
   "Boutique" : "Boutique"
   },
+  "checkOut": {
+ "h1":"Récapitulatif de votre commande ",
+ "Quantity": "Quantité",
+ "Confirm": "Confirmer la commande",
+ "Total": "Total",
+ "Modify" : "Modifier le panier"
+  }, 
   "footer": {
     "about": "À PROPOS DE NOUS",
     "ourStory": "Notre histoire",

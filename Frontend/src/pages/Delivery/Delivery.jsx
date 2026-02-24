@@ -50,12 +50,10 @@ const validateForm = () => {
   if (!nameRegex.test(form.firstName)) return false;
   if (!nameRegex.test(form.lastName)) return false;
   if (form.phone.trim() === "") return false;
-
   // Si CTT → adresse obligatoire
 if (form.address.trim() === "") return false;
 if (form.postalCode.trim() === "") return false;
 if (form.city.trim() === "") return false;
-
 
   return true;
 };

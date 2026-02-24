@@ -4,8 +4,12 @@ import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import OrderService from "../../Services/orderService";
 import { CartContext } from "../../context/CartContext";
 import "./Checkout.scss";
+import { useTranslation } from "react-i18next";
+
 
 export default function Checkout() {
+    const { t } = useTranslation();
+  
   const { cartItems, totalPrice } = useContext(CartContext);
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
@@ -70,7 +74,7 @@ export default function Checkout() {
     <div className="checkout-container">
       <CheckoutSteps step={2} />
 
-      <h1>Récapitulatif de votre commande</h1>
+      <h1>{t("checkOut.h1")} </h1>
 
       <div className="checkout-summary">
         {cartItems.map((item) => (
@@ -86,20 +90,20 @@ export default function Checkout() {
                 {item.options?.size} {item.options?.unit} —{" "}
                 {Number(item.options?.prix || 0).toFixed(2)} €
               </div>
-              <div>Quantité : {item.quantite}</div>
+              <div>{t("checkOut.Quantity")}: {item.quantite}</div>
             </div>
           </div>
         ))}
 
-        <h3>Total : {Number(totalPrice).toFixed(2)} €</h3>
+        <h3>{t("checkOut.Total")}  : {Number(totalPrice).toFixed(2)} €</h3>
 
         <div className="checkout-actions">
-          <button className="Button" onClick={handleOrder}>
-            Confirmer la commande
+          <button className="Button" onClick={handleOrder}>{t("checkOut.Confirm")}
+          
           </button>
 
           <Link to="/cart">
-            <button className="Button secondary">Modifier le panier</button>
+            <button className="Button secondary"> {t("checkOut.Modify")}</button>
           </Link>
         </div>
       </div>

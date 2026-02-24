@@ -353,6 +353,13 @@
   "Home":"Inicio",
   "Shop": "Tienda"
   },
+  "checkOut": {
+ "h1": "Resumen de su pedido",
+ "Quantity": "Cantidad",
+ "Confirm": "Confirmar el pedido",
+ "Total": "Total",
+ "Modify": "Modificar el carrito"
+  },
   "footer": {
     "about": "Sobre nosotros",
     "ourStory": "Nuestra historia",

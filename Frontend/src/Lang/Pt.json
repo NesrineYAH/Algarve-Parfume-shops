@@ -350,6 +350,13 @@
   "Casa":"Casa",
   "Loja":"Loja"
   },
+  "checkOut": {
+ "h1": "Resumo da sua encomenda",
+ "Quantity":"Quantidade",
+ "Confirm": "confirmar a encomenda",
+ "Total": "Total",
+ "Modify": "Modificar o carrinho"
+  },
     "footer": {
     "about": "Sobre nós",
     "ourStory": "Nossa história",
