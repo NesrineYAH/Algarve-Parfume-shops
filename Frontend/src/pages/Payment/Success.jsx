@@ -1,10 +1,11 @@
 // success.jsx
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useTransition } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import "./Payment.scss";
 
 export default function Success() {
+  const { t } = useTransition();
   const navigate = useNavigate();
   const location = useLocation();
   const [order, setOrder] = useState(null);
@@ -37,17 +38,17 @@ export default function Success() {
 
   return (
     <div className="success-container">
-      <h1>🎉 Paiement reçu ✅</h1>
+      <h1>🎉 {t("Payment.title")} ✅</h1>
 
       {order && order.totalPrice !== undefined && (
         <strong>
-          Votre commande #{order._id} d’un montant de{" "}
-          <strong>{order.totalPrice.toFixed(2)} €</strong> a bien été enregistrée.
+        {t("Payment.textStrongI")} #{order._id} {t("Payment.textStrongII")}{" "}
+          <strong>{order.totalPrice.toFixed(2)} €</strong> {t("Payment.textStrongIII")}
         </strong>
       )}
 
       <button className="btn-home" onClick={() => navigate("/")}>
-        Retour à la boutique
+       {t("Payment.retour")}
       </button>
     </div>
   );

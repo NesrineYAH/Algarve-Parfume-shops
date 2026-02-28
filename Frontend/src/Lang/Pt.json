@@ -357,6 +357,13 @@
  "Total": "Total",
  "Modify": "Modificar o carrinho"
   },
+  "Payment": {
+  "title": "Pagamento recebido",
+  "textStrongI": "A sua encomenda",
+  "textStrongII": "no valor de",
+  "textStrongIII": "foi registada com sucesso.",
+  "retour": "Voltar à loja"
+}, 
     "footer": {
     "about": "Sobre nós",
     "ourStory": "Nossa história",
@@ -393,6 +400,40 @@
     "tiktok": "TikTok",
 
     "goTop": "Voltar ao topo"
-  }
+  },
+  "CGV": {
+  "title": "Condições Gerais de Venda",
+  "article1Title": "Artigo 1 – Objeto",
+  "article1Text": "As presentes Condições Gerais de Venda regem as vendas de perfumes realizadas no site https://perfumealgarve.com.",
+
+  "article2Title": "Artigo 2 – Produtos",
+  "article2Text": "Os produtos oferecidos são perfumes autênticos. As descrições são o mais fiéis possível. As fotos não são contratuais.",
+
+  "article3Title": "Artigo 3 – Preços",
+  "article3Text": "Os preços são indicados em euros (€), com todas as taxas incluídas (IVA). Os custos de envio são apresentados antes da validação da encomenda.",
+
+  "article4Title": "Artigo 4 – Encomenda",
+  "article4Text": "Qualquer encomenda feita no site implica a aceitação destas condições. Um email de confirmação é enviado após a validação do pagamento.",
+
+  "article5Title": "Artigo 5 – Pagamento",
+  "article5Text": "O pagamento é seguro e pode ser efetuado por cartão bancário ou outro método disponível no site.",
+
+  "article6Title": "Artigo 6 – Entrega",
+  "article6Text": "Os produtos são entregues na morada indicada no momento da encomenda. Os prazos são fornecidos a título indicativo.",
+
+  "article7Title": "Artigo 7 – Direito de retratação",
+  "article7Text1": "De acordo com a lei, o cliente dispõe de um prazo de 14 dias para se retratar.",
+  "article7Text2": "Os perfumes abertos ou deslacrados não podem ser devolvidos por razões de higiene e saúde.",
+
+  "article8Title": "Artigo 8 – Devoluções e reembolsos",
+  "article8Text": "Os produtos devem ser devolvidos fechados e na embalagem original. O reembolso é efetuado no prazo de 14 dias após a receção.",
+
+  "article9Title": "Artigo 9 – Responsabilidade",
+  "article9Text": "O vendedor não pode ser responsabilizado por danos indiretos relacionados com a utilização dos produtos ou do site.",
+
+  "article10Title": "Artigo 10 – Lei aplicável",
+  "article10Text": "Estas condições estão sujeitas à lei francesa. Qualquer litígio será da competência dos tribunais franceses."
+}
+
 
 }

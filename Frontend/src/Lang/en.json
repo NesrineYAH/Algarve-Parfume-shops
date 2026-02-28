@@ -362,7 +362,13 @@
  "Total": "Total",
  "Modify": "Modify the cart"
   },
-
+  "Payment": {
+  "title": "Payment received",
+  "textStrongI": "Your order",
+  "textStrongII": "for an amount of",
+  "textStrongIII": "has been successfully recorded.",
+  "retour": "Back to the shop"
+},
   "footer": {
     "about": "About us",
     "ourStory": "Our story",
@@ -394,7 +400,41 @@
     "linkedin": "LinkedIn",
     "tiktok": "TikTok",
     "goTop": "Go to top"
-  }
+  },
+  "CGV": {
+  "title": "Terms and Conditions of Sale",
+  "article1Title": "Article 1 – Purpose",
+  "article1Text": "These Terms and Conditions of Sale govern the sale of perfumes made on the website https://perfumealgarve.com.",
+
+  "article2Title": "Article 2 – Products",
+  "article2Text": "The products offered are authentic perfumes. Descriptions are as accurate as possible. Photos are non-contractual.",
+
+  "article3Title": "Article 3 – Prices",
+  "article3Text": "Prices are shown in euros (€), all taxes included (VAT). Shipping fees are displayed before order confirmation.",
+
+  "article4Title": "Article 4 – Orders",
+  "article4Text": "Any order placed on the website implies acceptance of these Terms and Conditions. A confirmation email is sent after payment validation.",
+
+  "article5Title": "Article 5 – Payment",
+  "article5Text": "Payment is secure and can be made by credit card or any other method offered on the website.",
+
+  "article6Title": "Article 6 – Delivery",
+  "article6Text": "Products are delivered to the address provided when placing the order. Delivery times are given for information purposes only.",
+
+  "article7Title": "Article 7 – Right of withdrawal",
+  "article7Text1": "In accordance with the law, the customer has a period of 14 days to withdraw.",
+  "article7Text2": "Opened or unsealed perfumes cannot be returned for hygiene and health protection reasons.",
+
+  "article8Title": "Article 8 – Returns and refunds",
+  "article8Text": "Products must be returned unopened and in their original packaging. Refunds are issued within 14 days after receipt.",
+
+  "article9Title": "Article 9 – Liability",
+  "article9Text": "The seller cannot be held liable for indirect damages related to the use of the products or the website.",
+
+  "article10Title": "Article 10 – Applicable law",
+  "article10Text": "These Terms and Conditions are governed by French law. Any dispute falls under the jurisdiction of French courts."
+}
+
 
 
 }

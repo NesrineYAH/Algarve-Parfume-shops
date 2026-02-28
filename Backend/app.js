@@ -23,6 +23,7 @@ const favoritesRoutes = require("./routes/favorites");
 const { authMiddleware } = require("./middleware/auth");
 const cookieParser = require("cookie-parser");
 const returnRoutes = require("./routes/returns");
+const paypalRoutes = require("./routes/paypal.routes");
 require("./mongoDB/DB");
 
 const app = express();
@@ -72,7 +73,7 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
 app.use("/api/returns", returnRoutes);
-
+app.use("/api/paypal", paypalRoutes);
 
 
 // ⚡ Routes protégées avec authMiddleware

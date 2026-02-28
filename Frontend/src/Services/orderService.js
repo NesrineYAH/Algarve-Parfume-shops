@@ -38,12 +38,10 @@ const OrderService = {
     );
     return response.data;
   },
-
   getAllOrders: async () => {
     const response = await api.get("/orders/all");
     return response.data;
   },
-
   getMyOrders: async () => {
     const response = await api.get("/orders/my-orders");
     return response.data;

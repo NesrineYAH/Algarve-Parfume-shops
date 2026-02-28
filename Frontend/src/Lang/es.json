@@ -360,6 +360,13 @@
  "Total": "Total",
  "Modify": "Modificar el carrito"
   },
+  "Payment": {
+  "title": "Pago recibido",
+  "textStrongI": "Su pedido",
+  "textStrongII": "por un importe de",
+  "textStrongIII": "ha sido registrado correctamente.",
+  "retour": "Volver a la tienda"
+},
   "footer": {
     "about": "Sobre nosotros",
     "ourStory": "Nuestra historia",
@@ -396,13 +403,40 @@
     "tiktok": "TikTok",
 
     "goTop": "Volver arriba"
-  }
+  }, 
+"CGV": {
+  "title": "Condiciones Generales de Venta",
+  "article1Title": "Artículo 1 – Objeto",
+  "article1Text": "Las presentes Condiciones Generales de Venta regulan las ventas de perfumes realizadas en el sitio web https://perfumealgarve.com.",
+
+  "article2Title": "Artículo 2 – Productos",
+  "article2Text": "Los productos ofrecidos son perfumes auténticos. Las descripciones son lo más precisas posible. Las fotos no son contractuales.",
+
+  "article3Title": "Artículo 3 – Precios",
+  "article3Text": "Los precios se indican en euros (€), con todos los impuestos incluidos (IVA). Los gastos de envío se muestran antes de la validación del pedido.",
+
+  "article4Title": "Artículo 4 – Pedido",
+  "article4Text": "Todo pedido realizado en el sitio implica la aceptación de estas condiciones. Se envía un correo de confirmación tras la validación del pago.",
+
+  "article5Title": "Artículo 5 – Pago",
+  "article5Text": "El pago es seguro y puede realizarse con tarjeta bancaria u otro método ofrecido en el sitio.",
+
+  "article6Title": "Artículo 6 – Entrega",
+  "article6Text": "Los productos se entregan en la dirección indicada al realizar el pedido. Los plazos se dan a título informativo.",
+
+  "article7Title": "Artículo 7 – Derecho de desistimiento",
+  "article7Text1": "De acuerdo con la ley, el cliente dispone de un plazo de 14 días para desistir.",
+  "article7Text2": "Los perfumes abiertos o desprecintados no pueden devolverse por razones de higiene y salud.",
+
+  "article8Title": "Artículo 8 – Devoluciones y reembolsos",
+  "article8Text": "Los productos deben devolverse sin abrir y en su embalaje original. El reembolso se realiza en un plazo de 14 días tras la recepción.",
+
+  "article9Title": "Artículo 9 – Responsabilidad",
+  "article9Text": "El vendedor no puede ser considerado responsable de daños indirectos relacionados con el uso de los productos o del sitio.",
+
+  "article10Title": "Artículo 10 – Ley aplicable",
+  "article10Text": "Estas condiciones están sujetas a la ley francesa. Cualquier litigio será competencia de los tribunales franceses."
+}
 
 
-
-
-
-
-
-      
 }

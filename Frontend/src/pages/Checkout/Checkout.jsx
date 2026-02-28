@@ -1,3 +1,4 @@
+//Frontend/pages/checkOut 
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
@@ -58,7 +59,7 @@ export default function Checkout() {
       if (!response?.order?._id) {
         throw new Error("Pré-commande non créée côté serveur");
       }
-
+console.log("PayPal orderData:", orderData);
       // 🔹 Stockage local de l'ID pour continuer le checkout
       localStorage.setItem("preOrderId", response.order._id);
 

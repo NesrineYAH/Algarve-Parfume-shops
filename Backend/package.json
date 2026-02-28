@@ -33,6 +33,7 @@
     "mongoose": "^8.19.2",
     "mongoose-unique-validator": "^3.1.0",
     "multer": "^2.0.2",
+    "node-fetch": "^2.7.0",
     "nodemailer": "^7.0.10",
     "pdfkit": "^0.17.2",
     "qrcode": "^1.5.4",
