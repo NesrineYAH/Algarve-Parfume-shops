@@ -367,7 +367,12 @@
   "textStrongI": "Your order",
   "textStrongII": "for an amount of",
   "textStrongIII": "has been successfully recorded.",
-  "retour": "Back to the shop"
+  "retour": "Back to the shop",
+  "subtext": "Payment cancelled",
+"subtextPragraphI": "The payment was not completed.",
+"subtextPragraphII": "No amount has been charged. You can try again or come back later.",
+"primaryBtn": "Retry payment"
+
 },
   "footer": {
     "about": "About us",

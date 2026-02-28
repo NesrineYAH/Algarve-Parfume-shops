@@ -365,7 +365,12 @@
   "textStrongI": "Su pedido",
   "textStrongII": "por un importe de",
   "textStrongIII": "ha sido registrado correctamente.",
-  "retour": "Volver a la tienda"
+  "retour": "Volver a la tienda",
+  "subtext": "Pago cancelado",
+"subtextPragraphI": "El pago no se ha completado.",
+"subtextPragraphII": "No se ha realizado ningún cargo. Puede intentarlo de nuevo o volver más tarde.",
+"primaryBtn": "Reintentar el pago"
+
 },
   "footer": {
     "about": "Sobre nosotros",

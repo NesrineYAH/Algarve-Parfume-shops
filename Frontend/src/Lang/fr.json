@@ -354,7 +354,11 @@
     "textStrongI" : "Votre commande", 
     "textStrongII": "d’un montant de",
      "textStrongIII":"a bien été enregistrée.",
-     "retour": "Retour à la boutique"
+     "retour": "Retour à la boutique",
+     "subtext": "Paiement annulé",
+     "subtextPragraphI": " Le paiement n’a pas été finalisé.",
+     "subtextPragraphII": " Aucun montant n’a été débité. Vous pouvez réessayer ou revenir plus tard.",
+     "primaryBtn": "Réessayer le paiement"
   },
   "footer": {
     "about": "À PROPOS DE NOUS",

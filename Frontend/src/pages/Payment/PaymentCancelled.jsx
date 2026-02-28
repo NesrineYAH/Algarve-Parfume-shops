@@ -1,28 +1,30 @@
 import { Link } from "react-router-dom";
 import './Payment.scss'
+import { useTranslation } from "react-i18next";
 
 export default function PaymentCancelled() {
+    const { t } = useTranslation();
+  
   return (
     <div className="container">
       <div className="card">
-        <h1 className="title">❌ Paiement annulé</h1>
+        <h1 className="title">❌ {t("Payment.subtext")}</h1>
 
         <p className="subtext">
-          Le paiement n’a pas été finalisé.
+    {t("Payment.subtextPragraphI")}
         </p>
 
         <p className="text">
-          Aucun montant n’a été débité.  
-          Vous pouvez réessayer ou revenir plus tard.
+    {t("Payment.subtextPragraphII")}
         </p>
 
         <div>
-          <Link to="/checkout" className="primaryBtn">
-            Réessayer le paiement
+          <Link to="/checkout" className="primaryBtn">   {t("Payment.primaryBtn")}
+
           </Link>
 
           <Link to="/Home" className="primaryBtn" >
-            Retour à l’accueil
+             {t("Payment.retour")}
           </Link>
         </div>
       </div>

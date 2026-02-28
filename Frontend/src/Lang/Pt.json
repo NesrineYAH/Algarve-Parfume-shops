@@ -362,7 +362,12 @@
   "textStrongI": "A sua encomenda",
   "textStrongII": "no valor de",
   "textStrongIII": "foi registada com sucesso.",
-  "retour": "Voltar à loja"
+  "retour": "Voltar à loja",
+  "subtext": "Pagamento cancelado",
+"subtextPragraphI": "O pagamento não foi concluído.",
+"subtextPragraphII": "Nenhum valor foi debitado. Pode tentar novamente ou voltar mais tarde.",
+"primaryBtn": "Tentar novamente o pagamento"
+
 }, 
     "footer": {
     "about": "Sobre nós",
