@@ -10,10 +10,9 @@ export const FavoritesProvider = ({ children }) => {
   // 🔄 Charger les favoris quand l'utilisateur est connecté
   useEffect(() => {
     const loadFavorites = async () => {
-      const token = localStorage.getItem("token");
 
       // ❌ Pas connecté → reset
-      if (!token || !user?._id) {
+      if (!user?._id) {
         setFavorites([]);
         return;
       }
@@ -22,9 +21,8 @@ export const FavoritesProvider = ({ children }) => {
         const res = await fetch(
           "http://localhost:5001/api/users/favorites",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+             headers: { "Content-Type": "application/json" },
+      credentials: "include",
           }
         );
 
@@ -47,10 +45,9 @@ export const FavoritesProvider = ({ children }) => {
 
   // ❤️ TOGGLE FAVORI
   const toggleFavorite = async (product) => {
-    const token = localStorage.getItem("token");
 
     // 👤 NON CONNECTÉ → localStorage uniquement
-    if (!token || !user?._id) {
+    if (!user?._id) {
       const exists = favorites.some((f) => f._id === product._id);
 
       const updated = exists
@@ -68,9 +65,8 @@ export const FavoritesProvider = ({ children }) => {
         `http://localhost:5001/api/users/favorites/${product._id}`,
         {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+            headers: { "Content-Type": "application/json" },
+      credentials: "include",
         }
       );
 
