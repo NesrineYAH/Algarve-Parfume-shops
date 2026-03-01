@@ -1,0 +1,176 @@
+.moncompte {
+    width: 100%;
+    padding: 50px;
+
+    &__layout {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+        gap: 2.5rem;
+        height: auto;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+
+        }
+    }
+
+    &__part {
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        flex: 1;
+
+        button {
+            background-color: #890963;
+            color: #fff;
+            border: none;
+            padding: 15px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+
+            &:hover {
+                background-color: #e10c88;
+            }
+        }
+    }
+
+    &__bloc {
+        width: 800px;
+        flex-shrink: 0;
+        margin: -4px 10px -50px 0px;
+
+        .orders-table {
+            display: block;
+            width: 800px;
+
+            .tableI,
+            .tableII {
+                width: 800px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                border: 1px solid #f5dfef;
+
+            }
+
+
+
+            span {
+                width: 400px;
+                font-size: 12px;
+                margin: 12px;
+                text-align: start;
+            }
+        }
+
+
+    }
+
+    .address-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .menu-container {
+        position: relative;
+    }
+
+    .menu-btn {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .menu-dropdown {
+        position: absolute;
+        right: 0;
+        top: 30px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        min-width: 180px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+    }
+
+    .menu-dropdown button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: none;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .menu-dropdown button:hover {
+        background: #f5f5f5;
+    }
+
+    @media (max-width: 768px) {
+        padding: 8px;
+
+        &__layout {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+        }
+
+        &__bloc {
+            margin: 0 auto;
+
+            .orders-table {
+                display: block;
+                width: 800px;
+
+
+                .tableI {
+                    display: none;
+                }
+
+                .tableII {
+
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    width: 40%;
+                    border: 1px solid #f5dfef;
+                    line-height: 40%;
+                }
+
+                span {
+                    width: 400px;
+                    font-size: 12px;
+                    margin: 12px;
+                    text-align: start;
+                }
+            }
+
+            .favorite-item {
+                width: 320px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 6px 6px 25px #77516c;
+                border-radius: 15px;
+
+
+                img {
+                    width: 50%;
+                    height: 100%;
+                    padding: 20px;
+                }
+            }
+
+
+
+
+        }
+    }
+}

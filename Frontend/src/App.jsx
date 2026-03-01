@@ -51,6 +51,7 @@ import Confirmation from "./pages/Confirmation/Confirmation";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import QrCodePage from "./pages/App/QrCodePage"
 import QuiSommesNous from "./pages/PageSite/QuisommeNous";
+import PageCompte from "./pages/MonCompte/PageCompte"
 
 
 
@@ -88,6 +89,7 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
+          <Route path="PageCompte" element={<PageCompte />} />  
           
           <Route path="/tracking/:orderId" element={<TrackOrder />} />
           <Route path="/delivery" element={<Delivery />} />

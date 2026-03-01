@@ -104,6 +104,116 @@ const deleteAddress = async (id) => {
   }
 };
 
+const toggleTab = (tab) => {
+  setActiveTab(activeTab === tab ? null : tab);
+};
+
+  return (
+    <section className="moncompte">
+      <h1>Mon Compte</h1>
+      <h2>Bienvenue, {user.prenom} {user.nom}</h2>
+
+      <div className="moncompte__layout">
+        <aside className="moncompte__sidebar">
+          <button  onClick={() => toggleTab("infos")}>Infos</button>
+          <button  onClick={() => toggleTab("addresses")} >Adresses</button>  {/* onClick={() => setActiveTab("addresses")}  */}
+          <button onClick={() => toggleTab("orders")} > Commandes</button>    {/* onClick={() => setActiveTab("orders")}}  */}
+          <button onClick={() => toggleTab("favorites")}  >Favoris</button>                   {/* onClick={() => setActiveTab("favorites")}  */}
+           <button  onClick={() => toggleTab("paymentMethods")} >Moyens de paiement</button>       {/*  onClick={() => navigate("/paymentMethods")} */}
+           <button onClick={handleLogout}>Déconnexion</button> {/* <button onClick={() => navigate("/handleLogout")}>Déconnexion</button> onClick={handleLogout} */}
+        </aside>
+
+        <main className="moncompte__content">
+          {activeTab === "infos" && (
+            <>
+            <div className="moncompte__bloc">
+              <p><strong>Email :</strong> {user.email}</p>
+              <p><strong>Rôle :</strong> {user.role}</p>
+              </div>
+            </>
+          )}
+
+          {activeTab === "addresses" && (
+            
+            <>
+             <button onClick={() => navigate("/add-adresse")} className="btn-Add "> ➕ Ajouter une adresse</button>
+
+              {addresses.map(addr => (
+  <div key={addr._id} className="address-item">
+    <p>{addr.street}, {addr.city}, {addr.postalCode}, {addr.country}</p>
+
+
+
+     <button onClick={() => navigate("/add-adresse")} className="btn-Add "> ➕ Ajouter une adresse</button>
+    <button onClick={() => updateAddress(addr._id, { street: "Nouvelle rue" })} className="btn-Add ">Modifier</button>
+<button
+  onClick={() => {
+    if (window.confirm("Voulez-vous vraiment supprimer cette adresse ?")) {
+      deleteAddress(addr._id);
+    }
+  }} className="btn-Add "
+>
+  Supprimer
+</button>
+
+
+
+  </div>
+))}
+            </>
+          )}
+
+          {activeTab === "orders" && (
+            orders.length === 0
+              ? <p>Aucune commande</p>
+              : orders.map(o => (
+                <div key={o._id} className="order-item">  
+                <img   src={`http://localhost:5001${o.items[0].imageUrl}`}
+               alt={o.items[0].nom }/>
+                  <p > Commande n°
+                    #{o._id} – {o.status} 
+                  </p> 
+
+                  <p> prix total de la commande <strong>{o.totalPrice}  €</strong></p>
+               </div>
+                ))
+          )}
+
+          {activeTab === "favorites" && (
+            favorites.length === 0 ? (
+              <p>Aucun favori</p>
+            ) : (
+              favorites.map(prod => (
+                <div key={prod._id} className="favorite__item">
+                  <Link to={`/product/${prod._id}`}>
+                    <img    className="favorites__img"
+                      src={`http://localhost:5001${prod.imageUrl}`}
+                      alt={prod.nom}
+                    />
+                  </Link>
+
+                  <p>{prod.nom}</p>
+
+                  <div className="favorite-actions">
+                    <Trash2 onClick={() => toggleFavorite(prod)} />
+                    <Heart className="active" />
+                  </div>
+                </div>
+              ))
+            )
+          )}
+        </main>
+      </div>
+    </section>
+  );
+
+}
+
+
+/*
+onClick={() => setActiveTab("infos")}
+
+
 
   return (
     <section className="moncompte">
@@ -116,7 +226,6 @@ const deleteAddress = async (id) => {
           <button onClick={() => setActiveTab("addresses")}>Adresses</button>
           <button onClick={() => setActiveTab("orders")}>Commandes</button>
           <button onClick={() => setActiveTab("favorites")}>Favoris</button>
-          {/* <Link to="/paymentMethods">Moyens de paiement</Link> */}
            <button onClick={() => navigate("/paymentMethods")}>Moyens de paiement</button>
           <button onClick={handleLogout}>Déconnexion</button>
         </aside>
@@ -202,8 +311,6 @@ const deleteAddress = async (id) => {
       </div>
     </section>
   );
-}
 
-
-
+*/
  
