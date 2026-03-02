@@ -282,6 +282,38 @@ exports.getUsersByRole = async (req, res) => {
   }
 };
 
+exports.changePassword = async (req, res) => {
+  try {
+    const userId = req.user.userId; // récupéré via ton middleware auth
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "Champs manquants" });
+    }
+
+    // Récupérer le user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
+
+    // Vérifier l'ancien mot de passe
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Ancien mot de passe incorrect" });
+    }
+
+    // Hasher le nouveau mot de passe
+    const hashed = await bcrypt.hash(newPassword, 10);
+    user.password = hashed;
+
+    await user.save();
+
+    res.json({ message: "Mot de passe mis à jour avec succès" });
+
+  } catch (error) {
+    console.error("Erreur changePassword :", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
 
 
 /*

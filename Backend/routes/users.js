@@ -14,6 +14,7 @@ router.get("/role/:role", authMiddleware, isAdmin, userCtrl.getUsersByRole);
 router.post("/forgot-password", userCtrl.forgotPassword);
 router.post("/reset-password/:token", userCtrl.resetPassword);
 router.post("/logout", userCtrl.logout);
+router.put("/change-password", authMiddleware, userCtrl.changePassword);
 
 module.exports = router;
 //  *Neshadil

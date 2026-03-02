@@ -71,6 +71,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  preferences: {
+    newsletter: { type: Boolean, default: false },
+    sms: { type: Boolean, default: false },
+    phoneContact: { type: Boolean, default: false }
+  }
+
 });
 
 module.exports = mongoose.model("User", userSchema);

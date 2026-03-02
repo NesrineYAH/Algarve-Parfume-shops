@@ -15,6 +15,11 @@ export default function MonCompte() {
   const [activeTab, setActiveTab] = useState("infos");
   const [orders, setOrders] = useState([]);
   const location = useLocation();
+  //02/03
+  const [oldPassword, setOldPassword] = useState("");
+const [newPassword, setNewPassword] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
+
 
   /* 🔐 1) Vérification auth + chargement adresses */
   useEffect(() => {
@@ -126,7 +131,6 @@ function AddressItem({ addr, navigate, updateAddress, deleteAddress }) {
         >
           ⋮
         </button>
-
         {openMenu && (
           <div className="menu-dropdown">
             <button onClick={() => navigate("/add-adresse")}>
@@ -159,6 +163,36 @@ function AddressItem({ addr, navigate, updateAddress, deleteAddress }) {
   );
 } 
 
+const changePassword = async () => {
+  if (newPassword !== confirmPassword) {
+    alert("Les mots de passe ne correspondent pas");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:5001/api/users/change-password", {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        oldPassword,
+        newPassword
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.message || "Erreur lors du changement de mot de passe"); return;
+    }
+    alert("Mot de passe mis à jour !");
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  } catch (error) {
+    console.error("Erreur changePassword :", error);
+    alert("Erreur serveur");
+  }
+};
+
 
 
   return (
@@ -168,11 +202,13 @@ function AddressItem({ addr, navigate, updateAddress, deleteAddress }) {
 
       {/* infos */}
       <div className="moncompte__layout">
+
      <div className="moncompte__part">
            <button  onClick={() => toggleTab("infos")}>Infos</button>
       </div>
+
       <div className="moncompte__bloc"> 
-    {activeTab === "infos" && (
+          {activeTab === "infos" && (
             <>
               <strong> {user.prenom} {user.nom}</strong>
               <p><strong>Email :</strong> {user.email}</p>
@@ -202,10 +238,7 @@ function AddressItem({ addr, navigate, updateAddress, deleteAddress }) {
       />
     ))}
   </>
-)}
-
-
-         
+)}         
 </div>
 </div>
 
@@ -266,16 +299,16 @@ function AddressItem({ addr, navigate, updateAddress, deleteAddress }) {
                   <p>{prod.nom}</p>
 
                   <div className="favorite-actions">
-                    <Trash2 onClick={() => toggleFavorite(prod)} />
-                    <Heart className="active" />
+                    <Trash2 onClick={() => toggleFavorite(prod)}  className="icone"/>
+                    <Heart className="active icone" />
                   </div>
                 </div>
               ))
             )
-          )}
+          )}  
     </div>
     </div>
-      {/** */} 
+      {/** paymentMethods*/} 
          <div className="moncompte__layout">
      <div className="moncompte__part">
     <button  onClick={() => toggleTab("paymentMethods")} >Moyens de paiement</button> 
@@ -284,13 +317,56 @@ function AddressItem({ addr, navigate, updateAddress, deleteAddress }) {
            </div>
     </div>
 
+
+     {/** ChangPassword*/} 
+         <div className="moncompte__layout">
+     <div className="moncompte__part">
+ <button onClick={() => toggleTab("security")}>Sécurité</button>   
+  </div>
+      <div className="moncompte__bloc security">
+  {activeTab === "security" && (
+    <div className="security">
+      <h3>Changer mon mot de passe</h3>
+
+      <input
+        type="password"
+        placeholder="Ancien mot de passe"
+        value={oldPassword}
+        onChange={(e) => setOldPassword(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Nouveau mot de passe"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Confirmer le mot de passe"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      />
+
+      <button onClick={changePassword}>Mettre à jour</button>
+    </div>
+  )}
+</div>
+
+
+
+
+    </div>
+      {/** déconnection*/} 
+
     <div className="moncompte__layout"> 
 <div className="moncompte__part">
         <button onClick={handleLogout}>Déconnexion</button> 
 </div>
 
      <div className="moncompte__bloc"> 
-           </div>
+     </div>
    </div>    
 
  
