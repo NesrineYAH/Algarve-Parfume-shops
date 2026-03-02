@@ -406,7 +406,7 @@
 
     "goTop": "Voltar ao topo"
   },
-  "CGV": {
+  "CGV": { 
   "title": "Condições Gerais de Venda",
   "article1Title": "Artigo 1 – Objeto",
   "article1Text": "As presentes Condições Gerais de Venda regem as vendas de perfumes realizadas no site https://perfumealgarve.com.",
@@ -438,6 +438,41 @@
 
   "article10Title": "Artigo 10 – Lei aplicável",
   "article10Text": "Estas condições estão sujeitas à lei francesa. Qualquer litígio será da competência dos tribunais franceses."
+}, 
+"preferences" : {
+  "Mon Compte": "Minha Conta",
+  "Bienvenue": "Bem-vindo",
+  "Infos": "Informações",
+  "Email": "Email",
+  "Rôle": "Função",
+  "Adresses": "Endereços",
+  "Commandes": "Pedidos",
+  "Favoris": "Favoritos",
+  "Moyens de paiement": "Métodos de pagamento",
+  "Sécurité": "Segurança",
+  "Préférences": "Preferências",
+  "Déconnexion": "Sair",
+  "Changer mon mot de passe": "Alterar senha",
+  "Ancien mot de passe": "Senha antiga",
+  "Nouveau mot de passe": "Nova senha",
+  "Confirmer le mot de passe": "Confirmar senha",
+  "Mettre à jour": "Atualizar",
+  "Préférences de communication": "Preferências de comunicação",
+  "Numéro de téléphone": "Número de telefone",
+  "Recevoir la newsletter": "Receber newsletter",
+  "Notifications par SMS": "Notificações por SMS",
+  "Contact par téléphone": "Contato por telefone",
+  "Enregistrer": "Salvar",
+  "Les mots de passe ne correspondent pas": "Senhas não correspondem",
+  "Mot de passe mis à jour !": "Senha atualizada!",
+  "Préférences enregistrées ✔️": "Preferências salvas ✔️",
+  "Erreur serveur": "Erro no servidor",
+  "Voulez-vous vraiment supprimer cette adresse ?": "Tem certeza de que deseja excluir este endereço?",
+  "N° Commande": "Pedido Nº",
+  "Date": "Data",
+  "Status": "Status",
+  "Montant": "Valor",
+  "Aucune commande": "Nenhum pedido"
 }
 
 

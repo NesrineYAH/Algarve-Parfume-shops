@@ -269,8 +269,7 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({ error: "Erreur serveur" });
   }
 };
-//sellers
-// controllers/userCtrl.js
+
 
 exports.getUsersByRole = async (req, res) => {
   try {
@@ -281,7 +280,7 @@ exports.getUsersByRole = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+//02/03
 exports.changePassword = async (req, res) => {
   try {
     const userId = req.user.userId; // récupéré via ton middleware auth
@@ -315,6 +314,37 @@ exports.changePassword = async (req, res) => {
   }
 };
 
+exports.updatePreferences = async (req, res) => {
+  try {
+    const { phone, preferences } = req.body;
+
+    // Sécurité minimale
+    if (phone && typeof phone !== "string") {
+      return res.status(400).json({ message: "Numéro de téléphone invalide" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.userId, // injecté par authMiddleware
+      {
+        phone,
+        preferences,
+      },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+    }
+
+    res.status(200).json({
+      message: "Préférences mises à jour avec succès",
+      user,
+    });
+  } catch (error) {
+    console.error("updatePreferences error:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
 
 /*
  Conclusion

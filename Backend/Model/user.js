@@ -1,8 +1,80 @@
 //Model/User.js 
+// Model/User.js
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   // 🧍 Identité
+  nom: { type: String, required: true, trim: true },
+  prenom: { type: String, required: true, trim: true },
+
+  // 📧 Auth
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
+  password: { type: String, required: true },
+
+  // 📞 Téléphone (NOUVEAU)
+  phone: {
+    type: String,
+    default: "",
+  },
+
+  // 🎭 Rôle
+  role: {
+    type: String,
+    enum: ["admin", "client", "vendeur"],
+    default: "client",
+  },
+
+  date_creation: { type: Date, default: Date.now },
+
+  // ✅ Vérification email
+  confirmationCode: { type: String },
+  status: {
+    type: String,
+    enum: ["Pending", "Active"],
+    default: "Pending",
+  },
+
+  // ❤️ Favoris
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+
+  // 🔑 Reset mdp
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+
+  // 💳 Stripe
+  stripeCustomerId: { type: String, default: null },
+
+  // ⚙️ Préférences de communication
+  preferences: {
+    newsletter: { type: Boolean, default: false },
+    sms: { type: Boolean, default: false },
+    phoneContact: { type: Boolean, default: false },
+  },
+});
+
+module.exports = mongoose.model("User", userSchema);
+
+
+
+
+
+
+
+
+
+
+
+/*
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+
   nom: {
     type: String,
     required: true,
@@ -14,7 +86,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
 
-  // 📧 Authentification
+
   email: {
     type: String,
     required: true,
@@ -30,8 +102,7 @@ const userSchema = new mongoose.Schema({
   // 🎭 Rôle
   role: {
     type: String,
-    enum: ["admin", "client", "vendeur"], // ✅ Ajouté vendeur
-    default: "client",
+    enum: ["admin", "client", "vendeur"], 
   },
 
   // 📅 Métadonnées
@@ -40,7 +111,7 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
 
-  // ✅ Vérification email
+
   confirmationCode: {
     type: String,
     unique: true,
@@ -50,7 +121,7 @@ const userSchema = new mongoose.Schema({
     enum: ["Pending", "Active"],
     default: "Pending",
   },
-  // ❤️ Favoris
+
   favorites: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -58,7 +129,7 @@ const userSchema = new mongoose.Schema({
     },
   ],
 
-  // 🔑 Reset mot de passe
+
   resetPasswordToken: {
     type: String,
   },
@@ -66,7 +137,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
   },
 
-  // 💳 Paiement (Stripe)
+
   stripeCustomerId: {
     type: String,
     default: null,
@@ -78,6 +149,5 @@ const userSchema = new mongoose.Schema({
   }
 
 });
-
 module.exports = mongoose.model("User", userSchema);
-
+*/

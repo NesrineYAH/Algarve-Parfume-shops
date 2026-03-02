@@ -46,9 +46,11 @@
     &__bloc {
         width: 65%;
         flex-shrink: 0;
-        margin: -30px 10px -50px 50px;
+        margin: -30px 10px 0 0px;
         display: flex;
         flex-direction: row;
+        justify-content: center; // horizontal
+        align-items: center;
         gap: 25px;
 
         .orders-table {

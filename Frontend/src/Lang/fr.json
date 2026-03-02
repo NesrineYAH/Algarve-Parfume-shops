@@ -428,6 +428,41 @@
 
   "article10Title": "Article 10 – Droit applicable",
   "article10Text": "Les présentes CGV sont soumises au droit français. Tout litige relève des tribunaux français."
+}, 
+"preferences": {
+  "Mon Compte": "Mon Compte",
+  "Bienvenue": "Bienvenue",
+  "Infos": "Infos",
+  "Email": "Email",
+  "Rôle": "Rôle",
+  "Adresses": "Adresses",
+  "Commandes": "Commandes",
+  "Favoris": "Favoris",
+  "Moyens de payement": "Moyens de paiement",
+  "Sécurité": "Sécurité",
+  "Préférences": "Préférences",
+  "Déconnexion": "Déconnexion",
+  "Changer mon mot de passe": "Changer mon mot de passe",
+  "Ancien mot de passe": "Ancien mot de passe",
+  "Nouveau mot de passe": "Nouveau mot de passe",
+  "Confirmer le mot de passe": "Confirmer le mot de passe",
+  "Mettre à jour": "Mettre à jour",
+  "Préférences de communication": "Préférences de communication",
+  "Numéro de téléphone": "Numéro de téléphone",
+  "Recevoir la newsletter": "Recevoir la newsletter",
+  "Notifications par SMS": "Notifications par SMS",
+  "Contact par téléphone": "Contact par téléphone",
+  "Enregistrer": "Enregistrer",
+  "Les mots de passe ne correspondent pas": "Les mots de passe ne correspondent pas",
+  "Mot de passe mis à jour !": "Mot de passe mis à jour !",
+  "Préférences enregistrées ✔️": "Préférences enregistrées ✔️",
+  "Erreur serveur": "Erreur serveur",
+  "Voulez-vous vraiment supprimer cette adresse ?": "Voulez-vous vraiment supprimer cette adresse ?",
+  "N° Commande": "N° Commande",
+  "Date": "Date",
+  "Status": "Status",
+  "Montant": "Montant",
+  "Aucune commande": "Aucune commande"
 }
 
 }

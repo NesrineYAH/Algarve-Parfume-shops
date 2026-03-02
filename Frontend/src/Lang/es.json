@@ -441,6 +441,41 @@
 
   "article10Title": "Artículo 10 – Ley aplicable",
   "article10Text": "Estas condiciones están sujetas a la ley francesa. Cualquier litigio será competencia de los tribunales franceses."
+}, 
+"preferences" :{
+  "Mon Compte": "Mi Cuenta",
+  "Bienvenue": "Bienvenido",
+  "Infos": "Información",
+  "Email": "Correo",
+  "Rôle": "Rol",
+  "Adresses": "Direcciones",
+  "Commandes": "Pedidos",
+  "Favoris": "Favoritos",
+  "Moyens de paiement": "Métodos de pago",
+  "Sécurité": "Seguridad",
+  "Préférences": "Preferencias",
+  "Déconnexion": "Cerrar sesión",
+  "Changer mon mot de passe": "Cambiar contraseña",
+  "Ancien mot de passe": "Contraseña antigua",
+  "Nouveau mot de passe": "Nueva contraseña",
+  "Confirmer le mot de passe": "Confirmar contraseña",
+  "Mettre à jour": "Actualizar",
+  "Préférences de communication": "Preferencias de comunicación",
+  "Numéro de téléphone": "Número de teléfono",
+  "Recevoir la newsletter": "Recibir boletín",
+  "Notifications par SMS": "Notificaciones por SMS",
+  "Contact par téléphone": "Contacto telefónico",
+  "Enregistrer": "Guardar",
+  "Les mots de passe ne correspondent pas": "Las contraseñas no coinciden",
+  "Mot de passe mis à jour !": "¡Contraseña actualizada!",
+  "Préférences enregistrées ✔️": "Preferencias guardadas ✔️",
+  "Erreur serveur": "Error del servidor",
+  "Voulez-vous vraiment supprimer cette adresse ?": "¿Realmente quieres eliminar esta dirección?",
+  "N° Commande": "Pedido No",
+  "Date": "Fecha",
+  "Status": "Estado",
+  "Montant": "Monto",
+  "Aucune commande": "No hay pedidos"
 }
 
 
