@@ -137,16 +137,16 @@ export default function MonCompte() {
           {openMenu && (
             <div className="menu-dropdown">
               <button onClick={() => navigate("/add-adresse")}>
-                ➕ {t("Ajouter une adresse")}
+                ➕ {t("preferences.addAdresse")}
               </button>
 
               <button
                 onClick={() => {
-                  updateAddress(addr._id, { street: t("Nouvelle rue") });
+                  updateAddress(addr._id, { street: t("NouvelleRue") });
                   setOpenMenu(false);
                 }}
               >
-                ✏️ {t("Modifier")}
+                ✏️ {t("preferences.Modify")}
               </button>
 
               <button
@@ -157,7 +157,7 @@ export default function MonCompte() {
                   setOpenMenu(false);
                 }}
               >
-                🗑️ {t("Supprimer")}
+                🗑️ {t("preferences.supprimer")}
               </button>
             </div>
           )}
@@ -168,7 +168,7 @@ export default function MonCompte() {
 
   const changePassword = async () => {
     if (newPassword !== confirmPassword) {
-      alert(t("Les mots de passe ne correspondent pas"));
+      alert(t("motsdepassenecorrespondentpas"));
       return;
     }
     try {
@@ -215,20 +215,20 @@ export default function MonCompte() {
 
   return (
     <section className="moncompte">
-      <h1>{t("Mon Compte")}</h1>
-      <h2>{t("Bienvenue")}, {user.prenom}</h2>
+      <h1>{t("preferences.Mon Compte")}</h1>
+      <h2>{t("preferences.Bienvenue")}, {user.prenom}</h2>
 
       {/* Infos */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("infos")}>{t("Infos")}</button>
+          <button onClick={() => toggleTab("infos")}>{t("preferences.Infos")}</button>
         </div>
         <div className="moncompte__bloc">
           {activeTab === "infos" && (
             <>
               <strong>{user.prenom} {user.nom}</strong>
-              <p><strong>{t("Email")} :</strong> {user.email}</p>
-              <p><strong>{t("Rôle")} :</strong> {user.role}</p>
+              <strong>{t("preferences.Email")} :{user.email}</strong> 
+
             </>
           )}
         </div>
@@ -237,7 +237,7 @@ export default function MonCompte() {
       {/* Adresses */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("addresses")}>{t("Adresses")}</button>
+          <button onClick={() => toggleTab("addresses")}>{t("preferences.Adresses")}</button>
         </div>
         <div className="moncompte__bloc">
           {activeTab === "addresses" && (
@@ -259,19 +259,19 @@ export default function MonCompte() {
       {/* Commandes */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("orders")}>{t("Commandes")}</button>
+          <button onClick={() => toggleTab("orders")}>{t("preferences.Commandes")}</button>
         </div>
         <div className="moncompte__bloc">
           {activeTab === "orders" && (
             <div className="orders-table">
               <div className="tableI">
-                <span>{t("N° Commande")}</span>
-                <span>{t("Date")}</span>
-                <span>{t("Status")}</span>
-                <span>{t("Montant")}</span>
+                <span>{t("preferences.N°_Commande")}</span>
+                <span>{t("preferences.Date")}</span>
+                <span>{t("preferences.Status")}</span>
+                <span>{t("preferences.Montant")}</span>
               </div>
               {orders.length === 0 ? (
-                <span>{t("Aucune commande")}</span>
+                <span>{t("preferences.Aucune commande")}</span>
               ) : (
                 orders.map(o => (
                   <div key={o._id} className="tableII">
@@ -290,12 +290,12 @@ export default function MonCompte() {
       {/* Favorites */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("favorites")}>{t("Favoris")}</button>
+          <button onClick={() => toggleTab("favorites")}>{t("preferences.Favoris")}</button>
         </div>
         <div className="moncompte__bloc">
           {activeTab === "favorites" && (
             favorites.length === 0 ? (
-              <p>{t("Aucun favori")}</p>
+              <p>{t("preferences.Aucun favori")}</p>
             ) : (
               favorites.map(prod => (
                 <div key={prod._id} className="favorite-item">
@@ -321,7 +321,7 @@ export default function MonCompte() {
       {/* Moyens de paiement */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("paymentMethods")}>{t("Moyens de paiement")}</button>
+          <button onClick={() => toggleTab("paymentMethods")}>{t("preferences.paymentMethode")}</button>
         </div>
         <div className="moncompte__bloc"></div>
       </div>
@@ -329,31 +329,31 @@ export default function MonCompte() {
       {/* Sécurité */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("security")}>{t("Sécurité")}</button>
+          <button onClick={() => toggleTab("security")}>{t("preferences.Sécurité")}</button>
         </div>
         <div className="moncompte__bloc security">
           {activeTab === "security" && (
             <div className="security">
-              <h3>{t("Changer mon mot de passe")}</h3>
+              <h3>{t("preferences.ChangePasseword")}</h3>
               <input
                 type="password"
-                placeholder={t("Ancien mot de passe")}
+                placeholder={t("preferences.AncienMotdepasse")}
                 value={oldPassword}
                 onChange={e => setOldPassword(e.target.value)}
               />
               <input
                 type="password"
-                placeholder={t("Nouveau mot de passe")}
+                placeholder={t("preferences.Nouveaumotdepasse")}
                 value={newPassword}
                 onChange={e => setNewPassword(e.target.value)}
               />
               <input
                 type="password"
-                placeholder={t("Confirmer le mot de passe")}
+                placeholder={t("preferences.ConfirmerMotdepasse")}
                 value={confirmPassword}
                 onChange={e => setConfirmPassword(e.target.value)}
               />
-              <button onClick={changePassword}>{t("Mettre à jour")}</button>
+              <button onClick={changePassword}>{t("preferences.Mettre à jour")}</button>
             </div>
           )}
         </div>
@@ -362,15 +362,15 @@ export default function MonCompte() {
       {/* Préférences */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={() => toggleTab("preferences")}>{t("Préférences")}</button>
+          <button onClick={() => toggleTab("preferences")}>{t("preferences.Préférences")}</button>
         </div>
         <div className="moncompte__bloc">
           {activeTab === "preferences" && (
             <div className="security">
-              <h3>{t("Préférences de communication")}</h3>
+              <h3>{t("preferences.PréférencesCommunication")}</h3>
 
               <label>
-                {t("Numéro de téléphone")}
+                {t("preferences.NuméroTéléphone")}
                 <input
                   type="tel"
                   value={phone}
@@ -387,7 +387,7 @@ export default function MonCompte() {
                     setPreferences(p => ({ ...p, newsletter: !p.newsletter }))
                   }
                 />
-                {t("Recevoir la newsletter")}
+                {t("preferences.Recevoirnewsletter")}
               </label>
 
               <label>
@@ -398,7 +398,7 @@ export default function MonCompte() {
                     setPreferences(p => ({ ...p, sms: !p.sms }))
                   }
                 />
-                {t("Notifications par SMS")}
+                {t("preferences.NotificationsSMS")}
               </label>
 
               <label>
@@ -409,10 +409,10 @@ export default function MonCompte() {
                     setPreferences(p => ({ ...p, phoneContact: !p.phoneContact }))
                   }
                 />
-                {t("Contact par téléphone")}
+                {t("preferences.Contact par téléphone")}
               </label>
 
-              <button onClick={savePreferences}>{t("Enregistrer")}</button>
+              <button onClick={savePreferences}>{t("preferences.Enregistrer")}</button>
             </div>
           )}
         </div>
@@ -421,7 +421,7 @@ export default function MonCompte() {
       {/* Déconnexion */}
       <div className="moncompte__layout">
         <div className="moncompte__part">
-          <button onClick={handleLogout}>{t("Déconnexion")}</button>
+          <button onClick={handleLogout}>{t("preferences.Déconnexion")}</button>
         </div>
         <div className="moncompte__bloc"></div>
       </div>
