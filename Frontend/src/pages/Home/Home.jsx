@@ -6,6 +6,7 @@ import { Heart } from "lucide-react";
 import { useLocation } from "react-router-dom"
 import { getProductsByGenre, getAllProducts } from "../../Services/productService";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import StarRating from "../../components/StarRating/StarRating"; 
 
 
 const Home = () => {
@@ -78,6 +79,12 @@ const fetchRatings = async (list) => {
     setRatings(all);
   };
 
+  const [comments, setComments] = useState([]);
+    const averageRating =
+    comments.length > 0
+      ? comments.reduce((sum, c) => sum + c.rating, 0) / comments.length
+      : 0;
+
   if (loading) return <p>Chargement des produits...</p>;
   if (error) return <p className="error">{error}</p>;
 
@@ -110,12 +117,18 @@ const fetchRatings = async (list) => {
 <p> à partir de {Math.min(...product.options.map(o => o.prix))} € </p>
 
             </Link>
-{/* <p>à partir de {product.options[0].prix} €</p>*/}
+
+ <StarRating rating={Math.round(averageRating)} />
+
+  
+
+ {/* <p>à partir de {product.options[0].prix} €</p>
 <div className="rating">
   ⭐ {ratings[product._id] === 0
         ? "0"
         : ratings[product._id]?.toFixed(1)}
-</div>
+</div>*/}
+<br /> 
 
             <Link to={`/product/${product._id}`}>
               <button>Ajouter au panier</button>

@@ -321,8 +321,6 @@ useEffect(() => {
     <strong>{t("reviews.average")}:</strong> {" "}
     {averageRating.toFixed(1)} / 5 ⭐ ({comments?.length || 0} {t("reviews.avis")})
   </p>
-
-  
   <div className="rating-breakdown">
     {[5, 4, 3, 2, 1].map((star) => {
       const count = comments?.filter((c) => c.rating === star).length || 0;
@@ -344,6 +342,7 @@ useEffect(() => {
       );
     })}
   </div>
+
  </div>
 
 
