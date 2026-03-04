@@ -7,7 +7,7 @@ import CheckoutSteps from "../../components/CheckoutSteps/CheckoutSteps";
 import { loadStripe } from "@stripe/stripe-js";
 import PaymentService from "../../Services/paymentService";
 import OrderService from "../../Services/orderService";
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -54,7 +54,6 @@ useEffect(() => {
 }, [location.search]);
 
   const orderFromState = location.state?.order;
-
   // Calcul du total
   const total = (orderFromState ? orderFromState.items : cartItems).reduce(
     (sum, item) =>
@@ -114,54 +113,6 @@ const handleStripePayment = async () => {
   }
 };
 
-
-useEffect(() => {
-  if (paymentMethod !== "paypal") return;
-
-  const clientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
-  const merchantId = import.meta.env.VITE_PAYPAL_MERCHANT_ID;
-
-  if (!clientId) {
-    setError("PayPal Client ID manquant");
-    return;
-  }
-
-  const script = document.createElement("script");
-  script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&merchant-id=${merchantId}&currency=EUR`;
-  script.async = true;
-
-  script.onload = () => {
-    window.paypal.Buttons({
-
-   createOrder: async () => {
-  const orderId =
-    location.state?.orderId || localStorage.getItem("preOrderId");
-  const response = await PaymentService.createPayPalOrder(total, orderId);
-  console.log("PayPal order created:", response.id); // 🔍 debug
-  return response.id; // ✅ OBLIGATOIRE
-},
-
-  onApprove: async (data) => {
-  const orderId = localStorage.getItem("preOrderId");
-  await PaymentService.capturePayPalOrder(data.orderID, orderId);
-  await OrderService.finalizeOrder(orderId);  // ✅ finalisation métier
-  navigate("/delivery");
-  },
-      onError: () => {
-        setError("Le paiement PayPal a échoué");
-      },
-    }).render("#paypal-button-container");
-  };
-
-  document.body.appendChild(script);
-
-  return () => {
-    document.body.removeChild(script);
-    const container = document.getElementById("paypal-button-container");
-    if (container) container.innerHTML = "";
-  };
-}, [paymentMethod, total, navigate]);
-
   const itemsToDisplay = orderFromState ? orderFromState.items : cartItems;
 
   return (
@@ -210,19 +161,108 @@ useEffect(() => {
 
       {error && <p className="error">{error}</p>}
 
-      {paymentMethod === "paypal" ? (
-        <div id="paypal-button-container" />
-      ) : (
-        <button
-          className="pay-btn"
-          onClick={handleStripePayment}
-          disabled={loading}
-        >
-          {loading ? "Paiement en cours..." : "Payer maintenant"}
-        </button>
-      )}
+    {paymentMethod === "paypal" ? (
+  <PayPalScriptProvider
+    options={{
+      "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID,
+      currency: "EUR",
+      intent: "capture",
+    }}
+  >
+    <PayPalButtons
+      createOrder={async () => {
+        const orderId =
+          location.state?.orderId || localStorage.getItem("preOrderId");
+
+        const response = await PaymentService.createPayPalOrder(total, orderId);
+        return response.id;
+      }}
+      onApprove={async (data) => {
+        const orderId =
+          location.state?.orderId || localStorage.getItem("preOrderId");
+
+        await PaymentService.capturePayPalOrder(data.orderID, orderId);
+        await OrderService.finalizeOrder(orderId);
+        navigate("/delivery");
+      }}
+      onError={() => setError("Le paiement PayPal a échoué")}
+    />
+  </PayPalScriptProvider>
+) : (
+  <button
+    className="pay-btn"
+    onClick={handleStripePayment}
+    disabled={loading}
+  >
+    {loading ? "Paiement en cours..." : "Payer maintenant"}
+  </button>
+)}
+
     </div>
   );
 }
 
+/*
+{paymentMethod === "paypal" ? (
+  <PayPalScriptProvider
+    options={{
+      "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID,
+      currency: "EUR",
+      intent: "capture",
+    }}
+  >
+    <PayPalButtons
+      createOrder={async () => {
+        const orderId =
+          location.state?.orderId || localStorage.getItem("preOrderId");
 
+        const response = await PaymentService.createPayPalOrder(
+          total,
+          orderId
+        );
+
+        return response.id;
+      }}
+      onApprove={async (data) => {
+        const orderId =
+          location.state?.orderId || localStorage.getItem("preOrderId");
+
+        await PaymentService.capturePayPalOrder(
+          data.orderID,
+          orderId
+        );
+
+        await OrderService.finalizeOrder(orderId);
+
+        navigate("/delivery");
+      }}
+      onError={() => {
+        setError("Le paiement PayPal a échoué");
+      }}
+    />
+  </PayPalScriptProvider>
+) : (
+  <button
+    className="pay-btn"
+    onClick={handleStripePayment}
+    disabled={loading}
+  >
+    {loading ? "Paiement en cours..." : "Payer maintenant"}
+  </button>
+)}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  const merchantId = import.meta.env.VITE_PAYPAL_MERCHANT_ID;
+//  script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&merchant-id=${merchantId}&currency=EUR`;

@@ -17,40 +17,29 @@ const userSchema = new mongoose.Schema({
   },
   password: { type: String, required: true },
 
-  // 📞 Téléphone (NOUVEAU)
+
   phone: {
     type: String,
     default: "",
   },
-
-  // 🎭 Rôle
   role: {
     type: String,
     enum: ["admin", "client", "vendeur"],
     default: "client",
   },
-
   date_creation: { type: Date, default: Date.now },
-
-  // ✅ Vérification email
   confirmationCode: { type: String },
   status: {
     type: String,
     enum: ["Pending", "Active"],
     default: "Pending",
   },
-
-  // ❤️ Favoris
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
-
-  // 🔑 Reset mdp
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-
-  // 💳 Stripe
   stripeCustomerId: { type: String, default: null },
 
-  // ⚙️ Préférences de communication
+
   preferences: {
     newsletter: { type: Boolean, default: false },
     sms: { type: Boolean, default: false },

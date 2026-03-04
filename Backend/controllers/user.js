@@ -316,20 +316,35 @@ exports.changePassword = async (req, res) => {
 
 exports.updatePreferences = async (req, res) => {
   try {
-    const { phone, preferences } = req.body;
+    const { phone, preferences, email } = req.body;
+    const updateFields = {};
 
-    // Sécurité minimale
-    if (phone && typeof phone !== "string") {
-      return res.status(400).json({ message: "Numéro de téléphone invalide" });
+    if (phone !== undefined) {
+      if (typeof phone !== "string") {
+        return res.status(400).json({ message: "Numéro de téléphone invalide" });
+      }
+      updateFields.phone = phone;
+    }
+
+    if (email !== undefined) {
+      if (typeof email !== "string") {
+        return res.status(400).json({ message: "Email invalide" });
+      }
+      updateFields.email = email;
+    }
+
+    if (preferences !== undefined) {
+      updateFields.preferences = preferences;
     }
 
     const user = await User.findByIdAndUpdate(
-      req.user.userId, // injecté par authMiddleware
+      req.user.userId,
+      { $set: updateFields },
       {
-        phone,
-        preferences,
-      },
-      { new: true, runValidators: true }
+        new: true,
+        runValidators: true,
+        context: "query"   // 🔥 IMPORTANT
+      }
     ).select("-password");
 
     if (!user) {
@@ -340,12 +355,12 @@ exports.updatePreferences = async (req, res) => {
       message: "Préférences mises à jour avec succès",
       user,
     });
+
   } catch (error) {
     console.error("updatePreferences error:", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
-
 /*
  Conclusion
 

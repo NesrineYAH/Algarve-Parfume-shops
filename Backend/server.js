@@ -1,16 +1,16 @@
 // Backend/server.js
-const express = require("express");
-const cors = require("cors");
 require("dotenv").config();
-require("./mongoDB/DB");
+console.log("BACKEND CLIENT ID:", process.env.PAYPAL_CLIENT_ID);
+console.log("BACKEND SECRET:", process.env.PAYPAL_CLIENT_SECRET ? "OK" : "MISSING");
 
+const express = require("express");
+require("./mongoDB/DB");
 const http = require("http");
 const app = require("./app");
 
+
+
 app.use(express.json());
-
-
-
 // Normalisation du port
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
