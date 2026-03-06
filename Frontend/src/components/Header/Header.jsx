@@ -106,7 +106,7 @@ const handleToggleMenu = (e) => {
               <li><Link to="/Home">{t("header.titleI")}</Link></li>
               <li><Link to="/home?genre=femme">{t("header.titleII")}</Link></li>
               <li><Link to="/home?genre=homme">{t("header.titleIII")}</Link></li>
-              <li>{t("header.titleVI")}</li>
+              <li><Link to="/BrandsPages">{t("header.titleVI")}</Link></li>
               <li><Link to="/QrCodePage">Notre App</Link></li>
             </ul>
           </nav>

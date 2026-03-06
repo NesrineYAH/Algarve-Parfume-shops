@@ -9,6 +9,7 @@ body {
     /*font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;*/
     font-family: "Trebuchet MS", Helvetica, Poppins, Neue, Arial, sans-serif !important;
     // overflow-x: hidden;
+
 }
 
 
@@ -20,13 +21,15 @@ body {
     min-height: 100vh;
     margin: 0 auto;
     overflow-x: hidden;
+    background-image: "./assets/images/Banniere_perfume.webp"
 }
 
 .body {
     color: #4a4a4a;
-    font-family: Poppins, Helvetica Neue, Arial, sans-serif !important;
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    //   font-family: sans-serif, Poppins, Helvetica Neue, Arial, sans-serif !important;
+    font-family: Helvetica, system-ui, Avenir, Arial, sans-serif;
     font-size: 1rem;
+
 }
 
 #title {

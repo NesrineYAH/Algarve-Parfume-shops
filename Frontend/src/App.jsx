@@ -52,6 +52,7 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import QrCodePage from "./pages/App/QrCodePage"
 import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 import PageCompte from "./pages/MonCompte/PageCompte"
+import BrandsPages from "./pages/BrandsPages/BrandsPages"
 
 
 
@@ -113,6 +114,7 @@ function App() {
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
         <Route path="/retour-produit" element={<RetourProduit />} />
+        <Route path="/BrandsPages" element={<BrandsPages />} />
 
         </Routes>
 

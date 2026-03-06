@@ -1,7 +1,7 @@
 .home {
-    width: 94%;
+    width: 90%;
     margin: 0 auto;
-    padding: 3.5rem;
+    padding: 4rem;
 
 
     .title {
@@ -9,7 +9,20 @@
         font-size: 2.5rem;
         font-weight: bold;
         margin-bottom: 2rem;
-        color: #333;
+        color: #777676;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    h3,
+    p {
+        color: #676565;
+        text-align: start;
+        margin-left: 10px;
+
+
     }
 
     .grid {
@@ -21,15 +34,17 @@
     }
 
     .card {
-        border: 1px solid #e5e1e1;
-        border-radius: 12px;
+        border-radius: 4px;
         padding: 1rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        //   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         text-align: center;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
-        width: 280px;
+        width: 260px;
+        height: 400px;
         cursor: pointer;
         position: relative;
+        border: .1rem solid rgba(0, 0, 0, 0.1);
+
 
         &:hover {
             transform: translateY(-15px);
@@ -72,6 +87,7 @@
         &_img {
             height: 180px;
             border-radius: 8px;
+            margin-bottom: 20px;
         }
 
         h2 {
@@ -104,13 +120,16 @@
         }
 
         button {
-            background: #8a2be2;
+            width: 94%;
+            //  background: #8a2be2;
+            background: #521789;
             color: white;
             border: none;
             padding: 0.6rem 1rem;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             transition: background 0.2s ease;
+            margin: 15px 0 15px;
 
             &:hover {
                 background: #6a1cb2;

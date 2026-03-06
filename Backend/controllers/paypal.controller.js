@@ -3,10 +3,17 @@ const fetch = require("node-fetch");
 const Order = require("../Model/Order");
 require("dotenv").config();
 
-// 🌟 Fonction utilitaire pour obtenir le token PayPal
+const PAYPAL_BASE_URL =
+    process.env.NODE_ENV === "production"
+        ? "https://api-m.paypal.com"
+        : "https://api-m.sandbox.paypal.com";
+
+
 const getPaypalToken = async () => {
     const auth = Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`).toString("base64");
-    const tokenRes = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token", {
+    //   const tokenRes = await fetch("https://api-m.sandbox.paypal.com/v1/oauth2/token",
+    //   const tokenRes = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
+    const tokenRes = await fetch(`${PAYPAL_BASE_URL}/v1/oauth2/token`, {
         method: "POST",
         headers: {
             Authorization: `Basic ${auth}`,
@@ -23,13 +30,10 @@ const getPaypalToken = async () => {
     return access_token;
 };
 
-// 🌟 Créer une commande PayPal
 const createOrder = async (req, res) => {
     const { orderId } = req.body;
-
     try {
         if (!orderId) return res.status(400).json({ error: "orderId manquant" });
-
         const order = await Order.findById(orderId);
         if (!order) return res.status(404).json({ error: "Pré-commande introuvable" });
 
@@ -39,9 +43,9 @@ const createOrder = async (req, res) => {
         // Obtenir token PayPal
         const accessToken = await getPaypalToken();
 
-
-        // Créer la commande PayPal
-        const orderRes = await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
+        //   const orderRes = await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
+        //    const orderRes = await fetch("https://api-m.paypal.com/v2/checkout/orders", {
+        const orderRes = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -62,7 +66,7 @@ const createOrder = async (req, res) => {
         });
         console.log("CLIENT ID:", process.env.PAYPAL_CLIENT_ID);
         console.log("SECRET:", process.env.PAYPAL_CLIENT_SECRET ? "OK" : "MISSING");
-        
+
         const orderResText = await orderRes.text();
         let orderData;
         try {
@@ -85,7 +89,6 @@ const createOrder = async (req, res) => {
     }
 };
 
-// 🌟 Capturer la commande PayPal après approbation
 const captureOrder = async (req, res) => {
     const { orderID, orderId } = req.body;
 
@@ -96,8 +99,9 @@ const captureOrder = async (req, res) => {
         // Obtenir token PayPal
         const accessToken = await getPaypalToken();
 
-        // Capture le paiement
-        const captureRes = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`, {
+        //    const captureRes = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`,
+        //     const captureRes = await fetch(`https://api-m.paypal.com/v2/checkout/orders/${orderID}/capture`, {
+        const captureRes = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders/${orderID}/capture`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${accessToken}`,

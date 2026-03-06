@@ -2,6 +2,7 @@
      display: flex;
      flex-direction: column;
      background-color: hsl(289, 95%, 23%);
+     //  background: #521789;
      position: relative;
      bottom: 0%;
      left: 0%;
@@ -20,6 +21,7 @@
          width: 100%;
          margin: auto;
          background-color: #5e0372;
+         //   background: #521789;
          padding: 50px;
 
          &__text-copyright {

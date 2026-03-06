@@ -9,6 +9,7 @@ import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating"; 
 
 
+
 const Home = () => {
 const { favorites, toggleFavorite } = useContext(FavoritesContext);
   const [products, setProducts] = useState([]);
@@ -100,8 +101,7 @@ const fetchRatings = async (list) => {
               onClick={() => toggleFavorite(product)}
             >
               <Heart
-            className={`icone ${isFavorite ? "active" : "red"}`}
-  />
+            className={`icone ${isFavorite ? "active" : "red"}`} />
             </div>
 
             <Link to={`/product/${product._id}`} className="card__content">
@@ -113,21 +113,16 @@ const fetchRatings = async (list) => {
                 />
               )}
               <h3>{product.nom}</h3>
-              <p>{product.stock} en stock</p>
+                    {/*   <p>{product.stock} en stock</p> */}
+            
 <p> à partir de {Math.min(...product.options.map(o => o.prix))} € </p>
 
             </Link>
 
- <StarRating rating={Math.round(averageRating)} />
-
+ <StarRating rating={Math.round(averageRating)}  /> 
+ 
+  {/*   <p className="average-rating"> {averageRating.toFixed(1)} / 5 ⭐ ({comments?.length || 0} avis)</p> */}
   
-
- {/* <p>à partir de {product.options[0].prix} €</p>
-<div className="rating">
-  ⭐ {ratings[product._id] === 0
-        ? "0"
-        : ratings[product._id]?.toFixed(1)}
-</div>*/}
 <br /> 
 
             <Link to={`/product/${product._id}`}>

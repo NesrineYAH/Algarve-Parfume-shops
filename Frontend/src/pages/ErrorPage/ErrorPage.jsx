@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export default function ErrorPage() {
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   return (
     <div className="error-page">
