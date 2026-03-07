@@ -12,8 +12,6 @@ body {
 
 }
 
-
-
 .App {
     max-width: 1600px;
     width: 100%;
@@ -21,7 +19,8 @@ body {
     min-height: 100vh;
     margin: 0 auto;
     overflow-x: hidden;
-    background-image: "./assets/images/Banniere_perfume.webp"
+    //   background-image: "./assets/images/Banniere_perfume.webp"
+    background-color: #fef2f9;
 }
 
 .body {
