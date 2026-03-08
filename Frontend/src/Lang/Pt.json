@@ -476,6 +476,11 @@
   "Status": "Status",
   "Montant": "Valor",
   "Aucune commande": "Nenhum pedido"
+},
+"home": {
+  "AddCart": "Adicionar ao carrinho",
+  "textPrix": "a partir de",
+  "textChargement": "Carregando produtos..."
 }
 
 

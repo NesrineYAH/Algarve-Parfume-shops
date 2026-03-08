@@ -1,5 +1,201 @@
 import React, { useState, useEffect, useContext } from "react";
 import SearchBar from "../../components/searchBar/searchBar.jsx";
+import { Link, useLocation } from "react-router-dom";
+import "./Home.scss";
+import { Heart } from "lucide-react";
+import { FavoritesContext } from "../../context/FavoritesContext";
+import StarRating from "../../components/StarRating/StarRating";
+import { useTranslation } from "react-i18next";
+
+const Home = () => {
+  const { t } = useTranslation();
+  const { favorites, toggleFavorite } = useContext(FavoritesContext);
+
+  const [products, setProducts] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [ratings, setRatings] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const location = useLocation();
+  const [visibleProducts, setVisibleProducts] = useState(8);
+
+  // récupérer les produits
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/products");
+        const data = await res.json();
+
+        const prod = Array.isArray(data) ? data : data.products;
+
+        setProducts(prod);
+
+        const params = new URLSearchParams(location.search);
+        const genre = params.get("genre");
+
+        if (genre) {
+          const filteredByGenre = prod.filter(
+            (p) => p.genre?.toLowerCase() === genre.toLowerCase()
+          );
+          setFiltered(filteredByGenre);
+          fetchRatings(filteredByGenre);
+        } else {
+          setFiltered(prod);
+          fetchRatings(prod);
+        }
+      } catch (err) {
+        setError("Impossible de récupérer les produits.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [location.search]);
+
+  // récupérer les notes
+  const fetchRatings = async (list) => {
+    const allRatings = {};
+
+    for (const product of list) {
+      try {
+        const res = await fetch(
+          `http://localhost:5001/api/products/${product._id}/comments`
+        );
+
+        const data = await res.json();
+
+        const average =
+          data.length > 0
+            ? data.reduce((sum, c) => sum + (c.rating || 0), 0) / data.length
+            : 0;
+
+        allRatings[product._id] = {
+          average,
+          count: data.length,
+        };
+      } catch {
+        allRatings[product._id] = {
+          average: 0,
+          count: 0,
+        };
+      }
+    }
+
+    setRatings(allRatings);
+  };
+
+  // recherche
+  const handleSearch = (query) => {
+    if (!query.trim()) {
+      setFiltered(products);
+      return;
+    }
+
+    const results = products.filter((p) =>
+      (p.nom || "").toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFiltered(results);
+  };
+
+  if (loading) return <p>{t("home.textChargement")}</p>;
+  if (error) return <p className="error">{error}</p>;
+
+  return (
+    <div className="home">
+      <SearchBar onSearch={handleSearch} />
+
+     <div className="grid">
+  {filtered.slice(0, visibleProducts).map((product) => {
+    const isFavorite =
+      Array.isArray(favorites) &&
+      favorites.some((fav) => fav._id === product._id);
+
+    return (
+      <div key={product._id} className="card">
+        
+        {/* FAVORIS */}
+        <div
+          className="card__favorite"
+          onClick={() => toggleFavorite(product)}
+        >
+          <Heart className={`icone ${isFavorite ? "active" : ""}`} />
+        </div>
+
+        <Link to={`/product/${product._id}`} className="card__content">
+          {product.imageUrl && (
+            <img
+              src={`http://localhost:5001${product.imageUrl}`}
+              alt={product.nom}
+              className="card_img"
+            />
+          )}
+
+          <h3>{product.nom}</h3>
+
+          <p>
+            {t("home.textPrix")}{" "}
+            {Math.min(...product.options.map((o) => o.prix))} €
+          </p>
+        </Link>
+
+        {/* étoiles */}
+        <div className="rating">
+          <StarRating
+            rating={Math.round(ratings[product._id]?.average || 0)}
+          />
+          <span className="rating-count">
+            ({ratings[product._id]?.count || 0})
+          </span>
+        </div>
+
+        <Link to={`/product/${product._id}`}>
+          <button>{t("home.AddCart")}</button>
+        </Link>
+
+      </div>
+    );
+  })}
+</div>
+
+      {visibleProducts < filtered.length && (
+  <div className="load-more">
+    <button onClick={() => setVisibleProducts(visibleProducts + 8)}>
+      Voir plus
+    </button>
+  </div>
+)}
+    </div>
+  );
+};
+
+export default Home;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+import React, { useState, useEffect, useContext } from "react";
+import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { Link } from "react-router-dom";
 import "./Home.scss";
 import { Heart } from "lucide-react";
@@ -7,10 +203,12 @@ import { useLocation } from "react-router-dom"
 import { getProductsByGenre, getAllProducts } from "../../Services/productService";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating"; 
+import { useTranslation } from "react-i18next";
 
 
 
 const Home = () => {
+  const { t } = useTranslation();
 const { favorites, toggleFavorite } = useContext(FavoritesContext);
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -52,6 +250,7 @@ useEffect(() => {
   };
 
   fetchProducts();
+
 }, [location.search]);
 
   const handleSearch = (query) => {
@@ -63,22 +262,34 @@ useEffect(() => {
   };
 
 const fetchRatings = async (list) => {
-    const all = {};
-    for (const p of list) {
-      try {
-        const res = await fetch(
-          `http://localhost:5001/api/products/${p._id}/comments`
-        );
-        const data = await res.json();
-        all[p._id] = data.length
-          ? data.reduce((s, c) => s + (c.rating || 0), 0) / data.length
+  const all = {};
+
+  for (const p of list) {
+    try {
+      const res = await fetch(
+        `http://localhost:5001/api/products/${p._id}/comments`
+      );
+      const data = await res.json();
+
+      const average =
+        data.length > 0
+          ? data.reduce((sum, c) => sum + (c.rating || 0), 0) / data.length
           : 0;
-      } catch {
-        all[p._id] = 0;
-      }
+
+      all[p._id] = {
+        average,
+        count: data.length,
+      };
+    } catch {
+      all[p._id] = {
+        average: 0,
+        count: 0,
+      };
     }
-    setRatings(all);
-  };
+  }
+
+  setRatings(all);
+};
 
   const [comments, setComments] = useState([]);
     const averageRating =
@@ -86,7 +297,7 @@ const fetchRatings = async (list) => {
       ? comments.reduce((sum, c) => sum + c.rating, 0) / comments.length
       : 0;
 
-  if (loading) return <p>Chargement des produits...</p>;
+  if (loading) return <p>{t("home.textChargement")}</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
@@ -95,7 +306,7 @@ const fetchRatings = async (list) => {
       <div className="grid">
         {filtered.map((product) => (
           <div key={product._id} className="card">
-            {/* Section Favorites */}
+         
             <div
               className="card__favorite"
               onClick={() => toggleFavorite(product)}
@@ -113,20 +324,17 @@ const fetchRatings = async (list) => {
                 />
               )}
               <h3>{product.nom}</h3>
-                    {/*   <p>{product.stock} en stock</p> */}
             
-<p> à partir de {Math.min(...product.options.map(o => o.prix))} € </p>
+<p> {t("home.textPrix")} {Math.min(...product.options.map(o => o.prix))} € </p>
+
 
             </Link>
 
- <StarRating rating={Math.round(averageRating)}  /> 
- 
-  {/*   <p className="average-rating"> {averageRating.toFixed(1)} / 5 ⭐ ({comments?.length || 0} avis)</p> */}
-  
+ <StarRating rating={Math.round(ratings[product._id] || 0)} />
 <br /> 
-
             <Link to={`/product/${product._id}`}>
-              <button>Ajouter au panier</button>
+              <button>{t("home.AddCart")}</button>
+       
             </Link>
           </div>
         ))}
@@ -136,129 +344,5 @@ const fetchRatings = async (list) => {
 };
 
 export default Home;
-
-/*
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch("http://localhost:5001/api/products");
-      const data = await res.json();
-      const prod = Array.isArray(data) ? data : data.products;
-
-      setProducts(prod);
-      fetchRatings(prod);
-    
-      const params = new URLSearchParams(location.search);
-      const genre = params.get("genre");
-
-      if (genre) {
-        const filteredByGenre = prod.filter(
-          (p) => p.genre?.toLowerCase() === genre.toLowerCase()
-        );
-        setFiltered(filteredByGenre);
-      } else {
-        setFiltered(prod);
-      }
-    } catch (err) {
-      setError("Impossible de récupérer les produits.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchProducts();
-}, [location.search]);
-*/
-
-{/*}  <div className="rating">
-  ⭐ {ratings[product._id]?.toFixed(1) || "0"} 
-</div> 
-
-
-// arrondir à 1 décimale ou afficher 0 si pas de note
-<div className="rating">
-  ⭐ {Number.isInteger(ratings[product._id])
-        ? ratings[product._id]
-        : ratings[product._id]?.toFixed(1)}
-</div>
-
-*/}
-
-
-
-/*
-  // ✅ Fonction panier définie ici
-  const addToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existing = cart.find((item) => item._id === product._id);
-
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-  };
-*/
-  
-/*
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("http://localhost:5001/api/products");
-        const data = await res.json();
-        const prod = Array.isArray(data) ? data : data.products;
-        setProducts(prod);
-        setFiltered(prod);
-      } catch (err) {
-        setError("Impossible de récupérer les produits.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-*/
-
-
-/*
-- Les Hooks → toujours en haut du composant, avant tout return.
-- Les fonctions utilitaires (addToCart, toggleFavorite, etc.) → tu peux les mettre avant ou après les useEffect, tant qu’elles sont définies avant leur utilisation dans le return.
-👉 Donc tu peux mettre addToCart juste après tes useState, avant ou après ton useEffect, ça ne change rien.
-👉 toFixed(1) force toujours un chiffre après la virgule, même si la valeur est 0.
-
-*/
-
-/*
-  <div className="grid">
-        {filtered.map((product) => (
-          <div key={product._id} className="card">
-
-            <div className="card__favorite">
-              <Link to="/Favorites">
-                <Heart className="icone" />
-              </Link>
-            </div>
-
-      
-            <Link to={`/product/${product._id}`} className="card__content">
-              {product.imageUrl && (
-                <img
-                  src={`http://localhost:5001${product.imageUrl}`}
-                  alt={product.nom}
-                  className="card_img"
-                />
-              )}
-              <h3>{product.nom}</h3>
-              <p>{product.prix} €</p>
-              <p>{product.stock} en stock</p>
-            </Link>
-
-            <button className="btn">Ajouter au panier</button>
-          </div>
-        ))}
-      </div>
 
 */

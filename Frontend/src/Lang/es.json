@@ -480,6 +480,11 @@
   "Status": "Estado",
   "Montant": "Monto",
   "Aucune commande": "No hay pedidos"
+},
+"home": {
+  "AddCart": "Añadir al carrito",
+  "textPrix": "a partir de",
+  "textChargement": "Cargando productos..."
 }
 
 

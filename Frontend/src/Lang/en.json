@@ -476,6 +476,11 @@
   "Status": "Status",
   "Montant": "Amount",
   "Aucune commande": "No orders"
+},
+"home": {
+  "AddCart": "Add to cart",
+  "textPrix": "from",
+  "textChargement": "Loading products..."
 }
 
 

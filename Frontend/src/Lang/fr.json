@@ -467,6 +467,11 @@
   "Status": "Status",
   "Montant": "Montant",
   "Aucune commande": "Aucune commande"
+}, 
+"home": {
+  "AddCart": "Ajouter au panier",
+  "textPrix" :"à partir de",
+  "textChargement" : "Chargement des produits..."
 }
 
 }

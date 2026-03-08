@@ -43,8 +43,7 @@ const createOrder = async (req, res) => {
         // Obtenir token PayPal
         const accessToken = await getPaypalToken();
 
-        //   const orderRes = await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
-        //    const orderRes = await fetch("https://api-m.paypal.com/v2/checkout/orders", {
+
         const orderRes = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders`, {
             method: "POST",
             headers: {
@@ -99,8 +98,7 @@ const captureOrder = async (req, res) => {
         // Obtenir token PayPal
         const accessToken = await getPaypalToken();
 
-        //    const captureRes = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`,
-        //     const captureRes = await fetch(`https://api-m.paypal.com/v2/checkout/orders/${orderID}/capture`, {
+
         const captureRes = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders/${orderID}/capture`, {
             method: "POST",
             headers: {
@@ -147,3 +145,11 @@ const captureOrder = async (req, res) => {
 };
 
 module.exports = { createOrder, captureOrder };
+
+        //   const orderRes = await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
+        //    const orderRes = await fetch("https://api-m.paypal.com/v2/checkout/orders", {
+
+//MONGO_URI=mongodb+srv://user:password@cluster.mongodb.net/ecommerce
+
+//    const captureRes = await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderID}/capture`,
+//     const captureRes = await fetch(`https://api-m.paypal.com/v2/checkout/orders/${orderID}/capture`, {
