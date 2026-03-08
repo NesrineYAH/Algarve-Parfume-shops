@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./Notifications.scss";
+import { useTranslation } from "react-i18next";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
+      const { t } = useTranslation();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -22,7 +24,7 @@ const Notifications = () => {
 
   return (
     <div className="notifications">
-      <h3>Notifications</h3>
+      <h3>{t("Notifications")} </h3>
 
       {notifications.map((n) => (
         <div

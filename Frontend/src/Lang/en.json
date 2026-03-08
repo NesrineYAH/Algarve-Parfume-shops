@@ -525,12 +525,12 @@
   "h3": "Order No.",
   "Montant": "Amount",
   "status": "Status",
-  "pI": "Payment",
-  "pII": "Total price",
+  "Payment": "Payment",
+  "totalPrice": "Total price",
   "Date": "Date",
-  "PV": "Size",
-  "PVI": "Price",
-  "PVVI": "Quantity",
+  "Size": "Size",
+  "Price": "Price",
+  "Quantity": "Quantity",
   "concel": "Cancel",
   "paye": "Pay",
   "Button": "Track my order",
@@ -540,7 +540,26 @@
   "refunded": "Refunded",
   "refundDate": "Refund date",
   "noOrder": "No orders yet."
-}
+},
+"TrackOrder": {
+  "h1": "Track your order",
+  "pending": "Prepared",
+  "confirmed": "Confirmed",
+  "shipped": "Shipped",
+  "delivered": "Delivered",
+  "noReception": "I received my order",
+  "h4": "Item details",
+  "Redeem": "Buy again",
+  "leaveReview": "Leave a review",
+  "ReturnRequest": "Request a return",
+  "Product": "Product",
+  "noneReturn": "No return requested",
+  "requested": "Request sent",
+  "approved": "Return approved",
+  "returned": "Package received",
+  "refunded": "Refunded ✔"
+},
+ "Notifications": "Notifications"
 
 
 }

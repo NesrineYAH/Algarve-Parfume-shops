@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react"; // ← AJOUTER useEffect
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
+import { useTranslation } from "react-i18next";
+
 
 export default function TrackOrder() {
   const { orderId: orderIdFromUrl } = useParams(); 
@@ -12,8 +14,9 @@ export default function TrackOrder() {
   const [showOrderModal, setShowOrderModal] = useState(false);          
   const { addToCartContext } = useContext(CartContext);
   const [selectedItems, setSelectedItems] = useState([]);
-
   const navigate = useNavigate();
+      const { t } = useTranslation();
+  
 
   // ✅ SOLUTION : useEffect pour logger quand orderData change
   useEffect(() => {
@@ -85,8 +88,6 @@ const markAsDelivered = async () => {
       alert("Erreur lors de la confirmation de réception.");
     }
   };
-
-
 
 const handleReview = (item) => { 
   const productId = item.productId || item.product?._id; 
@@ -179,7 +180,7 @@ const toggleItemSelection = (item) => {
 };
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Suivre votre commande</h1>
+      <h1 style={styles.title}> {t("TrackOrder.h1")} </h1>
 
       <div style={styles.card}>
         <input
@@ -191,7 +192,7 @@ const toggleItemSelection = (item) => {
         />
 
         <button onClick={handleTrackOrder} style={styles.button}>
-          Suivre la commande
+       {t("preOrders.Button")}   
         </button>
 
         {error && <p style={styles.error}>{error}</p>}
@@ -204,34 +205,33 @@ const toggleItemSelection = (item) => {
 >✕</button>
 
 <div style={styles.result}   onClick={(e) => e.stopPropagation()}>
-            <h3>Commande : {orderData._id}</h3>
+            <h3>{t("preOrders.h3")}  : {orderData._id}</h3>
 
 
             <div style={styles.timeline}>
               <div style={orderData.status !== "pending" ? styles.stepActive : styles.step}>
-                Préparée
+                 {t("TrackOrder.pending")} 
               </div>
               <div style={orderData.status === "confirmed" || orderData.status === "shipped" || orderData.status === "delivered" ? styles.stepActive : styles.step}>
-                Confirmée
+                  {t("TrackOrder.confirmed")} 
               </div>
               <div style={orderData.status === "shipped" || orderData.status === "delivered" ? styles.stepActive : styles.step}>
-                Expédiée
+               {t("TrackOrder.shipped")} 
               </div>
               <div style={orderData.status === "delivered" ? styles.stepActive : styles.step}>
-                Livrée
+                 {t("TrackOrder.delivered")} 
               </div>
             </div>
-        
-        
-      <p><strong>Statut :</strong> {orderData.status}</p>
-      <p><strong>Paiement :</strong> {orderData.paymentStatus}</p>
-      <p><strong>Total :</strong> {orderData.totalPrice} €</p> 
-      <p>Date: {formatDate(orderData.paidAt)}</p>
+       
+      <p><strong>{t("preOrders.status")} :</strong> {orderData.status}</p>
+      <p><strong>{t("preOrders.Payment")} :</strong> {orderData.paymentStatus}</p>
+      <p><strong>{t("preOrders.totalPrice")} :</strong> {orderData.totalPrice} €</p> 
+      <p>{t("preOrders.Date")}: {formatDate(orderData.paidAt)}</p>
       
 {orderData.status !== "delivered" && (
-<button onClick={markAsDelivered} style={styles.button}>J’ai reçu ma commande</button>)}
+<button onClick={markAsDelivered} style={styles.button}>{t("TrackOrder.noReception")}</button>)}
 
-   <h4>Détails des articles</h4>
+   <h4>{t("TrackOrder.h4")}</h4>
 <button onClick={() => setShowDetails(!showDetails)}
   style={styles.button}>
   {showDetails ? "Masquer les détails" : "Afficher les détails"}
@@ -241,12 +241,23 @@ const toggleItemSelection = (item) => {
  {showDetails && (
   <div>
 
-
 {orderData.items.map((item, i) => {
   return (
     <div key={i} style={styles.item}>
       
-      {/* ✅ CHECKBOX avec identification unique */}
+
+      <div style={styles.block}>
+    {/* ✅ IMAGE */}
+    
+      {item.imageUrl && (
+        <img
+      src={`http://localhost:5001${item.imageUrl}`}
+          alt={item.nom}
+          style={styles.img}
+        />
+      )}
+        <div style={styles.blockDetail}> 
+                {/* ✅ CHECKBOX avec identification unique */}
       <input
         type="checkbox"
         checked={selectedItems.some(
@@ -256,38 +267,28 @@ const toggleItemSelection = (item) => {
         )}
         onChange={() => toggleItemSelection(item)}
       />
-
-      {/* ✅ IMAGE */}
-      {item.imageUrl && (
-        <img
-          src={item.imageUrl}
-          alt={item.nom}
-          style={{ width: 80, height: 80, objectFit: "cover", marginLeft: 10 }}
-        />
-      )}
-
-      <div style={{ marginLeft: 10 }}>
         <p><strong>{item.nom}</strong></p>
-        <p>Taille : {item.options.size} {item.options.unit}</p>
-        <p>Prix : {item.options.prix} €</p>
-        <p>Quantité : {item.quantite}</p>
+        <p> {t("preOrders.Size")} : {item.options.size} {item.options.unit}</p>
+        <p>{t("preOrders.Price")}  : {item.options.prix} €</p>
+        <p>{t("preOrders.Quantity")} : {item.quantite}</p> 
+       </div>
 
         {/* STATUT RETOUR */}
-        <p>
-          <strong>Retour :</strong>{" "}
-          {item.returnStatus === "none" && "Aucun retour demandé"}
-          {item.returnStatus === "requested" && "Demande envoyée"}
-          {item.returnStatus === "approved" && "Retour approuvé"}
-          {item.returnStatus === "returned" && "Colis reçu"}
-          {item.returnStatus === "refunded" && "Remboursé ✔"}
-        </p>
+  <p>
+  <strong>{t("Orders.Return")} :</strong>{" "}
+  {item.returnStatus === "none" && t("TrackOrder.noneReturn")}
+  {item.returnStatus === "requested" && t("TrackOrder.requested")}
+  {item.returnStatus === "approved" && t("TrackOrder.approved")}
+  {item.returnStatus === "returned" && t("TrackOrder.returned")}
+  {item.returnStatus === "refunded" && t("TrackOrder.refunded")}
+</p>
 
         <button onClick={() => handleRebuy(item)} style={styles.smallButton}>
-          Racheter
+           {t("TrackOrder.Redeem")}
         </button>
 
         <button onClick={() => handleReview(item)} style={styles.smallButton}>
-          Laisser un avis
+       {t("TrackOrder.leaveReview")}
         </button>
       </div>
     </div>
@@ -310,21 +311,9 @@ const toggleItemSelection = (item) => {
       },
     });
   }}
->
-  Demander un retour ({selectedItems.length} produit{selectedItems.length > 1 ? 's' : ''})
+>  {t("TrackOrder.ReturnRequest")}
+   ({selectedItems.length} {t("TrackOrder.Product")} {selectedItems.length > 1 ? 's' : ''})
 </button>
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
 )}
 
@@ -346,6 +335,17 @@ const styles = {
     paddingTop: 40,
     backgroundColor: "#f5f5f5",
   },
+  block: {
+ marginLeft: 10,
+ 
+  },
+  blockDetail: {
+    padding: 5,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+
+  },
   title: {
     fontSize: 28,
     marginBottom: 20,
@@ -359,8 +359,9 @@ const styles = {
     boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
   },
   img: {
-    width: "25%",
-    height: "25%",
+    width: "12%",
+    height: "12%",
+    borderRadius: "1rem"
   }, 
   input: {
     width: "100%",
@@ -427,21 +428,6 @@ const styles = {
     cursor: "pointer",
     fontSize: 12,
   },
-  //03/02
-  /*
-modalOverlay: {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  background: "rgba(0,0,0,0.5)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  zIndex: 1000,
-},
-*/
 
 closeButton: {
   position: "absolute",
@@ -459,90 +445,3 @@ closeButton: {
 
 
 };
-
-/*
-credentials: "include" force le navigateur à envoyer :
-    les cookies
-    donc ton JWT
-    donc l’utilisateur est authentifié
-    donc la route fonctionne
-*/
-//15/02
-{/*
-<button
-  style={styles.button}
-  disabled={selectedItems.length === 0}
-  onClick={() => {
-    const formattedProducts = selectedItems.map(id => {
-      if (typeof id === 'object' && (id._id || id.productId)) {
-        return {
-          productId: id._id || id.productId
-        };
-      }
-      return { productId: id };
-    });
-
-    console.log("Produits formatés envoyés:", formattedProducts); 
-
-    navigate("/retour-produit", {
-      state: {
-        orderId: orderData._id,
-        products: formattedProducts,
-      },
-    });
-  }}
->
-  Demander un retour ({selectedItems.length})
-</button>
- */}
- //15/02
-
-{/*
- <button
-      onClick={() => handleReturnRequest(orderData._id, selectedItems[0])}
-      style={styles.smallButton}
-    >
-      Demander un retour
-    </button>
-    */}
-    
-    {/* ⭐️ section avant  
-
-{orderData.items.map((item, i) => (
-  <div key={i} style={styles.item}>
-    <p><strong>{item.nom}</strong></p>
-    <p>Taille : {item.options.size} {item.options.unit}</p>
-    <p>Prix : {item.options.prix} €</p>
-    <p>Quantité : {item.quantite}</p>
-
-    <p>
-      <strong>Retour :</strong>{" "}
-      {item.returnStatus === "none" && "Aucun retour demandé"}
-      {item.returnStatus === "requested" && "Demande envoyée"}
-      {item.returnStatus === "approved" && "Retour approuvé — envoyez le colis"}
-      {item.returnStatus === "returned" && "Colis reçu par le vendeur"}
-      {item.returnStatus === "refunded" && "Produit remboursé ✔"}
-    </p>
-
-    <button
-      onClick={() => handleRebuy(item)}
-      style={styles.smallButton}
-    >
-      Racheter
-    </button>
-
-    <button onClick={() => handleReview(item)} 
-      style={styles.smallButton}
-    >
-      Laisser un avis
-    </button>
-
-    <button
-      onClick={() => handleReturnRequest(orderData._id, item)}
-      style={styles.smallButton}
-    >
-      Demander un retour
-    </button>
-  </div>
-))}
-*/}

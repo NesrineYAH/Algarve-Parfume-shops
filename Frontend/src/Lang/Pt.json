@@ -525,12 +525,12 @@
   "h3": "Pedido nº",
   "Montant": "Valor",
   "status": "Status",
-  "pI": "Pagamento",
-  "pII": "Preço total",
-  "Date": "Data",
-  "PV": "Tamanho",
-  "PVI": "Preço",
-  "PVVI": "Quantidade",
+  "Payment": "Pagamento",
+  "totalPrice": "Preço total",
+  "Date": "Data", 
+  "Size": "Tamanho",
+  "Price": "Preço",
+  "Quantity": "Quantidade",
   "concel": "Cancelar",
   "paye": "Pagar",
   "Button": "Rastrear meu pedido",
@@ -540,7 +540,25 @@
   "refunded": "Reembolsado",
   "refundDate": "Data do reembolso",
   "noOrder": "Nenhum pedido ainda."
-}
-
+},
+"TrackOrder": {
+  "h1": "Acompanhe seu pedido",
+  "pending": "Preparado",
+  "confirmed": "Confirmado",
+  "shipped": "Enviado",
+  "delivered": "Entregue",
+  "noReception": "Recebi meu pedido",
+  "h4": "Detalhes dos itens",
+  "Redeem": "Comprar novamente",
+  "leaveReview": "Deixar uma avaliação",
+  "ReturnRequest": "Solicitar devolução",
+  "Product": "Produto",
+  "noneReturn": "Nenhuma devolução solicitada",
+  "requested": "Solicitação enviada",
+  "approved": "Devolução aprovada",
+  "returned": "Pacote recebido",
+  "refunded": "Reembolsado ✔"
+},
+ "Notifications": "Notificações"
 
 }

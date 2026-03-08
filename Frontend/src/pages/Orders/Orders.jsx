@@ -225,8 +225,8 @@ export default function Orders() {
           {preOrders.map((order) => (
             <div className="order-card" key={order._id}>
               <h3>{t("preOrders.h3")} {order._id}</h3> 
-              <p>{t("preOrders.pI")}:  {order.paymentStatus}</p> 
-              <p>{t("preOrders.pII")}: {order.totalPrice} €</p>
+              <p>{t("preOrders.Payment")}:  {order.paymentStatus}</p> 
+              <p>{t("preOrders.totalPrice")}: {order.totalPrice} €</p>
               <p>{t("preOrders.Date")}: {formatDate(order.paidAt)}</p>
 
               <div className="order-items">
@@ -239,9 +239,9 @@ export default function Orders() {
                     />
                     <div className="item-details">
                       <h3>{item.nom}</h3>
-                      <p>{t("preOrders.PV")}: {item.options?.size} {item.options?.unit}</p> 
-                      <p>{t("preOrders.PVI")}: {Number(item.options?.prix).toFixed(2)} €</p> 
-                      <p>{t("preOrders.PVVI")} : {item.quantite}</p> 
+                      <p>{t("preOrders.Size")}: {item.options?.size} {item.options?.unit}</p> 
+                      <p>{t("preOrders.Price")}: {Number(item.options?.prix).toFixed(2)} €</p> 
+                      <p>{t("preOrders.Quantity")} : {item.quantite}</p> 
                     </div>
                   </div>
                 ))}
@@ -269,9 +269,9 @@ export default function Orders() {
           {orders.map((order) => (
             <div className="order-card" key={order._id}> 
               <h3>{t("preOrders.h3")}{order._id}</h3>  
-              <p>{t("preOrders.pI")} : {order.paymentStatus}</p> 
+              <p>{t("preOrders.Payment")} : {order.paymentStatus}</p> 
               <p>{t("preOrders.Status")} : {order.status}</p>  
-              <p>{t("preOrders.pII")}: {order.totalPrice} €</p>  
+              <p>{t("preOrders.totalPrice")}: {order.totalPrice} €</p>  
               <p>{t("preOrders.Date")}: {formatDate(order.paidAt)}</p> 
 
               <div className="order-items">
@@ -284,9 +284,9 @@ export default function Orders() {
                     />
                     <div className="item-details">
                       <h3>{item.nom}</h3>
-                      <p>{t("preOrders.PV")} : {item.options?.size} {item.options?.unit}</p>
-                      <p>{t("preOrders.PVI")} : {Number(item.options?.prix).toFixed(2)} €</p>
-                      <p>{t("preOrders.PVVI")} : {item.quantite}</p>
+                      <p>{t("preOrders.Size")} : {item.options?.size} {item.options?.unit}</p>
+                      <p>{t("preOrders.Price")} : {Number(item.options?.prix).toFixed(2)} €</p>
+                      <p>{t("preOrders.Quantity")} : {item.quantite}</p>
                     </div>
                   </div>
                 ))}
