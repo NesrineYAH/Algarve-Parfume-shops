@@ -4,6 +4,7 @@ import OrderService from "../../Services/orderService";
 import "./commande.scss";
 import { UserContext } from "../../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Orders() {
   const { user, loadingUser } = useContext(UserContext);
@@ -19,8 +20,9 @@ export default function Orders() {
   const [cancelReason, setCancelReason] = useState("");
   const [cancelDescription, setCancelDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const navigate = useNavigate();
+    const { t } = useTranslation();
+
 
   useEffect(() => {
     if (loadingUser) return;
@@ -117,7 +119,7 @@ export default function Orders() {
 
   return (
     <div className="orders-container">
-      {user && <h1>Bonjour {user.prenom}</h1>}
+      {user && <h1>{t("Orders.h1")} {user.prenom}</h1>}  
 
       {errorMessage && (
         <div className="error-banner">
@@ -131,7 +133,7 @@ export default function Orders() {
           <div className="cancel-modal" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeCancelModal}>×</button>
             
-            <h2>Pourquoi annulez-vous cette commande ?</h2>
+            <h2>{t("Orders.h2")}</h2>  
             
             <div className="modal-content">
               <div className="cancel-reasons">
@@ -144,8 +146,8 @@ export default function Orders() {
                     onChange={(e) => setCancelReason(e.target.value)}
                   />
                   <div className="reason-content">
-                    <strong>Changement d'avis</strong>
-                    <span>Je ne souhaite plus ce produit</span>
+                    <strong>{t("Orders.reason-contentI")}</strong>  
+                    <span>{t("Orders.reason-contentII")}</span>  
                   </div>
                 </label>
 
@@ -158,8 +160,8 @@ export default function Orders() {
                     onChange={(e) => setCancelReason(e.target.value)}
                   />
                   <div className="reason-content">
-                    <strong>J'ai trouvé moins cher ailleurs</strong>
-                    <span>Je souhaite comparer les prix</span>
+                    <strong>{t("Orders.reason-contentIII")}</strong> 
+                    <span>{t("Orders.reason-contentV")}</span>  
                   </div>
                 </label>
 
@@ -172,15 +174,14 @@ export default function Orders() {
                     onChange={(e) => setCancelReason(e.target.value)}
                   />
                   <div className="reason-content">
-                    <strong>Délai de livraison trop long</strong>
-                    <span>Je ne peux pas attendre</span>
+                    <strong>{t("Orders.reason-contentVI")}</strong> 
+                    <span>{t("Orders.reason-contentVVI")} </span> 
                   </div>
                 </label>
               </div>
 
               <div className="cancel-description">
-                <label htmlFor="cancelDescription">
-                  Détails supplémentaires (optionnel) :
+                <label htmlFor="cancelDescription">{t("Orders.cancelDescription")}:  
                 </label>
                 <textarea
                   id="cancelDescription"
@@ -202,14 +203,13 @@ export default function Orders() {
                   className="btn-secondary" 
                   onClick={closeCancelModal}
                   disabled={isSubmitting}
-                >
-                  Retour
+                > {t("Orders.Return")} 
+             
                 </button>
                 <button 
                   className="btn-cancel" 
                   onClick={submitCancellation}
-                  disabled={!cancelReason || isSubmitting}
-                >
+                  disabled={!cancelReason || isSubmitting}>
                   {isSubmitting ? "Annulation en cours..." : "Confirmer l'annulation"}
                 </button>
               </div>
@@ -221,13 +221,13 @@ export default function Orders() {
       {/* SECTION PRÉ-COMMANDES */}
       {preOrders.length > 0 && (
         <>
-          <h2>Pré-commandes</h2>
+          <h2>{t("preOrders.h2")}</h2> 
           {preOrders.map((order) => (
             <div className="order-card" key={order._id}>
-              <h3>Commande n°{order._id}</h3>
-              <p>Paiement : {order.paymentStatus}</p>
-              <p>Prix Total : {order.totalPrice} €</p>
-              <p>Date: {formatDate(order.paidAt)}</p>
+              <h3>{t("preOrders.h3")} {order._id}</h3> 
+              <p>{t("preOrders.pI")}:  {order.paymentStatus}</p> 
+              <p>{t("preOrders.pII")}: {order.totalPrice} €</p>
+              <p>{t("preOrders.Date")}: {formatDate(order.paidAt)}</p>
 
               <div className="order-items">
                 {order.items.map((item, idx) => (
@@ -239,9 +239,9 @@ export default function Orders() {
                     />
                     <div className="item-details">
                       <h3>{item.nom}</h3>
-                      <p>Taille : {item.options?.size} {item.options?.unit}</p>
-                      <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
-                      <p>Quantité : {item.quantite}</p>
+                      <p>{t("preOrders.PV")}: {item.options?.size} {item.options?.unit}</p> 
+                      <p>{t("preOrders.PVI")}: {Number(item.options?.prix).toFixed(2)} €</p> 
+                      <p>{t("preOrders.PVVI")} : {item.quantite}</p> 
                     </div>
                   </div>
                 ))}
@@ -249,13 +249,12 @@ export default function Orders() {
 
               <div className="order_AllButtons">
                 <Link to={`/payment/${order._id}`} state={{ order, orderId: order._id }}>
-                  <button className="Button">Payer</button>
+                  <button className="Button">{t("preOrders.paye")}</button> 
                 </Link>
                 <button
                   className="Button"
                   onClick={() => openCancelModal(order._id)}
-                >
-                  Annuler
+                > {t("preOrders.concel")}
                 </button>
               </div>
             </div>
@@ -266,14 +265,14 @@ export default function Orders() {
       {/* SECTION COMMANDES PAYÉES */}
       {orders.length > 0 && (
         <>
-          <h2>Commandes Confirmées</h2>
+          <h2>{t("preOrders.h2")}</h2>  
           {orders.map((order) => (
-            <div className="order-card" key={order._id}>
-              <h3>Commande n°{order._id}</h3>
-              <p>Paiement : {order.paymentStatus}</p>
-              <p>Status : {order.status}</p>
-              <p>Prix Total : {order.totalPrice} €</p>
-              <p>Date: {formatDate(order.paidAt)}</p>
+            <div className="order-card" key={order._id}> 
+              <h3>{t("preOrders.h3")}{order._id}</h3>  
+              <p>{t("preOrders.pI")} : {order.paymentStatus}</p> 
+              <p>{t("preOrders.Status")} : {order.status}</p>  
+              <p>{t("preOrders.pII")}: {order.totalPrice} €</p>  
+              <p>{t("preOrders.Date")}: {formatDate(order.paidAt)}</p> 
 
               <div className="order-items">
                 {order.items.map((item, idx) => (
@@ -285,9 +284,9 @@ export default function Orders() {
                     />
                     <div className="item-details">
                       <h3>{item.nom}</h3>
-                      <p>Taille : {item.options?.size} {item.options?.unit}</p>
-                      <p>Prix : {Number(item.options?.prix).toFixed(2)} €</p>
-                      <p>Quantité : {item.quantite}</p>
+                      <p>{t("preOrders.PV")} : {item.options?.size} {item.options?.unit}</p>
+                      <p>{t("preOrders.PVI")} : {Number(item.options?.prix).toFixed(2)} €</p>
+                      <p>{t("preOrders.PVVI")} : {item.quantite}</p>
                     </div>
                   </div>
                 ))}
@@ -295,19 +294,19 @@ export default function Orders() {
 
               <div className="order_AllButtons">
                 <Link to={`/tracking/${order._id}`}>
-                  <button className="Button">Suivre ma commande</button>
+                  <button className="Button">{t("preOrders.Button")}</button>
                 </Link>
                 <button
                   className="Button"
                   onClick={() => openCancelModal(order._id)}
                 >
-                  Annuler
+                   {t("preOrders.concel")} 
                 </button>
                 {order.invoiceUrl && (
                   <a href={`http://localhost:5001${order.invoiceUrl}`} 
                      target="_blank"
                      rel="noopener noreferrer">
-                    <button className="Button">Télécharger la facture</button>
+                    <button className="Button">{t("preOrders.LoadInvoice")} </button>
                   </a>
                 )}
               </div>
@@ -319,14 +318,13 @@ export default function Orders() {
       {/* SECTION COMMANDES ANNULÉES */}
       {cancelledOrders.length > 0 && (
         <>
-          <h2>Commandes Annulées</h2>
+          <h2>{t("preOrders.h2I")} </h2>
           {cancelledOrders.map((order) => (
             <div className="order-card cancelled" key={order._id}>
-              <h3>Commande n°{order._id}</h3>
-              <p>Status : Annulée</p>
+              <h3>{t("preOrders.h3")} {order._id}</h3>
+              <p>{t("preOrders.status")}:  {t("preOrders.concel")} </p>
               {order.cancelReason && (
-                <p className="cancel-reason">
-                  Raison : {
+                <p className="cancel-reason">{t("preOrders.Reason")} : {
                     order.cancelReason === 'changement_avis' ? 'Changement d\'avis' :
                     order.cancelReason === 'meilleur_prix' ? 'Meilleur prix trouvé' :
                     order.cancelReason === 'delai_livraison' ? 'Délai trop long' :
@@ -334,7 +332,7 @@ export default function Orders() {
                   }
                 </p>
               )}
-              <p className="cancelled-label">Cette commande a été annulée</p>
+              <p className="cancelled-label"> {t("preOrders.cancelled-label")}</p>
             </div>
           ))}
         </>
@@ -343,13 +341,13 @@ export default function Orders() {
       {/* SECTION COMMANDES REMBOURSÉES */}
       {refundedOrders.length > 0 && (
         <>
-          <h2>Commandes Remboursées</h2>
+          <h2> {t("preOrders.h2II")} </h2>
           {refundedOrders.map((order) => (
             <div className="order-card refunded" key={order._id}>
-              <h3>Commande n°{order._id}</h3>
-              <p>Status : Remboursée</p>
-              <p>Montant : {order.totalPrice} €</p>
-              <p>Date du remboursement : {formatDate(order.refundedAt)}</p>
+              <h3>{t("preOrders.h3")} {order._id}</h3>
+              <p>{t("preOrders.status")} : {t("preOrders.refunded")}</p>
+              <p>{t("preOrders.Montant")} : {order.totalPrice} €</p>
+              <p>{t("preOrders.refundDate")} : {formatDate(order.refundedAt)}</p>
             </div>
           ))}
         </>
@@ -357,7 +355,7 @@ export default function Orders() {
 
       {/* SI AUCUNE COMMANDE */}
       {preOrders.length === 0 && orders.length === 0 && cancelledOrders.length === 0 && (
-        <p>Aucune commande pour le moment.</p>
+        <p> {t("preOrders.noOrder")}.</p>
       )}
     </div>
   );

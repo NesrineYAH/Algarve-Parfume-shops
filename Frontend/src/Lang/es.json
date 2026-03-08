@@ -509,6 +509,41 @@
   "Login": "Iniciar sesión",
   "subscrib": "Registrarse",
   "passWord": "¿Olvidaste tu contraseña?"
+},
+"Orders": {
+  "h1": "Hola",
+  "h2": "¿Por qué cancelas este pedido?",
+  "reason-contentI": "Cambio de opinión",
+  "reason-contentII": "Ya no quiero este producto",
+  "reason-contentIII": "Lo encontré más barato en otro sitio",
+  "reason-contentV": "Quiero comparar precios",
+  "reason-contentVI": "El tiempo de entrega es demasiado largo",
+  "reason-contentVVI": "No puedo esperar",
+  "cancelDescription": "Detalles adicionales (opcional)",
+  "Return": "Devolución"
+},
+"preOrders": {
+  "h2": "Tus pedidos",
+  "h2I": "Pedidos cancelados",
+  "h2II": "Pedidos reembolsados",
+  "h3": "Pedido n°",
+  "Montant": "Importe",
+  "status": "Estado",
+  "pI": "Pago",
+  "pII": "Precio total",
+  "Date": "Fecha",
+  "PV": "Talla",
+  "PVI": "Precio",
+  "PVVI": "Cantidad",
+  "concel": "Cancelar",
+  "paye": "Pagar",
+  "Button": "Seguir mi pedido",
+  "LoadInvoice": "Descargar factura",
+  "Reason": "Motivo",
+  "cancelled-label": "Este pedido ha sido cancelado",
+  "refunded": "Reembolsado",
+  "refundDate": "Fecha del reembolso",
+  "noOrder": "Aún no hay pedidos."
 }
 
 

@@ -505,6 +505,41 @@
   "Login": "Login",
   "subscrib": "Sign up",
   "passWord": "Forgot password?"
+},
+"Orders": {
+  "h1": "Hello",
+  "h2": "Why are you cancelling this order?",
+  "reason-contentI": "Change of mind",
+  "reason-contentII": "I no longer want this product",
+  "reason-contentIII": "I found it cheaper elsewhere",
+  "reason-contentV": "I want to compare prices",
+  "reason-contentVI": "Delivery time is too long",
+  "reason-contentVVI": "I can't wait",
+  "cancelDescription": "Additional details (optional)",
+  "Return": "Return"
+},
+"preOrders": {
+  "h2": "Your orders",
+  "h2I": "Cancelled orders",
+  "h2II": "Refunded orders",
+  "h3": "Order No.",
+  "Montant": "Amount",
+  "status": "Status",
+  "pI": "Payment",
+  "pII": "Total price",
+  "Date": "Date",
+  "PV": "Size",
+  "PVI": "Price",
+  "PVVI": "Quantity",
+  "concel": "Cancel",
+  "paye": "Pay",
+  "Button": "Track my order",
+  "LoadInvoice": "Download invoice",
+  "Reason": "Reason",
+  "cancelled-label": "This order has been cancelled",
+  "refunded": "Refunded",
+  "refundDate": "Refund date",
+  "noOrder": "No orders yet."
 }
 
 

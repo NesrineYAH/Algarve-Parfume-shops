@@ -496,6 +496,42 @@
   "Login" : "Connexion", 
   "subscrib" : "Inscription",
   "passWord" : "Mot de passe oublié ?"
+ }, 
+ "Orders" : {
+  "h1": "Bonjour",
+  "h2": "Pourquoi annulez-vous cette commande ?",
+  "reason-contentI" : "Changement d'avis",
+  "reason-contentII": "Je ne souhaite plus ce produit",
+  "reason-contentIII": "J'ai trouvé moins cher ailleurs",
+  "reason-contentV": "Je souhaite comparer les prix",
+  "reason-contentVI": "Délai de livraison trop long",
+  "reason-contentVVI": "Je ne peux pas attendre",
+  "cancelDescription" :" Détails supplémentaires (optionnel)",
+   "Return": "Retour" 
+ },
+ "preOrders": {
+  "h2": "Vos commandes",
+  "h2I": "Commandes Annulées",
+  "h2II": "Commandes Remboursées",
+  "h3": "Commande n°",
+  "Montant" :"Montant",
+  "status": "Status",
+  "pI": "Paiement",
+  "pII": "Prix Total",
+  "Date": "Date",
+  "PV": "Taille",
+  "PVI": "Prix",
+  "PVVI": "Quantité",
+  "concel": "Annuler",
+  "paye": "Payer",
+  "Button": "Suivre ma commande",
+  "LoadInvoice": "Télécharger la facture",
+  "Reason" :"Raison",
+  "cancelled-label": "Cette commande a été annulée",
+  "refunded": "remboursé",
+  "refundDate": "Date du remboursement",
+  "noOrder": "Aucune commande pour le moment."
+
  }
 
 }
