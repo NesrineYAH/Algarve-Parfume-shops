@@ -500,6 +500,11 @@
   "optionVVI": "Other",
   "Description": "Description (optional)",
   "concel": "Cancel"
+},
+"auth": {
+  "Login": "Login",
+  "subscrib": "Sign up",
+  "passWord": "Forgot password?"
 }
 
 

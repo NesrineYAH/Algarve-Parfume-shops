@@ -3,8 +3,11 @@ import React, { useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Authentification.scss";
 import { UserContext } from "../../context/UserContext";
+import { useTranslation } from "react-i18next";
+
 
 export default function Authentification() {
+    const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("login");
   const [form, setForm] = useState({ nom: "", prenom: "", email: "", password: "" });
   const [message, setMessage] = useState("");
@@ -57,13 +60,13 @@ const handleSubmit = async (e) => {
           className={activeTab === "login" ? "active" : ""}
           onClick={() => setActiveTab("login")}
         >
-          Connexion
+       {t("auth.Login")}
         </button>
         <button
           className={activeTab === "register" ? "active" : ""}
           onClick={() => setActiveTab("register")}
         >
-          Inscription
+    {t("auth.subscrib")}
         </button>
       </div>
 
@@ -116,8 +119,8 @@ const handleSubmit = async (e) => {
     <p 
       className="forgot-password"
       onClick={() => navigate("/mot-de-passe-oublie")}
-    >
-      Mot de passe oublié ?
+    > {t("auth.passWord")}
+  
     </p>
   )}
 

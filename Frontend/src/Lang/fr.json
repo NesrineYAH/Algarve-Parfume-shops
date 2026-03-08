@@ -491,7 +491,12 @@
      "optionVVI": "Autre",
      "Description": "Description (optionnel)",
     "concel" : "Annuler"
-}
+}, 
+ "auth" : {
+  "Login" : "Connexion", 
+  "subscrib" : "Inscription",
+  "passWord" : "Mot de passe oublié ?"
+ }
 
 }
 

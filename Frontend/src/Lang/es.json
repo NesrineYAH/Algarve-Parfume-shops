@@ -504,6 +504,11 @@
   "optionVVI": "Otro",
   "Description": "Descripción (opcional)",
   "concel": "Cancelar"
+},
+"auth": {
+  "Login": "Iniciar sesión",
+  "subscrib": "Registrarse",
+  "passWord": "¿Olvidaste tu contraseña?"
 }
 
 
