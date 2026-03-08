@@ -32,7 +32,6 @@ const averageRating =
       <div>
       <h3>{t("footer.info")}</h3>
       <ul className="footer__ul">
- 
         <li>
           <a href="/sitemap" className="TitreH3">
             {t("footer.sitemap")}
@@ -43,11 +42,9 @@ const averageRating =
             {t("footer.newPerfume")}
           </a>
         </li>
-
-  <li className="TitreH3" onClick={() => toggleSection("section1")}>
+       <li className="TitreH3" onClick={() => toggleSection("section1")}>
  {t("footer.stores")} 
   <div id="section1" style={{ display: "none", marginTop: "8px" }}>
-  
     <a
       href="https://www.google.com/maps?q=287+Rue+Pyrénées,+Paris"
       target="_blank"
@@ -56,7 +53,7 @@ const averageRating =
     >   <FontAwesomeIcon icon={faLocationDot} />{" "}  Av. Francisco Sá Carneiro, 8125-507 Quarteira, Portugal 
     </a>
   </div>
-</li>
+       </li>
       </ul>
       </div>
 
