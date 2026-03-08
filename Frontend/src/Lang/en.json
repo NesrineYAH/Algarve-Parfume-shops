@@ -481,8 +481,26 @@
   "AddCart": "Add to cart",
   "textPrix": "from",
   "textChargement": "Loading products..."
+}, 
+"Retour": {
+  "title": "Products to return",
+  "Product": "Product",
+  "quantite": "Quantity",
+  "Error": "Error",
+  "direction": "Redirecting to your account...",
+  "retour": "Return now",
+  "titleH2": "Return request",
+  "reason": "Reason for return *",
+  "optionI": "Choose a reason",
+  "optionII": "Defective product",
+  "optionIII": "Wrong size / does not fit",
+  "optionV": "Does not match the description",
+  "optionVI": "Error in my order",
+  "optionVII": "Delivery problem",
+  "optionVVI": "Other",
+  "Description": "Description (optional)",
+  "concel": "Cancel"
 }
-
 
 
 }

@@ -115,7 +115,7 @@ function App() {
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
         <Route path="/retour-produit" element={<RetourProduit />} />
-        <Route path="/swiperBrandsPages" element={<BrandsPages />} />
+        <Route path="/BrandsPages" element={<BrandsPages />} />
 
         </Routes>
               {/* <CarouselPro />*/} 

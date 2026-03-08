@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReturnService from "../../Services/returnService";
 import "./Product.scss";
+import { useTranslation } from "react-i18next";
 
 export default function RetourProduit() {
+    const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [reason, setReason] = useState("");
@@ -74,17 +76,17 @@ export default function RetourProduit() {
 
     return (
       <div className="selected-products">
-        <h3>Produits à retourner :</h3>
+        <h3> {t("Retour.title")}</h3> 
         {products.map((product, index) => (
           <div key={index} className="product-item">
             <p>
-              <strong>Produit {index + 1} :</strong>
+              <strong>{t("Retour.Product")} {index + 1} :</strong>
               {product.nom && ` ${product.nom}`}
               {product.size && ` - Taille: ${product.size}`}
               {product.unit && ` ${product.unit}`}
             </p>
-            <p className="product-detail">
-              Quantité: {product.quantity || 1}
+            <p className="product-detail"> 
+              {t("Retour.qunatite")} : {product.quantity || 1}
             </p>
           </div>
         ))}
@@ -95,11 +97,11 @@ export default function RetourProduit() {
   if (error && !products) {
     return (
       <div className="return-container error-container">
-        <h2>❌ Erreur</h2>
+        <h2>  {t("Retour.Error")}</h2>
         <p>{error}</p>
-        <p>Redirection vers votre compte...</p>
+        <p>   {t("Retour.direction")}...</p>
         <button onClick={() => navigate("/MonCompte")}>
-          Retour maintenant
+       {t("Retour.retour")}
         </button>
       </div>
     );
@@ -107,13 +109,13 @@ export default function RetourProduit() {
 
   return (
     <div className="return-container">
-      <h2>Demande de retour</h2>
+      <h2> {t("Retour.titleH2")} </h2>
       
       {renderSelectedProducts()}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="reason">Raison du retour *</label>
+          <label htmlFor="reason"> {t("Retour.reason")} </label>
           <select 
             id="reason"
             value={reason} 
@@ -124,18 +126,18 @@ export default function RetourProduit() {
             required
             disabled={loading}
           >
-            <option value="">Choisir une raison...</option>
-            <option value="defectueux">Produit défectueux</option>
-            <option value="taille">Mauvaise taille / ne correspond pas</option>
-            <option value="description">Ne correspond pas à la description</option>
-            <option value="commande">Erreur dans ma commande</option>
-            <option value="livraison">Problème de livraison</option>
-            <option value="autre">Autre</option>
+            <option value="">{t("Retour.optionI")}...</option>
+            <option value="defectueux">{t("Retour.optionII")}</option>
+            <option value="taille"> {t("Retour.optionIII")}</option>
+            <option value="description"> {t("Retour.optionV")}</option>
+            <option value="commande"> {t("Retour.optionVI")}</option>
+            <option value="livraison">{t("Retour.optionVII")}</option>
+            <option value="autre">{t("Retour.optionVVI")}</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Description (optionnel)</label>
+          <label htmlFor="description">{t("Retour.Description")}</label>
           <textarea
             id="description"
             value={description}
@@ -159,7 +161,7 @@ export default function RetourProduit() {
             className="btn-secondary"
             disabled={loading}
           >
-            Annuler
+          {t("Retour.concel")}
           </button>
           <button 
             type="submit" 

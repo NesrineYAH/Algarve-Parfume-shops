@@ -481,6 +481,25 @@
   "AddCart": "Adicionar ao carrinho",
   "textPrix": "a partir de",
   "textChargement": "Carregando produtos..."
+},
+"Retour": {
+  "title": "Produtos para devolver",
+  "Product": "Produto",
+  "quantite": "Quantidade",
+  "Error": "Erro",
+  "direction": "Redirecionando para sua conta...",
+  "retour": "Devolver agora",
+  "titleH2": "Pedido de devolução",
+  "reason": "Motivo da devolução *",
+  "optionI": "Escolher um motivo",
+  "optionII": "Produto defeituoso",
+  "optionIII": "Tamanho errado / não corresponde",
+  "optionV": "Não corresponde à descrição",
+  "optionVI": "Erro no meu pedido",
+  "optionVII": "Problema de entrega",
+  "optionVVI": "Outro",
+  "Description": "Descrição (opcional)",
+  "concel": "Cancelar"
 }
 
 
