@@ -108,6 +108,7 @@ const handleToggleMenu = (e) => {
               <li><Link to="/home?genre=homme">{t("header.titleIII")}</Link></li>
               <li><Link to="/BrandsPages">{t("header.titleVI")}</Link></li>
               <li><Link to="/QrCodePage">Notre App</Link></li>
+                          <li><Link to="/BlogPage">Forme & Santé</Link></li>
             </ul>
           </nav>
         )}
@@ -180,7 +181,7 @@ const handleToggleMenu = (e) => {
         <LanguageSwitcher />
       </section>
 
-           <h1>MyPerfume</h1>
+           <h1>PERFUME ALGARVE</h1>
 
       {/* ---------------- Mobile Menu Rideau ---------------- */}
       {isMobile && (
@@ -199,6 +200,7 @@ const handleToggleMenu = (e) => {
             <li><Link to="/home?genre=homme" onClick={() => setIsMenuOpen(false)}>{t("header.titleIII")}</Link></li>
             <li>{t("header.titleVI")}</li>
             <li><Link to="/QrCodePage" onClick={() => setIsMenuOpen(false)}>Notre App</Link></li>
+            <li><Link to="/BlogPage">Forme & Santé</Link></li>
           </ul>
         </div>
       )}

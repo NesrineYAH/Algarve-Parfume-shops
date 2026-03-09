@@ -10,7 +10,7 @@ import BlogBenefits from "./components/Blog/BlogBenefits";
 import Newsletter from "./components/Newsletter/Newsletter";
 import CookieModel from "./components/CookieModel/CookieModel";
 import InfoSite from "./components/InfoSite/InfoSite";
-// import CarouselPro from "./components/Carroussel/Carroussel"
+import CarouselPro from "./components/Carroussel/Carroussel";
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 
@@ -51,16 +51,19 @@ import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import QrCodePage from "./pages/App/QrCodePage"
 import QuiSommesNous from "./pages/PageSite/QuisommeNous";
 import BrandsPages from "./pages/BrandsPages/BrandsPages"
-
+import BlogPage from "./pages/BlogPage/BlogPage"
 
 
 function App() {
+
+
   
   return (
     <>
       <div className="App">
         <Headers />
-        
+   
+         
         <Routes>
          <Route path="/" element={<Navigate to="/Home" />} /> 
           <Route path="*" element={<ErrorPage />} />
@@ -111,10 +114,11 @@ function App() {
          <Route path="/QrCodePage" element={<QrCodePage />} />
         <Route path="/QuiSommesNous" element={<QuiSommesNous />} />
         <Route path="/retour-produit" element={<RetourProduit />} />
-        <Route path="/BrandsPages" element={<BrandsPages />} />
+        <Route path="/BrandsPages" element={<BrandsPages />} /> 
+        <Route path="/BlogPage" element={<BlogPage  />} />
 
         </Routes>
-              {/* <CarouselPro />*/} 
+           <CarouselPro />
 
         <BlogBenefits />
         <Newsletter />

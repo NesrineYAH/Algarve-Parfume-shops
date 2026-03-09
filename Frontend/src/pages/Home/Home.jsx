@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import SearchBar from "../../components/searchBar/searchBar.jsx";
 import { Link, useLocation } from "react-router-dom";
 import "./Home.scss";
 import { Heart } from "lucide-react";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating";
 import { useTranslation } from "react-i18next";
+import SearchBar from "../../components/searchBar/searchBar";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -85,7 +85,7 @@ const Home = () => {
     setRatings(allRatings);
   };
 
-  // recherche
+    // recherche
   const handleSearch = (query) => {
     if (!query.trim()) {
       setFiltered(products);
@@ -98,13 +98,16 @@ const Home = () => {
 
     setFiltered(results);
   };
+       
+
 
   if (loading) return <p>{t("home.textChargement")}</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="home">
-      <SearchBar onSearch={handleSearch} />
+
+    <SearchBar onSearch={handleSearch} />
 
      <div className="grid">
   {filtered.slice(0, visibleProducts).map((product) => {
