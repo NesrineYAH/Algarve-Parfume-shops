@@ -123,7 +123,7 @@
 
 /************** Site Map *********************/
 .sitemap-page {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
     font-family: Arial, sans-serif;
@@ -141,7 +141,7 @@
 
     .sitemap-sections {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
     }
 

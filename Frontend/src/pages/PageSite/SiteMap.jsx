@@ -1,71 +1,76 @@
-// pages/SiteMap/SiteMap.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./PageSite.scss";
 
 const SiteMap = () => {
+
+  const { t } = useTranslation();
+
   return (
     <div className="sitemap-page">
-      <h1>Plan du site</h1>
-      <p>Retrouvez facilement toutes les pages de notre boutique.</p>
+
+      <h1>{t("sitemap.title")}</h1>
+      <p>{t("sitemap.description")}</p>
 
       <div className="sitemap-sections">
+
         {/* Boutique */}
         <div className="sitemap-section">
-          <h2>Boutique</h2>
+          <h2>{t("sitemap.shop")}</h2>
           <ul>
-            <li><Link to="/">Accueil</Link></li>
-            <li><Link to="/parfums">Nos parfums</Link></li>
-            <li><Link to="/categories">Catégories</Link></li>
-            <li><Link to="/promotions">Promotions</Link></li>
-            <li><Link to="/panier">Panier</Link></li>
-            <li><Link to="/commande">Passer commande</Link></li>
+            <li><Link to="/">{t("sitemap.home")}</Link></li>
+            <li><Link to="/parfums">{t("sitemap.perfumes")}</Link></li>
+            <li><Link to="/categories">{t("sitemap.categories")}</Link></li>
+            <li><Link to="/promotions">{t("sitemap.promotions")}</Link></li>
+            <li><Link to="/panier">{t("sitemap.cart")}</Link></li>
+            <li><Link to="/commande">{t("sitemap.checkout")}</Link></li>
           </ul>
         </div>
 
-        {/* Compte client */}
+        {/* Compte */}
         <div className="sitemap-section">
-          <h2>Mon compte</h2>
+          <h2>{t("sitemap.account")}</h2>
           <ul>
-            <li><Link to="/login">Connexion</Link></li>
-            <li><Link to="/register">Créer un compte</Link></li>
-            <li><Link to="/profil">Mon profil</Link></li>
-            <li><Link to="/commandes">Mes commandes</Link></li>
+            <li><Link to="/login">{t("sitemap.login")}</Link></li>
+            <li><Link to="/register">{t("sitemap.register")}</Link></li>
+            <li><Link to="/profil">{t("sitemap.profile")}</Link></li>
+            <li><Link to="/commandes">{t("sitemap.orders")}</Link></li>
           </ul>
         </div>
 
-        {/* Avis & confiance */}
+        {/* Avis */}
         <div className="sitemap-section">
-          <h2>Avis & Confiance</h2>
+          <h2>{t("sitemap.reviews")}</h2>
           <ul>
-            <li><Link to="/avis-clients">Avis clients</Link></li>
-            <li><Link to="/rgpd">Confidentialité des données (RGPD)</Link></li>
-            <li><Link to="/rsgp">Sécurité générale des produits</Link></li>
+            <li><Link to="/avis-clients">{t("sitemap.customerReviews")}</Link></li>
+            <li><Link to="/rgpd">{t("sitemap.dataPrivacy")}</Link></li>
+            <li><Link to="/rsgp">{t("sitemap.productSafety")}</Link></li>
           </ul>
         </div>
 
         {/* Informations légales */}
         <div className="sitemap-section">
-          <h2>Informations légales</h2>
+          <h2>{t("sitemap.legal")}</h2>
           <ul>
-            <li><Link to="/cgv">Conditions Générales de Vente</Link></li>
-            <li><Link to="/mentions-legales">Mentions légales</Link></li>
-            <li><Link to="/PolitiqueConfidentialite">Mentions légales</Link></li>
-            <li><Link to="/SecuriteProduits">RSGP</Link></li>
-         <li><Link to="/sitemap">RGPD</Link></li>
-
+            <li><Link to="/cgv">{t("sitemap.cgv")}</Link></li>
+            <li><Link to="/mentions-legales">{t("sitemap.legalNotice")}</Link></li>
+            <li><Link to="/PolitiqueConfidentialite">{t("sitemap.privacyPolicy")}</Link></li>
+            <li><Link to="/SecuriteProduits">{t("sitemap.productSafetyLaw")}</Link></li>
+            <li><Link to="/sitemap">{t("sitemap.rgpd")}</Link></li>
           </ul>
         </div>
 
         {/* Aide */}
         <div className="sitemap-section">
-          <h2>Aide & Contact</h2>
+          <h2>{t("sitemap.help")}</h2>
           <ul>
-            <li><Link to="/contact">Contact</Link></li>
-            <li><Link to="/faq">FAQ</Link></li>
-            <li><Link to="/livraison">Livraison & retours</Link></li>
+            <li><Link to="/contact">{t("sitemap.contact")}</Link></li>
+            <li><Link to="/faq">{t("sitemap.faq")}</Link></li>
+            <li><Link to="/livraison">{t("sitemap.delivery")}</Link></li>
           </ul>
         </div>
+
       </div>
     </div>
   );

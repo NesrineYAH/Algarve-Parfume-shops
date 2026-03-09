@@ -559,7 +559,41 @@
   "returned": "Package received",
   "refunded": "Refunded ✔"
 },
- "Notifications": "Notifications"
+ "Notifications": "Notifications",
+ "sitemap": {
+  "title": "Site map",
+  "description": "Easily find all the pages of our store.",
+  "shop": "Shop",
+  "home": "Home",
+  "perfumes": "Our perfumes",
+  "categories": "Categories",
+  "promotions": "Promotions",
+  "cart": "Cart",
+  "checkout": "Checkout",
+
+  "account": "My account",
+  "login": "Login",
+  "register": "Create account",
+  "profile": "My profile",
+  "orders": "My orders",
+
+  "reviews": "Reviews & Trust",
+  "customerReviews": "Customer reviews",
+  "dataPrivacy": "Data privacy (GDPR)",
+  "productSafety": "General product safety",
+
+  "legal": "Legal information",
+  "cgv": "Terms and Conditions",
+  "legalNotice": "Legal notice",
+  "privacyPolicy": "Privacy policy",
+  "productSafetyLaw": "GPSR",
+  "rgpd": "GDPR",
+
+  "help": "Help & Contact",
+  "contact": "Contact",
+  "faq": "FAQ",
+  "delivery": "Delivery & returns"
+}
 
 
 }
