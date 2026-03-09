@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import "./CookieModel.scss";
 import PolitiqueCookies from "../../pages/PolitiqueCookies/PolitiqueCookies";
 import Confientilaite from "../../pages/FAQ/FAQ";
+import { useTranslation } from "react-i18next";
 
 const CookieModel = () => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Vérifie si le cookie existe déjà
     const consent = Cookies.get("cookiesAccepted");
     if (!consent) {
       setIsVisible(true);
@@ -40,34 +41,31 @@ const CookieModel = () => {
         ✕
       </button>
 
-      <h1>MyPerfume respecte votre vie privée</h1>
+      <h1>{t("CookieModel.title")}</h1>
 
       <div className="cookieBlock__div">
-        <p>
-          Nous utilisons des cookies pour améliorer votre expérience. En
-          poursuivant votre navigation, vous acceptez notre utilisation des
-          cookies.
-        </p>
-        <p>
-          Données de géolocalisation, mesure d’audience, contenu personnalisé et
-          développement de services.
-        </p>
+        <p>{t("CookieModel.cookieBlockI")}   </p>
+          <p>{t("CookieModel.cookieBlockII")}   </p>
+          <br/> 
 
         <Link to="/PolitiqueCookies" rel="noopener noreferrer">
-          Politique de Cookies
+       {t("CookieModel.cookieLinkI")}
         </Link>
-        <br />
+    
+              <br />
         <Link to="/Confientilaite" rel="noopener noreferrer">
-          Coofidntialités
+          {t("CookieModel.cookieLinkII")}
         </Link>
+        
+
       </div>
 
       <div className="cookieBlock__Bouttons">
         <button className="cookieBlock__button accept" onClick={handleAccept}>
-          Accepter
+        {t("CookieModel.cookieAcceptBoutton")}
         </button>
         <button className="cookieBlock__button reject" onClick={handleReject}>
-          Refuser
+          {t("CookieModel.cookieRefuseBoutton")}
         </button>
       </div>
     </div>

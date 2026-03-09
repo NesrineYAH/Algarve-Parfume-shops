@@ -3,7 +3,8 @@
   "titleI": "Home",
   "titleII": "Women's perfume",
   "titleIII": "Men's Parfume",
-  "titleVI": "Brands"
+  "titleVI": "Brands",
+  "plus": "See more"
 }, 
  "user": {
     "greeting": "Hello",
@@ -229,24 +230,27 @@
   "modify": "You can change your preferences at any time using the “Manage my cookies” button at the bottom of the page.",
   
   "pref_title": "Preference cookies: remember your choices.",
-      "pI": "These cookies allow you to save your choices (language, theme, browsing preferences). They improve your user experience.",
-
   "pref_desc": "These cookies store your choices (language, theme, browsing preferences). They enhance your user experience.",
-"pII":"These cookies allow you to save your choices (language, theme, browsing preferences). They improve your user experience.",
   "analytics_title": "Analytics cookies: understand how the site is used.",
   "analytics_desc": "These cookies help us understand how visitors interact with the website to improve its performance.",
-
   "necessary_title": "Necessary cookies.",
   "necessary_desc": "These cookies are essential for the website to function properly and cannot be disabled.",
-
   "audience_title": "Audience measurement cookies.",
   "audience_desc": "These cookies help us measure traffic and performance to improve our services.",
-
   "develop_title": "Development cookies.",
   "develop_desc": "These cookies are used for debugging, testing, and improving the website during development.",
 
   "reject_all": "Reject all",
   "save": "Save"
+},
+"CookieModel": {
+  "title": "MyPerfume respects your privacy",
+  "cookieBlockI": "We use cookies to improve your experience. By continuing to browse, you agree to our use of cookies.",
+  "cookieBlockII": "Geolocation data, audience measurement, personalized content and service development.",
+  "cookieLinkI": "Cookie Policy",
+  "cookieLinkII": "Privacy Policy",
+  "cookieAcceptBoutton": "Accept",
+  "cookieRefuseBoutton": "Reject"
 },
 "reviews": {
   "title": "Customer Reviews",
@@ -310,8 +314,7 @@
       "button": "View my orders", 
       "thanks": "Thank you for your trust 💐"
      }
-  },
-  
+  }, 
   "delivery": {
     "title": "📦 Delivery address",
     "loading": "Loading…",
@@ -369,9 +372,9 @@
   "textStrongIII": "has been successfully recorded.",
   "retour": "Back to the shop",
   "subtext": "Payment cancelled",
-"subtextPragraphI": "The payment was not completed.",
-"subtextPragraphII": "No amount has been charged. You can try again or come back later.",
-"primaryBtn": "Retry payment"
+  "subtextPragraphI": "The payment was not completed.",
+  "subtextPragraphII": "No amount has been charged. You can try again or come back later.",
+  "primaryBtn": "Retry payment"
 
 },
   "footer": {
@@ -593,6 +596,73 @@
   "contact": "Contact",
   "faq": "FAQ",
   "delivery": "Delivery & returns"
+},
+"privacy":{
+"title":"Privacy Policy",
+"introTitle":"1. Introduction",
+"introText":"This privacy policy explains how personal data is collected, used and protected in accordance with GDPR.",
+
+"controllerTitle":"2. Data Controller",
+"controllerText":"The data controller is:",
+"company":"Perfume Algarve",
+"address":"Address: Quarteira Portugal",
+"email":"Email: contact@perfumealgarve.com",
+
+"dataTitle":"3. Data collected",
+"dataText":"Personal data may include:",
+"data1":"Full name",
+"data2":"Email address",
+"data3":"Postal address",
+"data4":"Phone number",
+"data5":"Order and payment data",
+"data6":"Delivery address",
+
+"purposeTitle":"4. Purpose",
+"purposeText":"Data is used for:",
+"purpose1":"Order management",
+"purpose2":"Customer relationship",
+"purpose3":"Payment processing",
+"purpose4":"Legal obligations",
+"purpose5":"Improving user experience",
+
+"retentionTitle":"5. Data retention",
+"retentionText":"Data is kept for:",
+"retention1":"Customer relationship duration",
+"retention2":"Invoices: 10 years",
+"retention3":"Cookies: 13 months",
+
+"shareTitle":"6. Data sharing",
+"shareText":"Data may be shared with:",
+"share1":"Payment providers",
+"share2":"Shipping companies",
+"share3":"Technical providers",
+"shareNote":"No personal data is sold.",
+
+"securityTitle":"7. Data security",
+"securityText":"Technical measures ensure data security.",
+
+"rightsTitle":"8. User rights",
+"rightsText":"Users have the following rights:",
+"right1":"Access",
+"right2":"Rectification",
+"right3":"Deletion",
+"right4":"Restriction",
+"right5":"Objection",
+"right6":"Data portability",
+"contact":"To exercise your rights contact: contact@perfumealgarve.com",
+
+"cookiesTitle":"9. Cookies",
+"cookiesText":"Cookies are used to improve the user experience.",
+
+"updateTitle":"10. Changes",
+"updateText":"This policy may be updated at any time."
+},
+"favorites": {
+  "h1": "My Favorites",
+  "p": "You have no products in your favorites.",
+  "img": "Image not available",
+  "minimum": " From",
+  "button": "Remove"
 }
 
 

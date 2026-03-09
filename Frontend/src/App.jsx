@@ -8,7 +8,7 @@ import RetourProduit from "./pages/Product/RetourProduit";
 import Footer from "./components/Footer/Footer";
 import BlogBenefits from "./components/Blog/BlogBenefits";
 import Newsletter from "./components/Newsletter/Newsletter";
-// import CookieModel from "./components/CookieModel/CookieModel";
+import CookieModel from "./components/CookieModel/CookieModel";
 import InfoSite from "./components/InfoSite/InfoSite";
 // import CarouselPro from "./components/Carroussel/Carroussel"
 import Favorites from "./pages/Favorites/Favorites";
@@ -21,9 +21,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import EditProduct from "./pages/admin/EditProduct";        
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminSales from "./pages/admin/AdminSales";
-import UsersManagement from "./pages/admin/UsersManagement"
-
-
+import UsersManagement from "./pages/admin/UsersManagement";
 import AdminRoute from "./helpers/AdminRoute";
 import FAQ from "./pages/FAQ/FAQ";
 import Authentification from "./pages/Authentification/Authentification";
@@ -52,7 +50,6 @@ import Confirmation from "./pages/Confirmation/Confirmation";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import QrCodePage from "./pages/App/QrCodePage"
 import QuiSommesNous from "./pages/PageSite/QuisommeNous";
-import PageCompte from "./pages/MonCompte/PageCompte"
 import BrandsPages from "./pages/BrandsPages/BrandsPages"
 
 
@@ -91,7 +88,6 @@ function App() {
           <Route path="/Cart" element={<Cart />} />
           <Route path="/add-adresse" element={<AddAdresse />} />
           <Route path="/Orders" element={<Orders />} />
-          <Route path="PageCompte" element={<PageCompte />} />  
           
           <Route path="/tracking/:orderId" element={<TrackOrder />} />
           <Route path="/delivery" element={<Delivery />} />
@@ -122,7 +118,7 @@ function App() {
 
         <BlogBenefits />
         <Newsletter />
-       {/* <CookieModel /> */} 
+   <CookieModel />
         <InfoSite />
       </div>
       <Footer />

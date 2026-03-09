@@ -120,7 +120,7 @@ const averageRating =
       <div className="footer__ul">
             <h3> NOS RÉCOMPENSES</h3>
            <Link to="/avis-clients" className="footer__logo"> 
-          <RatingStars rating={4.5} totalReviews={128} /> 
+          <RatingStars rating={4.5} totalReviews={28} /> 
            {/*    <RatingStars rating={averageRating.toFixed(1)} totalReviews={comments.length} />*/}
         </Link>
        </div> 
@@ -129,7 +129,7 @@ const averageRating =
         <a className="fa" title={t("footer.goTop")} href="/home">
         <FaChevronUp id="toTop" />
       </a>
-      <div>        <h3>© 2024 MyPerfume. © 2025 Tous droits réservés</h3></div>             
+      <div>        <h3>. © 2026 Tous droits réservés</h3></div>             
 {/** {t("footer.allRights")} **/}
     </footer>
   );

@@ -159,8 +159,7 @@ const handleToggleMenu = (e) => {
                   </button>
 
                   <Link to="/Orders">{t("user.orders")}</Link>
-                  <Link to="PageCompte">{t("user.history")}</Link>
-
+          
                   <button onClick={handleLogout}>
                     <LogOut size={16} /> {t("user.logout")}
                   </button>

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function BrandsPages() {
+    const { t } = useTranslation();
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   // Liste de marques de parfumerie (tu peux en ajouter autant que tu veux)
@@ -44,7 +46,7 @@ export default function BrandsPages() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>MARQUES</h1>
+      <h1 style={styles.title}>{t("header.titleVI")} </h1>
 
       {/* Alphabet */}
       <div style={styles.alphabet}>

@@ -229,24 +229,27 @@
   "intro": "Esta página explica como o nosso site utiliza cookies para melhorar a sua experiência e garantir o bom funcionamento do serviço.",
   "categories": "Categorias de cookies",
   "modify": "Você pode alterar suas preferências a qualquer momento usando o botão “Gerir meus cookies” no final da página.",
-  
   "pref_title": "Cookies de preferência: memorizam as suas escolhas.",
   "pref_desc": "Esses cookies guardam as suas escolhas (idioma, tema, preferências de navegação). Eles melhoram a sua experiência de usuário.",
-
   "analytics_title": "Cookies de análise: compreender o uso do site.",
   "analytics_desc": "Esses cookies nos ajudam a entender como os visitantes utilizam o site para melhorar o desempenho.",
-
   "necessary_title": "Cookies necessários.",
   "necessary_desc": "Esses cookies são essenciais para o funcionamento adequado do site e não podem ser desativados.",
-
   "audience_title": "Cookies de medição de audiência.",
   "audience_desc": "Esses cookies permitem medir o tráfego e melhorar nossos serviços.",
-
   "develop_title": "Cookies de desenvolvimento.",
   "develop_desc": "Esses cookies são usados para depuração, testes e melhorias durante o desenvolvimento do site.",
-
   "reject_all": "Recusar tudo",
   "save": "Guardar"
+},
+"CookieModel": {
+  "title": "MyPerfume respeita sua privacidade",
+  "cookieBlockI": "Utilizamos cookies para melhorar sua experiência. Ao continuar navegando, você aceita nosso uso de cookies.",
+  "cookieBlockII": "Dados de geolocalização, medição de audiência, conteúdo personalizado e desenvolvimento de serviços.",
+  "cookieLinkI": "Política de Cookies",
+  "cookieLinkII": "Política de Privacidade",
+  "cookieAcceptBoutton": "Aceitar",
+  "cookieRefuseBoutton": "Recusar"
 },
 "reviews": {
   "title": "Avaliações dos clientes",
@@ -480,7 +483,8 @@
 "home": {
   "AddCart": "Adicionar ao carrinho",
   "textPrix": "a partir de",
-  "textChargement": "Carregando produtos..."
+  "textChargement": "Carregando produtos...",
+   "plus": "Ver mais"
 },
 "Retour": {
   "title": "Produtos para devolver",
@@ -593,6 +597,74 @@
   "contact": "Contato",
   "faq": "FAQ",
   "delivery": "Entrega e devoluções"
+},
+"privacy": {
+  "title": "Política de Privacidade",
+
+  "introTitle": "1. Introdução",
+  "introText": "Esta política de privacidade tem como objetivo informar os utilizadores do site https://perfumealgarve.com sobre como os seus dados pessoais são recolhidos, utilizados e protegidos, em conformidade com o Regulamento Geral de Proteção de Dados (RGPD).",
+
+  "controllerTitle": "2. Responsável pelo tratamento",
+  "controllerText": "O responsável pelo tratamento dos dados é:",
+  "company": "Perfume Algarve",
+  "address": "Endereço: 3VCW+33 Quarteira, Portugal",
+  "email": "Email: contact@perfumealgarve.com",
+
+  "dataTitle": "3. Dados recolhidos",
+  "dataText": "Os dados pessoais recolhidos no site podem incluir:",
+  "data1": "Nome e apelido",
+  "data2": "Endereço de email",
+  "data3": "Endereço postal",
+  "data4": "Número de telefone",
+  "data5": "Dados de encomenda e pagamento",
+  "data6": "Endereço de entrega",
+
+  "purposeTitle": "4. Finalidade do tratamento",
+  "purposeText": "Os dados pessoais são recolhidos para as seguintes finalidades:",
+  "purpose1": "Gestão de encomendas e entregas",
+  "purpose2": "Gestão da relação com o cliente",
+  "purpose3": "Processamento de pagamentos",
+  "purpose4": "Cumprimento de obrigações legais",
+  "purpose5": "Melhoria da experiência do utilizador",
+
+  "retentionTitle": "5. Período de conservação",
+  "retentionText": "Os dados pessoais são conservados apenas durante o tempo necessário para as finalidades para as quais foram recolhidos:",
+  "retention1": "Dados de clientes: duração da relação comercial",
+  "retention2": "Dados de faturação: 10 anos (obrigação legal)",
+  "retention3": "Dados de navegação: máximo 13 meses",
+
+  "sharingTitle": "6. Partilha de dados",
+  "sharingText": "Os dados pessoais podem ser transmitidos aos seguintes prestadores:",
+  "sharing1": "Prestadores de pagamento (Stripe, PayPal, etc.)",
+  "sharing2": "Transportadoras e serviços de entrega",
+  "sharing3": "Prestadores técnicos (alojamento, manutenção)",
+  "sharingNote": "Nenhum dado pessoal é vendido a terceiros.",
+
+  "securityTitle": "7. Segurança dos dados",
+  "securityText": "O site implementa medidas técnicas e organizacionais para garantir a segurança e confidencialidade dos dados pessoais.",
+
+  "rightsTitle": "8. Direitos dos utilizadores",
+  "rightsText": "De acordo com o RGPD, o utilizador tem os seguintes direitos:",
+  "right1": "Direito de acesso",
+  "right2": "Direito de retificação",
+  "right3": "Direito ao apagamento",
+  "right4": "Direito à limitação do tratamento",
+  "right5": "Direito de oposição",
+  "right6": "Direito à portabilidade dos dados",
+  "rightsContact": "Para exercer estes direitos, o utilizador pode contactar: contact@perfumealgarve.com",
+
+  "cookiesTitle": "9. Cookies",
+  "cookiesText": "O site utiliza cookies para melhorar a experiência do utilizador e medir a audiência. O utilizador pode configurar ou recusar cookies através do seu navegador ou de um banner de consentimento.",
+
+  "changesTitle": "10. Alteração da política",
+  "changesText": "Esta política de privacidade pode ser modificada a qualquer momento. A versão em vigor é a publicada no site https://perfumealgarve.com."
+},
+"favorites": {
+  "h1": "Meus Favoritos",
+  "p": "Você não tem produtos nos seus favoritos.",
+  "img": "Imagem indisponível",
+  "minimum": " A partir de",
+  "button": "Remover"
 }
 
 }

@@ -162,7 +162,7 @@ const Home = () => {
       {visibleProducts < filtered.length && (
   <div className="load-more">
     <button onClick={() => setVisibleProducts(visibleProducts + 8)}>
-      Voir plus
+   {t("home.plus")}
     </button>
   </div>
 )}

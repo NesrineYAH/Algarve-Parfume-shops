@@ -11,7 +11,7 @@ const MentionsLegales = () => {
         
 <p>{t('TextInfo.p')}</p>
 <br />
- <h4>1. {t('TextInfo.info')}:</h4>
+ <h2>1. {t('TextInfo.info')}:</h2>
 
 <span  style={{whiteSpace:"nowrap"}}>{t('TextInfo.pI')} : <span style={{fontWeight: 'bold'}}> {t('TextInfo.nom')}</span></span> <br/>
 <span >{t('TextInfo.pS')}<span style={{fontWeight: 'bold'}}>{t('TextInfo.pS1')}</span></span> <br/>
@@ -23,35 +23,32 @@ const MentionsLegales = () => {
 <p>{t('TextInfo.pr2')}</p>
 <br />
 
-<h4>2. {t('TextInfo.infoI')}:</h4>
+<h2>2. {t('TextInfo.infoI')}:</h2>
 
 <p> {t('TextInfo.prI')}: <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer">https://perfumealgarve.com </a> {t('TextInfo.prII')}</p>
 <p>  {t('TextInfo.prIII')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer"> https://perfumealgarve.com </a> {t('TextInfo.prIIII')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer"> https://perfumealgarve.com</a> {t('TextInfo.prIIII1')} <span style={{fontWeight: 'bold'}}> {t('TextInfo.nom')}.</span></p>
 
 <br />
 
-<h4>3. {t('TextInfo.infoII')}:</h4> 
+<h2>3. {t('TextInfo.infoII')}:</h2> 
 
  <p>{t('TextInfo.prIII')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer">https://perfumealgarve.com </a> {t('TextInfo.pIIIII')}</p>
  <p>{t('TextInfo.prIII')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer">https://perfumealgarve.com </a> {t('TextInfo.pT1')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer">https://perfumealgarve.com </a> {t('TextInfo.pT2') }.</p> 
 
 
   <br />
-  <h4>4. {t('TextInfo.infoIII')}:</h4>
+  <h2>4. {t('TextInfo.infoIII')}:</h2>
  <p> <span style={{fontWeight: 'bold'}}> {t('TextInfo.nom')}</span> {t('TextInfo.pT3')}…</p>
  <p>{t('TextInfo.pT4')} <a href="https://perfumealgarve.com" target="_blank" rel="noreferrer">https://perfumealgarve.com</a>, {t('TextInfo.pT5')} <span style={{fontWeight: 'bold'}}> {t('TextInfo.nom')}</span> {t('TextInfo.pTT5')}  <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer"> https://perfumealgarve.com </a> {t('TextInfo.pT6')}.</p>
     <br />  
 
     
-    <h4>5. {t('TextInfo.infoVII')}:</h4> 
+    <h2>5. {t('TextInfo.infoVII')}:</h2> 
 
-   <p> {t('TextInfo.prIII')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer"> https://perfumealgarve.com </a> {t('TextInfo.pT9')}
-
-
-</p>
+   <p> {t('TextInfo.prIII')} <a href="https://perfumealgarve.com " target="_blank" rel="noreferrer"> https://perfumealgarve.com </a> {t('TextInfo.pT9')}</p>
 
 <br/>
-    <h4>6. {t('TextInfo.infoVI')}:</h4>
+    <h2>6. {t('TextInfo.infoVI')}:</h2>
 
 
 <p>{t('TextInfo.pT7')}</p>

@@ -3,8 +3,10 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Favorites.scss";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import { useTranslation } from "react-i18next";
 
 export default function Favorites() {
+      const { t } = useTranslation();
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
 
   // 🔒 Sécurisation
@@ -12,10 +14,11 @@ export default function Favorites() {
 
   return (
     <div className="favorites">
-      <h2>❤️ Mes Favoris</h2>
+      <h1>❤️ {t("favorites.h1")} </h1>
 
       {safeFavorites.length === 0 ? (
-        <p>Vous n’avez aucun produit dans vos favoris.</p>
+
+              <p>{t("favorites.p")}</p>
       ) : (
         <div className="favorites__grid">
           {safeFavorites.map((product) => (
@@ -39,7 +42,7 @@ export default function Favorites() {
 
                 {product.options?.length > 0 && (
                   <p>
-                    À partir de{" "}
+                   {t("favorites.minimum")}{" "}
                     <strong>
                       {product.options[0].prix.toFixed(2)} €
                     </strong>
@@ -50,7 +53,7 @@ export default function Favorites() {
                   className="remove-btn"
                   onClick={() => toggleFavorite(product)}
                 >
-                  Retirer ❤️
+               <button>{t("favorites.button")}</button>
                 </button>
               </div>
             </div>

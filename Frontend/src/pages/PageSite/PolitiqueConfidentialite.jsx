@@ -1,134 +1,106 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import "./PageSite.scss";
 
 const PolitiqueConfidentialite = () => {
+
+  const { t } = useTranslation();
+
   return (
     <div id="legal-page">
-      <h1>Politique de confidentialité</h1>
+
+      <h1>{t("privacy.title")}</h1>
 
       <section>
-        <h2>1. Introduction</h2>
-        <p>
-          La présente politique de confidentialité a pour objectif d’informer les utilisateurs
-          du site <strong>https://perfumealgarve.com</strong> sur la manière dont leurs données personnelles
-          sont collectées, utilisées et protégées, conformément au
-          Règlement Général sur la Protection des Données (RGPD).
-        </p>
+        <h2>{t("privacy.introTitle")}</h2>
+        <p>{t("privacy.introText")}</p>
       </section>
 
       <section>
-        <h2>2. Responsable du traitement</h2>
-        <p>
-          Le responsable du traitement des données est :
-        </p>
+        <h2>{t("privacy.controllerTitle")}</h2>
+        <p>{t("privacy.controllerText")}</p>
         <ul>
-          <li><strong>Perfume Algarve :</strong></li>
-          <li><strong>Adresse : 3VCW+33 Quarteira, Portugal</strong> </li>
-          <li><strong>Email : contact@perfumealgarve.com</strong> </li>
+          <li><strong>{t("privacy.company")}</strong></li>
+          <li><strong>{t("privacy.address")}</strong></li>
+          <li><strong>{t("privacy.email")}</strong></li>
         </ul>
       </section>
 
       <section>
-        <h2>3. Données collectées</h2>
-        <p>
-          Les données personnelles collectées sur le site peuvent inclure :
-        </p>
+        <h2>{t("privacy.dataTitle")}</h2>
+        <p>{t("privacy.dataText")}</p>
         <ul>
-          <li>Nom et prénom</li>
-          <li>Adresse email</li>
-          <li>Adresse postale</li>
-          <li>Numéro de téléphone</li>
-          <li>Données de commande et de paiement</li>
-          <li>Adresse de livraison</li>
+          <li>{t("privacy.data1")}</li>
+          <li>{t("privacy.data2")}</li>
+          <li>{t("privacy.data3")}</li>
+          <li>{t("privacy.data4")}</li>
+          <li>{t("privacy.data5")}</li>
+          <li>{t("privacy.data6")}</li>
         </ul>
       </section>
 
       <section>
-        <h2>4. Finalités du traitement</h2>
-        <p>
-          Les données personnelles sont collectées pour les finalités suivantes :
-        </p>
+        <h2>{t("privacy.purposeTitle")}</h2>
+        <p>{t("privacy.purposeText")}</p>
         <ul>
-          <li>Gestion des commandes et livraisons</li>
-          <li>Gestion de la relation client</li>
-          <li>Traitement des paiements</li>
-          <li>Respect des obligations légales</li>
-          <li>Amélioration de l’expérience utilisateur</li>
+          <li>{t("privacy.purpose1")}</li>
+          <li>{t("privacy.purpose2")}</li>
+          <li>{t("privacy.purpose3")}</li>
+          <li>{t("privacy.purpose4")}</li>
+          <li>{t("privacy.purpose5")}</li>
         </ul>
       </section>
 
       <section>
-        <h2>5. Durée de conservation</h2>
-        <p>
-          Les données personnelles sont conservées uniquement pendant la durée
-          nécessaire aux finalités pour lesquelles elles ont été collectées :
-        </p>
+        <h2>{t("privacy.retentionTitle")}</h2>
+        <p>{t("privacy.retentionText")}</p>
         <ul>
-          <li>Données clients : durée de la relation commerciale</li>
-          <li>Données de facturation : 10 ans (obligation légale)</li>
-          <li>Données de navigation : 13 mois maximum</li>
+          <li>{t("privacy.retention1")}</li>
+          <li>{t("privacy.retention2")}</li>
+          <li>{t("privacy.retention3")}</li>
         </ul>
       </section>
 
       <section>
-        <h2>6. Partage des données</h2>
-        <p>
-          Les données personnelles peuvent être transmises aux prestataires suivants :
-        </p>
+        <h2>{t("privacy.shareTitle")}</h2>
+        <p>{t("privacy.shareText")}</p>
         <ul>
-          <li>Prestataires de paiement (Stripe, PayPal, etc.)</li>
-          <li>Transporteurs et services de livraison</li>
-          <li>Prestataires techniques (hébergement, maintenance)</li>
+          <li>{t("privacy.share1")}</li>
+          <li>{t("privacy.share2")}</li>
+          <li>{t("privacy.share3")}</li>
         </ul>
-        <p>
-          Aucune donnée personnelle n’est vendue à des tiers.
-        </p>
+        <p>{t("privacy.shareNote")}</p>
       </section>
 
       <section>
-        <h2>7. Sécurité des données</h2>
-        <p>
-          Le site met en œuvre des mesures techniques et organisationnelles
-          afin de garantir la sécurité et la confidentialité des données personnelles.
-        </p>
+        <h2>{t("privacy.securityTitle")}</h2>
+        <p>{t("privacy.securityText")}</p>
       </section>
 
       <section>
-        <h2>8. Droits des utilisateurs</h2>
-        <p>
-          Conformément au RGPD, l’utilisateur dispose des droits suivants :
-        </p>
+        <h2>{t("privacy.rightsTitle")}</h2>
+        <p>{t("privacy.rightsText")}</p>
         <ul>
-          <li>Droit d’accès</li>
-          <li>Droit de rectification</li>
-          <li>Droit à l’effacement</li>
-          <li>Droit à la limitation du traitement</li>
-          <li>Droit d’opposition</li>
-          <li>Droit à la portabilité des données</li>
+          <li>{t("privacy.right1")}</li>
+          <li>{t("privacy.right2")}</li>
+          <li>{t("privacy.right3")}</li>
+          <li>{t("privacy.right4")}</li>
+          <li>{t("privacy.right5")}</li>
+          <li>{t("privacy.right6")}</li>
         </ul>
-        <p>
-          Pour exercer ces droits, l’utilisateur peut contacter :
-          <strong> contact@perfumealgarve.com </strong>
-        </p>
+        <p>{t("privacy.contact")}</p>
       </section>
 
       <section>
-        <h2>9. Cookies</h2>
-        <p>
-          Le site utilise des cookies afin d’améliorer l’expérience utilisateur
-          et de mesurer l’audience.  
-          L’utilisateur peut configurer ou refuser les cookies via son navigateur
-          ou un bandeau de consentement.
-        </p>
+        <h2>{t("privacy.cookiesTitle")}</h2>
+        <p>{t("privacy.cookiesText")}</p>
       </section>
 
       <section>
-        <h2>10. Modification de la politique</h2>
-        <p>
-          La présente politique de confidentialité peut être modifiée à tout moment.
-          La version en vigueur est celle publiée sur le site https://perfumealgarve.com.
-        </p>
+        <h2>{t("privacy.updateTitle")}</h2>
+        <p>{t("privacy.updateText")}</p>
       </section>
+
     </div>
   );
 };

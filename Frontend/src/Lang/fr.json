@@ -239,6 +239,15 @@
   "develop_desc": "Ces cookies sont utilisés pour le débogage, les tests et l'amélioration du site durant son développement.",
   "reject_all": "Refuser tout", "save": "Enregistrer"
  },
+ "CookieModel" : {
+  "title" : "MyPerfume respecte votre vie privée",
+  "cookieBlockI": "Nous utilisons des cookies pour améliorer votre expérience. En poursuivant votre navigation, vous acceptez notre utilisation des cookies.",
+  "cookieBlockII": "Données de géolocalisation, mesure d’audience, contenu personnalisé et développement de services.",
+  "cookieLinkI": "Politique de Cookies",
+  "cookieLinkII": "Coofidntialités",
+ "cookieAcceptBoutton":  "Accepter",
+  "cookieRefuseBoutton":  "Refuser"
+ },
 
 "reviews": {
       "title": "Avis clients",
@@ -471,7 +480,8 @@
 "home": {
   "AddCart": "Ajouter au panier",
   "textPrix" :"à partir de",
-  "textChargement" : "Chargement des produits..."
+  "textChargement" : "Chargement des produits...",
+  "plus": "   Voir plus "
 }, 
 "Retour": {
   "title": "Produits à retourner", 
@@ -587,7 +597,76 @@
   "contact": "Contact",
   "faq": "FAQ",
   "delivery": "Livraison & retours"
+},
+"privacy": {
+"title":"Politique de confidentialité",
+
+"introTitle":"1. Introduction",
+"introText":"La présente politique de confidentialité informe les utilisateurs du site https://perfumealgarve.com sur la manière dont leurs données personnelles sont collectées, utilisées et protégées conformément au RGPD.",
+
+"controllerTitle":"2. Responsable du traitement",
+"controllerText":"Le responsable du traitement des données est :",
+"company":"Perfume Algarve",
+"address":"Adresse : 3VCW+33 Quarteira, Portugal",
+"email":"Email : contact@perfumealgarve.com",
+
+"dataTitle":"3. Données collectées",
+"dataText":"Les données personnelles collectées peuvent inclure :",
+"data1":"Nom et prénom",
+"data2":"Adresse email",
+"data3":"Adresse postale",
+"data4":"Numéro de téléphone",
+"data5":"Données de commande et paiement",
+"data6":"Adresse de livraison",
+
+"purposeTitle":"4. Finalités du traitement",
+"purposeText":"Les données sont utilisées pour :",
+"purpose1":"Gestion des commandes",
+"purpose2":"Relation client",
+"purpose3":"Traitement des paiements",
+"purpose4":"Respect des obligations légales",
+"purpose5":"Amélioration de l'expérience utilisateur",
+
+"retentionTitle":"5. Durée de conservation",
+"retentionText":"Les données sont conservées pour :",
+"retention1":"Durée de la relation commerciale",
+"retention2":"Facturation : 10 ans",
+"retention3":"Cookies : 13 mois",
+
+"shareTitle":"6. Partage des données",
+"shareText":"Les données peuvent être transmises à :",
+"share1":"Prestataires de paiement",
+"share2":"Transporteurs",
+"share3":"Prestataires techniques",
+"shareNote":"Aucune donnée n'est vendue à des tiers.",
+
+"securityTitle":"7. Sécurité des données",
+"securityText":"Des mesures techniques garantissent la sécurité des données.",
+
+"rightsTitle":"8. Droits des utilisateurs",
+"rightsText":"Conformément au RGPD vous disposez des droits suivants :",
+"right1":"Droit d'accès",
+"right2":"Droit de rectification",
+"right3":"Droit d'effacement",
+"right4":"Droit de limitation",
+"right5":"Droit d'opposition",
+"right6":"Droit à la portabilité",
+"contact":"Pour exercer vos droits contactez : contact@perfumealgarve.com",
+
+"cookiesTitle":"9. Cookies",
+"cookiesText":"Le site utilise des cookies pour améliorer l'expérience utilisateur et mesurer l'audience.",
+
+"updateTitle":"10. Modification",
+"updateText":"Cette politique peut être modifiée à tout moment."
+}, 
+"favorites" : {
+  "h1": "Mes Favoris",
+  "p": "Vous n’avez aucun produit dans vos favoris.",
+  "img" : "Image non disponible",
+  "minimum": " À partir de",
+  "button" : "Retirer"
 }
+
 }
 
 
