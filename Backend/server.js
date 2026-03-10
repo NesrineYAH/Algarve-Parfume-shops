@@ -8,8 +8,6 @@ require("./mongoDB/DB");
 const http = require("http");
 const app = require("./app");
 
-
-
 app.use(express.json());
 // Normalisation du port
 const normalizePort = (val) => {

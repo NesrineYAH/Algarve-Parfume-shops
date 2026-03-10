@@ -37,7 +37,7 @@ app.use(
 // ⚡ Middlewares globaux
 app.use(cors({
   //  origin: "http://localhost:5173",
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173", "https://cv.nesrinebekkar.com"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -84,7 +84,6 @@ app.use("/api/users/favorites", favoritesRoutes);
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });
-
 
 module.exports = app;
 
