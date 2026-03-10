@@ -12,8 +12,6 @@ const BlogPage = () => {
   
                    <h1>{t("blog.title")}  </h1>
         <img src={nature}  alt="photo nature parfum" />
-   
-  
 
         <p>{t("blog.subtitle")}</p>
       </header>

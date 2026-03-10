@@ -90,11 +90,3 @@ module.exports = app;
 
 //                                       stripe listen --forward-to localhost:5001/api/stripe/webhook
 
-
-/* app.js ⚠️ STRIPE WEBHOOK (RAW BODY) — DOIT ÊTRE AU DÉBUT
-const stripeWebhook = require("./routes/stripeWebhook");
-app.use(
-  "/api/stripe/webhook",
-  bodyParser.raw({ type: "application/json" })
-);
-*/
