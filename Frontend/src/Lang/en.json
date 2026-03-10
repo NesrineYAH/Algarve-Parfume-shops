@@ -667,19 +667,23 @@
 "blog": {
     "title": "PARFUME ALGARVE - Natural Perfumery",
     "subtitle": "The art of creating perfumes with essential oils",
-    "section1": {
+  "section1": {
+    "title": "Why it is essential to choose your perfume carefully",
+    "text": "Discover our wellness products for a holistic experience. Massage oils, practical roll-ons with essential oils, dietary supplements, ENT range, and respiratory solutions. For sleep and relaxation, soothing herbal infusions and teas. Inspired by Mont Ventoux, carefully formulated for your well-being."
+  },
+    "section2": {
       "title": "The beauty of natural perfumes",
       "text": "At PARFUME ALGARVE we believe in the beauty of nature. Our fragrances are inspired by the landscapes of southern Portugal and crafted with carefully selected essential oils."
     },
-    "section2": {
+    "section3": {
       "title": "Why use essential oils",
       "text": "Essential oils are extracted from plants, flowers and citrus fruits. They offer rich natural aromas and may also bring relaxing or uplifting effects through aromatherapy."
     },
-    "section3": {
+    "section4": {
       "title": "The art of composition",
       "text": "A perfume is built with three main notes: top notes, heart notes and base notes. Oils like bergamot bring freshness, rose adds a floral touch and sandalwood provides depth and elegance."
     },
-    "section4": {
+    "section5": {
       "title": "A sensory experience",
       "text": "Wearing a natural perfume is a unique experience. Essential oils interact with the skin to create a personal and elegant fragrance signature."
     },

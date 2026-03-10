@@ -669,19 +669,24 @@
 "blog": {
     "title": "PARFUME ALGARVE - Perfumería natural",
     "subtitle": "El arte de crear perfumes con aceites esenciales",
+
     "section1": {
+    "title": "Por que é essencial escolher o seu perfume com cuidado",
+    "text": "Descubra os nossos produtos de bem-estar para uma experiência holística. Óleos de massagem, roll-ons práticos com óleos essenciais, suplementos alimentares, linha ORL e soluções respiratórias. Para o sono e o relaxamento, infusões e chás calmantes. Inspirados no Mont Ventoux, formulados com cuidado para o seu bem-estar."
+    },
+    "section2": {
       "title": "La belleza de los perfumes naturales",
       "text": "En PARFUME ALGARVE creemos en la belleza de la naturaleza. Nuestras fragancias están inspiradas en los paisajes del sur de Portugal y utilizan aceites esenciales cuidadosamente seleccionados."
     },
-    "section2": {
+    "section3": {
       "title": "Por qué usar aceites esenciales",
       "text": "Los aceites esenciales se extraen de plantas, flores y cítricos. Ofrecen aromas naturales ricos y también pueden aportar beneficios relajantes o energizantes."
     },
-    "section3": {
+    "section4": {
       "title": "El arte de la composición",
       "text": "Un perfume se construye con tres notas principales: notas de salida, notas de corazón y notas de fondo. La bergamota aporta frescura, la rosa añade un toque floral y el sándalo da profundidad."
     },
-    "section4": {
+    "section5": {
       "title": "Una experiencia sensorial",
       "text": "Usar un perfume natural es una experiencia única. Los aceites esenciales reaccionan con la piel creando una firma olfativa personal."
     },

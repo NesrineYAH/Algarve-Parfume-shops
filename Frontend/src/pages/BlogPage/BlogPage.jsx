@@ -17,7 +17,7 @@ const BlogPage = () => {
 
         <p>{t("blog.subtitle")}</p>
       </header>
-        <p>        Découvrez nos produits bien-être, pour une expérience holistique. Huiles de massage, roll-ons pratiques aux huiles essentielles, compléments alimentaires, gamme ORL, et solutions respiratoires. Pour sommeil et détente, tisanes et thés apaisants. Inspirés par le Mont-Ventoux, formulés avec soin pour votre bien-être.
+        <p>        
 </p>
       <section className="blog-section">
         <h2>{t("blog.section1.title")} </h2>
