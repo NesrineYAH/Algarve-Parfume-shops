@@ -58,7 +58,8 @@ export async function getCurrentUser() {
     });
 
     if (!res.ok) return null;
-
+    //11/03/2016 add userLang
+    const userLang = navigator.language.slice(0, 2);
     const data = await res.json();
     if (!data.user) return null;
 
@@ -68,6 +69,7 @@ export async function getCurrentUser() {
       prenom: data.user.prenom,
       email: data.user.email,
       role: data.user.role,
+      lang: userLang
     };
 
   } catch (err) {

@@ -12,46 +12,87 @@ const mongoose = require("mongoose");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
 const signatureToken = process.env.JWT_SECRET;
+const emailTexts = {
+  fr: {
+    subject: "Bienvenue sur notre plateforme Algarve Parfume !",
+    text: (prenom) => `Bonjour ${prenom}, merci de vous être inscrit sur notre plateforme !`,
+    html: (prenom) => `<p>Bonjour <b>${prenom}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`
+  },
+  en: {
+    subject: "Welcome to our platform Algarve Parfume!",
+    text: (prenom) => `Hello ${prenom}, thank you for signing up on our platform!`,
+    html: (prenom) => `<p>Hello <b>${prenom}</b>,</p><p>Thank you for signing up on our platform!</p>`
+  },
+  es: {
+    subject: "¡Bienvenido a nuestra plataforma Algarve Parfume!",
+    text: (prenom) => `Hola ${prenom}, ¡gracias por registrarte en nuestra plataforma!`,
+    html: (prenom) => `<p>Hola <b>${prenom}</b>,</p><p>¡Gracias por registrarte en nuestra plataforma!</p>`
+  },
+  pt: {
+    subject: "Bem-vindo à nossa plataforma Algarve Parfume!",
+    text: (prenom) => `Olá ${prenom}, obrigado por se registrar na nossa plataforma!`,
+    html: (prenom) => `<p>Olá <b>${prenom}</b>,</p><p>Obrigado por se registrar na nossa plataforma!</p>`
+  }
+};
 
 exports.register = async (req, res) => {
   try {
-    const { nom, prenom, email, password } = req.body;
+    const { nom, prenom, email, password, lang } = req.body;
 
-    // Validation email & password
     if (!emailRegex.test(email))
       return res.status(400).json({ message: "Email invalide" });
+
     if (!passwordRegex.test(password))
       return res.status(400).json({
         message:
           "Mot de passe invalide (8-32 caractères, 1 majuscule, 1 chiffre, 1 spécial !@#$%^&*)",
       });
 
-    // Vérifie si l'utilisateur existe déjà
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "Cet email est déjà utilisé." });
 
-    // Hachage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Création de l'utilisateur
-    const user = new User({ nom, prenom, email, password: hashedPassword });
-    await user.save();
+    const normalizedLang = lang ? lang.slice(0, 2) : "pt";
+    const userLang = emailTexts[normalizedLang] ? normalizedLang : "pt";
 
-    // ⚡ Envoi du mail de bienvenue
-    await sendEmail({
-      to: email,
-      subject: "Bienvenue sur notre plateforme  Algarve Parfume !",
-      text: `Bonjour ${prenom}, merci de vous être inscrit sur notre plateforme !`,
-      html: `<p>Bonjour <b>${prenom}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`,
+    const mailContent = emailTexts[userLang];
+
+    const user = new User({
+      nom,
+      prenom,
+      email,
+      password: hashedPassword,
+      lang: userLang
     });
 
-    res.status(201).json({ message: "Utilisateur créé avec succès", user });
+    await user.save();
+
+    await sendEmail({
+      to: email,
+      subject: mailContent.subject,
+      text: mailContent.text(prenom),
+      html: mailContent.html(prenom),
+    });
+
+    res.status(201).json({
+      message: "Utilisateur créé avec succès",
+      user: {
+        id: user._id,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+        lang: user.lang
+      }
+    });
+
   } catch (error) {
     console.error("Erreur dans register :", error);
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -100,7 +141,7 @@ exports.login = async (req, res) => {
         nom: user.nom,
         prenom: user.prenom,
         email: user.email,
-        role: user.role, // 👈 IMPORTANT !
+        role: user.role,
       },
     });
   } catch (error) {
