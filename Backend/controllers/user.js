@@ -8,32 +8,11 @@ require("dotenv").config();
 const { sendEmail } = require("../utils/mailer");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
+const { emailTexts, resetEmailTexts } = require("../translations/emailTexts");
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,32}$/;
 const signatureToken = process.env.JWT_SECRET;
-const emailTexts = {
-  fr: {
-    subject: "Bienvenue sur notre plateforme Algarve Parfume !",
-    text: (prenom) => `Bonjour ${prenom}, merci de vous être inscrit sur notre plateforme !`,
-    html: (prenom) => `<p>Bonjour <b>${prenom}</b>,</p><p>Merci de vous être inscrit sur notre plateforme !</p>`
-  },
-  en: {
-    subject: "Welcome to our platform Algarve Parfume!",
-    text: (prenom) => `Hello ${prenom}, thank you for signing up on our platform!`,
-    html: (prenom) => `<p>Hello <b>${prenom}</b>,</p><p>Thank you for signing up on our platform!</p>`
-  },
-  es: {
-    subject: "¡Bienvenido a nuestra plataforma Algarve Parfume!",
-    text: (prenom) => `Hola ${prenom}, ¡gracias por registrarte en nuestra plataforma!`,
-    html: (prenom) => `<p>Hola <b>${prenom}</b>,</p><p>¡Gracias por registrarte en nuestra plataforma!</p>`
-  },
-  pt: {
-    subject: "Bem-vindo à nossa plataforma Algarve Parfume!",
-    text: (prenom) => `Olá ${prenom}, obrigado por se registrar na nossa plataforma!`,
-    html: (prenom) => `<p>Olá <b>${prenom}</b>,</p><p>Obrigado por se registrar na nossa plataforma!</p>`
-  }
-};
 
 exports.register = async (req, res) => {
   try {
@@ -117,23 +96,19 @@ exports.login = async (req, res) => {
         role: user.role,
         nom: user.nom,
         prenom: user.prenom,
-        email: user.email   // optionnel si tu veux aussi l’avoir
+        email: user.email
       },
       signatureToken,
       { expiresIn: "24h" }
     );
 
-    // ⭐ AJOUT ESSENTIEL : envoyer le token dans un cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // true en production
+      secure: false,
       sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    console.log("Token généré :", token);
-    console.log("ROLE UTILISATEUR :", user.role);
-    console.log("Nom UTILISATEUR :", user.nom);
     //      token,
     res.status(200).json({
       user: {
@@ -169,32 +144,44 @@ exports.validate = (method) => {
 exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Email introuvable" });
+    if (!user)
+      return res.status(400).json({ message: "Email introuvable" });
 
-    // Générer un token aléatoire
     const resetToken = crypto.randomBytes(32).toString("hex");
 
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000; // 15 min
+    user.resetPasswordExpires = Date.now() + 15 * 60 * 1000;
+
     await user.save();
 
-    // Lien vers frontend
     const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
+
+    // langue utilisateur
+    const userLang = resetEmailTexts[user.lang] ? user.lang : "fr";
+    const mailContent = resetEmailTexts[userLang];
 
     await sendEmail({
       to: email,
-      subject: t("email.reset.subject"),
+      subject: mailContent.subject,
       html: `
-    <p>${t("email.reset.line1")}</p>
-    <p>${t("email.reset.line2")}</p>
-    <a href="${resetLink}">${t("email.reset.button")}</a>
-    <p>${t("email.reset.expire")}</p>
-  `
+        <p>${mailContent.line1}</p>
+        <p>${mailContent.line2}</p>
+        <a href="${resetLink}" style="
+          display:inline-block;
+          padding:10px 20px;
+          background:#000;
+          color:#fff;
+          text-decoration:none;
+          border-radius:5px;">
+          ${mailContent.button}
+        </a>
+        <p>${mailContent.expire}</p>
+      `
     });
 
     res.json({ message: "Email envoyé !" });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Erreur serveur" });
@@ -202,43 +189,43 @@ exports.forgotPassword = async (req, res) => {
 };
 exports.resetPassword = async (req, res) => {
   try {
-    const userId = req.user.userId; // ✅ depuis le JWT (cookie HTTP-only)
+    const userId = req.user.userId; // depuis JWT
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "Mot de passe actuel et nouveau mot de passe requis" });
+    }
+
+    if (!passwordRegex.test(newPassword)) {
       return res.status(400).json({
-        message: "Mot de passe actuel et nouveau mot de passe requis",
+        message: "Mot de passe invalide (8-32 caractères, 1 majuscule, 1 chiffre, 1 spécial !@#$%^&*)",
       });
     }
 
     const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "Utilisateur introuvable" });
-    }
+    if (!user) return res.status(404).json({ message: "Utilisateur introuvable" });
 
-    // 🔐 Vérifier l'ancien mot de passe
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) {
-      return res
-        .status(401)
-        .json({ message: "Mot de passe actuel incorrect" });
+    if (!isMatch) return res.status(401).json({ message: "Mot de passe actuel incorrect" });
+
+    if (await bcrypt.compare(newPassword, user.password)) {
+      return res.status(400).json({ message: "Le nouveau mot de passe ne peut pas être identique à l'ancien" });
     }
 
-    // 🔁 Mettre à jour le mot de passe
     user.password = await bcrypt.hash(newPassword, 10);
-
-    // (optionnel) Nettoyage ancien reset token si existant
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
     await user.save();
 
     res.json({ message: "Mot de passe modifié avec succès !" });
+
   } catch (err) {
     console.error("resetPassword error:", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
 exports.getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password"); // exclure le mot de passe
@@ -402,6 +389,48 @@ exports.updatePreferences = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+
+
+/*
+exports.resetPassword = async (req, res) => {
+  try {
+    const userId = req.user.userId; 
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Mot de passe actuel et nouveau mot de passe requis",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable" });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ message: "Mot de passe actuel incorrect" });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: "Mot de passe modifié avec succès !" });
+  } catch (err) {
+    console.error("resetPassword error:", err);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};*/
+
+
+
 /*
  Conclusion
 
