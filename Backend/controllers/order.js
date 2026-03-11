@@ -5,7 +5,7 @@ const Cart = require("../Model/Cart");
 const mongoose = require("mongoose");
 const { sendEmail } = require("../utils/mailer");
 const { shippedEmailTexts, deliveredEmailTexts, refundEmailTexts, orderCreatedEmailTexts } = require("../translations/emailTexts");
-
+/*
 exports.createOrder = async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -103,6 +103,7 @@ exports.createOrder = async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 };
+*/
 exports.updateOrder = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);
@@ -481,7 +482,6 @@ exports.cancelOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-// ➤ Récupérer toutes les commandes pour admin / vendeur
 exports.getAllOrdersAdmin = async (req, res) => {
     try {
         const orders = await Order.find()
@@ -560,22 +560,17 @@ exports.refundOrder = async (req, res) => {
         return res.status(500).json({ message: "Erreur serveur" });
     }
 };
-// Fonction séparée pour envoyer l'email
 async function sendRefundEmail(order) {
 
     const userLang = refundEmailTexts[order.userId.lang]
         ? order.userId.lang
-        : "fr";
+        : "pt";
 
     const mailContent = refundEmailTexts[userLang];
-
     const html = `
     <h2>${mailContent.title}</h2>
-
     <p>${mailContent.hello(order.userId.prenom)}</p>
-
     <p>${mailContent.text1(order._id)}</p>
-
     <p>${mailContent.amount(order.totalPrice)}</p>
 
     <a href="http://localhost:5173/MonCompte"
@@ -604,8 +599,6 @@ async function sendRefundEmail(order) {
 
 }
 
-
-/*
 exports.createOrder = async (req, res) => {
     try {
         if (!req.user || !req.user.userId) {
@@ -673,15 +666,3 @@ exports.createOrder = async (req, res) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-*/

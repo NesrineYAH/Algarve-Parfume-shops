@@ -215,13 +215,77 @@ const orderCreatedEmailTexts = {
   }
 };
 
+const returnRequestEmailTexts = {
+  fr: {
+    subject: "Confirmation de votre retour",
+    title: "Demande de retour confirmée",
+    hello: (name) => `Bonjour ${name},`,
+    orderText: (orderId) =>
+      `Votre demande de retour pour la commande ${orderId} a bien été enregistrée.`,
+    productsTitle: "Produits retournés :",
+    reason: "Raison :",
+    details: "Détails :",
+    labelsTitle: "📦 Étiquette(s) de retour",
+    downloadLabel: (index) =>
+      `📄 Télécharger l’étiquette ${index ? `#${index}` : ""}`,
+    thanks: "Merci pour votre confiance.",
+  },
+
+  en: {
+    subject: "Return request confirmation",
+    title: "Return request confirmed",
+    hello: (name) => `Hello ${name},`,
+    orderText: (orderId) =>
+      `Your return request for order ${orderId} has been successfully registered.`,
+    productsTitle: "Returned products:",
+    reason: "Reason:",
+    details: "Details:",
+    labelsTitle: "📦 Return label(s)",
+    downloadLabel: (index) =>
+      `📄 Download label ${index ? `#${index}` : ""}`,
+    thanks: "Thank you for your trust.",
+  },
+
+  es: {
+    subject: "Confirmación de devolución",
+    title: "Solicitud de devolución confirmada",
+    hello: (name) => `Hola ${name},`,
+    orderText: (orderId) =>
+      `Tu solicitud de devolución para el pedido ${orderId} ha sido registrada.`,
+    productsTitle: "Productos devueltos:",
+    reason: "Motivo:",
+    details: "Detalles:",
+    labelsTitle: "📦 Etiqueta(s) de devolución",
+    downloadLabel: (index) =>
+      `📄 Descargar etiqueta ${index ? `#${index}` : ""}`,
+    thanks: "Gracias por tu confianza.",
+  },
+
+  pt: {
+    subject: "Confirmação de devolução",
+    title: "Solicitação de devolução confirmada",
+    hello: (name) => `Olá ${name},`,
+    orderText: (orderId) =>
+      `Sua solicitação de devolução para o pedido ${orderId} foi registrada.`,
+    productsTitle: "Produtos devolvidos:",
+    reason: "Motivo:",
+    details: "Detalhes:",
+    labelsTitle: "📦 Etiqueta(s) de devolução",
+    downloadLabel: (index) =>
+      `📄 Baixar etiqueta ${index ? `#${index}` : ""}`,
+    thanks: "Obrigado pela sua confiança.",
+  },
+};
+
+
 module.exports = {
   emailTexts,
   resetEmailTexts,
   shippedEmailTexts,
   deliveredEmailTexts,
   refundEmailTexts,
-  orderCreatedEmailTexts
+  orderCreatedEmailTexts,
+  returnRequestEmailTexts
 };
 
 

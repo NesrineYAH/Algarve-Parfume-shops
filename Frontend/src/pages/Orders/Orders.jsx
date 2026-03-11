@@ -270,7 +270,7 @@ export default function Orders() {
             <div className="order-card" key={order._id}> 
               <h3>{t("preOrders.h3")}{order._id}</h3>  
               <p>{t("preOrders.Payment")} : {order.paymentStatus}</p> 
-              <p>{t("preOrders.Status")} : {order.status}</p>  
+              <p>{t("preOrders.status")} : {order.status}</p>  
               <p>{t("preOrders.totalPrice")}: {order.totalPrice} €</p>  
               <p>{t("preOrders.Date")}: {formatDate(order.paidAt)}</p> 
 

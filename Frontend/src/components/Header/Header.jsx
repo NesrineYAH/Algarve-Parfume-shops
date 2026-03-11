@@ -173,7 +173,7 @@ const handleToggleMenu = (e) => {
                 className="icone"
                 onClick={() => navigate("/Authentification")}
               />
-              <span className="user-name">Mon compte</span>
+              <span className="user-name"> {t("user.account")}</span>
             </div>
           )}
         </div>
