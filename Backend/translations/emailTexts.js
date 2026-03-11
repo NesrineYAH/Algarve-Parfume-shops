@@ -53,7 +53,181 @@ const resetEmailTexts = {
   }
 };
 
+const shippedEmailTexts = {
+  fr: {
+    subject: "Votre commande est expédiée",
+    title: "Votre commande est en route !",
+    hello: (name) => `Bonjour ${name},`,
+    text1: (orderId) => `Votre commande n°${orderId} a été expédiée.`,
+    text2: "Vous pouvez suivre votre colis avec le transporteur.",
+    button: "Suivre mon colis",
+    thanks: "Merci pour votre confiance."
+  },
+
+  en: {
+    subject: "Your order has been shipped",
+    title: "Your order is on the way!",
+    hello: (name) => `Hello ${name},`,
+    text1: (orderId) => `Your order #${orderId} has been shipped.`,
+    text2: "You can track your package with the carrier.",
+    button: "Track my package",
+    thanks: "Thank you for your trust."
+  },
+
+  es: {
+    subject: "Tu pedido ha sido enviado",
+    title: "¡Tu pedido está en camino!",
+    hello: (name) => `Hola ${name},`,
+    text1: (orderId) => `Tu pedido n°${orderId} ha sido enviado.`,
+    text2: "Puedes seguir tu paquete con el transportista.",
+    button: "Seguir mi paquete",
+    thanks: "Gracias por tu confianza."
+  },
+
+  pt: {
+    subject: "Seu pedido foi enviado",
+    title: "Seu pedido está a caminho!",
+    hello: (name) => `Olá ${name},`,
+    text1: (orderId) => `Seu pedido nº${orderId} foi enviado.`,
+    text2: "Você pode acompanhar seu pacote com a transportadora.",
+    button: "Rastrear meu pacote",
+    thanks: "Obrigado pela sua confiança."
+  }
+};
+const deliveredEmailTexts = {
+  fr: {
+    subject: "Votre commande a été livrée",
+    title: "Commande livrée",
+    hello: (name) => `Bonjour ${name},`,
+    text1: (orderId) => `Votre commande n°${orderId} a bien été livrée.`,
+    text2: "Nous espérons que vous apprécierez votre achat.",
+    button: "Se connecter à mon compte"
+  },
+
+  en: {
+    subject: "Your order has been delivered",
+    title: "Order delivered",
+    hello: (name) => `Hello ${name},`,
+    text1: (orderId) => `Your order #${orderId} has been delivered.`,
+    text2: "We hope you enjoy your purchase.",
+    button: "Login to my account"
+  },
+
+  es: {
+    subject: "Tu pedido ha sido entregado",
+    title: "Pedido entregado",
+    hello: (name) => `Hola ${name},`,
+    text1: (orderId) => `Tu pedido n°${orderId} ha sido entregado.`,
+    text2: "Esperamos que disfrutes tu compra.",
+    button: "Iniciar sesión en mi cuenta"
+  },
+
+  pt: {
+    subject: "Seu pedido foi entregue",
+    title: "Pedido entregue",
+    hello: (name) => `Olá ${name},`,
+    text1: (orderId) => `Seu pedido nº${orderId} foi entregue.`,
+    text2: "Esperamos que você aproveite sua compra.",
+    button: "Entrar na minha conta"
+  }
+};
+
+const refundEmailTexts = {
+  fr: {
+    subject: "Remboursement confirmé",
+    title: "Votre remboursement est confirmé",
+    hello: (name) => `Bonjour ${name},`,
+    text1: (orderId) => `Votre commande n°${orderId} a été remboursée.`,
+    amount: (amount) => `Montant remboursé : ${amount} €`,
+    button: "Voir mon compte",
+    thanks: "Merci pour votre confiance."
+  },
+
+  en: {
+    subject: "Refund confirmed",
+    title: "Your refund has been processed",
+    hello: (name) => `Hello ${name},`,
+    text1: (orderId) => `Your order #${orderId} has been refunded.`,
+    amount: (amount) => `Refunded amount: ${amount} €`,
+    button: "View my account",
+    thanks: "Thank you for your trust."
+  },
+
+  es: {
+    subject: "Reembolso confirmado",
+    title: "Tu reembolso ha sido procesado",
+    hello: (name) => `Hola ${name},`,
+    text1: (orderId) => `Tu pedido n°${orderId} ha sido reembolsado.`,
+    amount: (amount) => `Cantidad reembolsada: ${amount} €`,
+    button: "Ver mi cuenta",
+    thanks: "Gracias por tu confianza."
+  },
+
+  pt: {
+    subject: "Reembolso confirmado",
+    title: "Seu reembolso foi processado",
+    hello: (name) => `Olá ${name},`,
+    text1: (orderId) => `Seu pedido nº${orderId} foi reembolsado.`,
+    amount: (amount) => `Valor reembolsado: ${amount} €`,
+    button: "Ver minha conta",
+    thanks: "Obrigado pela sua confiança."
+  }
+};
+const orderCreatedEmailTexts = {
+  fr: {
+    subject: "Confirmation de votre commande",
+    title: "Votre commande est confirmée",
+    hello: (name) => `Bonjour ${name},`,
+    text1: (orderId) => `Votre commande n°${orderId} a bien été enregistrée.`,
+    text2: "Nous préparons actuellement votre commande.",
+    button: "Voir ma commande",
+    thanks: "Merci pour votre achat."
+  },
+
+  en: {
+    subject: "Order confirmation",
+    title: "Your order has been confirmed",
+    hello: (name) => `Hello ${name},`,
+    text1: (orderId) => `Your order #${orderId} has been successfully created.`,
+    text2: "We are currently preparing your order.",
+    button: "View my order",
+    thanks: "Thank you for your purchase."
+  },
+
+  es: {
+    subject: "Confirmación de tu pedido",
+    title: "Tu pedido ha sido confirmado",
+    hello: (name) => `Hola ${name},`,
+    text1: (orderId) => `Tu pedido n°${orderId} ha sido registrado.`,
+    text2: "Estamos preparando tu pedido.",
+    button: "Ver mi pedido",
+    thanks: "Gracias por tu compra."
+  },
+
+  pt: {
+    subject: "Confirmação do pedido",
+    title: "Seu pedido foi confirmado",
+    hello: (name) => `Olá ${name},`,
+    text1: (orderId) => `Seu pedido nº${orderId} foi registrado.`,
+    text2: "Estamos preparando seu pedido.",
+    button: "Ver meu pedido",
+    thanks: "Obrigado pela sua compra."
+  }
+};
+
 module.exports = {
   emailTexts,
-  resetEmailTexts
+  resetEmailTexts,
+  shippedEmailTexts,
+  deliveredEmailTexts,
+  refundEmailTexts,
+  orderCreatedEmailTexts
 };
+
+
+
+
+
+
+
+

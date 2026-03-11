@@ -4,7 +4,7 @@ const Product = require("../Model/product");
 const Cart = require("../Model/Cart");
 const mongoose = require("mongoose");
 const { sendEmail } = require("../utils/mailer");
-
+const { shippedEmailTexts, deliveredEmailTexts, refundEmailTexts, orderCreatedEmailTexts } = require("../translations/emailTexts");
 
 exports.createOrder = async (req, res) => {
     try {
@@ -61,6 +61,37 @@ exports.createOrder = async (req, res) => {
         });
 
         await order.save();
+        //11/03
+        const user = await User.findById(req.user.userId);
+        const userLang = orderCreatedEmailTexts[user.lang]
+            ? user.lang
+            : "pt";
+
+        const mailContent = orderCreatedEmailTexts[userLang];
+
+        const html = `
+  <h2>${mailContent.title}</h2>
+  <p>${mailContent.hello(user.prenom)}</p> <p>${mailContent.text1(order._id)}</p><p>${mailContent.text2}</p>
+  <a href="http://localhost:5173/MonCompte"
+    style="
+    display:inline-block;
+    background:#4c6ef5;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold;">
+    ${mailContent.button}
+  </a>
+  <br><br>
+  <p>${mailContent.thanks}</p>`;
+
+        await sendEmail({
+            to: user.email,
+            subject: mailContent.subject,
+            html,
+            text: mailContent.text1(order._id)
+        });
 
         return res.status(201).json({
             message: "Commande créée avec succès",
@@ -80,9 +111,7 @@ exports.updateOrder = async (req, res) => {
         if (order.userId.toString() !== req.user.userId && req.user.role !== "admin") {
             return res.status(403).json({ message: "Accès interdit" });
         }
-
         const updateData = req.body;
-
         const updatedOrder = await Order.findByIdAndUpdate(
             req.params.orderId,
             updateData,
@@ -169,27 +198,16 @@ exports.deleteOrder = async (req, res) => {
             return res.status(404).json({ message: "Commande introuvable" });
         }
 
-        // Vérification des rôles
         const isOwner = order.userId.toString() === req.user.userId;
         const isAdmin = req.user.role === "admin";
         const isSeller = req.user.role === "vendeur";
 
-        // Client → doit être propriétaire
         if (req.user.role === "client" && !isOwner) {
             return res.status(403).json({ message: "Accès interdit" });
         }
-
-        // Vendeur → peut supprimer seulement si tu le décides
         if (isSeller && !isAdmin) {
-            // Ici tu peux ajouter une logique : vérifier si le vendeur est lié au produit
-            // Exemple :
-            // const product = await Product.findById(order.items[0].productId);
-            // if (product.sellerId.toString() !== req.user.userId) return res.status(403).json({ message: "Accès interdit" });
         }
-
-        // Admin → accès total
         await order.deleteOne();
-
         return res.status(200).json({ message: "Commande supprimée" });
     } catch (error) {
         console.error("Erreur suppression commande:", error.message);
@@ -208,11 +226,9 @@ exports.getAllOrders = async (req, res) => {
 exports.getOrdersByUserId = async (req, res) => {
     try {
         const { userId } = req.params;
-
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: "ID utilisateur invalide" });
         }
-
         const allOrders = await Order.find({ userId }).sort({ createdAt: -1 });
 
         // 🔴 Pré-commandes
@@ -244,7 +260,6 @@ exports.getOrderById = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(orderId)) {
             return res.status(400).json({ message: "ID commande invalide" });
         }
-        //  const order = await Order.findById(orderId);
         const order = await Order.findById(orderId).populate("userId", "nom prenom email").populate("items.productId");
 
         if (!order) {
@@ -260,38 +275,62 @@ exports.getOrderById = async (req, res) => {
 exports.shipOrder = async (req, res) => {
     try {
         const orderId = req.params.orderId;
+
         const order = await Order.findById(orderId).populate("userId");
+
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
+
         if (order.status !== "confirmed") {
             return res.status(400).json({ message: "Commande non confirmée" });
         }
+
         order.status = "shipped";
         order.shippedAt = new Date();
+
         await order.save();
 
-        // ⭐ Email d’expédition
+        // 🌍 langue utilisateur
+        const userLang = shippedEmailTexts[order.userId.lang]
+            ? order.userId.lang
+            : "pt";
+
+        const mailContent = shippedEmailTexts[userLang];
+
         const html = `
-      <h2>${t("email.order_shipped.title")}</h2>
-      <p>${t("email.order_shipped.hello", { name: order.userId.prenom })}</p>
-      <p>${t("email.order_shipped.text1", { orderId: order._id })}</p>
-      <p>${t("email.order_shipped.text2")}</p>
-     <a href="https://www.mondialrelay.com"
-     style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;">
-     ${t("email.order_shipped.button")}
+      <h2>${mailContent.title}</h2>
+      <p>${mailContent.hello(order.userId.prenom)}</p>
+      <p>${mailContent.text1(order._id)}</p>
+      <p>${mailContent.text2}</p>
+
+      <a href="https://www.mondialrelay.com"
+        style="
+        background:#4c6ef5;
+        color:white;
+        padding:10px 15px;
+        text-decoration:none;
+        border-radius:8px;">
+        ${mailContent.button}
       </a>
-     <br><br>
-     <p>${t("email.order_shipped.thanks")}</p>`;
+
+      <br><br>
+
+      <p>${mailContent.thanks}</p>
+    `;
 
         await sendEmail({
             to: order.userId.email,
-            subject: "Votre commande est expédiée",
+            subject: mailContent.subject,
             html,
-            text: "Votre commande est expédiée.",
+            text: mailContent.text1(order._id)
         });
 
-        res.json({ success: true, message: "Commande expédiée", order });
+        res.json({
+            success: true,
+            message: "Commande expédiée",
+            order
+        });
 
     } catch (err) {
         console.error("Erreur shipOrder :", err);
@@ -300,6 +339,7 @@ exports.shipOrder = async (req, res) => {
 };
 exports.deliverOrder = async (req, res) => {
     try {
+
         const order = await Order.findById(req.params.orderId).populate("userId");
 
         if (!order) {
@@ -316,30 +356,46 @@ exports.deliverOrder = async (req, res) => {
 
         await order.save();
 
-        // 📧 Email de confirmation au client
+        // 🌍 langue utilisateur
+        const userLang = deliveredEmailTexts[order.userId.lang]
+            ? order.userId.lang
+            : "fr";
+
+        const mailContent = deliveredEmailTexts[userLang];
+
+        const html = `
+      <h2>${mailContent.title}</h2>
+
+      <p>${mailContent.hello(order.userId.prenom)}</p>
+
+      <p>${mailContent.text1(order._id)}</p>
+
+      <p>${mailContent.text2}</p>
+
+      <a href="http://localhost:5173/authentification"
+        style="
+          display:inline-block;
+          background:#4c6ef5;
+          color:white;
+          padding:12px 18px;
+          border-radius:8px;
+          text-decoration:none;
+          font-weight:bold;">
+        ${mailContent.button}
+      </a>
+    `;
+
         await sendEmail({
             to: order.userId.email,
-            subject: t("email.order_delivered.subject"),
-            html: `
-       <h2>${t("email.order_delivered.title")}</h2>
-        <p>${t("email.order_delivered.hello", { name: order.userId.prenom })}</p>
-       <p>${t("email.order_delivered.text1", { orderId: order._id })}</p>
-       <p>${t("email.order_delivered.text2")}</p>
-
-       <a href="http://localhost:5173/authentification"
-          style="display:inline-block;
-              background:#4c6ef5;
-              color:white;
-              padding:12px 18px;
-              border-radius:8px;
-              text-decoration:none;
-              font-weight:bold;">
-         ${t("email.order_delivered.button")}
-       </a> `
+            subject: mailContent.subject,
+            html,
+            text: mailContent.text1(order._id)
         });
 
-
-        res.json({ message: "Commande marquée comme reçue", order });
+        res.json({
+            message: "Commande marquée comme reçue",
+            order
+        });
 
     } catch (error) {
         console.error("Erreur livraison commande :", error);
@@ -375,7 +431,6 @@ exports.cancelOrder = async (req, res) => {
         if (nonCancellableStatus.includes(order.status)) {
             return res.status(400).json({ message: "Commande non annulable" });
         }
-
 
         // Restaurer les articles dans le panier
         let cart = await Cart.findOne({ userId: req.user.userId });
@@ -507,29 +562,126 @@ exports.refundOrder = async (req, res) => {
 };
 // Fonction séparée pour envoyer l'email
 async function sendRefundEmail(order) {
+
+    const userLang = refundEmailTexts[order.userId.lang]
+        ? order.userId.lang
+        : "fr";
+
+    const mailContent = refundEmailTexts[userLang];
+
     const html = `
-  <h2>${t("email.refund_confirmed.title")}</h2>
+    <h2>${mailContent.title}</h2>
 
-  <p>${t("email.refund_confirmed.hello", { name: order.userId.prenom })}</p>
+    <p>${mailContent.hello(order.userId.prenom)}</p>
 
-  <p>${t("email.refund_confirmed.text1", { orderId: order._id })}</p>
+    <p>${mailContent.text1(order._id)}</p>
 
-  <p>${t("email.refund_confirmed.amount", { amount: order.totalPrice })}</p>
+    <p>${mailContent.amount(order.totalPrice)}</p>
 
-  <a href="http://localhost:5173/MonCompte"
-     style="display:inline-block;background:#4c6ef5;color:white;padding:12px 18px;border-radius:8px;text-decoration:none;font-weight:bold;">
-     ${t("email.refund_confirmed.button")}
-  </a>
+    <a href="http://localhost:5173/MonCompte"
+      style="
+      display:inline-block;
+      background:#4c6ef5;
+      color:white;
+      padding:12px 18px;
+      border-radius:8px;
+      text-decoration:none;
+      font-weight:bold;">
+      ${mailContent.button}
+    </a>
 
-  <br><br>
-  <p>${t("email.refund_confirmed.thanks")}</p>
-`;
+    <br><br>
+
+    <p>${mailContent.thanks}</p>
+  `;
 
     await sendEmail({
         to: order.userId.email,
-        subject: t("email.refund_confirmed.subject"),
+        subject: mailContent.subject,
         html,
-        text: t("email.refund_confirmed.text1", { orderId: order._id })
+        text: mailContent.text1(order._id)
     });
 
 }
+
+
+/*
+exports.createOrder = async (req, res) => {
+    try {
+        if (!req.user || !req.user.userId) {
+            return res.status(401).json({ message: "Utilisateur non authentifié" });
+        }
+
+        const { items, totalPrice, delivery } = req.body;
+
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: "Aucun article dans la commande" });
+        }
+
+        const enrichedItems = await Promise.all(
+            items.map(async (item) => {
+                const product = await Product.findById(item.productId);
+                if (!product) throw new Error(`Produit introuvable : ${item.productId}`);
+
+                const optSize = item.options?.size;
+                const optUnit = item.options?.unit || "ml";
+                if (!optSize) throw new Error(`Options manquantes pour le produit : ${product.nom}`);
+
+                const selectedOption = product.options.find(
+                    (opt) =>
+                        Number(opt.size) === Number(optSize) &&
+                        opt.unit.toLowerCase() === optUnit.toLowerCase()
+                );
+                if (!selectedOption) throw new Error(`Option invalide pour le produit : ${product.nom}`);
+
+                const variantId = selectedOption._id; // ObjectId
+                return {
+                    productId: product._id,
+                    variantId, // ObjectId
+                    nom: product.nom,
+                    imageUrl: product.imageUrl,
+                    quantite: Number(item.quantite || 1),
+                    options: {
+                        size: selectedOption.size,
+                        unit: selectedOption.unit,
+                        prix: selectedOption.prix,
+                    },
+                };
+            })
+        );
+
+        const order = new Order({
+            userId: req.user.userId,
+            items: enrichedItems,
+            totalPrice: Number(totalPrice),
+            status: "pending",          // Enum valide
+            paymentStatus: "unpaid",   // Enum valide
+            delivery,
+            createdAt: new Date(),
+        });
+
+        await order.save();
+
+        return res.status(201).json({
+            message: "Commande créée avec succès",
+            order,
+        });
+
+    } catch (error) {
+        console.error("❌ Erreur création commande:", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+*/
