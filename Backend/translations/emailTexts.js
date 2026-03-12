@@ -1,4 +1,3 @@
-
 const emailTexts = {
   fr: {
     subject: "Bienvenue sur notre plateforme Algarve Parfume !",
@@ -21,7 +20,6 @@ const emailTexts = {
     html: (prenom) => `<p>Olá <b>${prenom}</b>,</p><p>Obrigado por se registrar na nossa plataforma!</p>`
   }
 };
-
 const resetEmailTexts = {
   fr: {
     subject: "Réinitialisation de votre mot de passe",
@@ -52,7 +50,6 @@ const resetEmailTexts = {
     expire: "Este link expirará em 15 minutos."
   }
 };
-
 const shippedEmailTexts = {
   fr: {
     subject: "Votre commande est expédiée",
@@ -131,7 +128,6 @@ const deliveredEmailTexts = {
     button: "Entrar na minha conta"
   }
 };
-
 const refundEmailTexts = {
   fr: {
     subject: "Remboursement confirmé",
@@ -214,7 +210,6 @@ const orderCreatedEmailTexts = {
     thanks: "Obrigado pela sua compra."
   }
 };
-
 const returnRequestEmailTexts = {
   fr: {
     subject: "Confirmation de votre retour",
@@ -276,7 +271,59 @@ const returnRequestEmailTexts = {
     thanks: "Obrigado pela sua confiança.",
   },
 };
+const returnLabelTexts = {
+  fr: {
+    title: "Étiquette de retour",
+    client: "Client",
+    address: "Adresse",
+    noAddress: "Aucune adresse enregistrée",
+    email: "Email",
+    order: "Commande",
+    product: "Produit",
+    returnId: "Retour",
+    returnAddress: "Adresse de retour",
+    qrText: "Scanner pour suivre le retour",
+  },
 
+  en: {
+    title: "Return label",
+    client: "Customer",
+    address: "Address",
+    noAddress: "No address registered",
+    email: "Email",
+    order: "Order",
+    product: "Product",
+    returnId: "Return",
+    returnAddress: "Return address",
+    qrText: "Scan to track return",
+  },
+
+  es: {
+    title: "Etiqueta de devolución",
+    client: "Cliente",
+    address: "Dirección",
+    noAddress: "Ninguna dirección registrada",
+    email: "Email",
+    order: "Pedido",
+    product: "Producto",
+    returnId: "Devolución",
+    returnAddress: "Dirección de devolución",
+    qrText: "Escanear para seguir la devolución",
+  },
+
+  pt: {
+    title: "Etiqueta de devolução",
+    client: "Cliente",
+    address: "Endereço",
+    noAddress: "Nenhum endereço registrado",
+    email: "Email",
+    order: "Pedido",
+    product: "Produto",
+    returnId: "Devolução",
+    returnAddress: "Endereço de devolução",
+    qrText: "Digitalize para acompanhar a devolução",
+  }
+};
 
 module.exports = {
   emailTexts,
@@ -285,11 +332,12 @@ module.exports = {
   deliveredEmailTexts,
   refundEmailTexts,
   orderCreatedEmailTexts,
-  returnRequestEmailTexts
+  returnRequestEmailTexts,
+  returnLabelTexts
 };
 
 
-
+//https://ton-backend.onrender.com
 
 
 

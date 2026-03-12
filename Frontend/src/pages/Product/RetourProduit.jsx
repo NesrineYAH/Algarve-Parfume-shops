@@ -27,15 +27,12 @@ export default function RetourProduit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!reason) {
       setError("Veuillez sélectionner une raison");
       return;
     }
-
     setLoading(true);
     setError("");
-
     try {
       // ✅ Formatage des produits pour correspondre EXACTEMENT à ce qu'attend le controller
       const formattedProducts = products.map(p => ({
@@ -52,6 +49,7 @@ export default function RetourProduit() {
         reason,
         description: description.trim() || undefined,
       });
+      console.log("RETURN API RESPONSE:", res);
 
       if (res.success) {
         // Afficher un message de succès avant redirection
