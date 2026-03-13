@@ -224,22 +224,21 @@ exports.createReturnRequest = async (req, res) => {
   }
 };
 
-// 🟠 Admin : approuver un retour
 exports.approveReturn = async (req, res) => {
   try {
     const { returnId } = req.params;
 
-    // 1️⃣ Trouver la demande de retour
+
     const returnRequest = await Return.findById(returnId);
     if (!returnRequest) {
       return res.status(404).json({ message: "Demande de retour introuvable" });
     }
 
-    // 2️⃣ Mettre à jour le statut du retour
+
     returnRequest.status = "approved";
     await returnRequest.save();
 
-    // 3️⃣ Mettre à jour la commande
+
     const order = await Order.findById(returnRequest.orderId);
 
     returnRequest.products.forEach(item => {
@@ -264,8 +263,6 @@ exports.approveReturn = async (req, res) => {
   }
 };
 
-
-// 🟣 Admin : marquer le produit comme retourné + rembourser
 exports.refundProduct = async (req, res) => {
   try {
     const { orderId, productId } = req.body;
@@ -316,39 +313,75 @@ exports.refundProduct = async (req, res) => {
   }
 };
 
-// 🟡 Admin : marquer le colis comme reçu
 exports.markAsReturned = async (req, res) => {
   try {
-    const { orderId, productId } = req.body;
+    console.log("📩 Requête reçue sur /:orderId/:productId/received");
+
+    // Vérifier les params
+    console.log("➡️ req.params =", req.params);
+
+    const { orderId, productId } = req.params;
+
+    console.log("🔍 Recherche du retour :", {
+      orderId,
+      productId
+    });
 
     const returnRequest = await Return.findOne({
       orderId,
-      productId,
+      "products.productId": productId,
       status: "approved"
     });
 
+    console.log("📦 Résultat Return.findOne =", returnRequest);
+
     if (!returnRequest) {
+      console.log("❌ Aucun retour trouvé !");
       return res.status(404).json({ message: "Retour non trouvé ou non approuvé" });
     }
+
+    console.log("✅ Retour trouvé, mise à jour du statut → returned");
 
     returnRequest.status = "returned";
     await returnRequest.save();
 
+    console.log("💾 Retour mis à jour :", returnRequest);
+
     const order = await Order.findById(orderId);
+    console.log("🧾 Commande trouvée :", order ? "OK" : "NON TROUVÉE");
+
     const item = order.items.find(
       p => p.productId.toString() === productId
     );
 
+    console.log("🔎 Produit dans la commande :", item);
+
+    if (!item) {
+      console.log("❌ Produit introuvable dans la commande !");
+      return res.status(404).json({ message: "Produit introuvable dans la commande" });
+    }
+
     item.returnStatus = "returned";
     await order.save();
+
+    console.log("💾 Commande mise à jour avec returnStatus=returned");
 
     res.json({ success: true, message: "Colis marqué comme retourné" });
 
   } catch (err) {
-    console.error(err);
+    console.error("🔥 ERREUR SERVEUR :", err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+
+
+
+
+
+
+
+
 
 /*
 //12/03/2026
@@ -569,11 +602,6 @@ exports.createReturnRequest = async (req, res) => {
   }
 };
 */
-
-
-
-
-
 
 /*
 exports.createReturnRequest = async (req, res) => {

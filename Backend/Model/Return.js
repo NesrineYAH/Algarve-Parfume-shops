@@ -39,7 +39,7 @@ const returnSchema = new mongoose.Schema({
     image: String,
     status: {
         type: String,
-        enum: ["pending", "approved", "rejected", "refunded"],
+        enum: ["pending", "approved", "rejected", "refunded", "returned"],
         default: "pending",
     },
 }, {

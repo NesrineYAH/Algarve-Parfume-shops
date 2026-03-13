@@ -1,6 +1,91 @@
 // Frontend/src/services/returnService.js
 import axios from "axios";
 
+// ❗ IMPORTANT : baseURL doit pointer vers /api (pas /api/returns)
+const api = axios.create({
+    baseURL: "http://localhost:5001/api",
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
+
+const ReturnService = {
+
+
+    createReturn: async (data) => {
+        try {
+            const res = await api.post("/returns/create", data);
+            return res.data;
+        } catch (error) {
+            console.error("❌ Erreur createReturn:", error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    getUserReturns: async () => {
+        try {
+            const res = await api.get("/returns/user");
+            return res.data;
+        } catch (error) {
+            console.error("❌ Erreur getUserReturns:", error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    approveProductReturn: async (returnId) => {
+        try {
+            const res = await api.put(`/returns/${returnId}/approve`);
+            return res.data;
+        } catch (error) {
+            console.error("❌ Erreur approveProductReturn:", error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    markAsReturned: async (orderId, productId) => {
+        try {
+            const res = await api.put(`/orders/${orderId}/${productId}/received`);
+            return res.data;
+        } catch (error) {
+            console.error("❌ Erreur markAsReturned:", error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    refundProduct: async (orderId, productId) => {
+        try {
+            const res = await api.put(`/orders/${orderId}/${productId}/refund`);
+            return res.data;
+        } catch (error) {
+            console.error("❌ Erreur refundProduct:", error.response?.data || error.message);
+            throw error;
+        }
+    }
+};
+
+export default ReturnService;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+import axios from "axios";
+
 const api = axios.create({
     baseURL: "http://localhost:5001/api/returns",
     withCredentials: true,
@@ -10,11 +95,9 @@ const api = axios.create({
 });
 
 const ReturnService = {
-    // 🟢 CLIENT : Créer une demande de retour (1 ou plusieurs produits)
     createReturn: async (data) => {
         try {
-            // Utilisation de la route /create comme défini dans votre router
-            const res = await api.post("/create", data); // ← CHANGÉ : "/" → "/create"
+            const res = await api.post("/create", data); 
             return res.data;
         } catch (error) {
             console.error("❌ Erreur createReturn:", error.response?.data || error.message);
@@ -22,7 +105,6 @@ const ReturnService = {
         }
     },
 
-    // 🟢 CLIENT : Récupérer tous les retours de l'utilisateur connecté
     getUserReturns: async () => {
         try {
             // Note: Cette route n'existe pas encore dans votre router
@@ -34,20 +116,11 @@ const ReturnService = {
         }
     },
 
-    // 🟠 ADMIN : Approuver un retour (attention: utilise orderId dans l'URL)
-    /*
-    approveProductReturn: async (returnId) => {
-        const res = await api.put(`/${returnId}/approve`);
-        return res.data;
-    },
-*/
     approveProductReturn: async (returnId) => {
         return api.put(`/${returnId}/approve`);
 
     },
 
-
-    // 🟣 ADMIN : Rembourser un produit
     refundProduct: async (orderId, productId) => {
         try {
             const res = await api.put(`/${orderId}/refund`, { productId });
@@ -59,22 +132,14 @@ const ReturnService = {
     },
 
     markAsReturned(orderId, productId) {
-        return axios.put("/mark-returned", { orderId, productId },
-            { withCredentials: true }
+        return api.put(
+            `/orders/${orderId}/${productId}/received`
         );
-
-        // ⚠️ Les fonctions ci-dessous nécessitent d'être implémentées dans votre backend
-        // getReturnById: async (returnId) => { ... },
-        // cancelReturn: async (returnId) => { ... },
-        // getAllReturns: async () => { ... },
-        // rejectReturn: async (returnId, reason) => { ... },
-        // approveProductReturn: async (returnId, productId, variantId) => { ... },
-        // markProductAsReturned: async (returnId, productId, variantId) => { ... }
     }
 }
 
 export default ReturnService;
-
+*/
 
 
 
