@@ -4,19 +4,16 @@ const Cart = require("../Model/Cart");
 
 require("dotenv").config();
 
-// ➤ Ajouter un produit
+
 exports.addProduct = async (req, res) => {
     try {
         const { nom, description, categorie_id, genre } = req.body;
-
-        // ✅ Vérification des champs obligatoires
         if (!nom || !categorie_id || !genre) {
             return res.status(400).json({
                 message: "Nom, catégorie et genre sont requis",
             });
         }
 
-        // ✅ Vérification du genre
         const genresAutorises = ["homme", "femme", "mixte"];
         if (!genresAutorises.includes(genre)) {
             return res.status(400).json({
@@ -24,10 +21,9 @@ exports.addProduct = async (req, res) => {
             });
         }
 
-        // ✅ Image
+
         const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-        // ✅ OPTIONS AUTOMATIQUES POUR PARFUM
         const options = [
             { size: 10, unit: "ml", prix: 5, stock: 100 },
             { size: 30, unit: "ml", prix: 15, stock: 100 },
@@ -35,15 +31,14 @@ exports.addProduct = async (req, res) => {
             { size: 100, unit: "ml", prix: 45, stock: 100 },
         ];
 
-        // ✅ Création du produit
         const newProduct = new Product({
             nom,
             description,
             imageUrl,
             categorie_id,
-            genre, // ✅ NOUVEAU CHAMP
+            genre,
             options,
-            ownerId: req.user.userId, // ✅ Correction
+            ownerId: req.user.userId,
         });
 
         await newProduct.save();
@@ -58,7 +53,7 @@ exports.addProduct = async (req, res) => {
     }
 };
 
-// ➤ Récupérer tous les produits mise à jours 18/12
+
 exports.getProducts = async (req, res) => {
     try {
         const { genre } = req.query;
@@ -72,19 +67,18 @@ exports.getProducts = async (req, res) => {
         res.json(produits);
     } catch (err) { res.status(500).json({ message: err.message }); }
 };
-// ➤ Récupérer un produit par ID
+
 exports.getProductById = async (req, res) => {
     try {
         const produit = await Product.findById(req.params.id);
         if (!produit)
             return res.status(404).json({ message: "Produit non trouvé" });
-        res.json(produit); // ??Cela signifie : il renvoie directement l’objet produit, pas un objet enveloppé dans { product: ... }.
+        res.json(produit);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
 
-// ➤ Supprimer un produit
 exports.deleteProduct = async (req, res) => {
     try {
         const produit = await Product.findByIdAndDelete(req.params.id);
@@ -96,7 +90,7 @@ exports.deleteProduct = async (req, res) => {
     }
 };
 
-// ➤ Modifier un produit
+
 exports.updateProduct = async (req, res) => {
     try {
         const { nom, prix, description, stock, categorie_id } = req.body;
@@ -138,14 +132,14 @@ exports.addComment = async (req, res) => {
             return res.status(404).json({ error: "Produit introuvable" });
         }
 
-        // 2️⃣ Ajouter le commentaire avec userId
+
         product.comments.push({
-            userId: req.user.userId, // ← ici
+            userId: req.user.userId,
             rating,
             text,
         });
 
-        // 🧮 recalcul de la moyenne
+
         product.rating =
             product.comments.reduce((sum, c) => sum + c.rating, 0) /
             product.comments.length;

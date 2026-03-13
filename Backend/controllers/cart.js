@@ -63,7 +63,6 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-
 exports.getCart = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -112,8 +111,6 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
-
-/* removeItem avec $pull */
 exports.removeItem = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -143,7 +140,6 @@ exports.removeItem = async (req, res) => {
   }
 };
 
-/* 🧹 Vider le panier */
 exports.clearCart = async (req, res) => {
   try {
     const userId = req.user.userId;

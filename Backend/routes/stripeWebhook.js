@@ -3,14 +3,14 @@ const express = require("express");
 const Stripe = require("stripe");
 const Order = require("../Model/Order");
 const Payment = require("../Model/Payment");
-const { sendEmail } = require("../utils/mailer"); // ✔️ IMPORT AJOUTÉ
+const { sendEmail } = require("../utils/mailer");
 
 require("dotenv").config();
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// ⚠️ IMPORTANT : ce route doit être placé AVANT express.json() dans app.js
+
 router.post(
   "/",
   express.raw({ type: "application/json" }),

@@ -4,12 +4,9 @@ const router = express.Router();
 const Product = require("../Model/product");
 const uploads = require("../middleware/multer-config");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
-// const { product } = require("../controllers/product");
-
-
 const { addProduct, getProducts, getProductById, deleteProduct, updateProduct, addComment } = require("../controllers/product");
 
-// ➤ Ajouter un produit
+
 router.post(
   "/add",
   authMiddleware,
@@ -17,21 +14,10 @@ router.post(
   uploads.single("image"),
   addProduct
 );
-
-// ➤ Récupérer tous les produits
 router.get("/", getProducts);
-
-// ➤ Récupérer un produit par ID
 router.get("/:id", getProductById);
-
-
-// ➤ Ajouter commentaire + note ⭐⭐⭐⭐⭐
 router.post("/:id/comment", authMiddleware, addComment);
-
-// ➤ Supprimer un produit
 router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
-
-// ➤ Modifier un produit
 router.put(
   "/:id",
   authMiddleware,

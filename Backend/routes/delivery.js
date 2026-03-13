@@ -10,10 +10,8 @@ router.get("/relays", async (req, res) => {
         return res.status(400).json({ error: "Latitude et longitude requises" });
     }
 
-    // Zone Europe (rectangle géographique)
     const europeBox = "(34.5,-31.5,71.2,39.6)";
 
-    // Requête Overpass : points relais, lockers, bureaux de poste
     const query = `
         [out:json];
         (

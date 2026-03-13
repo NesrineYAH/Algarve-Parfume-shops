@@ -18,7 +18,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const FRONT_URL = "http://localhost:5173";
 const BACK_URL = "http://localhost:5001";
 
-// 🅰️ Checkout depuis le panier
 router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
@@ -29,7 +28,6 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
       return res.status(400).json({ message: "Panier vide" });
     }
 
-    //    const totalPrice = cart.items.reduce((sum, item) => sum + item.options.prix * item.quantite, 0);
     const totalPrice = cart.items.reduce((sum, item) => {
       const price =
         parseFloat(item.options.prix.toString().replace(",", ".")) || 0;
@@ -97,7 +95,6 @@ router.post("/checkout-from-cart", authMiddleware, async (req, res) => {
   }
 });
 
-// 🅱️ Checkout depuis une commande existante
 router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderId);
@@ -140,7 +137,6 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
       mode: "payment",
       customer: user.stripeCustomerId,
       line_items,
-      //      success_url: `${FRONT_URL}/success?orderId=${order._id}`,
       success_url: `${FRONT_URL}/success?session_id={CHECKOUT_SESSION_ID}&orderId=${order._id}`,
       cancel_url: `${FRONT_URL}/orders`,
       metadata: { orderId: order._id.toString(), userId: user._id.toString() },
@@ -155,8 +151,6 @@ router.post("/checkout-order/:orderId", authMiddleware, async (req, res) => {
   }
 });
 
-
-// Webhook Stripe pour confirmer le paiement
 router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
@@ -288,7 +282,6 @@ router.post(
   }
 );
 
-// ⚠️ Route à utiliser uniquement en fallback (pas en production)
 router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
   try {
     const { sessionId } = req.body;
@@ -331,7 +324,6 @@ router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
   }
 });
 
-//stripe enregistrer un moyen de paiement
 router.post("/create-setup-intent", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
@@ -356,7 +348,6 @@ router.post("/create-setup-intent", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Erreur création SetupIntent" });
   }
 });
-
 
 module.exports = router;
 

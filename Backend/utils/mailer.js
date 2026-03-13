@@ -2,18 +2,16 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-// Configuration du transporteur SMTP
+
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT) || 587,
-  secure: false, // true si port 465
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
-
-// Fonction générique pour envoyer un email
 
 const sendEmail = async ({ to, subject, text, html }) => {
   try {
