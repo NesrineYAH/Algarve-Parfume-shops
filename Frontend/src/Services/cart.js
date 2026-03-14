@@ -10,7 +10,6 @@ const authHeader = () => ({
   },
 });
 
-// 🔹 Récupérer le panier
 export const getCart = () => {
   return axios.get(API_URL, authHeader());
 };
@@ -32,7 +31,6 @@ export const updateQuantity = (variantId, delta) => {
   );
 };
 
-// 🔹 Supprimer un item du panier (PAR variantId)
 export const removeItem = (variantId) => {
   if (!variantId) {
     console.error("❌ removeItem: variantId manquant");
@@ -45,7 +43,6 @@ export const removeItem = (variantId) => {
   );
 };
 
-// 🔹 Vider complètement le panier
 export const clearCart = () => {
   return axios.delete(`${API_URL}/clear`, authHeader());
 };

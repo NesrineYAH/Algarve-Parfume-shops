@@ -60,7 +60,7 @@ exports.generateReturnLabel = async ({ returnId, user, orderId, productId }) => 
         doc.text("8125-507 Quarteira", 40, y + 70);
         doc.text("Portugal", 40, y + 90);
 
-        // QR CODE
+
         const qrData = `https://parfumealgarve.com/returns/${returnId}`;
 
         const qrImage = await QRCode.toDataURL(qrData);
@@ -70,7 +70,7 @@ exports.generateReturnLabel = async ({ returnId, user, orderId, productId }) => 
 
         doc.fontSize(12).text(t.qrText, 350, 540);
 
-        // CODE BARRES
+
         const barcodePng = await bwipjs.toBuffer({
             bcid: "code128",
             text: returnId.toString(),

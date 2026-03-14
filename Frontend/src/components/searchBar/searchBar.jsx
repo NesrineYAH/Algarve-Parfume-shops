@@ -9,7 +9,7 @@ const SearchBar = ({ onSearch }) => {
   const handleChange = (e) => {
     const value = e.target.value;
     setQuery(value);
-    onSearch(value); // transmet la valeur au parent
+    onSearch(value); 
   };
 
   return (

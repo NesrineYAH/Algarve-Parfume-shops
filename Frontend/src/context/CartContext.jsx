@@ -12,8 +12,6 @@ export const CartContext = createContext();
 const CartProvider = ({ children }) => {
   const { user } = useContext(UserContext);
   const [cartItems, setCartItems] = useState([]);
-
-  // 🔄 Fusion panier local + backend (clé = variantId)
   const mergeCarts = (localCart, backendCart) => {
     const map = new Map();
 
@@ -30,7 +28,6 @@ const CartProvider = ({ children }) => {
     return Array.from(map.values());
   };
 
-  // 📦 Charger panier local si user NON connecté
   useEffect(() => {
     if (!user?._id) {
       const localCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -38,7 +35,6 @@ const CartProvider = ({ children }) => {
     }
   }, [user]);
 
-  // 🔐 Sync panier local → backend au login
   useEffect(() => {
     if (!user?._id) return;
 
@@ -46,17 +42,14 @@ const CartProvider = ({ children }) => {
       try {
         const localCart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        // 1️⃣ récupérer panier backend (cookie JWT auto)
+    
         const res = await fetch("http://localhost:5001/api/carts", {
           credentials: "include",
         });
         const data = await res.json();
         const backendCart = data.items || [];
-
-        // 2️⃣ fusion
         const mergedCart = mergeCarts(localCart, backendCart);
 
-        // 3️⃣ sync backend
         await fetch("http://localhost:5001/api/carts/sync", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -64,10 +57,7 @@ const CartProvider = ({ children }) => {
           body: JSON.stringify({ cartItems: mergedCart }),
         });
 
-        // 4️⃣ clean localStorage
         localStorage.removeItem("cart");
-
-        // 5️⃣ update state
         setCartItems(mergedCart);
       } catch (err) {
         console.error("❌ cart sync error:", err);
@@ -77,9 +67,8 @@ const CartProvider = ({ children }) => {
     syncCarts();
   }, [user]);
 
-  // ➕ Ajouter au panier
+
   const addToCartContext = async (item) => {
-    // 👤 NON connecté → localStorage
     if (!user?._id) {
       setCartItems((prev) => {
         const updated = [...prev];
@@ -99,7 +88,6 @@ const CartProvider = ({ children }) => {
       return;
     }
 
-    // 🔐 CONNECTÉ → backend
     try {
       await fetch("http://localhost:5001/api/carts/add", {
         method: "POST",
@@ -118,9 +106,7 @@ const CartProvider = ({ children }) => {
     }
   };
 
-  // ➕➖ Modifier quantité
   const updateQuantity = async (variantId, delta) => {
-    // 👤 NON connecté
     if (!user?._id) {
       setCartItems((prev) => {
         const updated = prev.map((item) =>
@@ -137,8 +123,6 @@ const CartProvider = ({ children }) => {
       });
       return;
     }
-
-    // 🔐 CONNECTÉ
     try {
       const res = await fetch(
         "http://localhost:5001/api/carts/updateQuantity",
@@ -166,9 +150,7 @@ const CartProvider = ({ children }) => {
     }
   };
 
-  // ❌ Supprimer du panier
   const removeFromCart = async (variantId) => {
-    // 👤 NON connecté
     if (!user?._id) {
       const updated = cartItems.filter(
         (i) => i.variantId.toString() !== variantId.toString()
@@ -178,7 +160,6 @@ const CartProvider = ({ children }) => {
       return;
     }
 
-    // 🔐 CONNECTÉ
     try {
       const res = await fetch(
         `http://localhost:5001/api/carts/removeItem/${variantId}`,

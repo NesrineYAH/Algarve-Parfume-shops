@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import "./CookieModel.scss";
-import PolitiqueCookies from "../../pages/PolitiqueCookies/PolitiqueCookies";
-import Confientilaite from "../../pages/FAQ/FAQ";
 import { useTranslation } from "react-i18next";
 
 const CookieModel = () => {

@@ -1,6 +1,4 @@
 // src/services/contactService.js
-
-
 export async function sendContact(formData) {
     const response = await fetch("http://localhost:5001/api/contacts", {
         method: "POST",

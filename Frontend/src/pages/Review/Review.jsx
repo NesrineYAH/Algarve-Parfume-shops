@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 const Review = () => {
   const {t} = useTranslation();
   
-  const { id } = useParams(); // ← ID du produit
+  const { id } = useParams(); 
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -30,7 +30,7 @@ await axios.post(
   { rating, text },
   {
     headers: { "Content-Type": "application/json" },
-    withCredentials: true, // ✅ pour envoyer les cookies HttpOnly
+    withCredentials: true,
   }
 );
 

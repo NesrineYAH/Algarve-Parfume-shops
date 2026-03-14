@@ -6,26 +6,24 @@ const api = axios.create({
     withCredentials: true,
 });
 
+
 const PaymentService = {
-    // PayPal
+
     createPayPalOrder: async (total, orderId) => {
         const response = await api.post("/paypal/create-order", {
             total,
-            orderId, // optionnel : lien avec la commande
+            orderId, 
         });
-        return response.data; // { id }
+        return response.data; 
     },
 
     capturePayPalOrder: async (paypalOrderId, orderId) => {
         const response = await api.post("/paypal/capture-order", {
             orderID: paypalOrderId,
-            orderId, // pour finaliser côté backend
+            orderId, 
         });
         return response.data;
     },
-
-    // (plus tard)
-    // createStripeSession: ...
 };
 
 export default PaymentService;

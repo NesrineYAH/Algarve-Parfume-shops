@@ -5,34 +5,26 @@ require("dotenv").config();
 
 async function authMiddleware(req, res, next) {
   try {
-    // 1️⃣ Lire le cookie JWT
     const tokenFromCookie = req.cookies?.token || req.cookies?.jwt;
     const authHeader = req.headers.authorization;
-
-
-    // 2️⃣ Lire le header Authorization (optionnel)
     const tokenFromHeader = authHeader?.startsWith("Bearer ")
       ? authHeader.split(" ")[1]
       : null;
 
-    // 3️⃣ Priorité au cookie
     const token = tokenFromCookie || tokenFromHeader;
     if (!token) return res.status(401).json({ error: "Non authentifié" });
 
-    // 4️⃣ Vérifier le token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // 5️⃣ Charger l'utilisateur depuis MongoDB
-    const user = await User.findById(decoded.userId).select("-password"); // ⭐ plus d'erreur
+
+    const user = await User.findById(decoded.userId).select("-password"); 
     if (!user) {
       return res.status(401).json({ error: "Utilisateur introuvable" });
     }
 
-    // req.user = user
-    // ⭐ Ajout de userId pour garder le code existant Attacher l'utilisateur complet à req.user
     req.user = {
       ...user.toObject(),
-      userId: user._id.toString(), // ⭐ Comme ça tu évites tous les bugs de comparaison.
+      userId: user._id.toString(), 
     };
 
     next();

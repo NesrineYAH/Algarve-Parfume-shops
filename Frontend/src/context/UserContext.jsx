@@ -14,9 +14,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // 👉 On ne vérifie PLUS localStorage.token
-        const currentUser = await getCurrentUser(); // doit envoyer credentials: "include"
-
+        const currentUser = await getCurrentUser(); 
         if (currentUser) {
           console.log("✅ Utilisateur vérifié via cookie:", currentUser.email);
           setUser(currentUser);
@@ -88,7 +86,7 @@ const handleLogin = async (credentials, navigate) => {
   };
    const refreshUser = async () => {
   try {
-    const currentUser = await getCurrentUser(); // appelle /auth/me
+    const currentUser = await getCurrentUser(); 
     if (currentUser) {
       setUser(currentUser);
     } else {
@@ -121,27 +119,7 @@ const handleLogin = async (credentials, navigate) => {
 export default UserProvider;
 
 
-/*
-const handleLogin = async () => {
-  try {
-    const response = await axios.post("/api/users/login", credentials);
-    const { role } = response.data.user;
 
-    if (role === "admin" || role === "vendeur") {
-      navigate("/admin-dashboard"); // redirection spéciale pour admin/vendeur
-    } else {
-      navigate("/moncompte"); // tous les autres clients
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Login échoué !");
-  }
-};
-
-
-
-
-*/
 
 
 

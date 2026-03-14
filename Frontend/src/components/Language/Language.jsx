@@ -13,10 +13,11 @@ function LanguageSwitcher() {
   return (
     <label className="languageSwitcher">
       <select value={i18n.language} onChange={changeLanguage}>
-        <option value="fr">🇫🇷 Fr</option>
+
         <option value="en">🇬🇧 En</option>
         <option value="es">🇪🇸 Es</option>
         <option value="pt">🇵🇹 Pt</option>
+       <option value="fr">🇫🇷 Fr</option>
       </select>
     </label>
   );

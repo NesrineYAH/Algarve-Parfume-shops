@@ -3,11 +3,11 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5001/api/products";
 
-// Ajouter un produit (JWT via cookie HTTP-only)
+
 export const addProduct = async (productData) => {
   try {
     const response = await axios.post(`${API_URL}/add`, productData, {
-      withCredentials: true, // ✅ indispensable pour envoyer le cookie
+      withCredentials: true, 
     });
     return response.data;
   } catch (error) {
@@ -16,13 +16,13 @@ export const addProduct = async (productData) => {
   }
 };
 
-// Récupérer tous les produits
+
 export const getAllProducts = async () => {
   const response = await axios.get(`${API_URL}`);
   return response.data;
 };
 
-// Récupérer un produit par ID
+
 export const getProductById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/${id}`);
@@ -33,7 +33,7 @@ export const getProductById = async (id) => {
   }
 };
 
-// Supprimer un produit (JWT via cookie HTTP-only)
+
 export const deleteProduct = async (id) => {
   try {
     const response = await axios.delete(`${API_URL}/${id}`, {
@@ -46,7 +46,7 @@ export const deleteProduct = async (id) => {
   }
 };
 
-// Filtrer les produits par genre
+
 export const getProductsByGenre = async (genre) => {
   try {
     const response = await axios.get(`${API_URL}`, { params: { genre } });
@@ -57,7 +57,7 @@ export const getProductsByGenre = async (genre) => {
   }
 };
 
-// Modifier un produit (JWT via cookie HTTP-only)
+
 export const updateProduct = async (id, updatedData) => {
   try {
     const response = await axios.put(`${API_URL}/${id}`, updatedData, {

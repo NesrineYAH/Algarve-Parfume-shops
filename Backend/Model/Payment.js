@@ -18,7 +18,7 @@ const paymentSchema = new mongoose.Schema(
       type: String,
 
       required: true,
-      unique: true, // idempotence
+      unique: true, 
     },
 
     stripeCheckoutSessionId: {
@@ -26,7 +26,7 @@ const paymentSchema = new mongoose.Schema(
     },
 
     amount: {
-      type: Number, // en centimes
+      type: Number, 
       required: true,
     },
 
@@ -47,7 +47,7 @@ const paymentSchema = new mongoose.Schema(
     },
 
     metadata: {
-      type: Object, // commande, panier, etc.
+      type: Object, 
     },
   },
   { timestamps: true }

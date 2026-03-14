@@ -9,9 +9,9 @@ const notificationSchema = new mongoose.Schema({
     },
     title: String,
     message: String,
-    discount: Number,      // nouveau champ
-    newPrice: Number,      // nouveau champ
-    imageUrl: String,      // nouveau champ pour l'image
+    discount: Number,      
+    newPrice: Number,      
+    imageUrl: String,    
     type: {
         type: String,
         enum: ["promo", "sale", "offer", "new", "order", "system", "comment"],

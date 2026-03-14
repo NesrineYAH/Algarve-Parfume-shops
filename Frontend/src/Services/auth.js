@@ -1,12 +1,10 @@
 // service/auth.js
-
-// 🔐 LOGIN
 export async function loginUser(credentials) {
   try {
     const res = await fetch("http://localhost:5001/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include", // ⭐ indispensable pour recevoir le cookie JWT
+      credentials: "include",
       body: JSON.stringify(credentials),
     });
 
@@ -16,7 +14,7 @@ export async function loginUser(credentials) {
       return { success: false, message: data.message || "Erreur serveur" };
     }
 
-    // Le backend renvoie user → on le retourne simplement
+
     return { success: true, user: data.user };
 
   } catch (err) {
@@ -25,8 +23,6 @@ export async function loginUser(credentials) {
   }
 }
 
-
-// 📝 REGISTER
 export async function registerUser(credentials) {
   try {
     const res = await fetch("http://localhost:5001/api/users/register", {
@@ -54,11 +50,11 @@ export async function getCurrentUser() {
   try {
     const res = await fetch("http://localhost:5001/api/users/moncompte", {
       method: "GET",
-      credentials: "include",   // ⭐ indispensable pour envoyer le cookie JWT
+      credentials: "include",
     });
 
     if (!res.ok) return null;
-    //11/03/2016 add userLang
+
     const userLang = navigator.language.slice(0, 2);
     const data = await res.json();
     if (!data.user) return null;
@@ -78,12 +74,12 @@ export async function getCurrentUser() {
   }
 }
 
-// 🚪 LOGOUT (supprime le cookie côté backend)
+
 export async function logoutUser() {
   try {
     await fetch("http://localhost:5001/api/users/logout", {
       method: "POST",
-      credentials: "include",   // ⭐ indispensable pour supprimer le cookie
+      credentials: "include",
     });
   } catch (err) {
     console.error("Erreur logout:", err);

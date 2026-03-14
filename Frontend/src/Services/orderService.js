@@ -3,8 +3,9 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:5001/api",
-  withCredentials: true, // ⭐ indispensable pour envoyer le cookie JWT
+  withCredentials: true,
 });
+
 const OrderService = {
   createPreOrder: async (orderData) => {
     const response = await api.post("/orders/create", orderData);
@@ -46,13 +47,11 @@ const OrderService = {
     const response = await api.get("/orders/my-orders");
     return response.data;
   },
-
   deleteOrder: async (orderId) => {
     if (!orderId) throw new Error("orderId manquant");
     const response = await api.delete(`/orders/${orderId}`);
     return response.data;
   },
-
   getUserOrders: async () => {
     const response = await api.get(`/orders/my-orders`);
     return response.data;

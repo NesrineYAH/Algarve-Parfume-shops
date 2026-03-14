@@ -7,11 +7,9 @@ export const FavoritesProvider = ({ children }) => {
   const { user } = useContext(UserContext);
   const [favorites, setFavorites] = useState([]);
 
-  // 🔄 Charger les favoris quand l'utilisateur est connecté
+ 
   useEffect(() => {
     const loadFavorites = async () => {
-
-      // ❌ Pas connecté → reset
       if (!user?._id) {
         setFavorites([]);
         return;
@@ -31,8 +29,6 @@ export const FavoritesProvider = ({ children }) => {
         }
 
         const data = await res.json();
-
-        // 🔒 sécurité absolue
         setFavorites(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("❌ Erreur chargement favoris :", err);
@@ -43,10 +39,8 @@ export const FavoritesProvider = ({ children }) => {
     loadFavorites();
   }, [user]);
 
-  // ❤️ TOGGLE FAVORI
-  const toggleFavorite = async (product) => {
 
-    // 👤 NON CONNECTÉ → localStorage uniquement
+  const toggleFavorite = async (product) => {
     if (!user?._id) {
       const exists = favorites.some((f) => f._id === product._id);
 
@@ -59,7 +53,6 @@ export const FavoritesProvider = ({ children }) => {
       return;
     }
 
-    // 🔐 CONNECTÉ → API
     try {
       const res = await fetch(
         `http://localhost:5001/api/users/favorites/${product._id}`,

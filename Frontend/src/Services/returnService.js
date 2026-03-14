@@ -1,7 +1,7 @@
 // Frontend/src/services/returnService.js
 import axios from "axios";
 
-// ❗ IMPORTANT : baseURL doit pointer vers /api (pas /api/returns)
+
 const api = axios.create({
     baseURL: "http://localhost:5001/api",
     withCredentials: true,
@@ -11,8 +11,6 @@ const api = axios.create({
 });
 
 const ReturnService = {
-
-
     createReturn: async (data) => {
         try {
             const res = await api.post("/returns/create", data);

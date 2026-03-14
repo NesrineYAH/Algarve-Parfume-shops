@@ -6,7 +6,6 @@ const cartSchema = new mongoose.Schema({
   items: [
     {
       variantId: {
-        //      type: mongoose.Schema.Types.ObjectId, Mongoose essaie de convertir variantId en ObjectId,
         type: String,
         required: true
       },
@@ -30,7 +29,7 @@ const cartSchema = new mongoose.Schema({
 
 module.exports = mongoose.models.Cart || mongoose.model("Cart", cartSchema);
 
-////module.exports = mongoose.model("Cart", cartSchema);
+
 
 
 

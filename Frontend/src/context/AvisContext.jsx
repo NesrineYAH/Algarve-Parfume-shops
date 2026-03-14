@@ -1,13 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { UserContext } from "./UserContext"; // si tu stockes le token dans UserContext
+import { UserContext } from "./UserContext"; 
 
 export const AvisContext = createContext();
 
 export function AvisProvider({ children }) {
   const [avis, setAvis] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Récupération du token depuis UserContext ou localStorage
   const { user } = useContext(UserContext); 
   const token = user?.token || localStorage.getItem("token");
 
@@ -35,7 +33,7 @@ export function AvisProvider({ children }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // 🔑 indispensable pour éviter le 401
+          Authorization: `Bearer ${token}`, 
         },
         body: JSON.stringify(newAvis),
       });
@@ -44,7 +42,6 @@ export function AvisProvider({ children }) {
 
       const savedAvis = await res.json();
 
-      // 🔥 mise à jour instantanée
       setAvis((prev) => [savedAvis, ...prev]);
     } catch (error) {
       console.error("Erreur lors de l'ajout de l'avis :", error);

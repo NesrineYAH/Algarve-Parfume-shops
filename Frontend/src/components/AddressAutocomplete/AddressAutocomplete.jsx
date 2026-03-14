@@ -8,7 +8,7 @@ export default function AddressAutocomplete({ value, onChange, onSelect }) {
   const handleChange = async (e) => {
     const query = e.target.value;
 
-    // 🔥 PERMET D'ÉCRIRE
+
     onChange(query);
 
     if (query.length < 3) {
@@ -23,7 +23,7 @@ export default function AddressAutocomplete({ value, onChange, onSelect }) {
     new URLSearchParams({
       q: query,
       format: "json",
-      countrycodes: "pt,es,fr", // 🇵🇹 🇪🇸 🇫🇷
+      countrycodes: "pt,es,fr", 
       addressdetails: "1",
       limit: "5",
     })
