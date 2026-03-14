@@ -1,25 +1,74 @@
 import React from "react";
-import i18n from "i18next";
 import "./Language.scss";
 import "../../i18n";
+import Select from "react-select";
+import { useTranslation } from "react-i18next";
+
+import fr from "../../assets/images/flagsFr.jpg";
+import en from "../../assets/images/flagsEn.jpg";
+import es from "../../assets/images/flagsEs.jpg";
+import pt from "../../assets/images/flagsPt.jpg";
 
 function LanguageSwitcher() {
-  const changeLanguage = (e) => {
-    const lng = e.target.value;
+  const { i18n } = useTranslation();
+
+  const options = [
+    {
+      value: "fr",
+      label: (
+        <span className="langOption">
+          <img src={fr} alt="Français" />
+          Fr
+        </span>
+      )
+    },
+    {
+      value: "en",
+      label: (
+        <span className="langOption">
+          <img src={en} alt="English" />
+          En
+        </span>
+      )
+    },
+    {
+      value: "es",
+      label: (
+        <span className="langOption">
+          <img src={es} alt="Español" />
+          Es
+        </span>
+      )
+    },
+    {
+      value: "pt",
+      label: (
+        <span className="langOption">
+          <img src={pt} alt="Português" />
+          Pt
+        </span>
+      )
+    }
+  ];
+
+  const changeLanguage = (selectedOption) => {
+    const lng = selectedOption.value;
     i18n.changeLanguage(lng);
-    localStorage.setItem("i18nextLng", lng);
   };
 
-  return (
-    <label className="languageSwitcher">
-      <select value={i18n.language} onChange={changeLanguage}>
+  const currentLanguage =
+    options.find((opt) => opt.value === i18n.language.substring(0, 2)) ||
+    options[0];
 
-        <option value="en">🇬🇧 En</option>
-        <option value="es">🇪🇸 Es</option>
-        <option value="pt">🇵🇹 Pt</option>
-       <option value="fr">🇫🇷 Fr</option>
-      </select>
-    </label>
+  return (
+    <div className="languageSwitcher">
+      <Select
+        value={currentLanguage}
+        options={options}
+        onChange={changeLanguage}
+        isSearchable={false}
+      />
+    </div>
   );
 }
 

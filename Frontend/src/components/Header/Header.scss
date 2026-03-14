@@ -58,9 +58,16 @@
                  color: #444;
                  transition: color 0.2s ease-in-out;
                  font-weight: 600;
+                 text-transform: uppercase;
 
                  &:hover {
                      color: #e91e63; // rose
+                 }
+
+                 a {
+                     color: #3e3c3c;
+                     // color: #521789;
+
                  }
              }
          }
@@ -127,7 +134,7 @@
 
      }
 
-   
+
 
      /* Version mobile */
      @media (max-width: 768px) {
@@ -208,6 +215,6 @@
              }
          }
 
-    
+
      }
  }

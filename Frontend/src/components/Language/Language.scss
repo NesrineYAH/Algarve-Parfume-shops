@@ -1,33 +1,73 @@
+/*
 .languageSwitcher {
     display: flex;
     align-items: center;
-    gap: 1rem;
     justify-content: center;
     border-radius: 6px;
-    width: 50px;
-    height: 30px;
     position: relative;
-    left: -2%;
-    padding: 1px;
-
-    option {
-        background-color: #f6efef;
-        border: 1px solid #f5f1f1;
-        border-radius: 6px;
-        padding: 0.5rem 1rem;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    left: -4%;
 
 
-        &:hover {
-            background-color: #0070f3;
-            color: #fff;
-            border-color: #0070f3;
+    .langOption {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        width: 30px;
+
+        img {
+            width: 14px;
+            cursor: pointer;
+            margin: 0 2px;
+            transition: transform 0.2s;
         }
 
-        &:active {
-            transform: scale(0.95);
+        img:hover {
+            transform: scale(1.15);
         }
     }
+}
+*/
+
+.languageSwitcher {
+    width: 90px;
+    font-size: 14px;
+}
+
+/* conteneur principal */
+.languageSwitcher .react-select__control {
+    min-height: 34px;
+    height: 34px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    gap: 4px
+}
+
+/* container texte + image */
+.languageSwitcher .react-select__value-container {
+    padding: 0 8px;
+}
+
+/* options */
+.languageSwitcher .react-select__option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* drapeaux */
+.langOption img {
+    width: 18px;
+    height: 12px;
+    object-fit: cover;
+}
+
+/* icone fleche */
+.languageSwitcher .react-select__dropdown-indicator {
+    padding: 4px;
+}
+
+/* supprimer separateur */
+.languageSwitcher .react-select__indicator-separator {
+    display: none;
 }
