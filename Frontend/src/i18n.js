@@ -5,7 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import translationsFR from "./Lang/fr.json";
 import translationsEN from "./Lang/en.json";
 import translationsES from "./Lang/es.json";
-import translationsPT from "./Lang/pt.json";
+import translationsPT from "./Lang/Pt.json";
 
 i18n
     .use(LanguageDetector)
