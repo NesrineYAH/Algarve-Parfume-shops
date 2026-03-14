@@ -4,7 +4,11 @@
   "titleII": "Women's perfume",
   "titleIII": "Men's Parfume",
   "titleVI": "Brands",
-  "plus": "See more"
+  "plus": "See more",
+ "parfum": "Perfume",
+  "Luxe": "Luxury",
+  "inspiration": "Inspiration",
+"p": "New offer: Free home delivery from 25 euros."
 }, 
  "user": {
     "greeting": "Hello",

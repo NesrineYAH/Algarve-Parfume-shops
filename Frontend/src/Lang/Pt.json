@@ -3,7 +3,11 @@
   "titleI": "Bem-vindo",
   "titleII": "Mulheres perfume",
   "titleIII": "Perfume masculino",
-  "titleVI": "Marca"
+  "titleVI": "Marca",
+  "parfum": "parfum",
+  "Luxe": "Luxe",
+  "inspiration": "inspiração" ,
+  "p": "nova oferta: entrega gratuita em domicílio a partir de 25 euros."
 }, 
  "user": {
     "greeting": "Olá",

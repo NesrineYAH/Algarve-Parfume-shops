@@ -1,8 +1,7 @@
 // Header.jsx
 import React, { useState, useContext, useEffect } from "react";
 import Logo from "../../assets/logo/Logo-Parfumerie Algrave.JPG";
-import {
-  User,
+import { User,
   ShoppingCart,
   Heart,
   Home,
@@ -21,8 +20,14 @@ import { UserContext } from "../../context/UserContext";
 
 /* -------------------- Typing Animation -------------------- */
 const TypingAnimation = () => {
+  const { t } = useTranslation();
+
   const [text] = useTypewriter({
-    words: ["parfum", "Luxe", "inspiration"],
+    words: [
+      t("header.parfum"),
+      t("header.Luxe"),
+      t("header.inspiration")
+    ],
     loop: 0,
     typeSpeed: 120,
     deleteSpeed: 80,
@@ -35,6 +40,7 @@ const TypingAnimation = () => {
     </>
   );
 };
+
 
 /* -------------------- Header -------------------- */
 const Header = () => {
@@ -80,8 +86,8 @@ const handleToggleMenu = (e) => {
       {/* ---------------- Banner ---------------- */}
       {bannerVisible && (
         <section className="header__Banner">
-          <p>
-            Nouvelle offre : Livraison à domicile offerte dès 25 euros.{" "}
+          <p>{t("header.p")}
+         {" "}
             <TypingAnimation />
           </p>
           <button
@@ -121,11 +127,6 @@ const handleToggleMenu = (e) => {
             <Menu size={20} />
           </button>
         )}
-
-
-
-
-   
 
         {/* ---------------- Icons ---------------- */}
         <div className="icons">

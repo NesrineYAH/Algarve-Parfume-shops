@@ -3,7 +3,13 @@
     "titleI": "Accueil",
     "titleII": "Parfum Femme",
     "titleIII": "Parfum Homme",
-    "titleVI": "Marques"
+    "titleVI": "Marques",
+    "parfum": "Parfum",
+    "Luxe": "Luxe",
+    "inspiration": "Inspiration",
+    "p": "Nouvelle offre : Livraison à domicile offerte dès 25 euros."
+
+
   },
   "user": {
     "greeting": "Bonjour",

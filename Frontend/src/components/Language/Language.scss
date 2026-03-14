@@ -1,3 +1,69 @@
+.langContainer {
+    position: relative;
+    left: -2%;
+    display: inline-block;
+    height: 35px;
+}
+
+.langButton {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 4px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+
+    img {
+        width: 18px;
+        height: 14px;
+        object-fit: cover;
+    }
+
+    .chevron {
+        margin-left: 4px;
+        transition: transform 0.2s ease;
+        color: #7c7a7a
+    }
+
+    .chevron.open {
+        transform: rotate(180deg);
+    }
+}
+
+.langDropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+}
+
+.langOption {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 8%;
+    cursor: pointer;
+
+    &:hover {
+        background: #f0f0f0;
+    }
+
+    img {
+        width: 20px;
+        height: 14px;
+        object-fit: cover;
+    }
+}
+
+
 /*
 .languageSwitcher {
     display: flex;
@@ -27,47 +93,3 @@
     }
 }
 */
-
-.languageSwitcher {
-    width: 90px;
-    font-size: 14px;
-}
-
-/* conteneur principal */
-.languageSwitcher .react-select__control {
-    min-height: 34px;
-    height: 34px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    gap: 4px
-}
-
-/* container texte + image */
-.languageSwitcher .react-select__value-container {
-    padding: 0 8px;
-}
-
-/* options */
-.languageSwitcher .react-select__option {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/* drapeaux */
-.langOption img {
-    width: 18px;
-    height: 12px;
-    object-fit: cover;
-}
-
-/* icone fleche */
-.languageSwitcher .react-select__dropdown-indicator {
-    padding: 4px;
-}
-
-/* supprimer separateur */
-.languageSwitcher .react-select__indicator-separator {
-    display: none;
-}
