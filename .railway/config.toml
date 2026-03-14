@@ -1,0 +1,18 @@
+[build]
+builder = "RAILPACK"
+watchPatterns = ["Backend/**"]
+buildEnvironment = "V3"
+
+[deploy]
+runtime = "V2"
+numReplicas = 1
+overlapSeconds = 0
+drainingSeconds = 0
+sleepApplication = false
+useLegacyStacker = false
+ipv6EgressEnabled = false
+multiRegionConfig = {"europe-west4-drams3a":{"numReplicas":1}}
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+
