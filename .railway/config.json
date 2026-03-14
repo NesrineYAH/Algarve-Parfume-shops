@@ -1,0 +1,11 @@
+{
+  "build": {
+    "root": "Backend"
+  },
+  "deploy": {
+    "watchPaths": ["Backend/**"]
+  }
+}
+
+
+
