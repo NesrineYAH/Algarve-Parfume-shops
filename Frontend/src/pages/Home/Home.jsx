@@ -5,7 +5,7 @@ import { Heart } from "lucide-react";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating";
 import { useTranslation } from "react-i18next";
-
+import CarouselPro from "../../components/Carroussel/Carroussel";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -86,17 +86,14 @@ const Home = () => {
   };
 
 
-       
-
-
+      
   if (loading) return <p>{t("home.textChargement")}</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
     <div className="home">
 
-
-
+      <CarouselPro />
      <div className="grid">
   {filtered.slice(0, visibleProducts).map((product) => {
     const isFavorite =

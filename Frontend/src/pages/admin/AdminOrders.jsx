@@ -8,6 +8,13 @@ export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
   const [openOrder, setOpenOrder] = useState(null);
 
+  // 🔥 Nouveau : filtre
+  const [filter, setFilter] = useState({
+    status: "all",
+    paymentStatus: "all",
+    delivery: "all",
+  });
+
   const fetchOrders = async () => {
     const res = await axios.get("http://localhost:5001/api/orders/all", {
       withCredentials: true
@@ -46,7 +53,6 @@ export default function AdminOrders() {
     await fetchOrders();
   };
 
-
   const markAsReturned = async (orderId, productId) => {
     await ReturnService.markAsReturned(orderId, productId);
     await fetchOrders();
@@ -57,8 +63,79 @@ export default function AdminOrders() {
     await fetchOrders();
   };
 
+  // 🔥 Nouveau : filtrage dynamique
+  const filteredOrders = orders.filter(order => {
+    const matchStatus =
+      filter.status === "all" || order.status === filter.status;
+
+    const matchPayment =
+      filter.paymentStatus === "all" || order.paymentStatus === filter.paymentStatus;
+
+    const matchDelivery =
+      filter.delivery === "all" || order.delivery === filter.delivery;
+
+    return matchStatus && matchPayment && matchDelivery;
+  });
+
   return (
     <div className="admin-table">
+
+      {/* 🔥 Nouveau : barre de filtres */}
+      <div className="filters" style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
+        
+        <div>
+          <label>Status commande :</label>
+          <select
+            value={filter.status}
+            onChange={(e) => setFilter({ ...filter, status: e.target.value })}
+          >
+            <option value="all">Tous</option>
+            <option value="pending">pending</option>
+            <option value="confirmed">confirmed</option>
+            <option value="shipped">shipped</option>
+            <option value="delivered">delivered</option>
+            <option value="return_requested">return_requested</option>
+            <option value="returned">returned</option>
+            <option value="cancelled">cancelled</option>
+            <option value="refunded">refunded</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Paiement :</label>
+          <select
+            value={filter.paymentStatus}
+            onChange={(e) =>
+              setFilter({ ...filter, paymentStatus: e.target.value })
+            }
+          >
+            <option value="all">Tous</option>
+            <option value="paid">paid</option>
+            <option value="unpaid">unpaid</option>
+            <option value="failed">failed</option>
+            <option value="refunded">refunded</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Livraison :</label>
+          <select
+            value={filter.delivery}
+            onChange={(e) =>
+              setFilter({ ...filter, delivery: e.target.value })
+            }
+          >
+            <option value="all">Tous</option>
+            <option value="processing">processing</option>
+            <option value="shipped">shipped</option>
+            <option value="in_transit">in_transit</option>
+            <option value="out_for_delivery">out_for_delivery</option>
+            <option value="delivered">delivered</option>
+          </select>
+        </div>
+
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -75,7 +152,7 @@ export default function AdminOrders() {
         </thead>
 
         <tbody>
-          {orders.map(order => (
+          {filteredOrders.map(order => (
             <React.Fragment key={order._id}>
               <tr>
                 <td>{order._id}</td>
@@ -137,62 +214,54 @@ export default function AdminOrders() {
                         </tr>
                       </thead>
 
-               <tbody>
-  {order.items.map(item => {
-  //  console.log("ITEM:", item); // ✅ ICI ça fonctionne
+                      <tbody>
+                        {order.items.map(item => (
+                          <tr key={item.productId}>
+                            <td>{item.nom}</td>
+                            <td>{item.quantite}</td>
+                            <td>
+                              <span className={`status ${item.returnStatus}`}>
+                                {item.returnStatus}
+                              </span>
+                            </td>
 
-    return (
-      <tr key={item.productId}>
-        <td>{item.nom}</td>
-        <td>{item.quantite}</td>
-        <td>
-          <span className={`status ${item.returnStatus}`}>
-            {item.returnStatus}
-          </span>
-        </td>
-      <td>
-  {/* Étape 1 : Approuver le retour */}
-  {item.returnStatus === "requested" && (
-    <button
-      onClick={() => approveProductReturn(item.returnId)}
-      style={{ background: "green", color: "white" }}
-    >
-      Approuver retour
-    </button>
-  )}
+                            <td>
+                              {item.returnStatus === "requested" && (
+                                <button
+                                  onClick={() => approveProductReturn(item.returnId)}
+                                  style={{ background: "green", color: "white" }}
+                                >
+                                  Approuver retour
+                                </button>
+                              )}
 
-  {/* Étape 2 : Colis reçu */}
-  {item.returnStatus === "approved" && (
-    <button
-      onClick={() => markAsReturned(order._id, item.productId)}
-      style={{ background: "blue", color: "white", marginLeft: "10px" }}
-    >
-      Colis reçu
-    </button>
-  )}
+                              {item.returnStatus === "approved" && (
+                                <button
+                                  onClick={() => markAsReturned(order._id, item.productId)}
+                                  style={{ background: "blue", color: "white", marginLeft: "10px" }}
+                                >
+                                  Colis reçu
+                                </button>
+                              )}
 
-  {/* Étape 3 : Rembourser */}
-  {item.returnStatus === "returned" && (
-    <button
-      onClick={() => refundProduct(order._id, item.productId)}
-      style={{ background: "orange", color: "white", marginLeft: "10px" }}
-    >
-      Rembourser
-    </button>
-  )}
+                              {item.returnStatus === "returned" && (
+                                <button
+                                  onClick={() => refundProduct(order._id, item.productId)}
+                                  style={{ background: "orange", color: "white", marginLeft: "10px" }}
+                                >
+                                  Rembourser
+                                </button>
+                              )}
 
-  {/* Étape finale : Remboursé */}
-  {item.returnStatus === "refunded" && (
-    <span style={{ color: "green", fontWeight: "bold" }}>
-      ✔ Remboursé
-    </span>
-  )}
-</td>
-
-      </tr>
-    );
-  })}
-</tbody>
+                              {item.returnStatus === "refunded" && (
+                                <span style={{ color: "green", fontWeight: "bold" }}>
+                                  ✔ Remboursé
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
 
                     </table>
                   </td>
@@ -205,3 +274,4 @@ export default function AdminOrders() {
     </div>
   );
 }
+

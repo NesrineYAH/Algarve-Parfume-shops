@@ -13,7 +13,7 @@ import slide4 from "../../assets/images/nature4.webp";
 const slides = [slide1, slide2, slide3, slide4];
 
 const CarouselWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   .swiper {
     border-radius: 12px;

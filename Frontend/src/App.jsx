@@ -10,7 +10,7 @@ import BlogBenefits from "./components/Blog/BlogBenefits";
 import Newsletter from "./components/Newsletter/Newsletter";
 import CookieModel from "./components/CookieModel/CookieModel";
 import InfoSite from "./components/InfoSite/InfoSite";
-import CarouselPro from "./components/Carroussel/Carroussel";
+
 import Favorites from "./pages/Favorites/Favorites";
 import PolitiqueCookies from "./pages/PolitiqueCookies/PolitiqueCookies";
 
@@ -66,8 +66,7 @@ function App() {
 <br />
 <br />
 <br />
-              <CarouselPro />
-
+        
          
         <Routes>
          <Route path="/" element={<Navigate to="/Home" />} /> 
