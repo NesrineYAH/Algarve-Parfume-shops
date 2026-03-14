@@ -79,8 +79,6 @@ export default function AdminOrders() {
 
   return (
     <div className="admin-table">
-
-      {/* 🔥 Nouveau : barre de filtres */}
       <div className="filters" style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
         
         <div>

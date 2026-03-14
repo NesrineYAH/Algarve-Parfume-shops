@@ -6,6 +6,7 @@ import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating";
 import { useTranslation } from "react-i18next";
 import CarouselPro from "../../components/Carroussel/Carroussel";
+import SearchBar from "../../components/searchBar/searchBar";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const Home = () => {
   const location = useLocation();
   const [visibleProducts, setVisibleProducts] = useState(8);
 
-  // récupérer les produits
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -53,7 +54,7 @@ const Home = () => {
     fetchProducts();
   }, [location.search]);
 
-  // récupérer les notes
+
   const fetchRatings = async (list) => {
     const allRatings = {};
 
@@ -85,6 +86,17 @@ const Home = () => {
     setRatings(allRatings);
   };
 
+  const handleSearch = (query) => {
+    if (!query.trim()) {
+      setFiltered(products);
+      return;
+    }
+    const results = products.filter((p) =>
+      (p.nom || "").toLowerCase().includes(query.toLowerCase())
+    );
+
+    setFiltered(results);
+  };
 
       
   if (loading) return <p>{t("home.textChargement")}</p>;
@@ -92,6 +104,10 @@ const Home = () => {
 
   return (
     <div className="home">
+      <div className="home__sectionI"> 
+          <h1 id="h1">PERFUME ALGARVE</h1>
+      <SearchBar onSearch={handleSearch} />
+     </div>
 
       <CarouselPro />
      <div className="grid">

@@ -17,7 +17,7 @@ import LanguageSwitcher from "../Language/Language";
 import { useTranslation } from "react-i18next";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import { UserContext } from "../../context/UserContext";
-import SearchBar from "../searchBar/searchBar";
+
 
 /* -------------------- Typing Animation -------------------- */
 const TypingAnimation = () => {
@@ -71,18 +71,7 @@ const handleToggleMenu = (e) => {
   setIsMenuOpen(prev => !prev);
 };
 
-//14/03  // recherche
-  const handleSearch = (query) => {
-    if (!query.trim()) {
-      setFiltered(products);
-      return;
-    }
-    const results = products.filter((p) =>
-      (p.nom || "").toLowerCase().includes(query.toLowerCase())
-    );
 
-    setFiltered(results);
-  };
 
 
   return (
@@ -194,10 +183,7 @@ const handleToggleMenu = (e) => {
         <LanguageSwitcher />
       </section>
 
-<div className="header__sectionI"> 
-          <h1 id="h1">PERFUME ALGARVE</h1>
-      <SearchBar onSearch={handleSearch} />
-</div>
+
  
 
       {/* ---------------- Mobile Menu Rideau ---------------- */}

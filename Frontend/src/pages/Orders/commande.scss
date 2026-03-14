@@ -179,6 +179,23 @@
     }
 }
 
+.button {
+    width: 220px;
+    background: #e4d2f5;
+    color: rgb(26, 25, 25);
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin: 0.5rem;
+
+    &:hover {
+        background: #cdabed;
+    }
+
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -2,6 +2,22 @@
     width: 80%;
     margin: 0 auto;
 
+
+    &__sectionI {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 6%;
+
+        #h1 {
+            font-size: 1.8rem;
+            color: #6b606a;
+        }
+    }
+
+
     h3 {
         font-size: 16px;
     }
@@ -144,6 +160,8 @@
         cursor: pointer;
     }
 
+
+
     @media (max-width: 768px) {
         .title {
             font-size: 1.8rem;
@@ -196,6 +214,20 @@
                 width: 100%;
                 padding: 0.7rem;
                 font-size: 1rem;
+            }
+        }
+
+        &__sectionI {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 90%;
+            margin: 0 auto;
+
+            #h1 {
+                font-size: 1.3rem;
+                color: #6b606a;
             }
         }
     }

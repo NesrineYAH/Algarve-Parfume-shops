@@ -37,19 +37,6 @@
     z-index: -1;
 }
 
-/* Animation d’apparition */
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.85);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.2);
-    }
-}
-
 .orders-title {
     font-size: 28px;
     font-weight: 700;
@@ -148,14 +135,7 @@
         color: red;
         font-weight: bold;
     }
-
-
-
-
-
 }
-
-
 
 .order-footer {
     border-top: 1px solid #eee;
@@ -185,4 +165,20 @@
         }
     }
 
+}
+
+
+
+
+/* Animation d’apparition */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
 }
