@@ -325,6 +325,50 @@ const returnLabelTexts = {
   }
 };
 
+// translation/invoiceTexts.js
+const invoiceTexts = {
+  fr: {
+    invoice: "FACTURE",
+    order: "Commande",
+    date: "Date",
+    client: "Client",
+    noAddress: "Aucune adresse enregistrée",
+    items: "Articles",
+    total: "Total",
+  },
+
+  en: {
+    invoice: "INVOICE",
+    order: "Order",
+    date: "Date",
+    client: "Customer",
+    noAddress: "No address registered",
+    items: "Items",
+    total: "Total",
+  },
+
+  es: {
+    invoice: "FACTURA",
+    order: "Pedido",
+    date: "Fecha",
+    client: "Cliente",
+    noAddress: "Ninguna dirección registrada",
+    items: "Artículos",
+    total: "Total",
+  },
+
+  pt: {
+    invoice: "FATURA",
+    order: "Pedido",
+    date: "Data",
+    client: "Cliente",
+    noAddress: "Nenhum endereço registrado",
+    items: "Artigos",
+    total: "Total",
+  }
+};
+
+
 module.exports = {
   emailTexts,
   resetEmailTexts,
@@ -333,7 +377,8 @@ module.exports = {
   refundEmailTexts,
   orderCreatedEmailTexts,
   returnRequestEmailTexts,
-  returnLabelTexts
+  returnLabelTexts,
+  invoiceTexts
 };
 
 
