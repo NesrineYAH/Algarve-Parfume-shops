@@ -6,6 +6,7 @@
      margin: 2%;
 
 
+
      &__Banner {
          background-color: #88667e;
          box-sizing: border-box;
@@ -126,6 +127,20 @@
 
      }
 
+     &__sectionI {
+         display: flex;
+         flex-direction: row;
+         justify-content: space-between;
+
+         width: 60%;
+         margin: 0 auto;
+
+         #h1 {
+             font-size: 1.8rem;
+             color: #6b606a;
+         }
+     }
+
      /* Version mobile */
      @media (max-width: 768px) {
          &__Banner {
@@ -147,14 +162,6 @@
              flex-direction: row;
              margin-top: 10%;
          }
-
-         h1 {
-             position: relative;
-             font-size: 1.5rem;
-             top: 20%;
-             color: #6b606a;
-         }
-
 
          .burger {
              position: absolute;
@@ -210,6 +217,20 @@
                  background: none;
                  border: none;
                  color: white;
+             }
+         }
+
+         &__sectionI {
+             display: flex;
+             flex-direction: row;
+             justify-content: center;
+             flex-wrap: wrap;
+             width: 90%;
+             margin: 0 auto;
+
+             #h1 {
+                 font-size: 1.3rem;
+                 color: #6b606a;
              }
          }
      }

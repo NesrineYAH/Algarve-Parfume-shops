@@ -13,10 +13,8 @@ import slide4 from "../../assets/images/nature4.webp";
 const slides = [slide1, slide2, slide3, slide4];
 
 const CarouselWrapper = styled.div`
-  width: 100%;
-  max-width: 1000px;
-  margin: auto;
-
+  width: 80%;
+  margin: 0 auto;
   .swiper {
     border-radius: 12px;
     overflow: hidden;
@@ -30,7 +28,7 @@ const CarouselWrapper = styled.div`
 
   img {
     width: 100%;
-    height: 520px;
+    height: 500px;
     object-fit: cover;
     border-radius: 12px;
   }

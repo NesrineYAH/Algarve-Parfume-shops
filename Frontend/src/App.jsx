@@ -63,6 +63,11 @@ function App() {
       <div className="App">
         <Headers />
    
+<br />
+<br />
+<br />
+              <CarouselPro />
+
          
         <Routes>
          <Route path="/" element={<Navigate to="/Home" />} /> 
@@ -118,7 +123,6 @@ function App() {
         <Route path="/BlogPage" element={<BlogPage  />} />
 
         </Routes>
-           <CarouselPro />
 
         <BlogBenefits />
         <Newsletter />

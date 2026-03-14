@@ -5,7 +5,7 @@ import { Heart } from "lucide-react";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating";
 import { useTranslation } from "react-i18next";
-import SearchBar from "../../components/searchBar/searchBar";
+
 
 const Home = () => {
   const { t } = useTranslation();
@@ -85,19 +85,7 @@ const Home = () => {
     setRatings(allRatings);
   };
 
-    // recherche
-  const handleSearch = (query) => {
-    if (!query.trim()) {
-      setFiltered(products);
-      return;
-    }
 
-    const results = products.filter((p) =>
-      (p.nom || "").toLowerCase().includes(query.toLowerCase())
-    );
-
-    setFiltered(results);
-  };
        
 
 
@@ -107,7 +95,7 @@ const Home = () => {
   return (
     <div className="home">
 
-    <SearchBar onSearch={handleSearch} />
+
 
      <div className="grid">
   {filtered.slice(0, visibleProducts).map((product) => {

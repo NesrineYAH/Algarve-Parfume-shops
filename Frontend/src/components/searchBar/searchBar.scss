@@ -1,17 +1,11 @@
 .searchBar {
-    max-width: 600px;
-    padding: 1px;
-    background-color: #f0eeee;
-    border: 1px solid #ddd;
+    width: 500px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
     display: flex;
     align-items: center;
-    background-position: 50% 50%;
-    margin-bottom: 100px;
-    position: relative;
-    left: 28%;
-    border-radius: 8px;
+    border-radius: 6px;
+    background-color: #f6eaf9;
+    border: 0.01rem solid #e0bbea;
 
 
     .bar {
@@ -21,30 +15,29 @@
     }
 
     .searchInput {
-        width: 70%;
-        height: 40px;
+        width: 90%;
+        height: 38px;
         border: none;
-        background-color: #f0eeee;
-
+        background-color: #f6eaf9;
     }
 
     @media (max-width: 768px) {
-
-        max-width: 700px;
-        width: 80%;
-        left: 0;
-        margin: 20px auto;
-        padding: 2px 2px;
+        width: 450px;
+        margin: 0 auto;
+        padding: 1px;
         border-radius: 8px;
+        width: 80%;
+        display: flex;
+        align-items: center;
 
         .bar {
-            margin: 0 8px;
+            margin: 0 4px;
             font-size: 18px;
         }
 
         .searchInput {
             width: 100%;
-            font-size: 16px;
+            font-size: 13px;
             padding: 8px 0;
         }
     }
