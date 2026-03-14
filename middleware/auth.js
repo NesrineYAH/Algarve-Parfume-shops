@@ -1,24 +1,35 @@
+// Backend/middleware/auth.js
 const jwt = require("jsonwebtoken");
+const User = require("../Model/User");
 require("dotenv").config();
 
-function authMiddleware(req, res, next) {
+async function authMiddleware(req, res, next) {
   try {
+    const tokenFromCookie = req.cookies?.token || req.cookies?.jwt;
     const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: "Token manquant" });
+    const tokenFromHeader = authHeader?.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : null;
 
-    const token = authHeader.split(" ")[1];
+    const token = tokenFromCookie || tokenFromHeader;
     if (!token) return res.status(401).json({ error: "Non authentifié" });
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+
+    const user = await User.findById(decoded.userId).select("-password"); 
+    if (!user) {
+      return res.status(401).json({ error: "Utilisateur introuvable" });
+    }
+
     req.user = {
-      userId: decodedToken.userId,
-      role: decodedToken.role,
-      nom: decodedToken.nom,
-      prenom: decodedToken.prenom,
-      email: decodedToken.email
+      ...user.toObject(),
+      userId: user._id.toString(), 
     };
+
     next();
   } catch (error) {
+    console.error("Erreur authMiddleware :", error);
     res.status(401).json({ error: "Token invalide" });
   }
 }

@@ -1,50 +1,48 @@
+// Routes/orders.js
 const express = require("express");
 const router = express.Router();
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const orderCtrl = require("../controllers/order");
+const returnCtrl = require("../controllers/return");
 
-// ➤ CRÉER UNE COMMANDE
+
 router.post("/create", authMiddleware, orderCtrl.createOrder);
+router.post("/finalize/:orderId", authMiddleware, orderCtrl.finalizeOrder);
 
-// ➤ METTRE À JOUR UNE COMMANDE
-router.put("/:id", authMiddleware, orderCtrl.updateOrder);
-
-// ➤ FINALISER UNE COMMANDE
-router.post("/finalize/:id", authMiddleware, orderCtrl.finalizeOrder);
-
-// ➤ RÉCUPÉRER LES COMMANDES DE L’UTILISATEUR CONNECTÉ
 router.get("/my-orders", authMiddleware, orderCtrl.getMyOrders);
-
-// ➤ SUPPRIMER UNE COMMANDE
-router.delete("/:id", authMiddleware, orderCtrl.deleteOrder);
-
-// ➤ RÉCUPÉRER TOUTES LES COMMANDES (ADMIN)
-router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
-
-// ➤ RÉCUPÉRER LES COMMANDES D’UN UTILISATEUR PAR SON ID
 router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
+
+router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
+router.get("/admin", authMiddleware, isAdmin, orderCtrl.getAllOrdersAdmin);
+
+router.put("/:orderId", authMiddleware, orderCtrl.updateOrder);
+
+router.put("/:orderId/ship", authMiddleware, isAdmin, orderCtrl.shipOrder);
+router.post("/:orderId/deliver", authMiddleware, orderCtrl.deliverOrder);
+router.post("/:orderId/cancel", authMiddleware, orderCtrl.cancelOrder);
+router.post("/:orderId/refund", authMiddleware, isAdmin, orderCtrl.refundOrder);
+router.put("/:orderId/:productId/received", authMiddleware, isAdmin,returnCtrl.markAsReturned
+);
+router.put(
+    "/:orderId/:productId/refund",
+    authMiddleware,
+    isAdmin,
+    returnCtrl.refundProduct
+);
+
+
+router.delete("/:orderId", authMiddleware, orderCtrl.deleteOrder);
+
+router.get("/:orderId", authMiddleware, orderCtrl.getOrderById);
+
+
 
 module.exports = router;
 
 
-/*
-const express = require("express");
-const router = express.Router();
-const Order = require("../Model/Order");
-const Product = require("../Model/product");
-const { authMiddleware, isAdmin } = require("../middleware/auth");
-const orderCtrl = require("../controllers/order");
 
 
-router.post("/create", authMiddleware, orderCtrl.createOrder);
-router.put("/:id", authMiddleware, orderCtrl.updateOrder);
-router.post("/finalize/:id", authMiddleware, orderCtrl.finalizeOrder);
-router.get("/my-orders", authMiddleware, orderCtrl.getMyOrders);
-router.delete("/:id", authMiddleware, orderCtrl.deleteOrder);
-router.get("/all", authMiddleware, isAdmin, orderCtrl.getAllOrders);
-router.get("/user/:userId", authMiddleware, orderCtrl.getOrdersByUserId);
-module.exports = router;
-*/
+
 
 
 /*

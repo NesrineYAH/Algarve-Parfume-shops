@@ -9,7 +9,7 @@ const commentSchema = new mongoose.Schema({
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",      // 🔗 lien vers la collection User
+        ref: "User",      
         required: true
     },
     rating: { type: Number, min: 1, max: 5, required: true },

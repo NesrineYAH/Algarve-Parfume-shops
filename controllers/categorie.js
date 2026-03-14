@@ -1,7 +1,7 @@
 // controllers/categorieController.js
 const Categorie = require("../Model/Categorie");
 
-// Récupérer toutes les catégories GET /api/categories
+
 exports.getCategories = async (req, res) => {
   try {
     const categories = await Categorie.find();
@@ -11,7 +11,7 @@ exports.getCategories = async (req, res) => {
   }
 };
 
-// Ajouter une catégorie POST /api/categories
+
 exports.createCategorie = async (req, res) => {
   try {
     const { nom, description } = req.body;
