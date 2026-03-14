@@ -14,7 +14,7 @@ async function recreateUsers() {
     {
       name: "Nesrine yahoum",
       email: "process.env.EMAIL_ADMIN",
-      password: "process.env.EMAIL_PasswordADMIN", // mot de passe fort
+      password: "process.env.EMAIL_PasswordADMIN", 
       role: "admin",
     },
     {

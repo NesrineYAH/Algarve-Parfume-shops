@@ -20,7 +20,7 @@ const avisSchema = new mongoose.Schema(
         },
         verifiedPurchase: {
             type: Boolean,
-            default: true, // à vérifier plus tard via commandes
+            default: true,
         },
         reported: {
             type: Boolean,

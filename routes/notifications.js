@@ -6,7 +6,6 @@ const { authMiddleware, isAdmin } = require("../middleware/auth");
 const sendPromoEmail = require("../utils/mailer");
 
 
-// 🔔 Récupérer notifications utilisateur
 router.get("/", authMiddleware, async (req, res) => {
     const notifications = await Notification.find({ userId: req.user.userId })
         .sort({ createdAt: -1 });
@@ -15,7 +14,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 
-// ✅ Marquer comme lue
+
 router.put("/:id/read", authMiddleware, async (req, res) => {
     await Notification.findByIdAndUpdate(req.params.id, { isRead: true });
     res.json({ message: "Notification lue" });
@@ -23,7 +22,7 @@ router.put("/:id/read", authMiddleware, async (req, res) => {
 router.post("/promo", authMiddleware, isAdmin, async (req, res) => {
     const { title, message, discount, newPrice, imageUrl } = req.body
 
-    // Tous les utilisateurs
+
     const users = await User.find({}, "_id");
 
     const notifications = users.map(user => ({

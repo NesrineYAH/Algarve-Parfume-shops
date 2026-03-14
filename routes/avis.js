@@ -8,9 +8,8 @@ const mongoose = require("mongoose");
 router.get("/", async (req, res) => {
     try {
         const avis = await Avis.find()
-            .populate("userId", "nom") // afficher le nom de l'utilisateur
-            .sort({ createdAt: -1 });   // du plus récent au plus ancien
-
+            .populate("userId", "nom") 
+            .sort({ createdAt: -1 });   
         res.status(200).json(avis);
     } catch (err) {
         console.error(err);
@@ -36,7 +35,7 @@ router.post("/", authMiddleware, async (req, res) => {
             userId,
             rating,
             text,
-            verifiedPurchase: true, // tu peux améliorer plus tard avec une vraie vérif
+            verifiedPurchase: true, 
         });
 
         const savedAvis = await avis.save();

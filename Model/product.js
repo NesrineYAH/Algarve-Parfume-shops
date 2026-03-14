@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema(
     ],
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // si tu l’as ajouté
   },
-  { timestamps: true, }// ✅ ICI
+  { timestamps: true, }
 );
 
 module.exports = mongoose.model("Product", productSchema);

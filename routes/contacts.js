@@ -7,12 +7,11 @@ router.post("/", async (req, res) => {
     try {
         const { nom, prenom, email, message, reason } = req.body;
 
-        // Vérification des champs obligatoires
+
         if (!nom || !prenom || !email || !message || !reason) {
             return res.status(400).json({ error: "Champs manquants" });
         }
 
-        // Sauvegarde en base MongoDB
         const newContact = await Contact.create({
             nom,
             prenom,
@@ -21,7 +20,6 @@ router.post("/", async (req, res) => {
             reason,
         });
 
-        // 📩 Envoi email au user (gestion d'erreur incluse)
         try {
             await sendEmail({
                 to: email,
@@ -39,10 +37,9 @@ router.post("/", async (req, res) => {
             console.log(`Email envoyé à ${email}`);
         } catch (mailError) {
             console.error("Erreur lors de l'envoi de l'email :", mailError);
-            // On continue quand même, l'enregistrement en DB est réussi
+     
         }
 
-        // Réponse au frontend
         return res.status(200).json({
             success: true,
             message: "Message envoyé et email envoyé au client (si possible).",

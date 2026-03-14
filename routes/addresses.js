@@ -1,36 +1,20 @@
+// routes/addresse
 const express = require("express");
 const router = express.Router();
-const { addAddress, getAddresses, deleteAddress } = require("../controllers/address");
+const { addAddress, getAddresses, deleteAddress, updateAddress } = require("../controllers/address");
 const { authMiddleware } = require("../middleware/auth"); // vérifie que l'utilisateur est connecté
 
-router.post("/", authMiddleware, addAddress);      // ajouter adresse
-router.get("/", authMiddleware, getAddresses);     // récupérer adresses
-router.delete("/:id", authMiddleware, deleteAddress); // supprimer adresse
-router.get("/", authMiddleware, (req, res) => {
-    const userAddresses = []; // Ex : À remplacer par DB
-    res.json(userAddresses);
-});
+// 🔹 Ajouter une adresse
+router.post("/", authMiddleware, addAddress);
 
-router.post("/", authMiddleware, (req, res) => {
-    const { street, city, postalCode, country, type } = req.body;
+// 🔹 Récupérer toutes les adresses de l'utilisateur connecté
+router.get("/", authMiddleware, getAddresses);
 
-    if (!street || !city || !postalCode || !country) {
-        return res.status(400).json({ message: "Tous les champs sont requis" });
-    }
+// 🔹 Supprimer une adresse
+router.delete("/:id", authMiddleware, deleteAddress);
 
-    const newAddress = {
-        _id: Date.now(),
-        street,
-        city,
-        postalCode,
-        country,
-        type,
-    };
-
-    res.status(201).json({
-        message: "Adresse ajoutée avec succès",
-        address: newAddress,
-    });
-});
+// 🔹 Mettre à jour une adresse
+router.put("/:id", authMiddleware, updateAddress);
 
 module.exports = router;
+

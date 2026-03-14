@@ -5,10 +5,7 @@ const User = require("../Model/User");
 const { authMiddleware, isAdmin } = require("../middleware/auth");
 const uploads = require("../middleware/multer-config");
 const { sendPromoEmail } = require("../utils/mailer");
-// const { sendPromoEmail } = require("../utils/sendPromoEmail");
 
-
-// POST /api/promotions
 router.post(
     "/",
     authMiddleware,
@@ -36,10 +33,10 @@ router.post(
 
             await Notification.insertMany(notifications);
 
-            // ✅ Emails
+
             await Promise.all(
                 users
-                    .filter(user => user.email) // 🔥 évite l’erreur
+                    .filter(user => user.email)
                     .map(user =>
                         sendPromoEmail({
                             to: user.email,
