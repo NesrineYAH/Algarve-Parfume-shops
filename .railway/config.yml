@@ -1,0 +1,10 @@
+build:
+  builder: node
+  startCommand: npm start
+  metal: true
+
+deploy:
+  waitForCI: true
+  teardown: true
+  watchPaths:
+    - Backend/**

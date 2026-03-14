@@ -46,28 +46,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ⚡ Routes Stripe & paiement
+
 app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentsRoute);
 
-// ⚡ Static files
+
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/etiquettes", express.static(path.join(__dirname, "public/etiquettes")));
 app.use("/invoices", express.static(path.join(__dirname, "public/invoices")));
 
-// 🚀 Routes publiques
 app.use("/api/users", userRoutes);
 app.use("/api/products", ProductRoutes);
+app.use("/api/products", commentsRoutes);
 app.use("/api/categories", categorieRoutes);
 app.use("/api/carts", cartRoutes);
 app.use("/api/addresses", addressRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/contacts", contactRoutes);
-app.use("/api/products", commentsRoutes);
-//app.use("/api/products/:productId/comments", commentsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api/promotions", promotionsRoutes);
 app.use("/api/avis", avisRoutes);
@@ -75,11 +73,9 @@ app.use("/api/returns", returnRoutes);
 app.use("/api/paypal", paypalRoutes);
 
 
-// ⚡ Routes protégées avec authMiddleware
 app.use("/api", authMiddleware, paymentMethodsRoutes);
 app.use("/api/users/favorites", favoritesRoutes);
 
-// 💡 Page d’accueil
 app.get("/", (req, res) => {
   res.send("🚀 Backend Parfum API en marche !");
 });

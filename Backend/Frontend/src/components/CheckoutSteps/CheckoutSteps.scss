@@ -1,0 +1,39 @@
+.steps-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+    gap: 10px;
+}
+
+.step {
+    text-align: center;
+    color: #aaa;
+}
+
+.step.active {
+    color: black;
+    font-weight: bold;
+}
+
+.circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+}
+
+.step.active .circle {
+    background: black;
+    color: white;
+}
+
+.line {
+    width: 80px;
+    height: 2px;
+    background: #ccc;
+}

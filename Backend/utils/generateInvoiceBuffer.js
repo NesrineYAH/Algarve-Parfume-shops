@@ -1,4 +1,72 @@
 //generateInvoiceBuffer.js
+const { returnLabelTexts } = require("../translation/returnLabelTexts");
+
+const generateReturnLabel = (order, user, address, returnData) => {
+    return new Promise((resolve, reject) => {
+
+        const lang = user.language || "pt"; // fallback FR
+        const t = returnLabelTexts[lang];
+
+        const doc = new PDFDocument({ margin: 50 });
+
+        // Titre
+        doc.fontSize(20).text(t.title, { align: "center" }).moveDown();
+
+        // Client
+        doc.fontSize(14).text(t.client, { underline: true }).moveDown(0.5);
+        doc.fontSize(12).text(`${user.prenom} ${user.nom}`);
+
+        // Adresse
+        doc.moveDown();
+        doc.fontSize(14).text(t.address, { underline: true }).moveDown(0.5);
+
+        if (address) {
+            doc.text(address.street)
+                .text(`${address.postalCode} ${address.city}`)
+                .text(address.country);
+        } else {
+            doc.text(t.noAddress);
+        }
+
+        // Email
+        doc.moveDown();
+        doc.fontSize(12).text(`${t.email} : ${user.email}`);
+
+        // Commande
+        doc.moveDown();
+        doc.text(`${t.order} : ${order._id}`);
+
+        // Produit
+        doc.moveDown();
+        doc.text(`${t.product} : ${returnData.productName}`);
+
+        // Retour ID
+        doc.moveDown();
+        doc.text(`${t.returnId} : ${returnData.returnId}`);
+
+        // Adresse de retour
+        doc.moveDown();
+        doc.fontSize(14).text(t.returnAddress, { underline: true }).moveDown(0.5);
+        doc.fontSize(12).text(returnData.returnAddress);
+
+        // QR Code
+        doc.moveDown();
+        doc.text(t.qrText);
+
+        // etc...
+    });
+};
+
+
+
+
+
+
+
+
+
+
+/*
 const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
@@ -65,4 +133,4 @@ const generateInvoice = (order, user, address) => {
 };
 
 module.exports = generateInvoice;
-
+*/
