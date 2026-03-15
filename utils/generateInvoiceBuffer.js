@@ -1,5 +1,5 @@
 //generateInvoiceBuffer.js
-const { returnLabelTexts } = require("../translation/returnLabelTexts");
+const { returnLabelTexts } = require("../translations/emailTexts");
 
 const generateReturnLabel = (order, user, address, returnData) => {
     return new Promise((resolve, reject) => {
