@@ -124,19 +124,25 @@
             margin: -80px 0 0 120px;
 
             h3 {
-                font-size: 1rem;
+                font-size: 1.2rem;
                 font-weight: 600;
                 color: #333;
             }
 
-            input {
-                width: 100%;
-                padding: 9px 9px;
-                border-radius: 8px;
+            label {
                 border: 1px solid #d1d1d1;
                 background: #fafafa;
-                font-size: .8rem;
+                border-radius: 10px;
+
+            }
+
+            input {
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid transparent;
+                font-size: .89rem;
                 transition: all 0.2s ease;
+                cursor: pointer;
 
                 &:focus {
                     border-color: #007bff31;
@@ -146,8 +152,41 @@
                 }
             }
 
+            &__Contact {
+                display: flex;
+                align-items: center;
+                padding: .25rem;
+                border-radius: 10px;
+                border: 1px solid #e5e5e5;
+                width: 375px;
+
+                h3 {
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: #333;
+                }
+
+                input {
+                    padding: 12px;
+                    border-radius: 8px;
+                    border: 1px solid #d1d1d1;
+                    background: #fafafa;
+                    font-size: .89rem;
+                    margin: 10px;
+                    transition: all 0.2s ease;
+                    cursor: pointer;
+
+                    &:focus {
+                        border-color: #007bff31;
+                        background: #fff;
+                        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+                        outline: none;
+                    }
+                }
+            }
+
             button {
-                margin-top: 0.3rem;
+                margin-top: 2.2rem;
                 padding: 10px 10px;
                 background: #007bff;
                 color: white;

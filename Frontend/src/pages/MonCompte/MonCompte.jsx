@@ -384,7 +384,8 @@ useEffect(() => {
                   placeholder= {t("preferences.Email")}
                 />
               </label>
-              <label>
+
+              <label className="security__Contact">
                 <input
                   type="checkbox"
                   checked={preferences.newsletter}
@@ -394,7 +395,8 @@ useEffect(() => {
                 />
                 {t("preferences.Recevoirnewsletter")}
               </label>
-              <label>
+
+              <label className="security__Contact">
                 <input
                   type="checkbox"
                   checked={preferences.sms}
@@ -404,6 +406,7 @@ useEffect(() => {
                 />
                 {t("preferences.NotificationsSMS")}
               </label>
+
               <button onClick={savePreferences}>{t("preferences.Enregistrer")}</button>
             </div>
           )}
