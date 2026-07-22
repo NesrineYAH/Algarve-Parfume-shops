@@ -37,24 +37,30 @@ router.post(
         sig,
         process.env.STRIPE_WEBHOOK_SECRET
       );
+      console.log("================================");
+      console.log("Event type :", event.type);
+      console.log("================================");
+
     } catch (err) {
       console.error("❌ Signature webhook invalide :", err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    const session = event.data.object;
-    const orderId = session.metadata?.orderId;
-    const userId = session.metadata?.userId;
-
-    console.log("🧾 orderId envoyé à Stripe :", orderId);
-
-    if (!orderId) {
-      console.error("❌ orderId manquant dans metadata");
-      return res.status(400).json({ error: "orderId manquant" });
-    }
-
     // 1️⃣ Paiement réussi
     if (event.type === "checkout.session.completed") {
+
+      const session = event.data.object;
+      console.log("Metadata :", session.metadata);
+
+      const orderId = session.metadata?.orderId;
+      const userId = session.metadata?.userId;
+      console.log("orderId :", orderId);
+
+      if (!orderId) {
+        console.error("orderId manquant");
+        return res.json({ received: true });
+      }
+
       try {
         console.log("🔥 checkout.session.completed reçu");
         const paymentIntent = await stripe.paymentIntents.retrieve(
