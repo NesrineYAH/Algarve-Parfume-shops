@@ -5,6 +5,8 @@ const Cart = require("../Model/Cart");
 const mongoose = require("mongoose");
 const { sendEmail } = require("../utils/mailer");
 const { shippedEmailTexts, deliveredEmailTexts, refundEmailTexts, orderCreatedEmailTexts } = require("../translations/emailTexts");
+
+
 /*
 exports.createOrder = async (req, res) => {
     try {

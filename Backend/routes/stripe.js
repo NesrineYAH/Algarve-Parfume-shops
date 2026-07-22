@@ -158,10 +158,8 @@ router.post("/orders/confirm-payment", authMiddleware, async (req, res) => {
     if (!sessionId) {
       return res.status(400).json({ message: "sessionId manquant" });
     }
-
     // Récupérer la session Stripe
     const session = await stripe.checkout.sessions.retrieve(sessionId);
-
     // Vérifier que Stripe confirme le paiement
     if (session.payment_status !== "paid") {
       return res.status(400).json({ message: "Paiement non confirmé par Stripe" });
