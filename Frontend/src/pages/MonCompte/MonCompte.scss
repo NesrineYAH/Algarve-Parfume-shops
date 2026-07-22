@@ -115,13 +115,13 @@
         .security {
             display: flex;
             flex-direction: column;
-            gap: .6rem;
+            gap: .4rem;
             padding: .8rem;
             background: #ffffff;
             border-radius: 10px;
             border: 1px solid #e5e5e5;
             width: 400px;
-            margin: -80px 0 0 120px;
+            margin: -90px 0 0 120px;
 
             h3 {
                 font-size: 1.2rem;
@@ -155,7 +155,7 @@
             &__Contact {
                 display: flex;
                 align-items: center;
-                padding: .25rem;
+                padding: .2rem;
                 border-radius: 10px;
                 border: 1px solid #e5e5e5;
                 width: 375px;
@@ -186,7 +186,7 @@
             }
 
             button {
-                margin-top: 2.2rem;
+                margin-top: 1rem;
                 padding: 10px 10px;
                 background: #007bff;
                 color: white;

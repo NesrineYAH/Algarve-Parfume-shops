@@ -368,7 +368,7 @@ useEffect(() => {
           {activeTab === "preferences" && (
             <div className="security">
               <h3>{t("preferences.PréférencesCommunication")}</h3>
-              <label>
+              <label >
                 <input
                   type="tel"
                   value={phone}

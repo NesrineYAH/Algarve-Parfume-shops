@@ -15,8 +15,21 @@ router.post(
   "/",
   express.raw({ type: "application/json" }),
   async (req, res) => {
+    console.log("===== WEBHOOK RECU =====");
+
     const sig = req.headers["stripe-signature"];
+    console.log("Signature :", sig);
+
     let event;
+
+    console.log("===== WEBHOOK =====");
+    console.log("URL :", req.originalUrl);
+    console.log("Content-Type :", req.headers["content-type"]);
+    console.log("Is Buffer :", Buffer.isBuffer(req.body));
+    console.log("Body :", req.body);
+    console.log("Webhook Secret :", process.env.STRIPE_WEBHOOK_SECRET);
+    console.log("===================");
+
 
     try {
       event = stripe.webhooks.constructEvent(
@@ -43,64 +56,92 @@ router.post(
     // 1️⃣ Paiement réussi
     if (event.type === "checkout.session.completed") {
       try {
-        const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
-        const stripeCustomer = await stripe.customers.retrieve(session.customer);
-        const charge = paymentIntent.charges.data[0];
-        const email = session.customer_details?.email || stripeCustomer.email ||
-          paymentIntent.receipt_email || session.metadata?.email;
+        console.log("🔥 checkout.session.completed reçu");
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          session.payment_intent,
+          {
+            expand: ["latest_charge"],
+          }
+        );
+
+        // ✅ Vérifier que le paiement est bien réussi
+        if (paymentIntent.status !== "succeeded") {
+          console.log("⏳ Paiement non confirmé :", paymentIntent.status);
+          return res.json({ received: true });
+        }
+
+        // ✅ Vérifier si ce webhook a déjà été traité
+        const existingPayment = await Payment.findOne({
+          stripePaymentIntentId: paymentIntent.id,
+        });
+
+        if (existingPayment) {
+          console.log("⚠️ Webhook déjà traité :", paymentIntent.id);
+          return res.json({ received: true });
+        }
+
+        const stripeCustomer = session.customer
+          ? await stripe.customers.retrieve(session.customer)
+          : null;
+
+        const charge = paymentIntent.latest_charge;
+
+        const email =
+          session.customer_details?.email ||
+          stripeCustomer?.email ||
+          paymentIntent.receipt_email ||
+          session.metadata?.email;
+
         const amount = paymentIntent.amount / 100;
 
-        // 📧 Envoi de l’email de confirmation
-        await sendEmail({
-          to: email,
-          subject: "Votre paiement est confirmé",
-          html: `
-            <h2>Merci pour votre commande !</h2>
-            <p>Votre paiement de <strong>${amount} €</strong> a été confirmé.</p>
-            <p>Nous préparons votre commande.</p>
-          `,
-        });
         console.log("📩 Email dans paymentIntent :", paymentIntent.receipt_email);
         console.log("📩 Email dans session :", session.customer_details?.email);
         console.log("📧 Email envoyé à :", email);
 
-        // Mise à jour du paiement
+        // 📧 Envoi de l'email de confirmation
+        await sendEmail({
+          to: email,
+          subject: "Votre paiement est confirmé",
+          html: `
+          <h2>Merci pour votre commande !</h2>
+          <p>Votre paiement de <strong>${amount} €</strong> a été confirmé.</p>
+          <p>Nous préparons votre commande.</p>
+        `,
+        });
 
-        await Payment.findOneAndUpdate(
-          { stripePaymentIntentId: paymentIntent.id },
-          {
-            user: userId,
-            email,
-            stripeCustomerId: session.customer,
-            stripePaymentIntentId: paymentIntent.id,
-            stripeCheckoutSessionId: session.id,
-            amount: paymentIntent.amount,
-            currency: paymentIntent.currency,
-            status: paymentIntent.status,
-            paymentMethod: {
-              brand: charge.payment_method_details.card.brand,
-              last4: charge.payment_method_details.card.last4,
-            },
-            metadata: session.metadata,
+        // 💳 Sauvegarde du paiement
+        await Payment.create({
+          user: userId,
+          email,
+          stripeCustomerId: session.customer,
+          stripePaymentIntentId: paymentIntent.id,
+          stripeCheckoutSessionId: session.id,
+          amount: paymentIntent.amount,
+          currency: paymentIntent.currency,
+          status: paymentIntent.status,
+          paymentMethod: {
+            brand: charge.payment_method_details.card.brand,
+            last4: charge.payment_method_details.card.last4,
           },
-          { upsert: true, new: true }
-        );
-        console.log("📨 Email à envoyer :", email);
+          metadata: session.metadata,
+        });
 
-        // Mise à jour de la commande
+        // 📦 Mise à jour de la commande
         await Order.findByIdAndUpdate(
           orderId,
           {
             status: "confirmed",
             paymentStatus: "paid",
             paidAt: new Date(),
+            stripePaymentIntentId: paymentIntent.id,
+            stripeCheckoutSessionId: session.id,
           },
           { new: true }
         );
 
         console.log("🟩 Commande mise à jour comme PAYÉE :", orderId);
       } catch (err) {
-        console.error("❌ Erreur mise à jour commande payée :", err.message);
+        console.error("❌ Erreur complète :", err);
       }
     }
 
@@ -154,7 +195,71 @@ module.exports = router;
 
 
 
+/**
+ 
+  // 1️⃣ Paiement réussi
+    if (event.type === "checkout.session.completed") {
+      try {
+        const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
+        const stripeCustomer = await stripe.customers.retrieve(session.customer);
+        const charge = paymentIntent.charges.data[0];
+        const email = session.customer_details?.email || stripeCustomer.email ||
+          paymentIntent.receipt_email || session.metadata?.email;
+        const amount = paymentIntent.amount / 100;
 
+        // 📧 Envoi de l’email de confirmation
+        await sendEmail({
+          to: email,
+          subject: "Votre paiement est confirmé",
+          html: `
+            <h2>Merci pour votre commande !</h2>
+            <p>Votre paiement de <strong>${amount} €</strong> a été confirmé.</p>
+            <p>Nous préparons votre commande.</p>
+          `,
+        });
+        console.log("📩 Email dans paymentIntent :", paymentIntent.receipt_email);
+        console.log("📩 Email dans session :", session.customer_details?.email);
+        console.log("📧 Email envoyé à :", email);
+
+        // Mise à jour du paiement
+        await Payment.findOneAndUpdate(
+          { stripePaymentIntentId: paymentIntent.id },
+          {
+            user: userId,
+            email,
+            stripeCustomerId: session.customer,
+            stripePaymentIntentId: paymentIntent.id,
+            stripeCheckoutSessionId: session.id,
+            amount: paymentIntent.amount,
+            currency: paymentIntent.currency,
+            status: paymentIntent.status,
+            paymentMethod: {
+              brand: charge.payment_method_details.card.brand,
+              last4: charge.payment_method_details.card.last4,
+            },
+            metadata: session.metadata,
+          },
+          { upsert: true, new: true }
+        );
+        console.log("📨 Email à envoyer :", email);
+
+        // Mise à jour de la commande
+        await Order.findByIdAndUpdate(
+          orderId,
+          {
+            status: "confirmed",
+            paymentStatus: "paid",
+            paidAt: new Date(),
+          },
+          { new: true }
+        );
+
+        console.log("🟩 Commande mise à jour comme PAYÉE :", orderId);
+      } catch (err) {
+        console.error("❌ Erreur mise à jour commande payée :", err.message);
+      }
+    }
+ */
 
 
 

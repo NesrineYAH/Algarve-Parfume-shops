@@ -11,7 +11,10 @@ const cartRoutes = require("./routes/carts");
 const addressRoutes = require("./routes/addresses");
 const orderRoutes = require("./routes/orders");
 const deliveryRoutes = require("./routes/delivery");
+
 const stripeRoute = require("./routes/stripe");
+const stripeWebhook = require("./routes/stripeWebhook");
+
 const contactRoutes = require("./routes/contacts");
 const commentsRoutes = require("./routes/comments");
 const notificationsRoutes = require("./routes/notifications");
@@ -29,10 +32,6 @@ require("./mongoDB/DB");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(
-  "/api/stripe/webhook",
-  bodyParser.raw({ type: "application/json" })
-);
 
 // ⚡ Middlewares globaux
 app.use(cors({
@@ -42,14 +41,16 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
+
+// ⚠️ Le webhook AVANT express.json()
+app.use("/api/stripe/webhook", stripeWebhook);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
 app.use("/api/stripe", stripeRoute);
 app.use("/api/payment", paymentsRoute);
-
 
 app.use("/uploads", express.static("uploads"));
 app.use("/images", express.static(path.join(__dirname, "images")));
@@ -84,6 +85,6 @@ module.exports = app;
 
 
 
-//                                       stripe listen --forward-to localhost:5001/api/stripe/webhook
+//                                       .\stripe listen --forward-to localhost:5001/api/stripe/webhook
 
 
