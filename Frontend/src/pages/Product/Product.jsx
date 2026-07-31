@@ -10,6 +10,9 @@ import { CartContext } from "../../context/CartContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating"; 
 import ReassuranceBanner from "../../components/InfoSite/IconeProduct";
+//
+import { FiClock, FiMapPin } from "react-icons/fi";
+import { LuLeaf } from "react-icons/lu";
 
 const Product = () => {
   const { id } = useParams();
@@ -201,7 +204,7 @@ console.log(product.imageUrl);
     <section id="page">
       <div className="product-container">
         <div className="product">
-          
+  
           <div className="product__img">
 <img
   src={`http://localhost:5001${product.productImage}`}
@@ -216,21 +219,20 @@ console.log(product.imageUrl);
           </div>
 
          <div className="product__part">  
-   
           <h2>{product.nom}</h2>
           <p>{product.description}</p>
         <p className="price">
-  Prix :{" "}
-  {selectedOption ? (
+      Prix :{" "}
+      {selectedOption ? (
     <>
       {selectedOption.prix} €
     </>
-  ) : (
+        ) : (
     <>
       {minPrice} €
     </>
   )}
-</p>
+    </p>
       {product.options && product.options.length > 0 && (
         <div className="product-options">
     {/* <p className="option-label">{t("product.chooseOption")}</p> */}
@@ -265,11 +267,12 @@ console.log(product.imageUrl);
 
   <span className="qty-value">{quantity}</span>
 
-
   <button onClick={increaseQuantity} className="qty-btn">
     +
   </button>
-      </div>
+    </div>
+          <br />
+
       <p> Expédition 24/72h </p>
 
           <button className="btn-Add" onClick={addToCart}>
@@ -279,8 +282,28 @@ console.log(product.imageUrl);
      <br />
   <br />
          
-        </div>
 {/* Bloc IconeProduct  */}
+      <div className="features">    
+     <div className="feature">
+     <LuLeaf className="icon" />
+      <p>Ingrédients<br />de qualité</p>
+      </div>
+
+    <div className="feature">
+  <FiClock className="icon" />
+  <p>Longue<br />tenue</p>
+    </div>
+
+   <div className="feature">
+  <FiMapPin className="icon" />
+  <p>Fabriqué en<br />Algarve</p>
+    </div>
+    </div>
+{/* Bloc IconeProduct  */}
+
+        </div>
+
+
 
 
 
@@ -313,6 +336,8 @@ console.log(product.imageUrl);
 
 
 {/* Bloc IconeProduct  */}
+ <br />
+  <br />
   <ReassuranceBanner />
 
         <div className="review-button">
