@@ -1,6 +1,7 @@
 // controller/product.js
 const Product = require("../Model/product");
 const Cart = require("../Model/Cart");
+const mongoose = require("mongoose");
 
 require("dotenv").config();
 
@@ -53,7 +54,6 @@ exports.addProduct = async (req, res) => {
     }
 };
 
-
 exports.getProducts = async (req, res) => {
     try {
         const { genre } = req.query;
@@ -67,10 +67,12 @@ exports.getProducts = async (req, res) => {
         res.json(produits);
     } catch (err) { res.status(500).json({ message: err.message }); }
 };
-
+/*
 exports.getProductById = async (req, res) => {
     try {
         const produit = await Product.findById(req.params.id);
+        console.log("Produit MongoDB :", produit.toObject());
+
         if (!produit)
             return res.status(404).json({ message: "Produit non trouvé" });
         res.json(produit);
@@ -78,7 +80,7 @@ exports.getProductById = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-
+*/
 exports.deleteProduct = async (req, res) => {
     try {
         const produit = await Product.findByIdAndDelete(req.params.id);
@@ -89,7 +91,6 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-
 
 exports.updateProduct = async (req, res) => {
     try {
@@ -158,6 +159,32 @@ exports.addComment = async (req, res) => {
     } catch (error) {
         console.error("Erreur ajout commentaire :", error);
         return res.status(500).json({ error: "Erreur serveur" });
+    }
+};
+
+
+exports.getProductById = async (req, res) => {
+    try {
+        console.log("Base :", mongoose.connection.name);
+
+        // Lecture via Mongoose
+        const produit = await Product.findById(req.params.id);
+
+        // Lecture directe de MongoDB
+        const brut = await mongoose.connection.db
+            .collection("products")
+            .findOne({ _id: new mongoose.Types.ObjectId(req.params.id) });
+
+        console.log("=== MONGOOSE ===");
+        console.log(produit);
+
+        console.log("=== MONGO DIRECT ===");
+        console.log(brut);
+
+        res.json(produit);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
     }
 };
 

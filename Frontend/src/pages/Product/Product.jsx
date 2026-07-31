@@ -9,6 +9,7 @@ import { UserContext } from "../../context/UserContext";
 import { CartContext } from "../../context/CartContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import StarRating from "../../components/StarRating/StarRating"; 
+import ReassuranceBanner from "../../components/InfoSite/IconeProduct";
 
 const Product = () => {
   const { id } = useParams();
@@ -190,6 +191,11 @@ useEffect(() => {
       ? comments.reduce((sum, c) => sum + c.rating, 0) / comments.length
       : 0;
 
+//29/07/2026
+console.log(product);
+console.log(product.productImage);
+console.log(product.imageUrl);
+
 
   return (
     <section id="page">
@@ -197,11 +203,13 @@ useEffect(() => {
         <div className="product">
           
           <div className="product__img">
-          <img
-            src={`http://localhost:5001${product.imageUrl}`}
-            alt={product.nom}
-            className="product-image"
-          />
+<img
+  src={`http://localhost:5001${product.productImage}`}
+  alt={product.nom}
+  className="product-image"
+/>
+
+
 
     <div className="card__favorite" onClick={() => toggleFavorite(product)}>
           <Heart className={`icone ${isFavorite ? "active" : ""}`} /></div>
@@ -245,7 +253,7 @@ useEffect(() => {
           </div>
           )}
     <p>
-            <strong>{t("product.stock")} :</strong> {product.stock}{" "}
+            {/* <strong>{t("product.stock")} :</strong> {product.stock}{" "} */}
             {t("product.inStock")}
           </p>
 
@@ -257,6 +265,7 @@ useEffect(() => {
 
   <span className="qty-value">{quantity}</span>
 
+
   <button onClick={increaseQuantity} className="qty-btn">
     +
   </button>
@@ -266,13 +275,14 @@ useEffect(() => {
           <button className="btn-Add" onClick={addToCart}>
           {t("product.addToCart")}
         </button>
- <br />
+    <br />
+     <br />
   <br />
-  <br />
-
-
          
         </div>
+{/* Bloc IconeProduct  */}
+
+
 
         </div>
         {showModal && (
@@ -301,7 +311,10 @@ useEffect(() => {
           </div>
         )}
 
-  
+
+{/* Bloc IconeProduct  */}
+  <ReassuranceBanner />
+
         <div className="review-button">
           <button
             className="btn-Add"
@@ -311,7 +324,7 @@ useEffect(() => {
           </button>
         </div>
 
- <div className="review-summary">
+   <div className="review-summary">
    <h3>{t("product.titre")}</h3>
 
   {/* Étoiles basées sur la note moyenne */}
@@ -342,11 +355,75 @@ useEffect(() => {
       );
     })}
   </div>
-
  </div>
 
 
-      {/* 
+
+        {/* 🗨️ Bloc affichage des commentaires */}
+        <div className="comments-section">
+          <h3>{t("product.comments")}</h3>
+
+          {comments.length === 0 && <p>{t("product.noComments")}</p>}
+
+          {comments.map((comment) => (
+            <div key={comment._id} className="comment-card">
+              <p>
+                <strong>{comment.userId?.username || "Utilisateur"}</strong> —{" "}
+                {comment.rating} ★
+              </p>
+              <p>{comment.text}</p>
+                    <div className="comment-actions">
+         <button onClick={() => likeComment(comment._id)}> 👍 {comment.likes?.length || 0} </button>
+         <button onClick={() => dislikeComment(comment._id)}> 👎 {comment.dislikes?.length || 0} </button>
+         <button onClick={() => reportComment(comment._id)}> {t("product.report")} 🚩</button>
+      </div>
+              <small>
+                {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
+              </small>
+            </div>
+          ))}
+        </div>
+
+        {/* 🔹 Admin */}
+        {user && (user.role === "admin" || user.role === "vendeur") && (
+  <div className="admin-action">
+    <Link
+      to={`/admin-dashboard/EditProduct/${product._id}`}
+      className="btn-Add"
+    >
+      {t("product.edit")}
+    </Link>
+
+    <Link
+      to={`/admin-dashboard/DeleteProduct/${product._id}`}
+      className="btn-Add"
+    >
+      {t("product.delete")}
+    </Link>
+
+  
+  </div>
+)}
+
+        
+      </div>
+    </section>
+  );
+};
+
+export default Product;
+
+
+
+{/*}
+          <img
+            src={`http://localhost:5001${product.imageUrl}`}
+            alt={product.nom}   alt="Parfum Algarve"     
+            className="product-image"
+          />
+*/}
+
+ {/* 
        <div>
    <h3>Note et avis</h3>
   <div className="rating-input">
@@ -408,60 +485,3 @@ useEffect(() => {
   </div>
       </div>
 */}
-
-        {/* 🗨️ Bloc affichage des commentaires */}
-        <div className="comments-section">
-          <h3>{t("product.comments")}</h3>
-
-          {comments.length === 0 && <p>{t("product.noComments")}</p>}
-
-          {comments.map((comment) => (
-            <div key={comment._id} className="comment-card">
-              <p>
-                <strong>{comment.userId?.username || "Utilisateur"}</strong> —{" "}
-                {comment.rating} ★
-              </p>
-              <p>{comment.text}</p>
-                    <div className="comment-actions">
-         <button onClick={() => likeComment(comment._id)}> 👍 {comment.likes?.length || 0} </button>
-         <button onClick={() => dislikeComment(comment._id)}> 👎 {comment.dislikes?.length || 0} </button>
-         <button onClick={() => reportComment(comment._id)}> {t("product.report")} 🚩</button>
-      </div>
-              <small>
-                {new Date(comment.createdAt).toLocaleDateString("fr-FR")}
-              </small>
-            </div>
-          ))}
-        </div>
-
-        {/* 🔹 Admin */}
-        {user && (user.role === "admin" || user.role === "vendeur") && (
-  <div className="admin-action">
-    <Link
-      to={`/admin-dashboard/EditProduct/${product._id}`}
-      className="btn-Add"
-    >
-      {t("product.edit")}
-    </Link>
-
-    <Link
-      to={`/admin-dashboard/DeleteProduct/${product._id}`}
-      className="btn-Add"
-    >
-      {t("product.delete")}
-    </Link>
-
-  
-  </div>
-)}
-
-        
-      </div>
-    </section>
-  );
-};
-
-export default Product;
-
-
-

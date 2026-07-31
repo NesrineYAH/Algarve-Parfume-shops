@@ -4,10 +4,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import styled from "styled-components";
-import slide1 from "../../assets/images/nature1.jpeg";
-import slide2 from "../../assets/images/nature2.jpg";
-import slide3 from "../../assets/images/nautre 3.webp";
-import slide4 from "../../assets/images/nature4.webp";
+import slide1 from "../../assets/images/nature1.png";
+import slide2 from "../../assets/images/nature2.png";
+import slide3 from "../../assets/images/nature3.png";
+import slide4 from "../../assets/images/nature4.png";
 
 
 const slides = [slide1, slide2, slide3, slide4];
@@ -29,7 +29,7 @@ const CarouselWrapper = styled.div`
   img {
     width: 100%;
     height: 500px;
-    object-fit: cover;
+    object-fit: unset;
     border-radius: 12px;
   }
 

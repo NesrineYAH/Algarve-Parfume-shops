@@ -40,3 +40,82 @@
 
 
 }
+
+.reassurance {
+    background-color: #fcfcfc;
+    padding: 24px 16px;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    font-family: system-ui, -apple-system, sans-serif;
+
+
+    &__container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 0 16px;
+
+        .icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__icon {
+            width: 36px;
+            height: 36px;
+            color: #4b365f;
+            /* Couleur violette de l'image */
+            stroke-width: 1.5;
+        }
+
+        .text-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: #34244a;
+        text-transform: uppercase;
+    }
+
+    &__subtitle {
+        margin: 2px 0 0 0;
+        font-size: 13px;
+        color: #71717a;
+        font-weight: 400;
+    }
+
+    /* Trait de séparation vertical */
+    &__divider {
+        width: 1px;
+        height: 40px;
+        background-color: #e4e4e7;
+    }
+
+    /* Adaptation pour mobile */
+    @media (max-width: 768px) {
+        .reassurance-container {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .divider {
+            width: 80%;
+            height: 1px;
+        }
+    }
+}
