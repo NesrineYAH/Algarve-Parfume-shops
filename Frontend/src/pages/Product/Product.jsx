@@ -257,32 +257,23 @@ console.log(product.imageUrl);
     <p>
             {/* <strong>{t("product.stock")} :</strong> {product.stock}{" "} */}
             {t("product.inStock")}
-          </p>
-
-        {/* Quantité */}
+    </p>
      <div className="quantity-selector">
   <button onClick={decreaseQuantity} className="qty-btn">
     −
   </button>
-
   <span className="qty-value">{quantity}</span>
-
   <button onClick={increaseQuantity} className="qty-btn">
     +
   </button>
     </div>
-          <br />
-
       <p> Expédition 24/72h </p>
-
           <button className="btn-Add" onClick={addToCart}>
           {t("product.addToCart")}
-        </button>
-    <br />
-     <br />
-  <br />
-         
-{/* Bloc IconeProduct  */}
+        </button>       
+<br />
+<br />
+
       <div className="features">    
      <div className="feature">
      <LuLeaf className="icon" />
@@ -298,14 +289,9 @@ console.log(product.imageUrl);
   <FiMapPin className="icon" />
   <p>Fabriqué en<br />Algarve</p>
     </div>
-    </div>
+      </div>
 {/* Bloc IconeProduct  */}
-
         </div>
-
-
-
-
 
         </div>
         {showModal && (
@@ -335,9 +321,6 @@ console.log(product.imageUrl);
         )}
 
 
-{/* Bloc IconeProduct  */}
- <br />
-  <br />
   <ReassuranceBanner />
 
         <div className="review-button">

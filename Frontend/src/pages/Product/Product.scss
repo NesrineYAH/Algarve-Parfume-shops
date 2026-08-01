@@ -176,6 +176,26 @@
                     text-align: center;
                 }
 
+                .features {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+
+                    .feature {
+                        icon {
+                            font-size: 38px;
+                            color: #7B3FA6;
+                            margin-bottom: 12px;
+                        }
+
+                        p {
+                            font-size: 14px;
+                            color: #444;
+                            line-height: 1.4;
+                        }
+                    }
+                }
+
             }
 
             .product-options {
@@ -500,28 +520,13 @@
 
                     }
 
-                    .features {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-around;
+                    .feature {
 
-
-                        .feature {
-                            display: 150px;
-
-                            icon {
-                                font-size: 38px;
-                                color: #7B3FA6;
-                                margin-bottom: 12px;
-                            }
-
-                            p {
-                                font-size: 18px;
-                                color: #444;
-                                line-height: 1.4;
-                            }
+                        p {
+                            font-size: 10px;
                         }
                     }
+
                 }
 
 
