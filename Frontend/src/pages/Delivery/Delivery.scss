@@ -98,7 +98,8 @@ $border-radius: 8px;
         font-size: 0.9rem;
 
         &:hover {
-            background: darken($primary-color, 10%);
+            //    background: darken($primary-color, 10%);
+            background: darken(#2a9d8f, 10%);
             transform: scale(1.05);
         }
     }
