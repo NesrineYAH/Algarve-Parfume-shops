@@ -3,12 +3,8 @@ require("dotenv").config();
 console.log("BACKEND CLIENT ID:", process.env.PAYPAL_CLIENT_ID);
 console.log("BACKEND SECRET:", process.env.PAYPAL_CLIENT_SECRET ? "OK" : "MISSING");
 
-const express = require("express");
-require("./mongoDB/DB");
 const http = require("http");
 const app = require("./app");
-
-app.use(express.json());
 
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
@@ -43,8 +39,7 @@ server.on("error", errorHandler);
 server.on("listening", () => {
   const address = server.address();
   const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  console.log(`🚀 Serveur API en marche sur http://localhost:${port}`);
+  console.log(`🚀 Serveur API en marche sur le port ${port}`);
 });
 
 server.listen(port);
-
