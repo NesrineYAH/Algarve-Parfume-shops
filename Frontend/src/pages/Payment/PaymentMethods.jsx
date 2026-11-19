@@ -15,7 +15,7 @@ const PaymentMethods = () => {
       return;
     }
 
-    fetch("http://localhost:5001/api/payment-methods", {
+    fetch("https://e-commerce.nesrinebekkar.com/api/payment-methods", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

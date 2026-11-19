@@ -30,7 +30,7 @@ useEffect(() => {
   const confirmPayment = async () => {
     try {
       const res = await fetch(
-        "http://localhost:5001/api/orders/confirm-payment",
+        "https://e-commerce.nesrinebekkar.com/api/orders/confirm-payment",
         {
           method: "POST",
           headers: {
@@ -75,10 +75,10 @@ const handleStripePayment = async () => {
     let itemsToPay = [];
 
     if (orderId) {
-      stripeUrl = `http://localhost:5001/api/stripe/checkout-order/${orderId}`;
+      stripeUrl = `https://e-commerce.nesrinebekkar.com/api/stripe/checkout-order/${orderId}`;
       itemsToPay = orderFromState ? orderFromState.items : cartItems;
     } else {
-      stripeUrl = `http://localhost:5001/api/stripe/checkout-from-cart`;
+      stripeUrl = `https://e-commerce.nesrinebekkar.com/api/stripe/checkout-from-cart`;
       itemsToPay = cartItems;
 
       if (!itemsToPay || itemsToPay.length === 0)
@@ -201,60 +201,6 @@ const handleStripePayment = async () => {
     </div>
   );
 }
-
-/*
-{paymentMethod === "paypal" ? (
-  <PayPalScriptProvider
-    options={{
-      "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID,
-      currency: "EUR",
-      intent: "capture",
-    }}
-  >
-    <PayPalButtons
-      createOrder={async () => {
-        const orderId =
-          location.state?.orderId || localStorage.getItem("preOrderId");
-
-        const response = await PaymentService.createPayPalOrder(
-          total,
-          orderId
-        );
-
-        return response.id;
-      }}
-      onApprove={async (data) => {
-        const orderId =
-          location.state?.orderId || localStorage.getItem("preOrderId");
-
-        await PaymentService.capturePayPalOrder(
-          data.orderID,
-          orderId
-        );
-
-        await OrderService.finalizeOrder(orderId);
-
-        navigate("/delivery");
-      }}
-      onError={() => {
-        setError("Le paiement PayPal a échoué");
-      }}
-    />
-  </PayPalScriptProvider>
-) : (
-  <button
-    className="pay-btn"
-    onClick={handleStripePayment}
-    disabled={loading}
-  >
-    {loading ? "Paiement en cours..." : "Payer maintenant"}
-  </button>
-)}
-*/
-
-
-
-
 
 
 

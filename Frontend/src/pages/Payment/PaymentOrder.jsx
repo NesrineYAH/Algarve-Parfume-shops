@@ -12,7 +12,7 @@ export default function PaymentOrder() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch(`http://localhost:5001/api/orders/${orderId}`, {
+    fetch(`https://e-commerce.nesrinebekkar.com/api/orders/${orderId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -42,7 +42,7 @@ export default function PaymentOrder() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5001/api/stripe/checkout-order/${orderId}`,
+      `https://e-commerce.nesrinebekkar.com/api/stripe/checkout-order/${orderId}`,
       {
         method: "POST",
         headers: {

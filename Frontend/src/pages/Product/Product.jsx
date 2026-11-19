@@ -41,7 +41,6 @@ const [userRating, setUserRating] = useState(0);
       try {
         const response = await axios.get(
           `https://e-commerce.nesrinebekkar.com/api/products/${id}`
-      //                `http://localhost:5001/api/products/${id}`
         );
         setProduct(response.data);
         setSelectedOption(null);
