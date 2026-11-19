@@ -11,8 +11,7 @@ export default function AdminDashboard() {
 
  if (!user) { return <p>Chargement...</p>; // ou redirection 
   }
-
-    
+   
   return (
     <section className="admin">
       <aside className="admin__sidebar">
