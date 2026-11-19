@@ -49,7 +49,6 @@ export default function Cart() {
         {cartItems.map((item) => (
   <div className="cart-item" key={item.variantId}>
     <img
- //   src={`http://localhost:5001${item.imageUrl}`}
       src={`https://e-commerce.nesrinebekkar.com${item.imageUrl}`}
       alt={item.nom}
       className="cart-item__img"
