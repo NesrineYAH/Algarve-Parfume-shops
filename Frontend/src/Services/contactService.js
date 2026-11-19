@@ -1,6 +1,6 @@
 // src/services/contactService.js
 export async function sendContact(formData) {
-    const response = await fetch("http://localhost:5001/api/contacts", {
+    const response = await fetch("https://e-commerce.nesrinebekkar.com/api/contacts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -12,3 +12,6 @@ export async function sendContact(formData) {
 
     return response.json();
 }
+
+
+//   http://localhost:5001/api/contacts
