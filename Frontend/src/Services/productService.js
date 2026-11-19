@@ -1,7 +1,7 @@
 // src/services/productService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5001/api/products";
+const API_URL = "https://e-commerce.nesrinebekkar.com/api/products"; // Remplacez par l'URL de votre backend
 
 
 export const addProduct = async (productData) => {

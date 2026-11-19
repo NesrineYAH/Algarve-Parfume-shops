@@ -2,7 +2,8 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:5001/api",
+    // baseURL: "http://localhost:5001/api",
+    baseURL: "https://e-commerce.nesrinebekkar.com/api",
     withCredentials: true,
 });
 
@@ -12,15 +13,15 @@ const PaymentService = {
     createPayPalOrder: async (total, orderId) => {
         const response = await api.post("/paypal/create-order", {
             total,
-            orderId, 
+            orderId,
         });
-        return response.data; 
+        return response.data;
     },
 
     capturePayPalOrder: async (paypalOrderId, orderId) => {
         const response = await api.post("/paypal/capture-order", {
             orderID: paypalOrderId,
-            orderId, 
+            orderId,
         });
         return response.data;
     },
