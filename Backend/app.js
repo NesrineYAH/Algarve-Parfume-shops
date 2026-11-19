@@ -27,7 +27,7 @@ const { authMiddleware } = require("./middleware/auth");
 const cookieParser = require("cookie-parser");
 const returnRoutes = require("./routes/returns");
 const paypalRoutes = require("./routes/paypal.routes");
-require("./mongoDB/DB");
+require("./mongoDB/db");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,7 +35,7 @@ const PORT = process.env.PORT || 5000;
 
 // ⚡ Middlewares globaux
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173", "https://cv.nesrinebekkar.com"],
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173", "https://e-commerce.nesrinebekkar.com/"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -87,4 +87,6 @@ module.exports = app;
 
 //                                       .\stripe listen --forward-to localhost:5001/api/stripe/webhook
 
+
+//  "https://parfum-vert.vercel.app"
 
