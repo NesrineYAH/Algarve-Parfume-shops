@@ -12,7 +12,7 @@ const EditProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/products/${id}`)
+      .get(`https://e-commerce.nesrinebekkar.com/api/products/${id}`)
       .then((res) => {
         console.log("Produit récupéré :", res.data);
         setProduct(res.data);
@@ -29,7 +29,7 @@ const EditProduct = () => {
   if (imageFile) formData.append("image", imageFile);
 
   try {
-    await axios.put(`http://localhost:5001/api/products/${id}`, formData, {
+    await axios.put(`https://e-commerce.nesrinebekkar.com/api/products/${id}`, formData, {
       withCredentials: true, // cookie HTTP-only
     });
     navigate(`/admin-dashboard/products`); // par exemple revenir à la liste
@@ -63,7 +63,7 @@ const EditProduct = () => {
         {/* <-- Affiche l’image actuelle du produit */}
         {product.imageUrl && (
           <img
-            src={`http://localhost:5001${product.imageUrl}`}
+            src={`https://e-commerce.nesrinebekkar.com${product.imageUrl}`}
             alt={product.nom}
             className="preview"
             style={{

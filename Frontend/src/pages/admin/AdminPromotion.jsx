@@ -25,7 +25,7 @@ const AdminPromotion = () => {
       }
 
       await axios.post(
-        "http://localhost:5001/api/promotions",
+        "https://e-commerce.nesrinebekkar.com/api/promotions",
         formData,
         {
           headers: {

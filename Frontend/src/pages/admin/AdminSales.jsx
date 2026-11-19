@@ -9,7 +9,7 @@ const AdminSales = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/api/orders/admin", {
+        const res = await axios.get("https://e-commerce.nesrinebekkar.com/api/orders/admin", {
           withCredentials: true // cookie HTTP-only
         });
         setOrders(res.data.orders);
