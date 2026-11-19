@@ -8,7 +8,7 @@ export default function QrCodePage() {
       <h1 style={styles.title}>Téléchargez notre application</h1>
 
  <QRCodeCanvas
-        value="https://ton-site-ecommerce.com/app"
+        value="https://e-commerce.nesrinebekkar.com/app"
         size={220}
         bgColor="#ffffff"
         fgColor="#000000"

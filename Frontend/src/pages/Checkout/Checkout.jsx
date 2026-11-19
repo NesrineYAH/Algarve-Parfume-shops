@@ -81,7 +81,7 @@ console.log("PayPal orderData:", orderData);
         {cartItems.map((item) => (
           <div key={item.variantId} className="panier-item">
             <img
-              src={`http://localhost:5001${item.imageUrl}`}
+              src={`https://e-commerce.nesrinebekkar.com${item.imageUrl}`}
               alt={item.nom}
               className="itemImg"
             />

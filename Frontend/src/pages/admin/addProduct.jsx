@@ -23,7 +23,7 @@ const AdminAddProduct = () => {
 useEffect(() => {
   const loadCategories = async () => {
     const response = await axios.get(
-      "http://localhost:5001/api/categories",
+      "https://e-commerce.nesrinebekkar.com/api/categories",
       { withCredentials: true }
     );
     setCategories(response.data);
