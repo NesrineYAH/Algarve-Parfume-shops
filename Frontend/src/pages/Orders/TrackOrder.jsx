@@ -37,7 +37,7 @@ export default function TrackOrder() {
 
     try {
       const response = await fetch(
-        `http://localhost:5001/api/orders/${orderId}`,
+          `https://e-commerce.nesrinebekkar.com/api/orders/${orderId}`,
         { 
           method: "GET", 
           credentials: "include",
@@ -72,7 +72,7 @@ export default function TrackOrder() {
 const markAsDelivered = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/orders/${orderData._id}/deliver`,
+        `https://e-commerce.nesrinebekkar.com/api/orders/${orderData._id}/deliver`,
         { method: "POST", credentials: "include" }
       );
 
@@ -251,7 +251,7 @@ const toggleItemSelection = (item) => {
     
       {item.imageUrl && (
         <img
-      src={`http://localhost:5001${item.imageUrl}`}
+      src={`https://e-commerce.nesrinebekkar.com${item.imageUrl}`}
           alt={item.nom}
           style={styles.img}
         />
