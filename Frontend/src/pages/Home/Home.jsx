@@ -24,7 +24,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/products");
+        const res = await fetch("https://e-commerce.nesrinebekkar.com/api/products");
         const data = await res.json();
 
         const prod = Array.isArray(data) ? data : data.products;
@@ -61,7 +61,7 @@ const Home = () => {
     for (const product of list) {
       try {
         const res = await fetch(
-          `http://localhost:5001/api/products/${product._id}/comments`
+          `https://e-commerce.nesrinebekkar.com/api/products/${product._id}/comments`
         );
 
         const data = await res.json();
