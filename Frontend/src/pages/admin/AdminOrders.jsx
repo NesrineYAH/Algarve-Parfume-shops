@@ -16,7 +16,7 @@ export default function AdminOrders() {
   });
 
   const fetchOrders = async () => {
-    const res = await axios.get("http://localhost:5001/api/orders/all", {
+    const res = await axios.get("https://e-commerce.nesrinebekkar.com/api/orders/all", {
       withCredentials: true
     });
     setOrders(res.data);
@@ -32,7 +32,7 @@ export default function AdminOrders() {
 
   const shipOrder = async (orderId) => {
     await axios.put(
-      `http://localhost:5001/api/orders/${orderId}/ship`,
+      `https://e-commerce.nesrinebekkar.com/api/orders/${orderId}/ship`,
       {},
       { withCredentials: true }
     );
