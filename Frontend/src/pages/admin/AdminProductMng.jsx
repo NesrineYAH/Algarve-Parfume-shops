@@ -20,7 +20,7 @@ const AdminProductMng = () => {
         setProducts(productsData);
 
         // 2️⃣ Récupérer toutes les catégories
-        const categoriesRes = await axios.get("http://localhost:5001/api/categories");
+        const categoriesRes = await axios.get("https://e-commerce.nesrinebekkar.com/api/categories");
         setCategories(categoriesRes.data);
       } catch (err) {
         console.error("Erreur récupération produits ou catégories :", err);
@@ -76,7 +76,7 @@ const AdminProductMng = () => {
                 <td>
                   {prod.imageUrl && (
                     <img
-                      src={`http://localhost:5001${prod.imageUrl}`}
+                      src={`https://e-commerce.nesrinebekkar.com${prod.imageUrl}`}
                       alt={prod.nom}
                       width={50}
                       style={{ borderRadius: "4px" }}
