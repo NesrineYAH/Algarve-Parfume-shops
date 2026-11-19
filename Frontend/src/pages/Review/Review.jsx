@@ -26,7 +26,7 @@ const Review = () => {
     try {
       setError("");
 await axios.post(
-  `http://localhost:5001/api/products/${id}/comments`,
+  `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments`,
   { rating, text },
   {
     headers: { "Content-Type": "application/json" },
