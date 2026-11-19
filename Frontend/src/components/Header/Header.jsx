@@ -190,10 +190,6 @@ const handleToggleMenu = (e) => {
       {/* ---------------- Mobile Menu Rideau ---------------- */}
       {isMobile && (
         <div className={`mobile-menu ${isMenuOpen ? "open" : ""}`}>
-   {/*  <button className="burger" onClick={handleToggleMenu}>
-  <Menu size={20} />
-</button>
-*/}
 <button className="close-btn" onClick={handleToggleMenu}>
   <X size={20} />
 </button>
@@ -202,7 +198,6 @@ const handleToggleMenu = (e) => {
             <li><Link to="/Home" onClick={() => setIsMenuOpen(false)}>{t("header.titleI")}</Link></li>
             <li><Link to="/home?genre=femme" onClick={() => setIsMenuOpen(false)}>{t("header.titleII")}</Link></li>
             <li><Link to="/home?genre=homme" onClick={() => setIsMenuOpen(false)}>{t("header.titleIII")}</Link></li>
-            <li>{t("header.titleVI")}</li>
             <li><Link to="/QrCodePage" onClick={() => setIsMenuOpen(false)}>Notre App</Link></li>
             <li><Link to="/BlogPage">Forme & Santé</Link></li>
           </ul>
