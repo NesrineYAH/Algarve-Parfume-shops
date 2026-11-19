@@ -40,7 +40,8 @@ const [userRating, setUserRating] = useState(0);
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/products/${id}`
+          `https://e-commerce.nesrinebekkar.com/api/products/${id}`
+      //                `http://localhost:5001/api/products/${id}`
         );
         setProduct(response.data);
         setSelectedOption(null);
@@ -59,7 +60,7 @@ const [userRating, setUserRating] = useState(0);
     const fetchComments = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5001/api/products/${id}/comments`
+          `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments`
         );
         setComments(res.data);
       } catch (err) {
@@ -110,7 +111,9 @@ const variantId = `${product._id}-${selectedOption.size}${selectedOption.unit}`;
 const reportComment = async (commentId) => {
   try {
     await axios.post(
-      `http://localhost:5001/api/products/${id}/comments/${commentId}/report`,
+      `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments/${commentId}/report`,
+   //                http://localhost:5001/api/products/${id}/comments/${commentId}/report`,
+
       {},
       { 
      
@@ -129,7 +132,7 @@ const reportComment = async (commentId) => {
 const likeComment = async (commentId) => {
   try {
     const res = await axios.post(
-     `http://localhost:5001/api/products/${id}/comments/${commentId}/like`,
+     `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments/${commentId}/like`,
       {},
       { 
      headers: { "Content-Type": "application/json" },
@@ -147,7 +150,7 @@ const likeComment = async (commentId) => {
 const dislikeComment = async (commentId) => {
   try {
     const res = await axios.post(
-    `http://localhost:5001/api/products/${id}/comments/${commentId}/dislike`,
+    `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments/${commentId}/dislike`,
       {},
       { 
       headers: { "Content-Type": "application/json" },
@@ -162,7 +165,7 @@ const dislikeComment = async (commentId) => {
   }
 };
 const refresh = () => {
-    axios.get(`http://localhost:5001/api/products/${id}/comments`)
+    axios.get(`https://e-commerce.nesrinebekkar.com/api/products/${id}/comments`)
       .then(res => setComments(res.data));
 };
 
@@ -207,12 +210,10 @@ console.log(product.imageUrl);
   
           <div className="product__img">
 <img
-  src={`http://localhost:5001${product.productImage}`}
+  src={`https://e-commerce.nesrinebekkar.com${product.productImage}`}
   alt={product.nom}
   className="product-image"
 />
-
-
 
     <div className="card__favorite" onClick={() => toggleFavorite(product)}>
           <Heart className={`icone ${isFavorite ? "active" : ""}`} /></div>

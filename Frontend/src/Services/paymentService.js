@@ -2,7 +2,6 @@
 import axios from "axios";
 
 const api = axios.create({
-    // baseURL: "http://localhost:5001/api",
     baseURL: "https://e-commerce.nesrinebekkar.com/api",
     withCredentials: true,
 });
@@ -28,3 +27,5 @@ const PaymentService = {
 };
 
 export default PaymentService;
+
+    // baseURL: "http://localhost:5001/api",

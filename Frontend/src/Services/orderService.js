@@ -2,7 +2,6 @@
 import axios from "axios";
 
 const api = axios.create({
-  // baseURL: "http://localhost:5001/api",
   baseURL: "https://e-commerce.nesrinebekkar.com/api",
   withCredentials: true,
 });
@@ -70,7 +69,7 @@ export default OrderService;
 
 
 
-
+// baseURL: "http://localhost:5001/api",
 
 
 
