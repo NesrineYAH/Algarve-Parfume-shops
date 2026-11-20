@@ -48,7 +48,6 @@ export default function Orders() {
   const getImageUrl = (url) => {
     if (!url) return "/uploads/default.jpg";
     if (url.startsWith("http")) return url;
- //   return `http://localhost:5001${url}`;
     return `https://e-commerce.nesrinebekkar.com${url}`;
   };
 
