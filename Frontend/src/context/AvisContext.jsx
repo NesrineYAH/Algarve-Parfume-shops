@@ -10,7 +10,7 @@ export function AvisProvider({ children }) {
   const token = user?.token || localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/avis")
+    fetch("https://e-commerce.nesrinebekkar.com/api/avis")
       .then((res) => res.json())
       .then((data) => {
         setAvis(data);

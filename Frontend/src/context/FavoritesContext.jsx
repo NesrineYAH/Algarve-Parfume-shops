@@ -17,7 +17,7 @@ export const FavoritesProvider = ({ children }) => {
 
       try {
         const res = await fetch(
-          "http://localhost:5001/api/users/favorites",
+          "https://e-commerce.nesrinebekkar.com/api/users/favorites",
           {
              headers: { "Content-Type": "application/json" },
       credentials: "include",

@@ -43,7 +43,7 @@ const CartProvider = ({ children }) => {
         const localCart = JSON.parse(localStorage.getItem("cart")) || [];
 
     
-        const res = await fetch("http://localhost:5001/api/carts", {
+        const res = await fetch("https://e-commerce.nesrinebekkar.com/api/carts", {
           credentials: "include",
         });
         const data = await res.json();

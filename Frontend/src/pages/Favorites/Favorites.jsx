@@ -26,7 +26,7 @@ export default function Favorites() {
               <Link to={`/product/${product._id}`}>
                 {product.imageUrl ? (
                   <img
-                    src={`http://localhost:5001${product.imageUrl}`}
+                    src={`https://e-commerce.nesrinebekkar.com${product.imageUrl}`}          
                     alt={product.nom}
                     className="favorites__img"
                   />

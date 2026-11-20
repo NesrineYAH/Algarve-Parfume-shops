@@ -5,10 +5,10 @@ import "../Review/Review.scss";
 import { useTranslation } from "react-i18next";
 
 const AvisClients = () => {
-  const { avis, loading, addAvis } = useContext(AvisContext); // ✅ source unique 
+  const { avis, loading, addAvis } = useContext(AvisContext);  
 const {t} = useTranslation();
   const [rating, setRating] = useState(5);
-  const [comment, setComment] = useState(""); // ✅ comment défini
+  const [comment, setComment] = useState(""); 
   const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e) => {
