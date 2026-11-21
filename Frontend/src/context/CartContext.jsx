@@ -89,7 +89,7 @@ const CartProvider = ({ children }) => {
     }
 
     try {
-      await fetch("http://localhost:5001/api/carts/add", {
+      await fetch("https://e-commerce.nesrinebekkar.com/api/carts/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
