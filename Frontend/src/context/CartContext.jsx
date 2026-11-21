@@ -96,7 +96,7 @@ const CartProvider = ({ children }) => {
         body: JSON.stringify(item),
       });
 
-      const res = await fetch("http://localhost:5001/api/carts", {
+      const res = await fetch("https://e-commerce.nesrinebekkar.com/api/carts", {
         credentials: "include",
       });
       const data = await res.json();
@@ -125,7 +125,7 @@ const CartProvider = ({ children }) => {
     }
     try {
       const res = await fetch(
-        "http://localhost:5001/api/carts/updateQuantity",
+        "https://e-commerce.nesrinebekkar.com/api/carts/updateQuantity",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -162,7 +162,7 @@ const CartProvider = ({ children }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/carts/removeItem/${variantId}`,
+        `https://e-commerce.nesrinebekkar.com/api/carts/removeItem/${variantId}`,
         {
           method: "DELETE",
           credentials: "include",
