@@ -167,22 +167,6 @@ if (loading) return <p>{t("delivery.loading")}</p>;
 
         </div>
 
-        {/* Adresse 
-        <div className="form-group">
-          <label>Adresse</label>
-          <AddressAutocomplete
-            value={form.address}
-            onChange={(text) =>
-              setForm((prev) => ({ ...prev, address: text }))
-            }
-            onSelect={(address) =>
-              setForm((prev) => ({ ...prev, address }))
-            }
-          />
-        </div>
-*/}
-
-
   <>
     {/* Adresse */}
     <div className="form-group">

@@ -375,7 +375,7 @@ exports.deliverOrder = async (req, res) => {
 
       <p>${mailContent.text2}</p>
 
-      <a href="http://localhost:5173/authentification"
+      <a href="https://e-commerce.nesrinebekkar.com/authentification"
         style="
           display:inline-block;
           background:#4c6ef5;
@@ -414,12 +414,10 @@ exports.cancelOrder = async (req, res) => {
         if (!order) {
             return res.status(404).json({ message: "Commande introuvable" });
         }
-
         // Vérifier que l'utilisateur est propriétaire
         if (order.userId.toString() !== req.user.userId) {
             return res.status(403).json({ message: "Accès interdit" });
         }
-
         // Vérifier que la commande n'est pas déjà expédiée
         const nonCancellableStatus = [
             "shipped",
@@ -449,20 +447,16 @@ exports.cancelOrder = async (req, res) => {
         await order.save();
         const html = `
   <h2>${t("email.order_canceled.title")}</h2>
-
   <p>${t("email.order_canceled.hello", { name: order.userId.prenom })}</p>
-
   <p>${t("email.order_canceled.text1", { orderId: order._id })}</p>
-
   <p>${t("email.order_canceled.text2")}</p>
 
-  <a href="http://localhost:5173/panier"
+  <a href="https://e-commerce.nesrinebekkar.com/panier"
      style="background:#4c6ef5;color:white;padding:10px 15px;text-decoration:none;border-radius:8px;display:inline-block;">
      ${t("email.order_canceled.button")}
   </a>
 
   <p>${t("email.order_canceled.text3")}</p>
-
   <br><br>
   <p>${t("email.order_canceled.thanks")}</p>
 `;
@@ -575,7 +569,7 @@ async function sendRefundEmail(order) {
     <p>${mailContent.text1(order._id)}</p>
     <p>${mailContent.amount(order.totalPrice)}</p>
 
-    <a href="http://localhost:5173/MonCompte"
+    <a href="https://e-commerce.nesrinebekkar.com/MonCompte"
       style="
       display:inline-block;
       background:#4c6ef5;

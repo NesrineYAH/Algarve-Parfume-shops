@@ -23,7 +23,7 @@ const AdminAddProduct = () => {
 useEffect(() => {
   const loadCategories = async () => {
     const response = await axios.get(
-      "https://e-commerce.nesrinebekkar.com/api/categories",
+      "https://e-commerce.nesrinebekkar.com/api/categories",   
       { withCredentials: true }
     );
     setCategories(response.data);
@@ -121,17 +121,3 @@ export default AdminAddProduct;
 
 
 
-{/*
-  <input type="number" placeholder="Taille (ex: 50)" value={size}
-         onChange={(e) => setSize(e.target.value)} required />
-        <input type="number"  placeholder="Prix" value={optionPrix}
-          onChange={(e) => setOptionPrix(e.target.value)}  required />
-
-               <input
-       type="number"
-         placeholder="Stock"
-         value={optionStock}
-         onChange={(e) => setOptionStock(e.target.value)}
-          required
-         />
-  */}

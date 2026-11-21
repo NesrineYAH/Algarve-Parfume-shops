@@ -66,7 +66,7 @@ export default function AddAdresse() {
           type="text"
           placeholder="Code postal"
           value={form.postalCode}
-          onChange={(e) => setForm({ ...form, postalCode: e.target.value })}
+          onChange={(e) => setForm({ ...form, postalCode: e.target.value })}  
           required
         />
 

@@ -42,7 +42,7 @@ export default function AdminDashboard() {
 
       </aside>     
       <main className="admin__content">
-        <Outlet />  {/* Ici les pages enfants vont s’afficher */}
+        <Outlet />  
       </main>
     </section>
   );
