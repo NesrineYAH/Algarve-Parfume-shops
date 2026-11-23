@@ -31,6 +31,7 @@ const CarouselWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
 
+
   .swiper {
     width: 100%;
     border-radius: 12px;
@@ -45,10 +46,11 @@ const CarouselWrapper = styled.div`
 
   .slide-image {
     display: block;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
     border-radius: 12px;
+    width: 100%;
+    height: 800px;
+    object-fit: contain;
+
   }
 
   .swiper-button-next,
@@ -83,7 +85,6 @@ const CarouselWrapper = styled.div`
   @media (max-width: 768px) {
     .swiper {
       border-radius: 8px;
-      height: 800px;
 
     }
 
@@ -91,6 +92,11 @@ const CarouselWrapper = styled.div`
       width: 100%;
       object-fit: contain;
       border-radius: 8px;
+
+      width: 100%;
+      height: 800px;
+      object-fit: unset;
+      border-radius: 12px;
 
     }
 
