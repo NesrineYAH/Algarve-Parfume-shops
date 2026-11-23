@@ -82,14 +82,16 @@ const CarouselWrapper = styled.div`
   /* Version mobile */
   @media (max-width: 768px) {
     .swiper {
-      border-radius: 0;
+      border-radius: 8px;
+      height: 800px;
+
     }
 
     .slide-image {
       width: 100%;
-      height: auto;
       object-fit: contain;
-      border-radius: 0;
+      border-radius: 8px;
+
     }
 
     .swiper-button-next,
