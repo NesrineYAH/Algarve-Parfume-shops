@@ -9,9 +9,9 @@ import "swiper/css/pagination";
 import styled from "styled-components";
 
 // Images desktop
-import slide1 from "../../assets/images/nature1.png";
+import slide1 from "../../assets/images/nature11.png";
 import slide2 from "../../assets/images/nature2.png";
-import slide3 from "../../assets/images/nature3.png";
+import slide3 from "../../assets/images/nature31.png";
 import slide4 from "../../assets/images/nature4.png";
 
 // Images mobile
@@ -31,26 +31,31 @@ const CarouselWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
 
-
   .swiper {
     width: 100%;
+    height: 700px;
     border-radius: 12px;
     overflow: hidden;
   }
 
   .swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  picture {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .slide-image {
     display: block;
-    border-radius: 12px;
     width: 100%;
-    height: 800px;
-    object-fit: contain;
-
+    height: 100%;
+    object-fit: fill;
+    object-position: center;
   }
 
   .swiper-button-next,
@@ -84,20 +89,12 @@ const CarouselWrapper = styled.div`
   /* Version mobile */
   @media (max-width: 768px) {
     .swiper {
+      height: 800px;
       border-radius: 8px;
-
     }
 
     .slide-image {
-      width: 100%;
-      object-fit: contain;
       border-radius: 8px;
-
-      width: 100%;
-      height: 800px;
-      object-fit: unset;
-      border-radius: 12px;
-
     }
 
     .swiper-button-next,
