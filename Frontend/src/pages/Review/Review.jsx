@@ -26,7 +26,7 @@ const Review = () => {
     try {
       setError("");
 await axios.post(
-  `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments`,
+  `https://perfumealgarve.shop/api/products/${id}/comments`,
   { rating, text },
   {
     headers: { "Content-Type": "application/json" },
