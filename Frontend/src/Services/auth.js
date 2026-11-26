@@ -1,7 +1,7 @@
 // service/auth.js
 export async function loginUser(credentials) {
   try {
-    const res = await fetch("https://e-commerce.nesrinebekkar.com/api/users/login", {
+    const res = await fetch("https://perfumealgarve.shop/api/users/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -25,7 +25,7 @@ export async function loginUser(credentials) {
 
 export async function registerUser(credentials) {
   try {
-    const res = await fetch("https://e-commerce.nesrinebekkar.com/api/users/register", {
+    const res = await fetch("https://perfumealgarve.shop/api/users/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -48,7 +48,7 @@ export async function registerUser(credentials) {
 
 export async function getCurrentUser() {
   try {
-    const res = await fetch("https://e-commerce.nesrinebekkar.com/api/users/moncompte", {
+    const res = await fetch("hhttps://perfumealgarve.shop/api/users/moncompte", {
       method: "GET",
       credentials: "include",
     });
@@ -77,7 +77,7 @@ export async function getCurrentUser() {
 
 export async function logoutUser() {
   try {
-    await fetch("https://e-commerce.nesrinebekkar.com/api/users/logout", {
+    await fetch("https://perfumealgarve.shop/api/users/logout", {
       method: "POST",
       credentials: "include",
     });
@@ -87,7 +87,7 @@ export async function logoutUser() {
 }
 
 export async function forgotPassword(email) {
-  const res = await fetch("https://e-commerce.nesrinebekkar.com/api/users/forgot-password", {
+  const res = await fetch("https://perfumealgarve.shop/api/users/forgot-password", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
@@ -97,7 +97,7 @@ export async function forgotPassword(email) {
 }
 
 export async function resetPassword(token, password) {
-  const res = await fetch(`https://e-commerce.nesrinebekkar.com/api/users/reset-password/${token}`, {
+  const res = await fetch(`https://perfumealgarve.shop/api/users/reset-password/${token}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
