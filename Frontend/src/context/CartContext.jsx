@@ -89,14 +89,14 @@ const CartProvider = ({ children }) => {
     }
 
     try {
-      await fetch("https://e-commerce.nesrinebekkar.com/api/carts/add", {
+      await fetch("https://perfumealgarve.shop/api/carts/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify(item),
       });
 
-      const res = await fetch("https://e-commerce.nesrinebekkar.com/api/carts", {
+      const res = await fetch("https://perfumealgarve.shop/api/carts", {
         credentials: "include",
       });
       const data = await res.json();
@@ -125,7 +125,7 @@ const CartProvider = ({ children }) => {
     }
     try {
       const res = await fetch(
-        "https://e-commerce.nesrinebekkar.com/api/carts/updateQuantity",
+        "https://perfumealgarve.shop/api/carts/updateQuantity",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -162,7 +162,7 @@ const CartProvider = ({ children }) => {
 
     try {
       const res = await fetch(
-        `https://e-commerce.nesrinebekkar.com/api/carts/removeItem/${variantId}`,
+        `https://perfumealgarve.shop/api/carts/removeItem/${variantId}`,
         {
           method: "DELETE",
           credentials: "include",
