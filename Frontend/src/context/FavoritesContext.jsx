@@ -17,7 +17,7 @@ export const FavoritesProvider = ({ children }) => {
 
       try {
         const res = await fetch(
-          "https://e-commerce.nesrinebekkar.com/api/users/favorites",
+          "https://perfumealgarve.shop/api/users/favorites",
           {
              headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -55,7 +55,7 @@ export const FavoritesProvider = ({ children }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/users/favorites/${product._id}`,
+        `https://perfumealgarve.shop/api/users/favorites/${product._id}`,
         {
           method: "POST",
             headers: { "Content-Type": "application/json" },
