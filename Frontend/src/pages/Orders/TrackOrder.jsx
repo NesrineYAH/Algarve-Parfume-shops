@@ -37,7 +37,7 @@ export default function TrackOrder() {
 
     try {
       const response = await fetch(
-          `https://e-commerce.nesrinebekkar.com/api/orders/${orderId}`,
+          `https://perfumealgarve.shop/api/orders/${orderId}`,
         { 
           method: "GET", 
           credentials: "include",
@@ -72,7 +72,7 @@ export default function TrackOrder() {
 const markAsDelivered = async () => {
     try {
       const response = await fetch(
-        `https://e-commerce.nesrinebekkar.com/api/orders/${orderData._id}/deliver`,
+        `https://perfumealgarve.shop/api/orders/${orderData._id}/deliver`,
         { method: "POST", credentials: "include" }
       );
 
@@ -251,7 +251,7 @@ const toggleItemSelection = (item) => {
     
       {item.imageUrl && (
         <img
-      src={`https://e-commerce.nesrinebekkar.com${item.imageUrl}`}
+      src={`https://perfumealgarve.shop${item.imageUrl}`}
           alt={item.nom}
           style={styles.img}
         />
