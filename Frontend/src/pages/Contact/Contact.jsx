@@ -15,7 +15,7 @@ export default function Contact() {
     prenom: "",
     email: "",
     message: "",
-    reason: "", // 👈 nouveau champ
+    reason: "", 
   });
 
   const [status, setStatus] = useState("");
@@ -160,7 +160,3 @@ const handleSubmit = async (e) => {
 
 }
 
-/*
-
-
-*/
