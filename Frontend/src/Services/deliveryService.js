@@ -1,6 +1,6 @@
 // DeliveryService.js
 import axios from "axios";
-const API_URL = "https://e-commerce.nesrinebekkar.com/api/delivery";
+const API_URL = "https://perfumealgarve.shop/api/delivery";
 
 /**
  * @param {number} lat 
