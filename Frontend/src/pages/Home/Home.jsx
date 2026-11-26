@@ -24,7 +24,7 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://e-commerce.nesrinebekkar.com/api/products");
+        const res = await fetch("https://perfumealgarve.shop/api/products");
         const data = await res.json();
 
         const prod = Array.isArray(data) ? data : data.products;
@@ -61,7 +61,7 @@ const Home = () => {
     for (const product of list) {
       try {
         const res = await fetch(
-          `https://e-commerce.nesrinebekkar.com/api/products/${product._id}/comments`
+          `https://perfumealgarve.shop/api/products/${product._id}/comments`
         );
 
         const data = await res.json();
@@ -130,7 +130,7 @@ const Home = () => {
         <Link to={`/product/${product._id}`} className="card__content">
           {product.imageUrl && (
             <img
-              src={`https://e-commerce.nesrinebekkar.com${product.imageUrl}`}
+              src={`https://perfumealgarve.shop${product.imageUrl}`}
               alt={product.nom}
               className="card_img"
             />

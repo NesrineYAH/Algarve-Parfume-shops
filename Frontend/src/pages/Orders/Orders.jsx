@@ -48,7 +48,7 @@ export default function Orders() {
   const getImageUrl = (url) => {
     if (!url) return "/uploads/default.jpg";
     if (url.startsWith("http")) return url;
-    return `https://e-commerce.nesrinebekkar.com${url}`;
+    return `https://perfumealgarve.shop${url}`;
   };
 
   const openCancelModal = (orderId) => {
@@ -348,7 +348,7 @@ export default function Orders() {
                    {t("preOrders.concel")} 
                 </button>
                 {order.invoiceUrl && (
-                  <a href={`https://e-commerce.nesrinebekkar.com${order.invoiceUrl}`} 
+                  <a href={`https://perfumealgarve.shop${order.invoiceUrl}`} 
                      target="_blank"
                      rel="noopener noreferrer">
                     <button className="Button invoice-btn">📄 {t("preOrders.LoadInvoice")}</button>
