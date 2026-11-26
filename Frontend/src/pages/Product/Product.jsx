@@ -40,7 +40,7 @@ const [userRating, setUserRating] = useState(0);
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `https://e-commerce.nesrinebekkar.com/api/products/${id}`
+          `https://perfumealgarve.shop/api/products/${id}`
         );
         setProduct(response.data);
         setSelectedOption(null);
@@ -59,7 +59,7 @@ const [userRating, setUserRating] = useState(0);
     const fetchComments = async () => {
       try {
         const res = await axios.get(
-          `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments`
+          `https://perfumealgarve.shop/api/products/${id}/comments`
         );
         setComments(res.data);
       } catch (err) {
@@ -110,8 +110,8 @@ const variantId = `${product._id}-${selectedOption.size}${selectedOption.unit}`;
 const reportComment = async (commentId) => {
   try {
     await axios.post(
-      `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments/${commentId}/report`,
-   //                http://localhost:5001/api/products/${id}/comments/${commentId}/report`,
+      `https://perfumealgarve.shop/api/products/${id}/comments/${commentId}/report`,
+
 
       {},
       { 
@@ -131,7 +131,7 @@ const reportComment = async (commentId) => {
 const likeComment = async (commentId) => {
   try {
     const res = await axios.post(
-     `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments/${commentId}/like`,
+     `https://perfumealgarve.shop/api/products/${id}/comments/${commentId}/like`,
       {},
       { 
      headers: { "Content-Type": "application/json" },
@@ -149,7 +149,7 @@ const likeComment = async (commentId) => {
 const dislikeComment = async (commentId) => {
   try {
     const res = await axios.post(
-    `https://e-commerce.nesrinebekkar.com/api/products/${id}/comments/${commentId}/dislike`,
+    `https://perfumealgarve.shop/api/products/${id}/comments/${commentId}/dislike`,
       {},
       { 
       headers: { "Content-Type": "application/json" },
@@ -164,7 +164,7 @@ const dislikeComment = async (commentId) => {
   }
 };
 const refresh = () => {
-    axios.get(`https://e-commerce.nesrinebekkar.com/api/products/${id}/comments`)
+    axios.get(`https://perfumealgarve.shop/api/products/${id}/comments`)
       .then(res => setComments(res.data));
 };
 
@@ -209,7 +209,7 @@ console.log(product.imageUrl);
   
           <div className="product__img">
 <img
-  src={`https://e-commerce.nesrinebekkar.com${product.productImage}`}
+  src={`https://perfumealgarve.shop${product.productImage}`}
   alt={product.nom}
   className="product-image"
 />
