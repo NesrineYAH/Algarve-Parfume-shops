@@ -89,4 +89,3 @@ export default Review;
 
 
 
-//        `http://localhost:5001/api/products/${id}/comments`,

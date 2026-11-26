@@ -11,7 +11,7 @@ const Notifications = () => {
     const fetchNotifications = async () => {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://e-commerce.nesrinebekkar.com/api/notifications",
+        "https://perfumealgarve.shop/api/notifications",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
