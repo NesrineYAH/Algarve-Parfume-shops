@@ -37,7 +37,7 @@ export default function MonCompte() {
       return;
     }
 
-    fetch("https://e-commerce.nesrinebekkar.com/api/addresses", {
+    fetch("https://perfumealgarve.shop/api/addresses", {
       method: "GET",
       credentials: "include",
     })
@@ -50,7 +50,7 @@ export default function MonCompte() {
   useEffect(() => {
     if (!user?._id) return;
 
-    fetch(`https://e-commerce.nesrinebekkar.com/api/orders/user/${user._id}`, {
+    fetch(`https://perfumealgarve.shop/api/orders/user/${user._id}`, {
       method: "GET",
       credentials: "include",
     })
@@ -78,7 +78,7 @@ useEffect(() => {
 
   const updateAddress = async (id, updatedData) => {
     try {
-      const res = await fetch(`https://e-commerce.nesrinebekkar.com/api/addresses/${id}`, {
+      const res = await fetch(`https://perfumealgarve.shop/api/addresses/${id}`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -100,7 +100,7 @@ useEffect(() => {
 
   const deleteAddress = async (id) => {
     try {
-      const res = await fetch(`https://e-commerce.nesrinebekkar.com/api/addresses/${id}`, {
+      const res = await fetch(`"https://perfumealgarve.shop/api/addresses/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -174,7 +174,7 @@ useEffect(() => {
       return;
     }
     try {
-      const res = await fetch("https://e-commerce.nesrinebekkar.com/api/users/change-password", {
+      const res = await fetch("https://perfumealgarve.shop/api/users/change-password", {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -197,7 +197,7 @@ useEffect(() => {
 
   const savePreferences = async () => {
     try {
-      const res = await fetch("https://e-commerce.nesrinebekkar.com/api/users/preferences", {
+      const res = await fetch("https://perfumealgarve.shop/api/users/preferences", {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -302,7 +302,7 @@ useEffect(() => {
                   <Link to={`/product/${prod._id}`}>
                     <img
                       className="favorites__img"
-                      src={`https://e-commerce.nesrinebekkar.com${prod.imageUrl}`}
+                      src={`https://perfumealgarve.shop${prod.imageUrl}`}
                       alt={prod.nom}
                     />
                   </Link>
