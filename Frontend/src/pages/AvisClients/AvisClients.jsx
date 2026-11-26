@@ -18,7 +18,7 @@ const {t} = useTranslation();
     try {
       await addAvis({
         rating,
-        text: comment, // correspond au schéma Avis.text
+        text: comment, 
       });
 
       setComment("");

@@ -18,7 +18,7 @@ export default function Orders() {
   const [cancelReason, setCancelReason] = useState("");
   const [cancelDescription, setCancelDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("all"); // "all", "paid", "cancelled", "refunded"
+  const [activeFilter, setActiveFilter] = useState("all"); 
   const navigate = useNavigate();
   const { t } = useTranslation();
 
