@@ -42,7 +42,7 @@ export default function PaymentOrder() {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `https://e-commerce.nesrinebekkar.com/api/stripe/checkout-order/${orderId}`,
+      `https://perfumealgarve.shop/api/stripe/checkout-order/${orderId}`,
       {
         method: "POST",
         headers: {
