@@ -35,7 +35,7 @@ const PORT = process.env.PORT || 5000;
 
 // ⚡ Middlewares globaux
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173", "https://e-commerce.nesrinebekkar.com/"],
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173", "https://perfumealgarve.shop/"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

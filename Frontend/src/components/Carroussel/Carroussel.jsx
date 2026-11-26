@@ -89,7 +89,7 @@ const CarouselWrapper = styled.div`
   /* Version mobile */
   @media (max-width: 768px) {
     .swiper {
-      height: 800px;
+      height: 700px;
       border-radius: 8px;
     }
 

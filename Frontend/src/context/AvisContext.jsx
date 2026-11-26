@@ -10,7 +10,7 @@ export function AvisProvider({ children }) {
   const token = user?.token || localStorage.getItem("token");
 
   useEffect(() => {
-    fetch("https://e-commerce.nesrinebekkar.com/api/avis")
+    fetch("https://perfumealgarve.shop/api/avis")
       .then((res) => res.json())
       .then((data) => {
         setAvis(data);
@@ -29,7 +29,7 @@ export function AvisProvider({ children }) {
         throw new Error("Utilisateur non authentifié");
       }
 
-      const res = await fetch("http://localhost:5001/api/avis", {
+      const res = await fetch("https://perfumealgarve.shop/api/avis", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
