@@ -15,7 +15,7 @@ export default function Checkout() {
   const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
-  // 🔐 Sécurité : pas d’accès au checkout sans panier
+  //  Sécurité : pas d’accès au checkout sans panier
   useEffect(() => {
     if (checked) return;
 
@@ -48,12 +48,12 @@ export default function Checkout() {
       const orderData = {
         items: itemsForOrder,
         totalPrice: Number(totalPrice.toFixed(2)),
-        status: "pending",          // pré-commande en attente
-        paymentStatus: "pending",   // paiement en attente
+        status: "pending",          
+        paymentStatus: "pending",   
         createdAt: new Date(),
       };
 
-      // ✅ Envoi au serveur pour enregistrer la pré-commande
+
       const response = await OrderService.createPreOrder(orderData);
                                          
       if (!response?.order?._id) {
