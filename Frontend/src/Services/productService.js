@@ -1,13 +1,12 @@
 // src/services/productService.js
 import axios from "axios";
-// const API_URL = "http://localhost:5001/api/products";
-const API_URL ="https://e-commerce.nesrinebekkar.com/api/products"
+const API_URL = "https://perfumealgarve.shop/api/products"
 
 
 export const addProduct = async (productData) => {
   try {
     const response = await axios.post(`${API_URL}/add`, productData, {
-      withCredentials: true, 
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
@@ -16,12 +15,10 @@ export const addProduct = async (productData) => {
   }
 };
 
-
 export const getAllProducts = async () => {
   const response = await axios.get(`${API_URL}`);
   return response.data;
 };
-
 
 export const getProductById = async (id) => {
   try {
@@ -32,7 +29,6 @@ export const getProductById = async (id) => {
     throw error;
   }
 };
-
 
 export const deleteProduct = async (id) => {
   try {
@@ -46,7 +42,6 @@ export const deleteProduct = async (id) => {
   }
 };
 
-
 export const getProductsByGenre = async (genre) => {
   try {
     const response = await axios.get(`${API_URL}`, { params: { genre } });
@@ -56,7 +51,6 @@ export const getProductsByGenre = async (genre) => {
     throw error;
   }
 };
-
 
 export const updateProduct = async (id, updatedData) => {
   try {
